@@ -1,5 +1,6 @@
 Vue.config.debug = true
 // vue instance
+
 var vm = new Vue({
     el: '#app',
     data: {
@@ -7,6 +8,7 @@ var vm = new Vue({
         newMarkerLng: '',
         addMarker: false,
         markers: '',
+        userIsLoggedIn: false,
     },
     ready: function() {
         this.getMarkers();
@@ -46,6 +48,12 @@ var vm = new Vue({
             }).error(function (data, status, request) {
                 console.log(status);
             })
-        }
+        },
+        login: function() {
+            this.userIsLoggedIn = true;
+        },
+        logout: function() {
+            this.userIsLoggedIn = false;
+        },
     }
 });
