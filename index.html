@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>roska</title>
+    <link rel="stylesheet" href="/libs/css/normalize.css">
+    <link rel="stylesheet" href="/libs/css/skeleton.css">
+    
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="/app/css/custom.css">
+</head>
+<body>
+    <div id="app">
+        <div id="map">
+        </div>
+        <div id="sidebar" v-if="addMarker">
+            <ul>
+                <li>lat: {{ newMarkerLat }}</li>
+                <li>lng: {{ newMarkerLng }}</li>  
+            </ul>
+            <button v-on:click="createMarker($event)">Add new marker</button>
+        </div>
+    </div>
+    
+    <!-- load libraries -->
+    <script src="/libs/js/vue.js"></script>
+    <script src="/libs/js/vue-resource.js"></script>
+    <script src="/libs/leaflet/leaflet.js"></script>
+    
+    <!-- load leaflet -->
+    <script src="/app/js/map.js"></script>
+    <!-- load vue instance -->
+    <script src="/app/js/app.js"></script>
+</body>
+</html>
