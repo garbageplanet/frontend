@@ -1,0 +1,126 @@
+.map-marker
+    text-align: center
+    position: absolute
+    overflow: hidden
+    background-repeat: no-repeat
+    background-position: center
+    color: #fff
+    border-radius: 50%
+    font-family: 'FontAwesome'
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5))
+    
+    &:hover
+        filter: drop-shadow(0px 0px 10px rgba(255,255,255,0.7))
+    
+    .marker-generic
+        &:before
+            content: 'f128'
+        
+    .marker-garbage
+        &:before
+        font-family: 'trashbag'
+            content: '\e600'
+    
+    .marker-cleaning
+        &:before
+            content: '\f073'
+
+.map-marker
+    .z5,
+    .z3,
+    .z2,
+    .z1,
+    .z0,
+        display: none
+    .z6 
+        font-size:7px
+        width:12px
+        height:12px
+    .z7 
+        font-size:9px
+        width:14px
+        height:14px
+        padding-left: 1px
+        padding-bottom: 1px
+    .z8 
+        font-size:10px
+        width:16px 
+        height:16px 
+    .z9 
+        font-size:12px
+        width:20px 
+        height:20px 
+    .z10 
+        font-size:14px
+        width:22px 
+        height:22px 
+        padding-bottom: 1px
+    .z11 
+        font-size:16px
+        width:26px 
+        height:26px 
+        padding-right: 1px
+    .z12
+        font-size:18px
+        width:30px 
+        height:30px 
+        padding-right: 0px
+        padding-top: 2px
+    .z13 
+        font-size:19px
+        width:31px 
+        height:31px 
+        padding-top: 1px
+    .z14 
+        font-size:19px
+        width:32px 
+        height:32px 
+        padding-top: 3px
+        padding-left: 1px
+    .z15
+        font-size:20px
+        width:33px 
+        height:33px 
+        padding-top: 2px
+    .z16
+        font-size:20px
+        width:34px 
+        height:34px 
+        padding-top: 3px
+    .z17
+        font-size:21px
+        width:35px 
+        height:35px 
+        padding-top: 3px
+    .z18
+        font-size:21px
+        width:36px 
+        height:36px 
+        padding-top: 4px
+        padding-left: 1px
+
+
+/* Styling trashbins icons */        
+.marker-nearby-trashbin
+    .z13,
+    .z12,
+    .z11,
+    .z10,
+    .z9,
+    .z8,
+    .z7,
+    .z6,
+    .z5,
+    .z3,
+    .z2,
+    .z1,
+    .z0,
+        display: none
+    .z15
+        font-size: 12px
+    .z16
+        font-size: 14px
+    .z17
+        font-size: 16px
+    .z18
+        font-size: 18px
