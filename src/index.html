@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>roska</title>
-    <link rel="stylesheet" href="libs/css/normalize.css">
-    <link rel="stylesheet" href="libs/css/skeleton.css">
-    
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/skeleton.css">
+
     <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="app/css/custom.css">
+    <link rel="stylesheet" href="styles/custom.css">
 </head>
 <body>
     <div id="app">
@@ -29,7 +29,7 @@
                         <div class="row">
                             <ul>
                                 <li>lat: {{ newMarkerLat }}</li>
-                                <li>lng: {{ newMarkerLng }}</li>  
+                                <li>lng: {{ newMarkerLng }}</li>
                             </ul>
                         </div>
                         <div class="row">
@@ -55,7 +55,7 @@
                         </div>
                 </div>
 
-                
+
             </div>
             <div v-else>
                 <div id="register-form">
@@ -85,20 +85,20 @@
                         </div>
                 </div>
             </div>
-            
+
         </div>
         <!-- sidebar ends -->
 
     </div>
 
     <!-- load libraries -->
-    <script src="libs/js/vue.js"></script>
-    <script src="libs/js/vue-resource.js"></script>
+    <script src="libs/vue/vue.js"></script>
+    <script src="libs/vue/vue-resource.js"></script>
     <script src="libs/leaflet/leaflet.js"></script>
-    
+
     <!-- load leaflet -->
-    <script src="app/js/map.js"></script>
+    <script src="js/map.js"></script>
     <!-- load vue instance -->
-    <script src="app/js/app.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

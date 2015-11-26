@@ -1,10 +1,11 @@
 // Load base components
-import Vue from 'vue'
-import App from './components/App.vue'
-import Sidebar from './components/Sidebar.vue'
-import Main from './components/Main.vue'
+var Vue = require('../node_modules/vue')
+var App = require('./components/App.vue')
+var Sidebar = require('./components/Sidebar.vue')
+var Main = require('./components/Main.vue')
 
 // Load account components
+/*
 import Register from './components/Register.vue'
 import Login from './components/Login.vue'
 import UserInfo from './components/UserInfo.vue'
@@ -33,14 +34,15 @@ import FeatureInfo from './components/FeatureInfo.vue'
 import FeatureData from './components/FeatureData.vue'
 import FeatureMedia from './components/FeatureMedia.vue'
 import FeatureFile from './components/FeatureFile.vue'
+*/
 
 // Import other vue components
-import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
+var VueRouter = require('../node_modules/vue-router')
+var VueResource = require('../node_modules/vue-resource')
 Vue.use(VueResource)
 Vue.use(VueRouter)
 
-export var router = new VueRouter()
+var router = new VueRouter()
 
 // Set up routing
 router.map({

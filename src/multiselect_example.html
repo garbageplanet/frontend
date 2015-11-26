@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>vue multiselect</title>
-    <link rel="stylesheet" href="normalize.css">
-    <link rel="stylesheet" href="skeleton.css">
-    <link rel="stylesheet" href="custom.css">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/skeleton.css">
+    <link rel="stylesheet" href="styles/custom.css">
 
 </head>
 <body>
@@ -59,7 +59,7 @@
 
     </div>
 
-<script src="vue.js"></script>
+<script src="vue/vue.js"></script>
 <script>
 
     new Vue({
@@ -78,11 +78,11 @@
                 var i = this.form_selected_options.indexOf(item);
                 if(i > -1) {
                     this.form_selected_options.splice(i, 1);
-                } 
+                }
                 else {
                     this.form_selected_options.push(item);
                 }
-                
+
             },
 
             selectTag: function(e) {
@@ -92,7 +92,7 @@
                 if(i > -1) {
                     this.form_selected_tags.splice(i, 1);
                     this.selectable_tag_value = '';
-                } 
+                }
                 else {
                     this.form_selected_tags.push(this.selectable_tag_value);
                     this.selectable_tag_value = '';
@@ -106,7 +106,7 @@
                 var i = this.form_selected_tags.indexOf(item);
                 if(i > -1) {
                     this.form_selected_tags.splice(i, 1);
-                } 
+                }
 
             },
 
