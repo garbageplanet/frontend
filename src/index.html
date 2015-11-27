@@ -1,104 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>roska</title>
+    <title>Garbagepla.net</title>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/skeleton.css">
 
     <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
     <link rel="stylesheet" href="styles/custom.css">
 </head>
+
 <body>
-    <div id="app">
-        <!-- map -->
-        <div id="map">
-        </div>
-        <!-- map ends -->
 
-        <!-- sidebar -->
-        <div id="sidebar" v-if="addMarker">
+<div id="map"><!-- map? --></div>
 
-            <div v-if="userIsLoggedIn">
-                <div id="logout-form">
-                    <button type="button" class="u-full-width" v-on:click="logout">Logout (show login forms)</button>
-                </div>
+<div id="app"> <!-- sidebar --> </div>
 
-                <div id="add-trash-form">
-                        <div class="row">
-                            <ul>
-                                <li>lat: {{ newMarkerLat }}</li>
-                                <li>lng: {{ newMarkerLng }}</li>
-                            </ul>
-                        </div>
-                        <div class="row">
-                            <select type="amount" name="amount" class="u-full-width">
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </div>
-                        <div class="row">
-                            <select name="types" multiple class="u-full-width">
-                                <option value="bottles">bottles</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </div>
-                        <div class="row">
-                            <button v-on:click="createMarker($event)" class="u-full-width">Add new marker</button>
-                        </div>
-                </div>
+<!-- load libraries -->
+<script src="libs/vue/vue.js"></script>
+<script src="libs/vue/vue-resource.js"></script>
+<script src="libs/leaflet/leaflet.js"></script>
 
+<!-- load leaflet -->
+<script src="js/map.js"></script>
+<!-- load vue instance -->
+<script src="js/Main.js"></script>
 
-            </div>
-            <div v-else>
-                <div id="register-form">
-                        <div class="row">
-                            <input type="text" name="username" placeholder="username" class="u-full-width">
-                        </div>
-                        <div class="row">
-                            <input type="email" name="email" placeholder="email" class="u-full-width">
-                        </div>
-                        <div class="row">
-                            <input type="password" name="password" placeholder="password" class="u-full-width">
-                        </div>
-                        <div class="row">
-                            <button type="submit" class="u-full-width">Register</button>
-                        </div>
-                </div>
-
-                <div id="login-form">
-                        <div class="row">
-                            <input type="email" name="email" placeholder="email" class="u-full-width">
-                        </div>
-                        <div class="row">
-                            <input type="password" name="password" placeholder="password" class="u-full-width">
-                        </div>
-                        <div class="row">
-                            <button type="submit" v-on:click="login" class="u-full-width">Login (click it to show marker add)</button>
-                        </div>
-                </div>
-            </div>
-
-        </div>
-        <!-- sidebar ends -->
-
-    </div>
-
-    <!-- load libraries -->
-    <script src="libs/vue/vue.js"></script>
-    <script src="libs/vue/vue-resource.js"></script>
-    <script src="libs/leaflet/leaflet.js"></script>
-
-    <!-- load leaflet -->
-    <script src="js/map.js"></script>
-    <!-- load vue instance -->
-    <script src="js/app.js"></script>
 </body>
 </html>

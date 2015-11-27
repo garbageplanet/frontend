@@ -1,1 +1,33 @@
 <!-- This is the template component for the elements shared by all forms -->
+<style lang ="sass">
+  button,
+  input,
+  textarea,
+  .alert,
+  .btn,
+  .btn-group>.btn:last-child,
+  .btn-group> btn:first-child
+  .form-control,
+  .input-group-addon
+      border-radius: 0
+
+  .btn-fb
+      color: #FFF
+      background-color: #3B5998
+      border-color: #355088
+
+      &:hover,
+      &:focus,
+      &:active
+          color: #FFF
+          background-color: #1d2c4c
+          border-color: #0b111e
+</style>
+
+<script>
+
+</script>
+
+<<template>
+
+</template>

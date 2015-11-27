@@ -1,5 +1,5 @@
 // some basic leaflet functions
-        
+
 var map = L.map('map').setView([51.505, -0.09], 13);
 var attribution = 'Data &#169; <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> and Contributors';
 

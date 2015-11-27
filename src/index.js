@@ -1,5 +1,6 @@
 // Load base components
 var Vue = require('../node_modules/vue')
+var Vue = require('../node_modules/sass-loader')
 var App = require('./components/App.vue')
 var Sidebar = require('./components/Sidebar.vue')
 var Main = require('./components/Main.vue')

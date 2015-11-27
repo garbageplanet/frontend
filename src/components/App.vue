@@ -7,13 +7,13 @@ This is the main canvas for the map and the sidebar
 <template>
 
   <div id="map">
-    <router-view></router-view>
+    <router-view> <!-- map div --> </router-view>
   </div>
 
   <div id="sidebar">
-    <div class="sidebar-container">
-      <router-view></router-view>
-    </div>
+
+      <router-view> <!-- Sidebar div --> </router-view>
+
   </div>
 
 </template>

@@ -2,21 +2,21 @@
 frontend code for the web interface. This ui uses [vue.js](http://vuejs.org/).
 
 ## Getting started
-(assumes you have node.js setup on your machine)
-First install Webpack globally from command line
+The below assumes you have node.js setup on your machine.
+First install Webpack globally from command line:
 
 ```
 sudo npm -g webpack
 ```
 
 
-Change to your local repo folder, type
+Change to your local repo folder, type:
 
 ```
 npm install
 ```
 
-This will install the dependancies found inside package.json.
+This will install the dependancies found inside package.json:
 
 Then type
 
