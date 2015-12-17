@@ -16,12 +16,18 @@ Change to your local repo folder, type:
 npm install
 ```
 
-This will install the dependancies found inside package.json:
+This will install the dependencies found inside package.json.
 
-Then type
+Bundle the files with webpack by typing:
+
+```
+webpack
+```
+
+Then type:
 
 ```
 npm run dev
 ```
 
-And visit http://localhost:8080/ to see the elements served by Webpack. Click on the /src folder to load the current app
+And visit http://localhost:8080/ to see the elements served by Webpack.

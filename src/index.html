@@ -5,28 +5,47 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Garbagepla.net</title>
-    <link rel="stylesheet" href="styles/normalize.css">
-    <link rel="stylesheet" href="styles/skeleton.css">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="copyright" content="&copy; garbagepla.net"/>
+    <meta property="og:site_name" content="Garbagepla.net platform"/>
+    <meta property="fb:app_id" content="302184056577324" />
+    <meta property="og:type"   content="website" />
+    <meta property="og:url"    content="http://demo.garbagepla.net" />
+    <meta property="og:title"  content="Garbagepla.net a simple platform to identify, tag and clean garbage in your environment" />
+    <meta property="og:image"  content="http://demo.garbagepla.net/images/og_image.png" />
+    <meta property="og:description" content="Garbagepla.net is an online platform that aims at putting garbage back on the map. We have all seen the images of beaches littered with tons of plastic, the wales tangled in fishing nets, the birds that dided from eating plastic and the rivers covered in floating trash. With garbagepla.net, you will be able to join forces with others to act locally and keep your nature clean." />
 
-    <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="styles/custom.css">
+    <!-- lealfet & plugins -->
+    <link rel="stylesheet" href="libs/leaflet/css/leaflet.css"/>
+    <link rel="stylesheet" href="libs/leaflet/css/control-bar.css"/>
+    <link rel="stylesheet" href="libs/leaflet/css/sidebar.css"/>
+    <link rel="stylesheet" href="libs/leaflet/css/easy-button.css"/>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.7/leaflet.js"></script>
+    <script src="https://rawgit.com/dagjomar/Leaflet.ZoomCSS/master/src/leaflet.zoomcss.js"></script>
+    <script src="https://rawgit.com/Turbo87/leaflet-sidebar/master/src/L.Control.Sidebar.js"></script>
+    <script src="https://rawgit.com/CliffCloud/Leaflet.EasyButton/master/src/easy-button.js"></script>
+    <script src="https://rawgit.com/filipzava/leaflet-control-bar/master/src/L.Control.Bar.js"></script>
+
+    <!-- Bootstrap and Google stylehseets -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500,300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+    <!-- other stylesheets -->
+    <link rel="stylesheet" href="css/styles/trashbag.css">
+
 </head>
 
 <body>
 
-<div id="map"><!-- map? --></div>
-
-<div id="app"> <!-- sidebar --> </div>
+  <app></app>
 
 <!-- load libraries -->
 <script src="libs/vue/vue.js"></script>
-<script src="libs/vue/vue-resource.js"></script>
 <script src="libs/leaflet/leaflet.js"></script>
 
-<!-- load leaflet -->
-<script src="js/map.js"></script>
 <!-- load vue instance -->
-<script src="js/Main.js"></script>
+<script src="index.js"></script>
 
 </body>
 </html>

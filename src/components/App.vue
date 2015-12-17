@@ -1,19 +1,49 @@
 <!-- src/components/App.vue
 
-This is the main canvas for the map and the sidebar
+This is the main canvas for the map and the top, bottom and side panels.
 
 -->
 
+<style lang="sass">
+
+</style>
+
 <template>
 
-  <div id="map">
-    <router-view> <!-- map div --> </router-view>
-  </div>
+  <top-panel-view>
+  </top-panel-view>
 
-  <div id="sidebar">
+  <side-panel-view>
+  </side-panel-view>
 
-      <router-view> <!-- Sidebar div --> </router-view>
+  <bottom-panel-view>
+  </bottom-panel-view>
 
-  </div>
+  <map-view>
+  </map-view>
 
 </template>
+
+<script>
+
+var TopPanel = require('components/panels/TopPanel.vue')
+var SidePanel = require('components/panels/SidePanel.vue')
+var BottomPanel = require('components/panels/BottomPanel.vue')
+var Map = require('components/map/Map.vue')
+
+var App = new Vue({
+  el: 'app'
+})
+
+Vue.component('app', App)
+
+export default {
+  components: {
+    TopPanel,
+    SidePanel,
+    BottomPanel,
+    Map
+  }
+}
+
+</script>

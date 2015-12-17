@@ -1,0 +1,84 @@
+*
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 200
+
+=border-radius($radius)
+  -webkit-border-radius: $radius
+     -moz-border-radius: $radius
+      -ms-border-radius: $radius
+          border-radius: $radius
+*
+    +border-radius(0px !important)
+
+a
+  .fa
+    vertical-align: middle
+    text-decoration: none
+
+    /* Icons color shortcuts */
+    .green
+      color: limegreen
+
+    .red
+      color: orangered
+
+    .blue
+      color: dodgerblue
+
+    .yellow
+      color: yellow
+
+    .black
+      color: black
+
+    .white
+      color: white
+
+    .gray
+      color: lightgray
+
+    .darkgray
+      color: #464646
+
+    .seagreen
+      color: mediumseagreen
+
+    .orange
+      color: orange;
+
+.panel,
+.panel-group
+.panel-heading+.panel-collapse>.panel-body
+    border: none
+    box-shadow: none
+    -webkit-box-shadow: none
+
+#side-panel
+  z-index:10000
+  height: 100%
+  width: 400px
+  position: absolute
+  top: 0
+  right: 0
+  background-color: #fff
+  padding: 20px 20px 20px 20px
+
+#bottom-panel
+  z-index:10000
+  height: 50%
+  width: 100%
+  position: absolute
+  bottom: 0
+  right: 0
+  background-color: #fff
+  padding: 20px 20px 20px 20px
+
+#top-panel
+  z-index:10000
+  height: 50px
+  width: 100%
+  position: absolute
+  top: 0
+  right: 0
+  background-color: #fff
+  padding: 20px 20px 20px 20px

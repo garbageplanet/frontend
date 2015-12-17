@@ -1,144 +1,78 @@
 // Load base components
 var Vue = require('../node_modules/vue')
-var Vue = require('../node_modules/sass-loader')
 var App = require('./components/App.vue')
-var Sidebar = require('./components/Sidebar.vue')
-var Main = require('./components/Main.vue')
-
-// Load account components
-/*
-import Register from './components/Register.vue'
-import Login from './components/Login.vue'
-import UserInfo from './components/UserInfo.vue'
-import UserInfo from './components/ProjectInfo.vue'
-
-// Load map components
-import Map from './components/Map.vue'
-import MapToolbars from './components/MapToolbars.vue'
-
-// Load actions components
-import CreateFeature from './components/CreateFeature.vue'
-import CreateCleaning from './components/CreateCleaning.vue'
-import CreateGarbage from './components/CreateGarbage.vue'
-import CreatePolyline from './components/CreatePolyline.vue'
-import CreatePolygon from './components/CreatePolygon.vue'
-import CreateLive from './components/CreateLive.vue'
-import CreateTile from './components/CreateTile.vue'
-
-// Load forms and modules
-import FormBase from './components/FormBase.vue'
-import FormSocial from './components/FormSocial.vue'
-import FormUpload from './components/FormUpload.vue'
-
-//Load markers and features (tiles, polygon, polylines) info modules
-import FeatureInfo from './components/FeatureInfo.vue'
-import FeatureData from './components/FeatureData.vue'
-import FeatureMedia from './components/FeatureMedia.vue'
-import FeatureFile from './components/FeatureFile.vue'
-*/
+var BottomPanel = require('./components/panels/BottomPanel.vue')
+var SidePanel = require('./components/panels/SidePanel.vue')
+var TopPanel = require('./components/panels/TopPanel.vue')
+var Map = require('./components/map/Map.vue')
+var CreateFeature = require('./components/forms/CreateFeature.vue')
 
 // Import other vue components
 var VueRouter = require('../node_modules/vue-router')
 var VueResource = require('../node_modules/vue-resource')
+// var VueStrap = require( '../node_modules/vue-strap')
+// var VueDateTime = require( '../node_modules/vue-datetime-picker')
+// var VueValidator = require( '../node_modules/vue-validator')
+// var Vuei18n = require( '../../node_modules/vue-i18-plugin')
+
 Vue.use(VueResource)
 Vue.use(VueRouter)
+Vue.use(VueAlert)
+Vue.use(VueDateTime)
+Vue.use(VueValidator)
+Vue.use(Vuei18n)
 
 var router = new VueRouter()
 
 // Set up routing
 router.map({
-  'Sidebar': {
-    component: Sidebar,
-    subRoutes: {
-
-      '/Main': {
-        component: Main,
+    '/panels/top-panel': {
+        component: TopPanel,
             subRoutes: {
-              '/UserInfo': {
-                component: UserInfo,
-              },
-              '/Login': {
-                component: Login,
-              },
-              '/UserInfo': {
-                component: UserInfo,
-              },
-              '/Register': {
-                component: Register,
-              },
-              '/ProjectInfo': {
-                component: UserInfo,
-              },
-            }
-      },
 
-      '/FormBase': {
-        component: FormBase,
-            subRoutes: {
-              '/FormUpload': {
-                component: FormUpload,
-              },
-              '/FormSocial': {
-                component: FormSocial,
-              }
-            }
-      },
+                'menu': {
+                    component: Menu,
+                        subRoutes: {
 
-      '/CreateFeature': {
-        component: CreateFeature,
-          subRoutes: {
-            '/CreateCleaning': {
-              component: CreateCleaning,
-            },
-            '/CreateGarbage': {
-              component: CreateGarbage,
-            },
-            '/CreateTile': {
-              component: CreateTile,
-            },
-            '/CreateLive': {
-              component: CreateLive,
-            },
-            '/CreatePolyline': {
-              component: CreatePolyline,
-            },
-            '/CreatePolygon': {
-              component: CreatePolygon,
-            }
-          }
-      },
+                        'map-tools': {
+                        component: MapTools,
+                        },
 
-      '/FeatureInfo': {
-        component: FeatureInfo,
-            subRoutes: {
-              '/FeatureData': {
-                component: FeatureData,
-              },
-              '/FeatureMedia': {
-                component: FeatureMedia,
-              },
-              '/FeatureFile': {
-                component: FeatureFile,
-              }
-            }
-        },
-      }
+                        'search-tools': {
+                        component: SearchView,
+                        },
+
+                        'user-tools': {
+                        component: UserTools,
+                        }
+                    }
+                },
+
+                '/Title': {
+                component: Title,
+                }
+        }
     },
 
-  '/map': {
+  'side-panel': {
+    component: SidePanel,
+    subRoutes: { }
+  },
+
+  'bottom-panel': {
+    component: BottomPanel,
+    subRoutes: { }
+  },
+
+  'map': {
     component: Map,
-    subRoutes: {
-      '/MapToolbars': {
-        component: MapToolbars
-      }
-    }
   }
 })
 
 // Redirect to the main menu by default
 router.redirect({
-  '*': '/Main'
+  '*': '/Map'
 })
 
 // Target div
-router.start(App, '#app')
+router.start(App, 'body')
