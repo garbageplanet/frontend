@@ -31,3 +31,6 @@ npm run dev
 ```
 
 And visit http://localhost:8080/ to see the elements served by Webpack.
+
+## Todo
+Wepack now bundles everything without errors bu the content is not served correctly yet.
