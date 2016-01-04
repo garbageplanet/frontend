@@ -1,0 +1,71 @@
+<link class="sidebar-style" rel="stylesheet" href="css/L.control.side.bar.css">
+<link class="sidebar-style" rel="stylesheet" href="css/sidebar.css">
+<link class="sidebar-style" rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+<link class="sidebar-style" rel="stylesheet" href="css/bootstrap-select.min.css">
+<link class="sidebar-style" rel="stylesheet" href="css/bootstrap-tagsinput.css">
+
+<!-- Import base components -->
+<link rel="import" href="forms/form_base.html">
+<link rel="import" href="forms/form_marker.html">
+<link rel="import" href="forms/form_social.html">
+
+<!-- Import specific components -->
+<link rel="import" href="forms/garbage/form_cleaning.html">
+<link rel="import" href="forms/garbage/form_garbage.html">
+<link rel="import" href="forms/garbage/form_live.html">
+<link rel="import" href="forms/garbage/form_polyline.html">
+<link rel="import" href="forms/garbage/form_tile.html">
+
+<div id="sidebar" class="sidebar-container"></div>
+
+<script>
+  
+// import the stylesheets of this document to the main document
+var sideDoc = document.currentScript.ownerDocument;
+var sidebarStyles = sideDoc.querySelector(".sidebar-style"); //querySelectorAll doesn't work???
+document.head.appendChild(sidebarStyles.cloneNode(true));
+
+document.body.appendChild(sideDoc.querySelector("div").cloneNode(true));
+
+
+    // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
+    $('.sidebar-link').click(function(e) {
+        e.preventDefault();
+        $(this.hash).show().siblings().hide();
+        $('#sidebar').scrollTop = 0;
+       
+    });
+  
+  
+document.getElementsByClassName('sidebar-link').onchange = function() {
+    var elem = (typeof this.selectedIndex === "undefined" ? window.event.srcElement : this);
+    var value = elem.value || elem.options[elem.selectedIndex].value;
+    alert(value);
+}
+  
+switch (new Date().getDay()) {
+    case 0:
+        day = "Sunday";
+        break;
+    case 1:
+        day = "Monday";
+        break;
+    case 2:
+        day = "Tuesday";
+        break;
+    case 3:
+        day = "Wednesday";
+        break;
+    case 4:
+        day = "Thursday";
+        break;
+    case 5:
+        day = "Friday";
+        break;
+    case 6:
+        day = "Saturday";
+        break;
+}  
+
+  
+</script>

@@ -1,0 +1,156 @@
+<template>
+<div class="sidebar-content" id="create-marker-dialog">
+        <h2 class="actions-panel">
+          Action for this location
+        </h2>
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapse1">Place a garbage marker
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">Anybody can anonymously mark trash on the map. Markers can only be placed between zoom level 15 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 15 now</a>). When editing any of the marker type, all the changes are tracked and publicly visible (like in Wikipedia) in the marker information panel.
+                <p></p>
+                    <div class="form-group form-group-lg">
+                        <div>
+                            <a href="#create-garbage-dialog"
+                               class="sidebar-link btn btn-info btn-lg btn-block"
+                               style="color:white"
+                               type="submit">
+                                <span class="icon-trashbag"></span>
+                                Mark trash
+                            </a>
+                        </div>
+                    </div>
+              </div>
+          </div>
+        </div><!-- Garbage -->
+
+        <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse"
+                     data-parent="#accordion"
+                     href="#collapse2">Create a cleaning event
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body">A marker for a cleaning event is meant for a location where trash has already been identified. Users can choose whether to create a Facebook event simultaneously. <a class="sidebar-link" href="#user-login-dialog">Login</a> or <a class="sidebar-link" href="#create-account-dialog" >register</a> to create an event.
+                    <p></p>
+                        <div class="form-group form-group-lg">
+                            <div>
+                                <a href="#create-cleaning-dialog"
+                                   class="sidebar-link btn btn-info btn-lg btn-block"
+                                   style="color:white"
+                                   type="submit">
+                                    <span class="fa fa-calendar fa-white fa-fw"></span>
+                                    Create event
+                                </a>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+            </div><!-- Cleaning -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapse5">Activate a tile</a>
+            </h4>
+          </div>
+          <div id="collapse5" class="panel-collapse collapse">
+              <div class="panel-body">We use tiles to overlay a summary of the underlying data for a given area. Tiles can be seen as feeds for a given perimeter and their aggregated data can be accessed via our <a class="sidebar-link" href="#api">API</a>. Each tile feed displays images, comments, contributing users. Tiles that contain live events blink on the map. Tiles are only visible and accessible between zoom levels 10 and 15 (<a href="#" onclick="map.setZoom(10)">zoom to level 10 now</a>). Tiles can also be used to restrict actions on an area during games.
+                <p></p>
+                <div class="form-group form-group-lg">
+                    <div>
+                        <a href="#activate-tile-dialog"
+                           id="l-active-tile-btn"
+                           type="submit"
+                           style="color:white"
+                           class="sidebar-link btn btn-info btn-lg btn-block">
+                            <span class="fa fa-map fa-white fa-fw"></span>
+                                Activate tile
+                        </a>
+                    </div>
+                </div>
+             </div>
+          </div>
+        </div><!-- Tile -->
+
+          <div class="panel panel-default hidden-xs">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapse6">Highlight a coastal area</a>
+            </h4>
+          </div>
+          <div id="collapse6" class="panel-collapse collapse">
+              <div class="panel-body">We use wind and coastal configuration data to identify regions where marine litter accumulates on the shores. Our algoritms are, however, not as good as human eyes and you can use this tool to mark area on the map where you know there is always a lot of trash on the shorelines. Coastal highlights are visible and accessible between zoom levels 5 and 20 but you can only draw them at zoom level 17 or more (<a href="#" onclick="map.setZoom(17)">zoom to level 17 now</a>).
+                <p></p>
+                <div class="form-group form-group-lg">
+                    <div>
+                        <a href="#create-highlight-dialog"
+                           type="submit"
+                           style="color:white"
+                           class="sidebar-link btn btn-info btn-lg btn-block ">
+                            <span class="fa fa-pencil fa-white fa-fw"></span>
+                                Highlight a shore
+                        </a>
+                    </div>
+                </div>
+             </div>
+          </div>
+        </div><!-- Coast -->
+
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapse8">Draw attention to a live event</a>
+            </h4>
+          </div>
+          <div id="collapse8" class="panel-collapse collapse">
+              <div class="panel-body">The live event feature allows users to quickly and easily draw attention to events, whether they are cleanings or something else, happening in real time. Once the live marker is enabled, a tweet is automatically emitted to our Twitter feed with a custom hashtag.
+                <p></p>
+                <div class="form-group form-group-lg">
+                    <div>
+                        <a href="#create-live-dialog"
+                           type="submit"
+                           style="color:white"
+                           class="sidebar-link btn btn-info btn-lg btn-block ">
+                            <span class="fa fa-play-circle fa-white fa-fw"></span>
+                                Add live event
+                        </a>
+                    </div>
+                </div>
+             </div>
+          </div>
+        </div><!-- Live event -->
+      </div>
+</div>
+</template>
+
+<script>
+
+  /*
+(function() {
+    var script;
+    if ( typeof window.sidebar.link === "clicked" ) {
+        div = document.createElement( "div" );
+        div.src = "path/to/form.html";
+        document.body.appendChild( div );
+    }
+}());
+*/
+  
+</script>

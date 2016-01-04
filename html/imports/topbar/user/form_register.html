@@ -1,0 +1,109 @@
+<div class="sidebar-content" id="create-account-dialog">
+  <div id="regisration-div">
+    <div>
+      <h2>
+        <span>
+          <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
+                 href="#menu-dialog">
+          </a>
+        </span>
+        Register a new account.
+      </h2>
+      <p class="lead">
+        Upon registration, you will be able to create cleaning events, attach images to markers and events as well as activate summarizing tiles and draw on the map.
+      </p>
+      <p>
+        By creating an account, you agree to our <a class="sidebar-link" href="#user-agreement">Terms of service</a> and
+        <a class="sidebar-link" href="#privacy-policy">Privacy Policy</a>. An email is required if you are registering a school or a group account. Using an email to register can also help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a> if you forget them.
+      </p>
+    </div>
+    <!-- Registration form -->
+    <form id="registration-form" class="form-group"
+          data-toggle="validator" 
+          role="form">
+      <div class="form-group form-group-lg">
+        <input type="text" 
+               name="name" 
+               id="register-name" 
+               class="form-control" 
+               placeholder="Username (min 4 characters)" 
+               required>
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group form-group-lg">
+        <input type="email" 
+               name="email" 
+               class="form-control" 
+               placeholder="Use a fake email for the demo" 
+               id="register-email">
+        <div class="help-block with-errors"></div>
+      </div>
+      <!--   <div class="form-group form-group-lg">
+                    <input type="text"
+                           name="association_name_field"
+                           class="form-control"
+                           placeholder="Group or association name (optional)"
+                           data-minlength="6"
+                           data-error="This name is too short"
+                           data-remote="/path/to/association/validator">
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group form-group-lg">
+                    <input type="text"
+                           name="school_name_field"
+                           class="form-control"
+                           data-minlength="6"
+                           data-error="This chosen name is too short"
+                           placeholder="School (optional)"
+                           data-remote="/path/to/school/validator">
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div id="country_typeahead" class="form-group form-group-lg">
+                    <input class="typeahead form-control"
+                           type="text"
+                           placeholder="Country (optional)">
+                    <div class="help-block with-errors"></div>
+                </div>-->
+      <div class="form-group form-group-lg">
+
+        <input id="register-password" type="password" class="form-control" placeholder="Password min 6 characters" name="password" required>
+        <div class="help-block with-errors"></div>
+
+        <!--    <div class="form-group form-group-lg">
+                        <input type="password"
+                               class="form-control"
+                               data-match="#inputPassword"
+                               data-match-error="The passwords you have entered do not match"
+                               placeholder="Confirm your password"
+                               data-error="Confirm your password"
+                               required>
+                      <div class="help-block with-errors"></div>-->
+      </div>
+
+      <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group btn-group-lg" role="group">
+          <button href="#" type="submit" class="btn btn-success" onClick="">
+            <i class="fa fa-check fa-fw"></i><span class="hidden-xs">Register</span>
+          </button>
+        </div>
+        <div class="btn-group btn-group-lg" role="group">
+          <button class="btn btn-danger btn-cancel">
+            <i class="fa fa-times fa-fw"></i><span class="hidden-xs hidden-sm">Cancel</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- Alerts -->
+  <br>
+  <div class="alert alert-danger alert-registration-failure hidden" role="alert">
+    <span class="fa fa-fw fa-exclamation"></span>
+    <span class="sr-only">Error:</span> There was a problem, the registration failed. Please try again.</div>
+  <div class="alert alert-success alert-registration-success hidden" role="alert" id="registered-user">
+    <span class="fa fa-fw fa-check"></span>
+    <span class="sr-only">Success:</span> You have succesfully registered!</div>
+  <div class="alert alert-success alert-registration-success-email hidden" role="alert">
+    <span class="fa fa-fw fa-check"></span>
+    <span class="sr-only">Success:</span> You have succesfully registered! An email has been sent to you with instructions on how to activate the account.</div>
+
+</div>

@@ -1,0 +1,111 @@
+<template>
+<div class="sidebar-content" id="create-garbage-dialog">
+  
+    <form id="create-garbage-form" role="form" class="l-form-1">
+      <input type="hidden" name="lat" class="l-lat">
+      <input type="hidden" name="lng" class="l-lng">
+      <div class="dropdown garbage-amount-qualitative">
+        <select id="select-trash-amount" class="selectpicker amount-of-trash" name="trash-amount-select[]" title="How much trash is there?" data-width="100%">
+          <option data-content="<span><i class='icon-trashbag fa-icon-green'>
+                                                  </i> Here and there</span>" value="0">
+          </option>
+          <option data-content="<span><i class='icon-trashbag fa-icon-blue' >
+                                                  </i> A little too much</span>" value="1">
+          </option>
+          <option data-content="<span><i class='icon-trashbag fa-icon-yellow'>
+                                                  </i> A whole lot</span>" value="2">
+          </option>
+          <option data-content="<span><i class='icon-trashbag fa-icon-orange'>
+                                                  </i> Industrial quantities</span>" value="3">
+          </option>
+          <option data-content="<span><i class='icon-trashbag fa-icon-red'>
+                                                  </i> Nightmare</span>" value="4">
+          </option>
+        </select>
+      </div>
+      <div>
+        <input type="range" name="points" min="0" max="10">
+      </div>
+      <div class="checkbox form-group-lg garbage-check">
+        <label>
+          <input type="checkbox">Give a quantitative estimate
+        </label>
+        <br>
+      </div>
+      <div class="garbage-amount-quantitative" style="display: none">
+
+        <br>
+        <div class="form-group-lg" style="width:100%">
+          <input class="form-control" id="" type="number" min="1" step="1" placeholder="Garbage pieces per square meter">
+          </input>
+        </div>
+        <br>
+        <div class="form-group-lg" style="width:100%">
+          <input class="form-control" id="" type="number" min="1" step="1" placeholder="Surface covered in square meters">
+          </input>
+        </div>
+      </div>
+      <br>
+      <div class="dropdown">
+        <select class="selectpicker type-of-trash" name="garbage-type-select[]" title="What kind of trash?" multiple data-selected-text-format="count" data-width="100%" multiple>
+          <option value="glass">Glass</option>
+          <option value="bottles">Glass bottles</option>
+          <option value="metal">Metal</option>
+          <option value="alu">Aluminium</option>
+          <option value="plastic">Plastic</option>
+          <option value="pet">PET bottles</option>
+          <option value="poly">Polypropylene and polystyrene</option>
+          <option value="wood">Plywood, treated/painted wood</option>
+          <option value="chemicals">Chemicals</option>
+          <option value="household">Household garbage</option>
+          <option value="industrial">Industrial wastes</option>
+          <option value="gas">Gasoline, petroleum</option>
+          <option value="crude">Crude oil</option>
+          <option value="party">Party leftovers</option>
+          <option value="fastfood">Fastfood garbage</option>
+          <option value="vehicle">Vehicles dump</option>
+          <option value="ruins">Industrial ruins</option>
+        </select>
+      </div>
+      <br>
+      <div class="input-group input-group-lg">
+        <!-- Uploader part need to follow the following strict format -->
+        <span class="input-group-btn">
+                              <button class="btn btn-default trigger-image-uploader"
+                                      type="button">
+                              <span class="fa fa-fw fa-file-image-o"></span><span class="hidden-xs">Upload</span></button>
+        <input class="l-image-uploader" type="file" name="image" style="display:none;">
+        </span>
+        <input type="text" class="form-control l-image-hidden-value" placeholder="Upload an image">
+      </div>
+      <br>
+      <div class="input-group-lg input-block-level">
+        <input type="text" 
+               value="" 
+               data-role="tagsinput" 
+               placeholder="Add tags to the marker" />
+      </div>
+    </form>
+
+</div>
+</template>
+
+<script>
+
+$(".garbage-check").on("change", function(){
+
+   $(".garbage-amount-quantitative").toggle();
+
+});
+
+$(document).ready(function() {
+
+   $('.selectpicker').selectpicker({
+
+               style: 'btn-lg btn-default text-center',
+
+               size: 5})
+
+});
+  
+</script>

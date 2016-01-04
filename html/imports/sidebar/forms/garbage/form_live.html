@@ -1,0 +1,74 @@
+<div class="sidebar-content" id="create-live-dialog">
+        <div>
+            <div>
+                <h2>
+                    <span>
+                     <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
+                           href="#create-marker-dialog">
+                        </a>
+                    </span>
+                    Raise awareness about an event.
+                </h2>
+                <div id="set-current-location">
+                    <p class="lead">
+                    You are <span>adding</span> a live event near <span>lat_val</span><span>hemisphere</span>, <span>lng_val</span><span>east_west</span> close to <span>nearest_location</span>.
+                    </p>
+                </div>
+                <div class="alert alert-warning" role="alert">
+                    <span class="fa fa-fw fa-exclamation"></span>
+                    <span class="sr-only">Note:</span>
+                      This tool is not yet available.
+                </div>
+                <div>
+                    <br>
+                    <form id="live-form"
+                          class="form-group"
+                          data-toggle="validator"
+                          role="form">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon">#</span>
+                            <input type="text"
+                                   name="live_hashtag_name"
+                                   class="form-control"
+                                   placeholder="Use a custom hashtag"
+                                   data-minlength="4"
+                                   data-error="The chosen hashtag contains illegal characters"
+                                   required
+                                   data-remote="/path/to/live/hashtag/validator">
+                        </div>
+                            <div class="help-block with-errors"></div>
+                        <br>
+                        <div id="live-note" class="form-group-lg" style="width:100%">
+                            <textarea class="form-control"
+                          rows="3"
+                          id="live-comment"
+                          placeholder="Add a note about this live event"></textarea>
+                        </div>
+                        <br>
+                        <div class="btn-group btn-group-justified"
+                             role="group" >
+                            <div class="btn-group btn-group-lg btn-save btn-save-live" role="group">
+                                <button href="#"
+                                        type="button"
+                                        class="btn btn-success"
+                                        onClick="">
+                                <i class="fa fa-check fa-fw"></i><span class="hidden-xs">Save</span>
+                                </button>
+                            </div>
+                            <div class="btn-group btn-group-lg" role="group">
+                                <button class="btn btn-danger btn-cancel btn-delete-marker">
+                                <i class="fa fa-times fa-fw"></i><span class="hidden-xs hidden-sm">Cancel</span>
+                                </button>
+                            </div>
+                        </div>
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox"> The event has now ended.
+                            </label>
+                          </div>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>

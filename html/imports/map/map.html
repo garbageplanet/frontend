@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="css/leaflet.css">
+<link rel="stylesheet" href="css/easy-button.css">
+<link rel="stylesheet" href="css/map.css">
+
+<div id="map" class="map-container">
+</div>
+
+<script>
+  
+// import the stylesheets of this document to the main document
+var mapDoc = document.currentScript.ownerDocument;
+var mapStyles = mapDoc.querySelector('link[rel="stylesheet"]');
+document.head.appendChild(mapStyles.cloneNode(true));
+  
+document.body.appendChild(mapDoc.querySelector("div").cloneNode(true));
+
+  
+// Create the map object
+var map = L.map('map', { zoomControl: false, attributionControl: false });
+
+// Locate the user and set the map position
+map.locate({
+    setView: true,
+    maxZoom: 12
+});
+
+// Set the marker var else some other scripts complain
+var marker = new L.Marker();
+
+// Default marker creation
+var genericMarker = L.divIcon({
+    className: 'map-marker marker-color-gray marker-generic',
+    iconSize: [30,30],
+    html:'<i class="fa fa-fw"></i>'
+});
+
+var garbageMarker = L.divIcon({
+    className: 'map-marker marker-garbage',
+    iconSize: [30,30],
+    html:'<i class="fa fa-fw"></i>'
+});
+
+//Remove unsaved markers with class 'marker-generic' after a timeout
+setTimeout(function() {
+  $('div.marker-generic').remove();
+}, 200000);
+</script>
+
+<script type="text/javascript" src="js/get_markers.js"></script>
+<script type="text/javascript" src="js/map_actions.js"></script>
+<script type="text/javascript" src="js/map_controls.js"></script>
+<script type="text/javascript" src="js/map_functions.js"></script>

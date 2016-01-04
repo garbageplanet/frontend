@@ -1,0 +1,115 @@
+<template>
+<div class="sidebar-content" id="create-cleaning-dialog">
+  
+  <form id="create-cleaning-form" 
+        role="form" 
+        data-toggle="validator">
+    <div class="container from-group" 
+         style="width:100%">
+      <div class="row">
+        <div class="form-group">
+          <div class='input-group date' 
+               id='event-date-time-picker'>
+            <input type='text' class="form-control" />
+            <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="checkbox form-group-lg current-check">
+      <label>
+        <input type="checkbox">Make this event recurrent
+      </label>
+      <br>
+    </div>
+    <div class="dropdown cleaning-recurrent" style="display:none">
+      <select id="cleaning-recurrent-select" 
+              class="selectpicker" 
+              name="[]" 
+              title="Select an option" 
+              data-width="100%">
+        <option value="0">Daily
+        </option>
+        <option value="1">Weekly
+        </option>
+        <option value="2">Monthly
+        </option>
+        <option value="3">Yearly
+        </option>
+
+      </select>
+    </div>
+    <br>
+    <div id="cleaning-note" 
+         class="form-group-lg" 
+         style="width:100%">
+      <textarea class="form-control" 
+                rows="3" id="cleaning-comment" 
+                placeholder="Add a note about this cleaning event"></textarea>
+    </div>
+    <br>
+    <div class="input-group input-group-lg">
+      <!-- Uploader part need to follow the following strict format -->
+      <span class="input-group-btn">
+                      <button class="btn btn-default trigger-image-uploader"
+                              type="button">
+                        <span class="fa fa-fw fa-file-image-o"></span>
+                        <span class="hidden-xs">Upload</span>
+                      </button>
+      <input class="l-image-uploader" 
+             type="file" 
+             name="image" 
+             style="display:none;">
+      </span>
+      <input type="text" class="form-control" placeholder="Upload an image">
+    </div>
+    <br>
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">@</span>
+      <input type="text" 
+             class="form-control" 
+             placeholder="Tweet from this account on save" 
+             data-error="The chosen hashtag is either too short or already in use" 
+             data-remote="/path/to/twitter/validator">
+    </div>
+    <div class="help-block with-errors"></div>
+    <br>
+    <div class="input-group-lg input-block-level" style="width:100%">
+      <input type="text" 
+             data-role="tagsinput" 
+             placeholder="Add tags for this event" />
+    </div>
+  </form>
+  
+</div>
+</template>
+
+<script>
+$(".current-check").on("change", function(){
+
+   $(".cleaning-recurrent").toggle();
+
+});
+
+$(document).ready(function() {
+
+   $(function () {
+
+       $('#event-date-time-picker').datetimepicker();
+
+   });
+
+});
+
+$(document).ready(function() {
+
+   $('.selectpicker').selectpicker({
+
+               style: 'btn-lg btn-default text-center',
+
+               size: 5})
+
+});
+</script>

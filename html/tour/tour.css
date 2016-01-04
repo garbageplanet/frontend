@@ -1,0 +1,47 @@
+/* Style the tour */
+.popover {
+  background: rgba(86,86,86,0.9);
+  border-color: rgba(86,86,86,0.9);
+}
+
+.popover.right .arrow:after {
+ border-right-color: rgba(86,86,86,0.8);
+}
+
+.popover.left .arrow:after {
+ border-left-color: rgba(86,86,86,0.8);
+}
+
+/*Custom bootstrap styles*/
+.btn-fb:hover, .btn-fb:focus, .btn-fb:active, .btn-fb {
+ color: #FFF;
+ background-color: #1d2c4c;
+ border-color: #0b111e;
+ }
+
+.btn-fb {
+ color: #FFF;
+ background-color: #3B5998;
+ border-color: #355088;
+ }
+
+.popover.bottom .arrow:after {
+ border-bottom-color: rgba(86,86,86,0.8);
+}
+
+.popover.top .arrow:after {
+ border-top-color: rgba(86,86,86,0.8);
+}
+
+.popover-content { color: #FFF;
+          font-family: 'Work Sans', sans-serif;
+          font-weight: 400
+          /*text-shadow: 1px 1px #000;*/
+}
+
+.popover-navigation { position: absolute;
+           bottom: -4px;
+           right: -8px;
+}
+
+.btn-tour {color: #FFF;}

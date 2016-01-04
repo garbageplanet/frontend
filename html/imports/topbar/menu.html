@@ -1,0 +1,87 @@
+
+<template>
+<div class="sidebar-content" id="menu-dialog">
+  
+  <h2> 
+    Garbagepla.net
+  </h2>
+  
+  <div class="form-group form-group-lg">
+    <a href="#create-account-dialog" 
+       class="sidebar-link btn btn-default btn-lg btn-block" 
+       type="submit" 
+       style="color:black">
+      <span class="fa fa-user fa-fw"></span> Register
+    </a>
+    <br>
+    <a href="#user-login-dialog" 
+       class="sidebar-link btn btn-default btn-lg btn-block" 
+       type="submit" 
+       style="color:black">
+      <span class="fa fa-key fa-fw"></span> Login
+    </a>
+    <br>
+    <a href="#glome-dialog" 
+       class="sidebar-link btn btn-default btn-lg btn-block" 
+       type="submit" 
+       style="color:black">
+      <span class="fa fa-google fa-fw"></span> Go Glome!
+    </a>
+    <br>
+    <div class="fb-like" 
+         data-href="http://demo.garbagepla.net" 
+         data-width="150" 
+         data-layout="button_count" 
+         data-action="like" 
+         data-show-faces="false" 
+         data-share="true">
+    </div>
+    
+    <div style="float:left; padding-right:5px;">
+      <a class="twitter-share-button" 
+         href="http://demo.garbagepla.net" 
+         data-size="small" 
+         data-url="http://demo.garbagepla.net" 
+         data-count-url="http://demo.garbagepla.net" 
+         data-via="garbageplanet_" 
+         data-text="Garbagepla.net - putting garbage back on the map" 
+         data-hashtags="environment,garbage,cleantech">
+          Tweet
+      </a>
+    </div>
+
+  </div>
+  
+  <div>
+    <p>
+      Visit our <a href="http://www.garbagepla.net" target="_blank">homepage</a> for more informations on the project.
+    </p>
+  </div>
+  
+  <div>
+    
+    <h2> 
+      Credits
+    </h2>
+    
+    <div>
+      <p class="lead">Please refer to each component source files and repositories for license information.
+        <img src="images/logo.png" 
+             style='float: right;' 
+             alt="The garbagepla.net logo" 
+             width="100" 
+             height="100">
+      </p>
+    </div>
+    
+    <div class="credit-list">
+      <a href="{{ package_url }}" target="_blank" >{{ package_name }}</a> by 
+      <a href="{{author_url}}" target="_blank" >{{ author_name }}</a>  ({{ license }})
+    </div>
+
+  </div>
+</div>
+</template>
+
+<script>
+</script>

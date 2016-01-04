@@ -1,0 +1,41 @@
+/* Override L.Sidebar styles */
+.leaflet-sidebar {
+ padding: 0px;
+}
+
+.leaflet-sidebar .close {
+  right: 10px;
+  top: 10px;
+ }
+
+/* Style the menu link in the sidebar */
+a.menu-backlink {
+  color: lightgray;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+a.menu-backlink:hover {
+  color: dimgrey;
+  text-decoration: none;
+}
+.tt-menu {background-color: #fff}
+  
+/* Change the icons in the collapsible panels */
+.panel-title > a:before {
+  content:"\2193";
+  padding-right: 5px;
+}
+.panel-title > a.collapsed:before {
+  content:"\2192";
+}
+
+.panel-default > .panel-heading {
+ background-color: rgba(255,255,255,0);
+}
+
+.panel, .panel-group .panel-heading+.panel-collapse>.panel-body {
+  border: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}

@@ -1,0 +1,94 @@
+body { height: 100%;
+   margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+   }
+
+.map-container { 
+  bottom:0;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+
+h1,h2,h3,h4, .lead, p, input, textarea, select, button {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 200
+}
+
+/* Icons color shortcuts */
+.fa-icon-green {
+  color: limegreen;
+}
+.fa-icon-red {
+  color: orangered;
+}
+.fa-icon-blue {
+  color: dodgerblue;
+}
+.fa-icon-yellow {
+  color: yellow;
+}
+.fa-icon-black {
+  color: black;
+}
+.fa-icon-white {
+  color: white;
+}
+.fa-icon-gray {
+  color: lightgray;
+}
+.fa-icon-darkgray {
+  color: #464646;
+}
+.fa-icon-seagreen {
+  color: mediumseagreen;
+}
+.fa-icon-orange {
+  color: orange;
+}
+
+
+/* Square buttons and alerts */
+.btn {border-radius: 0;}
+.btn-group>.btn:last-child,
+.btn-group> btn:first-child {
+  border-radius: 0;
+  border-radius: 0;
+}
+
+.alert {border-radius: 0;}
+
+input {
+ border-radius: 0 !important;
+}
+button {
+ border-radius: 0 !important;
+}
+.from-control {
+ border-radius: 0 !important;
+}
+.input-group-addon {
+ border-radius: 0 !important;
+}
+textarea {
+ border-radius: 0 !important;
+}
+
+/*Custom bootstrap styles*/
+.btn-fb:hover, .btn-fb:focus, .btn-fb:active, .btn-fb {
+ color: #FFF;
+ background-color: #1d2c4c;
+ border-color: #0b111e;
+ }
+
+.btn-fb {
+ color: #FFF;
+ background-color: #3B5998;
+ border-color: #355088;
+ }
+
+.bootstrap-tagsinput {
+    width: 100% !important;
+    border-radius: 0px !important;
+}

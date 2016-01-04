@@ -1,0 +1,170 @@
+<template>
+
+<div id="form-header">
+  <h2>
+    <span>
+        <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
+           href="#create-marker-dialog">
+        </a>
+    </span>
+    <span>
+      {{ %trsl form_title }}
+    </span>
+  </h2>
+  <div id="current-location">
+    <p class="lead">
+      {{ %trsl You are }} <span>{{ %trsl creating }} </span> {{ %trsl an event }} {{ %trsl near }} <span>lat_val</span><span>NS</span>, <span>lng_val</span><span>EW</span>.
+    </p>
+  </div>
+</div>
+  
+  
+   <!-- import forms here -->
+   <link rel="import" href="garbage/form_cleaning.html">
+  <link rel="import" href="garbage/form_garbage.html">
+  <link rel="import" href="garbage/form_live.html">
+  <link rel="import" href="garbage/form_marker.html">
+  <link rel="import" href="garbage/form_polyline.html">
+  <link rel="import" href="garbage/form_tile.html">
+  
+  
+<div id="form-footer">
+  <div class="btn-group btn-group-justified" role="group">
+    <div class="btn-group btn-group-lg" role="group">
+      <button type="submit" class="btn btn-success btn-save btn-save-garbage">
+        <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
+      </button>
+    </div>
+    <div class="btn-group btn-group-lg" role="group">
+      <button type="button" class="btn btn-danger btn-cancel btn-delete-marker" style="text-overflow:ellipsis">
+        <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
+      </button>
+    </div>
+  </div>
+</div>
+   
+</template>
+
+<script>
+window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw';
+$(function () {
+	$('.l-form-1').on( 'submit', function (event) {
+		var that = this;
+		event.preventDefault();
+		var typeOfTrash = [];
+		var amoutOfTrash;
+		var lat;
+		var lng;
+		var image_url;
+		$(this).find('.selectpicker.type-of-trash option:selected').each(function(index, value) {
+			typeOfTrash.push($(value).val());
+		})
+
+		$(this).find('.selectpicker.amount-of-trash option:selected').each(function (index, value) {
+			amoutOfTrash = $(value).val();
+		})
+		image_url = $(this).find('.l-image-hidden-value').val();
+		lat = $(this).find('.l-lat').val();
+		lng = $(this).find('.l-lng').val();
+
+
+		console.log('lat', lat);
+		console.log('lng', lng);
+		console.log('typeof trash', typeOfTrash);
+		console.log('amoutof trash', amoutOfTrash);
+		console.log('image_url', image_url);
+
+
+		setTimeout(function () {
+			var useToken = localStorage["token"] || window.token;
+			$.ajax({
+				url: 'http://api.garbagepla.net/api/trashes',
+				headers: {"Authorization": "Bearer" + useToken},
+				data: {
+				 	'lat': lat,
+			        'lng': lng,
+			        'amount': amoutOfTrash,
+			        'types': typeOfTrash.join(),
+			        'image_url': image_url
+			    },
+			    method: 'post',
+			    success: function (data) {
+			    	console.log('suc data', data);
+			    	alert('Marker saved successfully!');
+			    	if (amoutOfTrash > 3) {
+			    		alert('NOTE!!! According to the amount of trash, your request also sent to City of Helsinki!');
+			    	};
+                    sidebar.hide('slow');
+
+			    },
+			    error: function (err) {
+			    	console.log('err', err);
+			    	alert('Please register and login to save markers', err);
+                    sidebar.hide();
+                    map.removeLayer(marker);
+			    }
+			})
+		}, 100);
+
+
+	})
+});
+
+
+$('#button-save-tile').click(function () {
+	var ne_lat = Number($('#activate-tile-dialog').find('.tile-ne-lat').text());
+	var ne_lng = Number($('#activate-tile-dialog').find('.tile-ne-lng').text());
+	var sw_lat = Number($('#activate-tile-dialog').find('.tile-sw-lat').text());
+	var sw_lng = Number($('#activate-tile-dialog').find('.tile-sw-lng').text());
+	var tile_name = $('#l-tile-name').val();
+	console.log('ne_lat',ne_lat);
+	console.log('ne_lng',ne_lng);
+	console.log('sw_lat',sw_lat);
+	console.log('sw_lng', sw_lng);
+	console.log('tile name', tile_name);
+	var useToken = localStorage["token"] || window.token;
+	$.ajax({
+		url: 'http://api.garbagepla.net/api/monitoringtiles',
+		headers: {"Authorization": "Bearer " + useToken},
+		data: {
+			'name': tile_name,
+		 	'ne_lat': ne_lat,
+	        'ne_lng': ne_lng,
+	        'sw_lat': sw_lat,
+	        'sw_lng': sw_lng
+	    },
+	    method: 'post',
+	    success: function (data) {
+	    	console.log('suc data', data);
+	    	alert('Tile saved successfully!');
+	    	window.rectangle.editing.disable();
+            sidebar.hide('slow');
+
+	    },
+	    error: function (err) {
+	    	console.log('err', err);
+	    	alert('Please register to save markers', err);
+            sidebar.hide();
+	    }
+	})
+})
+
+// Upload image
+
+$(function () {
+	$('.l-image-uploader').fileupload({
+        headers: {"Authorization": "Client-ID 24642f1bed0f5a2"},
+        url: "https://api.imgur.com/3/image",
+        dataType: 'json',
+        done: function (e, data) {
+            $(e.target).parent().next().val(data.result.data.link);
+        }
+    });
+
+	$('.trigger-image-uploader').click(function () {
+		$(this).next().trigger('click');
+	});
+});
+
+
+</script>

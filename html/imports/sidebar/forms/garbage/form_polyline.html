@@ -1,0 +1,152 @@
+<div class="sidebar-content" id="create-highlight-dialog">
+      <h2>
+        <span>
+           <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
+              href="#create-marker-dialog">
+            </a>
+        </span>
+          Highlight coastal areas that accumulate garbage</h2>
+                <div id="set-current-location" class="coastal-tour">
+                    <p class="lead">
+                    You are <span>highlighting</span> a coastal area near <span>lat_val</span><span>hemisphere</span>, <span>lng_val</span><span>east_west</span> close to <span>nearest_location</span>.
+                    </p>
+                </div>
+
+                <div class="alert alert-warning" role="alert">
+                <span class="fa fa-fw fa-exclamation"></span>
+                <span class="sr-only">Note:</span>
+                  This tool is not yet available.
+                </div>
+        
+        <p> Click on the <em>polyline</em> icon on the left to manually draw a highligthing line  on the map. You can cancel drawing at any time by pressing <kbd>Esc</kbd>. Alternatively, you can upload a GeoJSON <a href="http://geojson.org/geojson-spec.html#multilinestring" target="_blank">polyline</a>. You can even link to a <a href="http://mapserver.org/ogc/wms_server.html" target="_blank">WMS resource</a> in order to create the highlight.  After you finished drawing or uploading the file for the polyline, save it with the button below.</p>
+            <br>
+                     <form id="create-highlight-form" role="form">
+                    <div class="dropdown" >
+                        <select id="coastal-trash-amount"
+                                class="selectpicker"
+                                name="coastal-trash-amount-select[]"
+                                title="How much trash is there?"
+                                data-width="100%">
+                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-green'>
+                                                  </i> Here and there</span>"
+                                    value="0"></option>
+                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-blue'>
+                                                  </i> A little too much</span>"
+                                    value="1"></option>
+                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-yellow'>
+                                                  </i> A whole lot</span>"
+                                    value="2">
+                            </option>
+                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-orange'>
+                                                  </i> Industrial quantities</span>"
+                                    value="3"></option>
+                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-red'>
+                                                  </i> Nightmare</span>"
+                                    value="4"></option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="dropdown" >
+                        <select id="coastal-trash-type"
+                                class="selectpicker"
+                                name="coastal-trash-type-select[]"
+                                title="What kind of trash? (multiple allowed)"
+                                multiple data-live-search="true"
+                                data-selected-text-format="count"
+                                data-width="100%"
+                                aria-labelledby="trash-type-select"
+                                multiple >
+                            <option value="glass">Fishing / fisheries gears</option>
+                            <option value="glass">Glass</option>
+                            <option value="bottles">Glass bottles</option>
+                            <option value="metal">Metal</option>
+                            <option value="alu">Aluminium</option>
+                            <option value="plastic">Plastic</option>
+                            <option value="pet">PET bottles</option>
+                            <option value="poly">Polypropylene and polystyrene</option>
+                            <option value="wood">Plywood, treated/painted wood</option>
+                            <option value="chemicals">Chemicals</option>
+                            <option value="industrial">Industrial wastes</option>
+                            <option value="gas">Gasoline, petroleum</option>
+                            <option value="crude">Crude oil</option>
+                        </select>
+                    </div><!-- Select the type of trash -->
+                    <br>
+                    <div id="highlight-note" class="form-group-lg" style="width:100%">
+                    <textarea class="form-control"
+                              rows="3"
+                              id="highlight-comment"
+                              placeholder="Add a note about this feature"></textarea>
+                    </div>
+                    <br>
+                    <div class="input-group input-group-lg">
+                      <!-- Uploader part need to follow the following strict format -->
+                          <span class="input-group-btn">
+                              <button class="btn btn-default trigger-image-uploader"
+                                      type="button">
+                              <span class="fa fa-fw fa-file-image-o"></span><span class="hidden-xs">Upload</span></button>
+                              <input class="l-image-uploader" type="file" name="image" style="display:none;">
+                          </span>
+                          <input type="text" class="form-control l-image-hidden-value" placeholder="Upload an image">
+                    </div>
+                    <br>
+                    <div class="input-group input-group-lg">
+                          <span class="input-group-btn">
+                              <button class="btn btn-default"
+                                      type="button">
+                                  <span class="fa fa-fw fa-file-o"></span><span class="hidden-xs">Upload</span></button>
+                          </span>
+                          <input type="text" class="form-control"
+                                 placeholder="Upload geoJSON file">
+                    </div>
+                    <br>
+                    <div class="input-group input-group-lg">
+                          <span class="input-group-btn">
+                              <button class="btn btn-default"
+                                      type="button">
+                                  <span class="fa fa-fw fa-globe"></span><span class="hidden-xs">Add link</span></button>
+                          </span>
+                          <input type="text" class="form-control"
+                                 placeholder="WMS server url">
+                    </div>
+                    <br>
+                    <!-- Create the polyline -->
+                    <div class="">
+                        <div class="btn-group btn-group-justified" role="group">
+                            <div class="btn-group btn-group-lg" role="group">
+                                <button type="button"
+                                        class="btn btn-success btn-save btn-save-shape">
+                                <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
+                                </button>
+                            </div>
+                            <div class="btn-group btn-group-lg" role="group">
+                                <button type="button"
+                                        class="btn btn-danger btn-cancel btn-delete-shape"
+                                        style="text-overflow:ellipsis">
+                                <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
+                                </button>
+                            </div>
+                            <div class="btn-group btn-group-lg"  role="group">
+                            <button type="button"
+                                    style="text-overflow:ellipsis"
+                                    class="btn btn-info"
+                                    data-target="#add-highlight-tag"
+                                    data-toggle="collapse">
+                                <span class="fa fa-fw fa-tag"></span><span class="hidden-xs">Tags</span>
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                    <br>
+                    <!-- Add tags -->
+                    <div id="add-highlight-tag" class="collapse">
+                        <div class="input-group input-group-lg input-block-level" style="width:100%">
+                        <input type="text"
+                               value=""
+                               data-role="tagsinput"
+                               placeholder="Add tags to the feature"/>
+                        </div>
+                    </div>
+                    <br>
+        </form>
+    </div>

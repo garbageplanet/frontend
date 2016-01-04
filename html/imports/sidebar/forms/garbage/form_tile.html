@@ -1,0 +1,98 @@
+<div class="sidebar-content" id="activate-tile-dialog">
+  <h2>
+            <span>
+             <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
+                               href="#create-marker-dialog">
+              </a>
+            </span>
+            Activate a tile
+        </h2>
+  <span style="display:none;" class="tile-center-lat"></span>
+  <span style="display:none;" class="tile-center-lng"></span>
+  <span style="display:none;" class="tile-ne-lat"></span>
+  <span style="display:none;" class="tile-ne-lng"></span>
+  <span style="display:none;" class="tile-sw-lat"></span>
+  <span style="display:none;" class="tile-sw-lng"></span>
+  <p class="lead">Before a tile can be used or referenced through our <a href="#">API</a>, it needs to be activated.</p>
+
+  <p>Specify a <em>tilename</em> for the tile and it can be called through our API using <em>@tilename</em> in the same way you would Tweet to someone. If a name is not set, a random id will be assigned to the tile. Drag the sides of the polygon on the map to set the tile's area.</p>
+  <form id="activate-tile-form" role="form" data-toggle="validator">
+    <br>
+    <div class="form-group-lg" style="width:100%">
+      <input class="form-control" rows="1" id="l-tile-name" placeholder="Use a custom tile name"></input>
+    </div>
+    <br>
+    <div id="tile-note" class="form-group-lg" style="width:100%">
+      <textarea class="form-control" rows="3" id="tile-comment" placeholder="Add a note about this tile"></textarea>
+    </div>
+    <br>
+
+    <div class="checkbox form-group-lg tile-game-check">
+      <label>
+        <input type="checkbox">This is a game tile.
+      </label>
+      <br>
+    </div>
+    <div class="tile-game-secret" style="display: none">
+      <div class="alert alert-warning" style="display:normal" role="alert">
+        <span class="fa fa-fw fa-exclamation"></span>
+        <span class="sr-only">Note:</span> This tool is not yet available.
+      </div>
+
+      <div class="form-group-lg" style="width:100%">
+        <input class="form-control" placeholder="Set the secret to access this game">
+        </input>
+      </div>
+      <br>
+    </div>
+    <div>
+      <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group btn-group-lg" role="group">
+          <button id="button-save-tile" type="button" class="btn btn-success marker-create-button">
+            <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
+          </button>
+        </div>
+        <div class="btn-group btn-group-lg" role="group">
+          <button id="button-delete-tile" type="button" class="btn btn-danger btn-cancel">
+            <span class="fa  fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
+          </button>
+        </div>
+        <div class="btn-group btn-group-lg" role="group">
+          <button type="button" class="btn btn-info" data-target="#add-tile-tag" data-toggle="collapse">
+            <span class="fa fa-fw fa-tag"></span><span class="hidden-xs">Tags</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <!-- Add tags -->
+    <div id="add-tile-tag" class="collapse">
+      <div class="input-group input-block-level" style="width:100%">
+        <input type="text" value="" data-role="tagsinput" placeholder="Add tags for this tile" />
+      </div>
+    </div>
+    <br>
+    <!-- Alerts -->
+    <div>
+      <div class="alert alert-info hidden" role="alert">
+        <span class="fa fa-fw fa-exclamation"></span>
+        <span class="sr-only">Error:</span> This tile name already exists.
+      </div>
+      <div class="alert alert-danger hidden" role="alert">
+        <span class="fa fa-fw fa-exclamation"></span>
+        <span class="sr-only">Error:</span> There was a problem, the tile could not be activated.
+      </div>
+      <div class="alert alert-success hidden" role="alert">
+        <span class="fa fa-fw fa-check"></span>
+        <span class="sr-only">Success:</span> The tile was activated successfully.</div>
+    </div>
+  </form>
+</div>
+
+<script>
+$(".tile-game-check").on("change", function(){
+
+   $(".tile-game-secret").toggle();
+
+});
+</script>

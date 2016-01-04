@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="css/L.control.top.bar.css">
+
+
+<div id="topbar" class="topbar-container">
+
+  <div id="logo"></div>
+
+  <link rel="import" href="user/form_glome.html">
+  <link rel="import" href="user/form_login.html">
+  <link rel="import" href="user/form_recover_credentials.html">
+  <link rel="import" href="user/form_register.html">
+  <link rel="import" href="user/privacy_policy.html">
+  <link rel="import" href="user/user_agreement.html">
+  <link rel="import" href="user/user_info.html">
+
+  <link rel="import" href="menu.html">
+  <link rel="import" href="form_search.html">
+
+</div>
+
+<script>
+  
+// import this document's stylesheets to the main document
+var topbarDoc = document.currentScript.ownerDocument;
+var topbarStyles = topbarDoc.querySelector('link[rel="stylesheet"]');
+document.head.appendChild(topbarStyles.cloneNode(true));
+  
+document.body.appendChild(topbarDoc.querySelector("#topbar").cloneNode(true));
+
+  
+
+  
+</script>

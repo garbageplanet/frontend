@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="css/L.control.bottom.bar.css">
+
+<div id="bottombar" class="bottombar-container"></div>
+
+<script>
+  
+// import this document's stylesheets to the main document
+var bottombarDoc = document.currentScript.ownerDocument;
+var bottombarStyles = bottombarDoc.querySelector('link[rel="stylesheet"]');
+document.head.appendChild(bottombarStyles.cloneNode(true));
+  
+document.body.appendChild(bottombarDoc.querySelector("div").cloneNode(true));
+
+  
+</script>
