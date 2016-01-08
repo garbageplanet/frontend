@@ -2,20 +2,8 @@
 
 ### What is this repository for? ###
 
-* Repository for the Roska Project [user interface](http://demo.garbagepla.net).
-* v0.01
+* Repository for the garbagepla.net UI. This responsive layout adds a top bar for navigation and a bottom bar for displaying map feature data.
 
-### How do I get set up? ###
+### How to get started? ###
 
-* Clone to a local folder and open roska-leaflet-online.html in your web browser.
-* Dependencies
-  all deps are via CDN for this version
-
-### Contribution guidelines ###
-
-* Try to comment when you add code, if it's not clear what your codes does
-
-### Who do I talk to? ###
-
-* get in touch info@garbagepla.net
-* repo owner
+Just open the file /html/index.html in your browser.
