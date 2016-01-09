@@ -39,6 +39,9 @@
   <script src="https://rawgit.com/kartenkarsten/leaflet-layer-overpass/master/dist/OverPassLayer.min.js"></script>
   <script src="https://rawgit.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"></script>
 
+  <!-- Google reCAPTCHA -->
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  
   <!-- Uploader  -->
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js"></script>
@@ -1235,6 +1238,7 @@
                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
+                <div class="g-recaptcha" data-sitekey="6Ldf4hQTAAAAAPhHGfJBH3KO687giTSgeV8pK3c0"></div>
         </form>
     </div>
     <div class="sidebar-content" id="create-account-dialog">
@@ -1628,6 +1632,10 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
     
     <div clas="row hidden">
       <div id="calendar" class="calendar-container"></div><!-- Calendar -->
+    </div>
+    
+    <div clas="row hidden">
+      <div id="tag-cloud" class="tagcloud-container"></div><!-- Tags cloud -->
     </div>
     
   </div>

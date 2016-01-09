@@ -2,8 +2,54 @@
 
 ### What is this repository for? ###
 
-* Repository for the garbagepla.net UI. This responsive layout adds a top bar for navigation and a bottom bar for displaying map feature data.
+Repository for the garbagepla.net UI. This responsive layout adds a top bar for navigation and a bottom bar for displaying map feature data.
 
 ### How to get started? ###
 
-Just open the file /html/index.html in your browser.
+Just open /html/index.html in your browser.
+
+### Contributing
+
+We don't have a build process yet, so for the moment, if you add a new feature/function, you need to manually check that it doesn't break the user interface's main functions (check the console). When adding a new js function to the code, add a comment about what it does.
+
+If you want to work on a specific todo below, the first thing you should do is open an issue and repo owners will add you as collaborator and assign you to the issue.
+
+### TODO
+
+### General coding, coding style, code review
+- [ ] make the code overall less redundant
+- [ ] try to separate uses of classes for styling and ids/tags for actions whenever possible
+- [ ] implement templating for i18n
+- [ ] transfer any inline css styling to externall stylehseet
+- [ ] split main.css into components-specific files
+
+#### Making the code more maintainable
+- [ ] create build script with minification (closure compiler) for deployment
+- [ ] better structure/split script files
+- [ ] implement .getScript() for lazy loading scripts that are not required globally
+- [ ] implement html templates/imports for the sidebar to be able to reuse the tabs layout and save/cancel buttons
+
+#### Bottom panel
+- [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
+- [ ] fetch thumbnails from imgur instead of raw images
+- [ ] make dropdown menu display their content
+- [ ] implement templates for the contents of the bottom panel
+- [ ] vertical scroll inside each column that is independant of other columns scroll
+
+#### Map actions
+- [ ] implement editing system for map features
+- [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons
+- [ ] clicking the `map` if any panel is open should close that panel
+- [ ] separate the variable names for markers created by the user in `js/map.js` and marker fetched from the db in `js/get_markers.js` and update `onMarkerClick()` functions accordingly (both use `'marker'`).
+- [ ] fix the `.panTo()` behavior when the bottom panel is open and another marker is clicked on the map.
+
+#### Future prospects
+- [ ] implement bootstrap v4
+- [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) to display data in the bottom bar
+- [ ] implement calendar view in the bottom panel with [bootstrap-calendar](https://github.com/Serhioromano/bootstrap-calendar)
+- [ ] implement a localized tag cloud view in the bottom bar
+- [ ] implement a localized gallery view in the bottom bar
+- [ ] upload images to the garbageplanet [imgur.com](https://api.imgur.com/oauth2) account 
+- [ ] upload videos to the garbageplanet [youtube.com](https://developers.google.com/youtube/v3/docs/videos/insert) channel
+
+Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
