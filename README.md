@@ -40,8 +40,8 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] implement editing system for map features
 - [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons
 - [ ] clicking the `map` if any panel is open should close that panel
-- [ ] separate the variable names for markers created by the user in `js/map.js` and marker fetched from the db in `js/get_markers.js` and update `onMarkerClick()` functions accordingly (both use `'marker'`).
 - [ ] fix the `.panTo()` behavior when the bottom panel is open and another marker is clicked on the map.
+- [ ] **assigned** add `L.Draggable()` to `generic-marker` when side panel is open 
 
 #### Future prospects
 - [ ] implement bootstrap v4
