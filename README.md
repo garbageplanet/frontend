@@ -41,7 +41,8 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons
 - [ ] clicking the `map` if any panel is open should close that panel
 - [ ] fix the `.panTo()` behavior when the bottom panel is open and another marker is clicked on the map.
-- [ ] **assigned** add `L.Draggable()` to `generic-marker` when side panel is open 
+- [x] add `L.Draggable()` to `generic-marker` when side panel is open 
+- [ ] disable map panning on mobile when side panel opens
 
 #### Future prospects
 - [ ] implement bootstrap v4

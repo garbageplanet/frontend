@@ -32,7 +32,7 @@ function loadRemoteGarbageMarkers() {
                 map.addLayer(garbageLayer);
                 marker.on('click', function() {
                     console.log("clicked");
-                    onMarkerClick(marker);
+                    onRemoteMarkerClick(marker);
                 });
 
                 switch(obj.amount){
@@ -82,9 +82,10 @@ function loadRemoteGarbageMarkers() {
 };
 
 // Temporary fix for local (unsaved) marker clicked
-function onGenericMarkerClick (e) {
+function onLocalMarkerClick (e) {
     console.log("generic marker clicked");
     console.log(e);
+    var that = this;
     bottombar.hide();
     map.panTo(e.latlng);
     $('#sidebar').scrollTop =0;
@@ -94,20 +95,12 @@ function onGenericMarkerClick (e) {
 
 
 // onClick behaviours for default and saved markers
-// TODO the elements linger in the DOM and clicking on one marker
-// might open the dialog from a previously clicked element
-function onMarkerClick (marker) {
+function onRemoteMarkerClick (marker) {
     console.log("remote marker clicked");
     console.log(marker);
     var that = this;
     map.panTo([marker.options.mLat, marker.options.mLng]);
-    // FIXME: the marker generic click doesn't work
-    if ($(marker._icon).hasClass('marker-generic')){
-        bottombar.hide();
-        $('#sidebar').scrollTop =0;
-        $('.sidebar-content').hide();
-        sidebar.show($("#create-marker-dialog").fadeIn());
-    } else if ($(marker._icon).hasClass('marker-garbage')){
+    if ($(marker._icon).hasClass('marker-garbage')){
         sidebar.hide();
         bottombar.show();
         // start to inject info
@@ -115,7 +108,7 @@ function onMarkerClick (marker) {
         var markerAmount = marker.options.mAmount;
         var markerRawImage = marker.options.mImageUrl;
 
-        // Add an IMGUR api character to the url to fetch thumbnails
+        // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
         /*String.prototype.insert = function (index, string) {
             if (index > 0)
                 return this.substring(0, index) + string + this.substring(index, this.length);

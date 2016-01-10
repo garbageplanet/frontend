@@ -59,6 +59,12 @@ var sidebar = L.control.sidebar('sidebar', {
         });
 map.addControl(sidebar);
 
+// Fire hide event so that onMapClick can pick on the status of the sidebar
+$(document).ready(function() {
+sidebar.hide();
+console.log('sidebar is hidden');
+});
+                 
 // Bottombar creation and placement
 var bottombar = L.control.bar('bottombar', {
         position: 'bottom',
@@ -106,40 +112,44 @@ new L.control.scale({
 map.doubleClickZoom.disable();
 
 // Default behaviour for creating a marker
-map.on('click', onMapClick);
+map.on('click', onMapClick);  
 
-function onMapClick(e) {
-    marker = L.marker(e.latlng, {icon:genericMarker})
-        marker.on('click', onGenericMarkerClick);
-        bottombar.hide();
-        map.panTo(e.latlng);
-        $currentLat = e.latlng.lat.toFixed(2);
-        $currentLng = e.latlng.lng.toFixed(2);
-         if ($currentLat > 0) {
-                $('#set-current-location span:nth-child(3)').text("N");
-                } else {
-                $('#set-current-location span:nth-child(3)').text("S");
-            };
-         if ($currentLng > 0) {
-                $('#set-current-location span:nth-child(5)').text("E");
-                } else {
-                $('#set-current-location span:nth-child(5)').text("W");
-            };
-        $absCurrentLat = Math.abs($currentLat);
-        $absCurrentLng = Math.abs($currentLng);
-        $('#set-current-location span:nth-child(2)').html($absCurrentLat);
-        $('#set-current-location span:nth-child(4)').html($absCurrentLng);
-        $('#create-garbage-form .l-lat').val(e.latlng.lat);
-        $('#create-garbage-form .l-lng').val(e.latlng.lng);
-        $('#activate-tile-dialog .tile-center-lat').html(e.latlng.lat);
-        $('#activate-tile-dialog .tile-center-lng').html(e.latlng.lng);
-
-        // Hide the sidebar content and show it with the marker dialog
-        // $('.panel-collapse').collapse('hide'); THIS MESSES UP THE ACCORDION
+// Create a generic marker locally before it is saved
+/*function createLocalMarker() {
+        marker = L.marker(e.latlng, {
+                icon:genericMarker,
+                draggable: true
+                }).on('click', onLocalMarkerClick);
+        map.addLayer(marker).panTo(e.latlng);
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
-        sidebar.show($("#create-marker-dialog").fadeIn('fast'));
-    map.addLayer(marker);
+        sidebar.show($("#create-marker-dialog").show());
+};*/
+
+function onMapClick(e) {
+  
+    sidebar.once('hidden', createLocalMarker);
+  
+    
+    function createLocalMarker() {
+        marker = L.marker(e.latlng, {
+                icon:genericMarker,
+                draggable: true
+                }).on('click', onLocalMarkerClick);
+        map.addLayer(marker).panTo(e.latlng);
+        $('.sidebar-content').hide();
+        $('#sidebar').scrollTop = 0;
+        sidebar.show($("#create-marker-dialog").show());
+    };
+    
+    
+  
+  
+  
+  sidebar.on('shown', sidebar.hide() );
+  bottombar.on('shown', bottombar.hide() );
+  
+
 };
 
 // Disable creating markers at low zooms
