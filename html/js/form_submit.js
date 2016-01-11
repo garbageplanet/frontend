@@ -1,6 +1,6 @@
 window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw';
 $(function () {
-	$('.l-form-1').on( 'submit', function (event) {
+	$('.form-garbage').on( 'submit', function (event) {
 		var that = this;
 		event.preventDefault();
 		var typeOfTrash = [];
@@ -8,24 +8,24 @@ $(function () {
 		var lat;
 		var lng;
 		var image_url;
-		$(this).find('.selectpicker.type-of-trash option:selected').each(function(index, value) {
+        // var video_url;
+		
+        $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
 			typeOfTrash.push($(value).val());
-		})
-
-		$(this).find('.selectpicker.amount-of-trash option:selected').each(function (index, value) {
-			amoutOfTrash = $(value).val();
-		})
-		image_url = $(this).find('.l-image-hidden-value').val();
+		});
+      
+        // Input range selector
+		amoutOfTrash = $('input[class=garbage-range-input]').val();
+      
+		image_url = $(this).find('.garbage-media-hidden-value').val();
 		lat = $(this).find('.l-lat').val();
 		lng = $(this).find('.l-lng').val();
 
-
 		console.log('lat', lat);
 		console.log('lng', lng);
-		console.log('typeof trash', typeOfTrash);
-		console.log('amoutof trash', amoutOfTrash);
+		console.log('type of trash', typeOfTrash);
+		console.log('amout of trash', amoutOfTrash);
 		console.log('image_url', image_url);
-
 
 		setTimeout(function () {
 			var useToken = localStorage["token"] || window.token;
@@ -41,17 +41,17 @@ $(function () {
 			    },
 			    method: 'post',
 			    success: function (data) {
-			    	console.log('suc data', data);
+			    	console.log('success data', data);
 			    	alert('Marker saved successfully!');
-			    	if (amoutOfTrash > 4) {
-			    		alert('NOTE!!! According to the amount of trash, your request was also sent to City of Helsinki!');
+			    	if (amoutOfTrash > 8) {
+			    		alert('Alert open311');
 			    	};
                     sidebar.hide('slow');
 
 			    },
 			    error: function (err) {
 			    	console.log('err', err);
-			    	alert('Please register and login to save markers', err);
+			    	alert('Please register or login to save markers', err);
                     sidebar.hide();
                     map.removeLayer(marker);
 			    }

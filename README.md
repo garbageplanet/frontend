@@ -18,7 +18,6 @@ If you want to work on a specific todo below, the first thing you should do is o
 
 ### General coding, coding style, code review
 - [ ] make the code overall less redundant
-- [ ] try to separate uses of classes for styling and ids/tags for actions whenever possible
 - [ ] implement templating for i18n
 - [ ] transfer any inline css styling to external stylesheet
 - [ ] split main.css into components-specific files
@@ -31,8 +30,8 @@ If you want to work on a specific todo below, the first thing you should do is o
 
 #### Bottom panel
 - [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
-- [ ] fetch thumbnails from imgur instead of raw images
-- [ ] make dropdown menu display their content
+- [x] fetch thumbnails from imgur instead of raw images
+- [ ] make dropdown menu display their content ()
 - [ ] implement templates for the contents of the bottom panel
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
@@ -45,6 +44,7 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] disable map panning on mobile when side panel opens
 
 #### Future prospects
+- [ ] allow users to upload geotagged images, bypassing marejr creation form
 - [ ] implement bootstrap v4
 - [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) to display data in the bottom bar
 - [ ] implement calendar view in the bottom panel with [bootstrap-calendar](https://github.com/Serhioromano/bootstrap-calendar)

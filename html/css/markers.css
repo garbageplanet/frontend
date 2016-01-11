@@ -38,12 +38,18 @@ filter: drop-shadow(0px 0px 10px rgba(255,255,255,0.7));
 
 /*Marker colors */
 .map-marker.marker-color-gray {background: lightgray;}
-.map-marker.marker-color-red {background: orangered;}
-.map-marker.marker-color-blue {background: dodgerblue;}
-.map-marker.marker-color-yellow {background: yellow;}
-.map-marker.marker-color-orange {background: orange;}
-.map-marker.marker-color-black {background: #1a1a1a;}
-.map-marker.marker-color-purple {background: #d42aff;}
-.map-marker.marker-color-pink {background: #ff80b2;}
-.map-marker.marker-color-green {background: limegreen;}
 .map-marker.marker-color-coral {background: coral;}
+
+/* Garbage amount scale 1-10 */
+.map-marker.marker-color-black {background: black;}
+.map-marker.marker-color-purple {background: purple;}
+.map-marker.marker-color-darkred {background: darkred;}
+.map-marker.marker-color-red {background: red;}
+.map-marker.marker-color-orangered {background: orangered;}
+.map-marker.marker-color-orange {background: orange;}
+.map-marker.marker-color-gold {background: gold;}
+.map-marker.marker-color-yellow {background: yellow;}
+.map-marker.marker-color-limegreen {background: limegreen;}
+.map-marker.marker-color-green {background: green;}
+
+.map-marker.marker-color-unknown {background: white;}

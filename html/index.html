@@ -22,26 +22,25 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js" defer></script>
   <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" defer></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js" defer></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js" defer></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.5.0/bootstrap-tagsinput.min.js" defer></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js" defer></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
   <!-- Leaflet -->
   <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
   <script src="https://rawgit.com/dagjomar/Leaflet.ZoomCSS/master/src/leaflet.zoomcss.js"></script>
   <script src="https://rawgit.com/Turbo87/leaflet-sidebar/master/src/L.Control.Sidebar.js"></script>
-  <!-- <script src="https://rawgit.com/filipzava/leaflet-control-bar/master/src/L.Control.Bar.js"></script> -->
   <script src="js/L.Control.Bar.js"></script>
   <script src="js/L.Map.Deflate.js"></script>
+  <script src="js/L.Overpass.Layer.js" defer></script>
 
-  <script src="https://rawgit.com/kartenkarsten/leaflet-layer-overpass/master/dist/OverPassLayer.min.js"></script>
   <script src="https://rawgit.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"></script>
 
   <!-- Google reCAPTCHA -->
-  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <script src='https://www.google.com/recaptcha/api.js' async defer></script>
   
   <!-- Uploader  -->
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -115,11 +114,12 @@
             <ul class="dropdown-menu" id="map-tools">
               <li class="disabled"><a class="bottombar-link" href="#cleaning-calendar">Cleaning calendar</a></li>
               <li class="divider"></li>
-              <li class="disabled"><a class="" href="#">Nearby trashbins</a></li>
+              <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
               <li class="disabled"><a class="" href="#">Garbage forecast</a></li>
               <li class="disabled"><a class="" href="#">Garbage hotspots</a></li>
               <li class="divider"></li>
-              <li><a id="locate-button" href="#">Locate me</a></li>
+              <li><a id="btn-locate" href="#">Locate me</a></li>
+              <li class="disabled"><a class="" href="#">Upload a geotagged image</a></li>
               <li class="divider"></li>
               <li class="disabled"><a href="http://www.garbagepla.net" target="_blank">Blog</a></li>
               <li class="disabled"><a class="start-tour" href="#">Tour</a></li>
@@ -154,22 +154,41 @@
   
     <div class="sidebar-content" id="mobile-menu-dialog">
   
-    <h2> Garbagepla.net</h2>
+    <h2 class=""><span>Garbagepla.net</span></h2>
         <div class="form-group form-group-lg btn-menu">
         <a href="#create-account-dialog"
                 class="sidebar-link btn btn-default btn-lg btn-block">
             <span class="fa fa-fw fa-user"></span> Register
         </a>
-        <br>
+        
         <a href="#user-login-dialog"
            class="sidebar-link btn btn-default btn-lg btn-block">
            <span class="fa fa-fw fa-key"></span> Login
         </a>
-        <br>
+        
         <a href="#glome-dialog"
            class="sidebar-link btn btn-default btn-lg btn-block">
            <span class="fa fa-fw fa-google"></span> Go Glome!
         </a>
+          
+        <a href="#search-dialog"
+           class="sidebar-link btn btn-default btn-lg btn-block">
+           <span class="fa fa-fw fa-search"></span> Search
+        </a>
+          
+        <a href="#"
+           id="btn-locate"
+           class="sidebar-link btn btn-default btn-lg btn-block">
+           <span class="fa fa-fw fa-compass"></span> Locate me
+        </a>
+          
+        <a href="#"
+           class="sidebar-link btn btn-default btn-lg btn-block">
+           <span class="fa fa-fw fa-calendar-o"></span> Calendar
+        </a>  
+          
+          
+          
     </div>
   </div>
 
@@ -212,27 +231,21 @@
                     <ul class="nav nav-tabs nav-justified" role="tablist">
                       <li class="active">
                         <a href="#cleaning-main" 
-                           data-toggle="tab">
-                          <span class="fa fa-fw fa-calendar"></span>
-                        </a>
+                           data-toggle="tab"><span class="fa fa-fw fa-calendar"></span></a>
                       </li>
                       <li>
                         <a href="#cleaning-tools" 
-                           data-toggle="tab">
-                          <span class="fa fa-fw fa-wrench"></span>
-                        </a>
+                           data-toggle="tab"><span class="fa fa-fw fa-wrench"></span></a>
                       </li>    
                         <li>
                         <a href="#cleaning-media" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-share-alt"></span>
-                          </a>
+                          <span class="fa fa-fw fa-share-alt"></span></a>
                       </li> 
                       <li>
                         <a href="#cleaning-info" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-question"></span>
-                          </a>
+                          <span class="fa fa-fw fa-question"></span></a>
                       </li> 
                     </ul>
                     
@@ -351,7 +364,7 @@
                       <div class="tab-pane form-group form-group-lg" id="cleaning-info" role="tabpanel">
                         
                         <div class="lead">
-                          A marker for a cleaning event is meant for a location where trash has already been identified. Users                           can choose whether to create a Facebook event simultaneously. <a class="sidebar-link" href="#user-                             login-dialog">Login</a> or <a class="sidebar-link" href="#create-account-dialog" >register</a> with                           an email to create an event.
+                          A marker for a cleaning event is meant for a location where trash has already been identified. Users can choose whether to create a Facebook event simultaneously. <a class="sidebar-link" href="#user-login-dialog">Login</a> or <a class="sidebar-link" href="#create-account-dialog" >register</a> with an email to create an event.
                         </div>
 
                       </div>
@@ -396,9 +409,8 @@
                 </h3>
             </div>
             <br>
-                <form id="create-garbage-form" 
-                      role="form" 
-                      class="l-form-1"
+                <form role="form" 
+                      class="form-garbage"
                       accept-charset="UTF-8"
                       data-toggle="validator">
                   
@@ -407,26 +419,22 @@
                       <li class="active">
                         <a href="#garbage-main" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-map-marker"></span>
-                        </a>
+                          <span class="fa fa-fw fa-map-marker"></span></a>
                       </li>
                       <li>
                         <a href="#garbage-quantitative" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-bar-chart-o"></span>
-                        </a>
+                          <span class="fa fa-fw fa-bar-chart-o"></span></a>
                       </li>    
                         <li>
                         <a href="#garbage-media" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-share-alt"></span>
-                          </a>
+                          <span class="fa fa-fw fa-share-alt"></span></a>
                       </li> 
                       <li>
                         <a href="#garbage-info" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-question"></span>
-                          </a>
+                          <span class="fa fa-fw fa-question"></span></a>
                       </li> 
                     </ul>
                     
@@ -440,16 +448,14 @@
                         <input type="hidden" name="lng" class="l-lng">
      
                         <div class="range-slider">
-                        <p>On a scale from 1 to 10, amount of garbage: <strong><span class="range-value"></span></strong></p>
-                        <input class="input-range" type="range" value="5" min="1" max="10">
+                        <p>On a scale from 1 to 10, amount of garbage: <strong><span class="garbage-range-value"></span></strong></p>
+                        <input class="garbage-range-input" type="range" value="1" min="1" max="10">
                         </div> 
 
                         <br>
                         
-                        <div class="dropdown">
-                          <select id="select-trash-amount"
-                                  class="selectpicker amount-of-trash form-control"
-                                  name="trash-amount-select[]"
+                        <div class="dropdown hidden">
+                          <select class="selectpicker garbage-amount-select form-control"
                                   title="How much?*"
                                   data-width="100%"
                                   required>
@@ -479,8 +485,7 @@
                       <br>
                         
                       <div class="dropdown" >
-                          <select class="selectpicker type-of-trash form-control"
-                                  name="garbage-type-select[]"
+                          <select class="selectpicker garbage-type-select form-control"
                                   title="What kind?*"
                                   data-selected-text-format="count"
                                   data-width="100%"
@@ -509,8 +514,39 @@
                               <option value="vehicle">Fishing line</option>
                           </select>
                       </div>
+                        
+                      <br>              
+                        
+                      <div class="dropdown">
+                          <select class="selectpicker form-control"
+                                  title="What to do here?*"
+                                  data-width="100%">
+                              <option value="pickup">Need to pick it up</option>
+                              <option value="collect">Need to collect it</option>
+                              <option value="organize_event">Organize a cleaning</option>
+                              <option value="need_help">I need help</option>
+                              <option value="inform">Tell local authorities</option>
+                              <option value="nothing">It's been cleaned already</option>
+                          </select>
+                      </div>
+                        
                       <br>
+                        
+                      <div id="garbage-note" class="form-group-lg" style="width:100%">
+                          <textarea class="form-control"
+                                    rows="3"
+                                    id="garbage-comment"
+                                    placeholder="Add a note about this marker"
+                                    maxlength="140">
+                          </textarea>
+                      </div>
                       
+                      </div><!-- main garbage pane -->
+                      
+                      <div class="tab-pane form-group form-group-lg" id="garbage-quantitative" role="tabpanel">
+                      
+                      <br>
+                        
                       <div class="dropdown">
                           <select class="selectpicker form-control"
                                   name="garbage-size-select[]"
@@ -544,29 +580,7 @@
                           </select>
                       </div>
                       
-                      <br>
-                        
-                      <div class="dropdown">
-                          <select class="selectpicker form-control"
-                                  name="garbage-todo-select[]"
-                                  title="What to do here?"
-                                  data-width="100%">
-                              <option value="pickup">Need to pick it up</option>
-                              <option value="collect">Need to collect it</option>
-                              <option value="organize_event">Organize a cleaning</option>
-                              <option value="need_help">I need help</option>
-                              <option value="inform">Tell local authorities</option>
-                              <option value="nothing">It's been cleaned already</option>
-                          </select>
-                      </div>
-                        
-                      
-                      
-                      </div><!-- main garbage pane -->
-                      
-                      <div class="tab-pane form-group form-group-lg" id="garbage-quantitative" role="tabpanel">
-                      
-                      <br>
+                      <h4>Quantiative estimate</h4>
                       
                       <div class="dropdown">
                           <select class="selectpicker form-control"
@@ -614,18 +628,18 @@
                                   <button class="btn btn-default trigger-image-uploader"
                                           type="button">
                                   <span class="fa fa-fw fa-file-image-o"></span></button>
-                                  <input class="l-image-uploader" type="file" name="image" style="display:none;">
+                                  <input class="image-uploader" type="file" name="image" style="display:none;">
                               </span>
                           
                               <input type="text" 
-                                     class="form-control l-image-hidden-value" 
+                                     class="form-control garbage-media-hidden-value" 
                                      placeholder="Upload an image / video">
                           
                               <span class="input-group-btn">
                                   <button class="btn btn-default trigger-video-uploader"
                                           type="button">
                                   <span class="fa fa-fw fa-film"></span></button>
-                                  <input class="l-video-uploader" type="file" name="video" style="display:none;">
+                                  <input class="video-uploader" type="file" name="video" style="display:none;">
                               </span>
                         </div>
                         
@@ -655,15 +669,6 @@
                         </div>
                         
                         <br>
-                        
-                        <div id="garbage-note" class="form-group-lg" style="width:100%">
-                          <textarea class="form-control"
-                                    rows="3"
-                                    id="garbage-comment"
-                                    placeholder="Add a note about this marker"
-                                    maxlength="140">
-                          </textarea>
-                        </div>
                         
                         <div class="row " id="add-marker-tag">
                             <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
@@ -700,8 +705,7 @@
                           </div>
                           <div class="btn-group btn-group-lg" role="group">
                               <button type="button"
-                                      class="btn btn-danger btn-cancel btn-delete-marker"
-                                      style="text-overflow:ellipsis">
+                                      class="btn btn-danger btn-cancel btn-delete-marker">
                               <span class="fa  fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
                               </button>
                           </div>
@@ -739,26 +743,22 @@
                       <li class="active">
                         <a href="#tile-main" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-square-o"></span>
-                        </a>
+                          <span class="fa fa-fw fa-square-o"></span></a>
                       </li>
                       <li>
                         <a href="#tile-tools" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-gamepad"></span>
-                        </a>
+                          <span class="fa fa-fw fa-gamepad"></span></a>
                       </li>    
                         <li>
                         <a href="#tile-media" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-share-alt"></span>
-                          </a>
+                          <span class="fa fa-fw fa-share-alt"></span></a>
                       </li> 
                       <li>
                         <a href="#tile-info" 
                            data-toggle="tab">
-                          <span class="fa fa-fw fa-question"></span>
-                          </a>
+                          <span class="fa fa-fw fa-question"></span></a>
                       </li> 
                     </ul>
                     
@@ -942,23 +942,19 @@
                         <ul class="nav nav-tabs nav-justified" role="tablist">
                           <li class="active">
                             <a href="#coastal-main" data-toggle="tab">
-                              <span class="fa fa-fw fa-map-marker"></span>
-                            </a>
+                              <span class="fa fa-fw fa-map-marker"></span></a>
                           </li>
                           <li>
                             <a href="#coastal-quantitative" data-toggle="tab">
-                              <span class="fa fa-fw fa-bar-chart-o"></span>
-                            </a>
+                              <span class="fa fa-fw fa-bar-chart-o"></span></a>
                           </li>
                           <li>
                             <a href="#coastal-media" data-toggle="tab">
-                              <span class="fa fa-fw fa-share-alt"></span>
-                            </a>
+                              <span class="fa fa-fw fa-share-alt"></span></a>
                           </li>
                           <li>
                             <a href="#coastal-info" data-toggle="tab">
-                              <span class="fa fa-fw fa-question"></span>
-                            </a>
+                              <span class="fa fa-fw fa-question"></span></a>
                           </li>
                         </ul>
 
@@ -1128,8 +1124,7 @@
                             </div>
                             <div class="btn-group btn-group-lg" role="group">
                                 <button type="button"
-                                        class="btn btn-danger btn-cancel btn-delete-shape"
-                                        style="text-overflow:ellipsis">
+                                        class="btn btn-danger btn-cancel btn-delete-shape">
                                 <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
                                 </button>
                             </div>
@@ -1233,7 +1228,7 @@
                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
-                <div class="g-recaptcha" data-sitekey="6Ldf4hQTAAAAAPhHGfJBH3KO687giTSgeV8pK3c0"></div>
+        <div class="g-recaptcha" data-sitekey="6Ldf4hQTAAAAAPhHGfJBH3KO687giTSgeV8pK3c0"></div>
         </form>
     </div>
     <div class="sidebar-content" id="create-account-dialog">
@@ -1426,13 +1421,12 @@
                            id="search-general"
                            placeholder="Search for anything ..."></input>
                 </div>
-        <br>
+                <br>
                 <div class="form-group form-group-lg">
                     <div>
                         <a type="submit"
-                           style="color:white"
-                           class="btn btn-info btn-lg btn-block">
-                            <span class="fa fa-search fa-white fa-fw"></span>
+                           class="btn-search btn btn-default btn-lg btn-block">
+                            <span class="fa fa-search fa-fw"></span>
                                 Launch search
                         </a>
                     </div>
@@ -1597,11 +1591,23 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 
         <div>
           <h4>Type of trash</h4>
-          <p class="l-marker-type"></p>
+          <p class="feature-info-garbage-type"></p>
           <h4>Amount of trash</h4>
-          <p class="l-marker-amount"></p>
+          <p class="feature-info-garbage-amount"></p>
           <h4>Tags</h4>
-          <p class="l-marker-tag"></p>
+          <p class="feature-tag"></p>
+                    <h4>Tags</h4>
+          <p class="feature-tag"></p>
+                    <h4>Tags</h4>
+          <p class="feature-tag"></p>
+                    <h4>Tags</h4>
+          <p class="feature-tag"></p>
+                    <h4>Tags</h4>
+          <p class="feature-tag"></p>
+                    <h4>Tags</h4>
+          <p class="feature-tag"></p>
+                    <h4>Tags</h4>
+          <p class="feature-tag"></p>
         </div>
       </div>
 
@@ -1611,8 +1617,8 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
         </div>
 
         
-          <img src="" class="l-marker-image img-responsive" width="200" alt="">
-
+          <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
+          <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
         
       </div>
 

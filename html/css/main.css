@@ -69,11 +69,12 @@ a.menu-backlink:hover {
 /* independant scroll in bottombar cols */
 .bottombar-container .container .row {
   overflow-y: hidden;
-  height: 100%;
+  
 }
 
 .card {
-  overflow: auto;
+  overflow-y: auto;
+  height: 100%;
 }
 
 /* Style the bottom bar */
@@ -208,8 +209,8 @@ a.menu-backlink:hover {
 /* Custom bootstrap styles */
 
 /* Style default buttons and link colors */
-.btn-menu a, .nav-pills li a {
-  color: #464646
+.btn-menu a, .btn-search, .nav-pills li a {
+  color: #464646 !important;
 }
 /*Style the navbar*/
 .navbar-default {
