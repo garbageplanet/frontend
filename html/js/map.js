@@ -1,6 +1,7 @@
 //Map scripts
 // Set the map
-var map = L.map('map', { zoomControl: false, attributionControl: false });
+// deflate turns shapes into markers at high zoom (minSize in pixels)
+var map = L.map.deflate('map', { zoomControl: false, attributionControl: false, minSize: 50 });
 
 // Locate the user and set the map position
 map.locate({
@@ -60,10 +61,10 @@ var sidebar = L.control.sidebar('sidebar', {
 map.addControl(sidebar);
 
 // Fire hide event so that onMapClick can pick on the status of the sidebar
-$(document).ready(function() {
-sidebar.hide();
-console.log('sidebar is hidden');
-});
+/*$(document).ready(function() {
+  sidebar.hide();
+  console.log('sidebar is hidden');
+});*/
                  
 // Bottombar creation and placement
 var bottombar = L.control.bar('bottombar', {
@@ -115,41 +116,23 @@ map.doubleClickZoom.disable();
 map.on('click', onMapClick);  
 
 // Create a generic marker locally before it is saved
-/*function createLocalMarker() {
+function createGenericMarker(e) {
         marker = L.marker(e.latlng, {
                 icon:genericMarker,
                 draggable: true
-                }).on('click', onLocalMarkerClick);
+                }).on('click', onGenericMarkerClick);
         map.addLayer(marker).panTo(e.latlng);
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         sidebar.show($("#create-marker-dialog").show());
-};*/
+};
 
 function onMapClick(e) {
   
-    sidebar.once('hidden', createLocalMarker);
+  sidebar.on( 'hidden', createGenericMarker(e) );
+  sidebar.on( 'shown', sidebar.hide() );
+  bottombar.on( 'shown', bottombar.hide() );
   
-    
-    function createLocalMarker() {
-        marker = L.marker(e.latlng, {
-                icon:genericMarker,
-                draggable: true
-                }).on('click', onLocalMarkerClick);
-        map.addLayer(marker).panTo(e.latlng);
-        $('.sidebar-content').hide();
-        $('#sidebar').scrollTop = 0;
-        sidebar.show($("#create-marker-dialog").show());
-    };
-    
-    
-  
-  
-  
-  sidebar.on('shown', sidebar.hide() );
-  bottombar.on('shown', bottombar.hide() );
-  
-
 };
 
 // Disable creating markers at low zooms
@@ -265,7 +248,7 @@ sidebar.on('hide', function () {
         // $('#glome-dialog').find('.with-errors').hide();
     });
 
-// Default marker creation
+// Default marker types
 var genericMarker = L.divIcon({
     className: 'map-marker marker-color-gray marker-generic',
     iconSize: [30,30],
@@ -274,6 +257,12 @@ var genericMarker = L.divIcon({
 
 var garbageMarker = L.divIcon({
     className: 'map-marker marker-garbage',
+    iconSize: [30,30],
+    html:'<i class="fa fa-fw"></i>'
+});
+
+var deflatedMarker = L.divIcon({
+    className: 'map-marker marker-deflated',
     iconSize: [30,30],
     html:'<i class="fa fa-fw"></i>'
 });

@@ -35,6 +35,7 @@
   <script src="https://rawgit.com/Turbo87/leaflet-sidebar/master/src/L.Control.Sidebar.js"></script>
   <!-- <script src="https://rawgit.com/filipzava/leaflet-control-bar/master/src/L.Control.Bar.js"></script> -->
   <script src="js/L.Control.Bar.js"></script>
+  <script src="js/L.Map.Deflate.js"></script>
 
   <script src="https://rawgit.com/kartenkarsten/leaflet-layer-overpass/master/dist/OverPassLayer.min.js"></script>
   <script src="https://rawgit.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"></script>
@@ -112,16 +113,16 @@
               <span class="hidden title-collapsed">Map tools</span>
             </a>
             <ul class="dropdown-menu" id="map-tools">
-              <li><a class="bottombar-link" href="#cleaning-calendar">Cleaning calendar</a></li>
+              <li class="disabled"><a class="bottombar-link" href="#cleaning-calendar">Cleaning calendar</a></li>
               <li class="divider"></li>
-              <li><a href="#">Nearby trashbins</a></li>
-              <li><a href="#">Garbage forecast</a></li>
-              <li><a href="#">Garbage hotspots</a></li>
+              <li class="disabled"><a class="" href="#">Nearby trashbins</a></li>
+              <li class="disabled"><a class="" href="#">Garbage forecast</a></li>
+              <li class="disabled"><a class="" href="#">Garbage hotspots</a></li>
               <li class="divider"></li>
-              <li><a href="#">Locate me</a></li>
+              <li><a id="locate-button" href="#">Locate me</a></li>
               <li class="divider"></li>
-              <li><a href="http://www.garbagepla.net" target="_blank">Blog</a></li>
-              <li><a class="start-tour" href="#">Tour</a></li>
+              <li class="disabled"><a href="http://www.garbagepla.net" target="_blank">Blog</a></li>
+              <li class="disabled"><a class="start-tour" href="#">Tour</a></li>
             </ul>
           </li>
 
@@ -154,26 +155,20 @@
     <div class="sidebar-content" id="mobile-menu-dialog">
   
     <h2> Garbagepla.net</h2>
-        <div class="form-group form-group-lg">
+        <div class="form-group form-group-lg btn-menu">
         <a href="#create-account-dialog"
-                class="sidebar-link btn btn-default btn-lg btn-block"
-                type="submit"
-                style="color:black">
-            <span class="fa fa-user fa-fw"></span> Register
+                class="sidebar-link btn btn-default btn-lg btn-block">
+            <span class="fa fa-fw fa-user"></span> Register
         </a>
         <br>
         <a href="#user-login-dialog"
-           class="sidebar-link btn btn-default btn-lg btn-block"
-           type="submit"
-           style="color:black">
-           <span class="fa fa-key fa-fw"></span> Login
+           class="sidebar-link btn btn-default btn-lg btn-block">
+           <span class="fa fa-fw fa-key"></span> Login
         </a>
         <br>
         <a href="#glome-dialog"
-           class="sidebar-link btn btn-default btn-lg btn-block"
-           type="submit"
-           style="color:black">
-           <span class="fa fa-google fa-fw"></span> Go Glome!
+           class="sidebar-link btn btn-default btn-lg btn-block">
+           <span class="fa fa-fw fa-google"></span> Go Glome!
         </a>
     </div>
   </div>
@@ -1617,6 +1612,7 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 
         
           <img src="" class="l-marker-image img-responsive" width="200" alt="">
+
         
       </div>
 

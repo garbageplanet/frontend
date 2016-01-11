@@ -20,7 +20,7 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] make the code overall less redundant
 - [ ] try to separate uses of classes for styling and ids/tags for actions whenever possible
 - [ ] implement templating for i18n
-- [ ] transfer any inline css styling to externall stylehseet
+- [ ] transfer any inline css styling to external stylesheet
 - [ ] split main.css into components-specific files
 
 #### Making the code more maintainable

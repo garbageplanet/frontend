@@ -62,7 +62,7 @@ L.Control.Bar = L.Control.extend({
             .on(content, 'touchstart', stop)
             .on(content, 'dblclick', fakeStop)
             .on(content, 'mousewheel', stop)
-            .on(content, 'MozMousePixelScroll', stop);
+            .on(content, 'MozMousePixelScroll', fakeStop);
 
         return this;
     },
@@ -151,6 +151,7 @@ L.Control.Bar = L.Control.extend({
     },
   
     getOffset: function () {
+      // TODO change the first statement to if isVisible() and then fix the offset accordingly
         if (this.options.position === 'right') {
             return this._container.offsetHeight;
         } else {

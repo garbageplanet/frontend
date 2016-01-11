@@ -1,6 +1,6 @@
 // Make dropdown menu linuks works
 $(document).ready(function() {
-$('#user-tools, #map-tools').find('a').click( function(e) {
+$('#user-tools').find('a').click( function(e) {
         e.preventDefault();
         bottombar.hide();
         sidebar.show();
@@ -15,6 +15,12 @@ $('#mobile-menu-button').click( function(e) {
         bottombar.hide();
         sidebar.show($('#mobile-menu-dialog').fadeIn().siblings().hide());
     });
+});
+
+// Actions for map-tools dropdown
+$('#locate-button').on('click', function(){
+  map.locate({setView: true, maxZoom: 17});
+  // TODO add marker and timer to remove it
 });
 
 //  General Alerts
@@ -56,13 +62,5 @@ value.html(range.attr('value'));
 range.on('input', function(){
     value.html(this.value);
 }); 
-
-// Setup the calendar
-// https://github.com/Serhioromano/bootstrap-calendar
-/*var cleaningCalendar = $("#calendar").calendar(
-    {
-        tmpl_path: "/tmpls/",
-        events_source: function () { return []; }
-});*/
 
 
