@@ -101,12 +101,10 @@ function loadRemoteGarbageMarkers() {
 };
 
 // Temporary fix for local (unsaved) marker clicked
-function onGenericMarkerClick (e) {
+function onGenericMarkerClick (marker) {
     console.log("generic marker clicked");
-    console.log(e);
-    // var that = this;
     bottombar.hide();
-    map.panTo(e.latlng);
+    map.panToOffset(marker.latlng, _getHorizontalOffset());
     $('#sidebar').scrollTop =0;
     $('.sidebar-content').hide();
     sidebar.show($("#create-marker-dialog").fadeIn());
@@ -117,8 +115,8 @@ function onRemoteMarkerClick (marker) {
     console.log("remote marker clicked");
     console.log(marker);
     var that = this;
-
-    map.panTo([marker.options.mLat, marker.options.mLng]);
+    
+    map.panToOffset([marker.options.mLat, marker.options.mLng], _getVerticalOffset());
   
     if ($(marker._icon).hasClass('marker-garbage')){
         sidebar.hide();

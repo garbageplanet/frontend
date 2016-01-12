@@ -4,10 +4,22 @@
 var map = L.map.deflate('map', { zoomControl: false, attributionControl: false, minSize: 50 });
 
 // Locate the user and set the map position
-map.locate({
+/*map.locate({
     setView: true,
     maxZoom: 15
+});*/
+
+if (navigator.geolocation) {
+  map.locate({
+      setView: true,
+      maxZoom: 15
+  });
+};
+
+map.on('locationfound', function (e) {
+  map.panTo(e.latlng);
 });
+
 
 // Set the marker var else some other scripts complain
 //var marker = new L.Marker();
@@ -98,9 +110,33 @@ new L.control.scale({
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
 
+//MapToOffset//////////////////////////////////////////////////////////
+//See license.md in this repo Copyright 2013 Code for America//////////
+L.Map.prototype.panToOffset = function (latlng, offset, options) {
+    var x = this.latLngToContainerPoint(latlng).x - offset[0]
+    var y = this.latLngToContainerPoint(latlng).y - offset[1]
+    var point = this.containerPointToLatLng([x, y])
+    return this.setView(point, this._zoom, { pan: options })
+};
+
+// Adapted functions
+function _getVerticalOffset () {
+  var vOffset = [0, 0]
+  vOffset[1] = - $(window).height() / 4;
+  vOffset[0] = 0;
+  return vOffset;
+};
+
+function _getHorizontalOffset () {
+  var hOffset = [0, 0]
+  hOffset[0] = - $(window).height() / 4;
+  hOffset[1] = 0;
+  return hOffset;
+};
+//////////////////////////////////////////////////////////////////////
+
 // Default behaviour for creating a marker
 map.on('click', onMapClick);  
-
 
 function onMapClick(e) {
 
@@ -110,7 +146,7 @@ function onMapClick(e) {
             draggable: true
             }).on('click', onGenericMarkerClick);
         map.addLayer(marker);
-        map.panTo(e.latlng);
+        map.panToOffset(e.latlng, _getHorizontalOffset());
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         sidebar.show($("#create-marker-dialog").show());  
@@ -118,17 +154,6 @@ function onMapClick(e) {
    } else { bottombar.hide();sidebar.hide(); }
 
 };
-
-// Disable creating markers at low zooms
-/*
-map.on('zoomend', function(e){
-    if(e.target.getZoom() < 15){
-        map.off('click', onMapClick);
-    } else {
-        map.on('click', onMapClick);
-    }
-}); 
-*/
 
 // Default marker types and set the marker classes
 var genericMarker = L.divIcon({

@@ -54,3 +54,6 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] upload videos to the garbageplanet [youtube.com](https://developers.google.com/youtube/v3/docs/videos/insert) channel
 
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
+
+#### Licence
+This code is realeased under the MIT licence but some parts have a different copyright information, see [this file]().
