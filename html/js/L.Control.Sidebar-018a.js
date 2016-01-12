@@ -10,7 +10,7 @@ L.Control.Sidebar = L.Control.extend({
     options: {
         closeButton: true,
         position: 'left',
-        autoPan: true,
+        autoPan: false,
     },
 
     initialize: function (placeholder, options) {
@@ -124,7 +124,9 @@ L.Control.Sidebar = L.Control.extend({
 
     show: function () {
         if (!this.isVisible()) {
+          
             L.DomUtil.addClass(this._container, 'visible');
+          
             if (this.options.autoPan) {
                 this._map.panBy([-this.getOffset() / 2, 0], {
                     duration: 0.5
@@ -145,18 +147,20 @@ L.Control.Sidebar = L.Control.extend({
     hide: function (e) {
         if (this.isVisible()) {
             L.DomUtil.removeClass(this._container, 'visible');
-            if (this.options.autoPan && this.options.position === 'right') {
+            
+            if (this.options.autoPan) {
                 this._map.panBy([this.getOffset() / 2, 0], {
                     duration: 0.5
                 });
+              
             }
-          
+              
             else if (this.options.autoPan && this.options.position === 'bottom') {
                 this._map.panBy([0, this.getOffset() / 2], {
                 duration: 0.5
                 });
             }
-            
+          
             this.fire('hide');
         }
         if(e) {
@@ -190,12 +194,8 @@ L.Control.Sidebar = L.Control.extend({
             return -this._container.offsetWidth;
         } 
       
-        else if (this.options.position === 'bottom') {
+        else if ((this.options.position === 'bottom')) {
             return -this._container.offsetHeight;
-        }
-      
-        else {
-            return this._container.offsetWidth;
         }
     },
 

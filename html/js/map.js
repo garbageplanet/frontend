@@ -102,36 +102,29 @@ map.doubleClickZoom.disable();
 map.on('click', onMapClick );  
 
 
-
 function onMapClick(e) {
   
   
-  if ( $('#sidebar').not(':visible') && $('#bottombar').not(':visible') ) { 
-    
-    createGenericMarker(); 
-    
-  }
-  
-  else if ( $('#bottombar').is(':visible') ) { bottombar.hide(); }
-  
-  else if ( $('#sidebar').is(':visible') ) { sidebar.hide(); }
-  
-  // sidebar.on( 'hidden', createGenericMarker(e) );
-  // sidebar.on( 'shown', sidebar.hide() );
-  // bottombar.on( 'shown', bottombar.hide() );
-  
+    if (!sidebar.isVisible() && !bottombar.isVisible()) {
+       marker = L.marker(e.latlng, {
+            icon:genericMarker,
+            draggable: true
+            }).on('click', onGenericMarkerClick);
+        bottombar.hide();
+        map.addLayer(marker);
+        map.panTo(e.latlng);
+        $('.sidebar-content').hide();
+        $('#sidebar').scrollTop = 0;
+        sidebar.show($("#create-marker-dialog").show());  
+      
+   } else { bottombar.hide(); 
+            sidebar.hide(); }
+
 };
 
 // Create a generic marker locally before it is saved
 function createGenericMarker(e) {
-        marker = L.marker(e.latlng, {
-                icon:genericMarker,
-                draggable: true
-                }).on('click', onGenericMarkerClick);
-        map.addLayer(marker).panTo(e.latlng);
-        $('.sidebar-content').hide();
-        $('#sidebar').scrollTop = 0;
-        sidebar.show($("#create-marker-dialog").show());
+
 };
 
 // Disable creating markers at low zooms

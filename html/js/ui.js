@@ -24,7 +24,6 @@ $('#locate-button').on('click', function(){
 });
 
 // Show nearby trashbins
-
 $('#btn-locate').on('click', function(){
   sidebar.hide();
   bottombar.hide();
@@ -40,7 +39,6 @@ $('#btn-trashbins').on('click', function(){
   map.addLayer(osmTrashbinLayer);
   
 });
-
 
 // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
 $('.sidebar-link').click(function(e) {

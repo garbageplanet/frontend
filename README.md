@@ -34,19 +34,19 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [x] make dropdown menu display their content
 - [ ] implement templates for the contents of the bottom panel
 - [ ] vertical scroll inside each column that is independant of other columns scroll
+- [ ] set (orientation:portrait) rules
 
 #### Map actions
 - [ ] implement editing system for map features
 - [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons
-- [ ] clicking the `map` if any panel is open should close that panel
-- [ ] fix the `.panTo()` behavior when the bottom panel is open and another marker is clicked on the map.
+- [x] clicking the `map` if any panel is open should close that panel
+- [x] fix the `.panTo()` behavior when the bottom panel is open and another marker is clicked on the map.
 - [x] add `L.Draggable()` to `generic-marker` when side panel is open 
-- [ ] disable map panning on mobile when side panel opens
 
 #### Future prospects
 - [ ] allow users to upload geotagged images, bypassing marejr creation form
 - [ ] implement bootstrap v4
-- [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) to display data in the bottom bar
+- [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
 - [ ] implement calendar view in the bottom panel with [bootstrap-calendar](https://github.com/Serhioromano/bootstrap-calendar)
 - [ ] implement a localized tag cloud view in the bottom bar
 - [ ] implement a localized gallery view in the bottom bar
