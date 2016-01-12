@@ -32,11 +32,9 @@
   <!-- Leaflet -->
   <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
   <script src="https://rawgit.com/dagjomar/Leaflet.ZoomCSS/master/src/leaflet.zoomcss.js"></script>
-  <script src="https://rawgit.com/Turbo87/leaflet-sidebar/master/src/L.Control.Sidebar.js"></script>
-  <script src="js/L.Control.Bar.js"></script>
+  <script src="js/L.Control.Sidebar-018a.js"></script>
   <script src="js/L.Map.Deflate.js"></script>
   <script src="js/L.Overpass.Layer.js" defer></script>
-
   <script src="https://rawgit.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"></script>
 
   <!-- Google reCAPTCHA -->
@@ -55,6 +53,7 @@
   <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
   <link rel="stylesheet" href="css/bootstrap-select.min.css">
   <link rel="stylesheet" href="css/bootstrap-tagsinput.css">
+  <link rel="stylesheet" href="css/bootstrap3-ms-class.css">
   <link rel="stylesheet" href="css/trashbag.css">
   <link rel="stylesheet" href="css/leaflet.draw.css">
 
@@ -80,7 +79,7 @@
         </a>
         
         <a type="button" 
-           class="btn btn-default navbar-toggle collapsed sidebar-link"
+           class="btn btn-default navbar-toggle sidebar-link"
            href="#menu-dialog"
            id="mobile-menu-button">
           <span class="fa fa-fw fa-bars"></span>
@@ -88,7 +87,7 @@
         
       </div>
       
-      <div class="pull-right hidden-xs hidden-sm">
+      <div class="pull-right hidden-xs hidden-sm hidden-ms">
               
         <ul class="nav navbar-nav navbar-right">
             
@@ -1522,30 +1521,31 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 
 <div id="bottombar" class="bottombar-container">
 
-  <div>
-    <button type="button" class="close bottombar-close"><span class="fa fa-fw fa-times"></span></button>
-  </div>
-
   <div class="container">
 
     <div class="row" id="feature-info">
 
       <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div>
-          <h3><span>Actions</span>           
-            <button class="dropdown btn-default btn pull-right">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <span>Options</span><span class="fa fa-fw fa-caret-down"></span>
-              </a>
-              <ul class="dropdown-menu" id="feature-actions">
-               <li><a href="#" class="fa fa-2x fa-flag-o pull-right" title="Report this content">Report</a></li>
-               <li><a href="#" class="fa fa-2x fa-heart-o pull-right" title="Add to favorites">Favourite</a></li>
-               <li><a href="#" class="fa fa-2x fa-facebook-square pull-right" title="Share on Facebook">Share on Facebook</a></li>
-               <li><a href="#" class="fa fa-2x fa-twitter-square pull-right" title="Share on Twitter">Share on Twitter</a></li>
-               <li><a href="#" class="fa fa-2x fa-instagram pull-right" title="Share images on Instagram">Share on Instagram</a></li>
-
+          <h3><span>Actions</span>   
+            
+            <div class="dropdown pull-right">
+              <button class="btn btn-default dropdown-toggle" 
+                      type="button" 
+                      id="dropdownMenu1" 
+                      data-toggle="dropdown">
+                Options<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+               <li><a href="#" class="fa fa-fw fa-flag-o" title="Report this content"> Report</a></li>
+               <li><a href="#" class="fa fa-fw fa-heart-o" title="Add to favorites"> Favorite</a></li>
+               <li role="separator" class="divider"></li>
+               <li><a href="#" class="fa fa-fw fa-facebook-square" title="Share on Facebook"> Share</a></li>
+               <li><a href="#" class="fa fa-fw fa-twitter-square" title="Share on Twitter"> Share</a></li>
+               <li><a href="#" class="fa fa-fw fa-instagram" title="Share images on Instagram"> Share</a></li>
+               <li><a href="#" class="fa fa-fw fa-google-plus-square" title="Share images on Instagram"> Share</a></li>
               </ul>
-            </button>  
+            </div>
           </h3>
         </div>
         <div>
@@ -1596,18 +1596,6 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
           <p class="feature-info-garbage-amount"></p>
           <h4>Tags</h4>
           <p class="feature-tag"></p>
-                    <h4>Tags</h4>
-          <p class="feature-tag"></p>
-                    <h4>Tags</h4>
-          <p class="feature-tag"></p>
-                    <h4>Tags</h4>
-          <p class="feature-tag"></p>
-                    <h4>Tags</h4>
-          <p class="feature-tag"></p>
-                    <h4>Tags</h4>
-          <p class="feature-tag"></p>
-                    <h4>Tags</h4>
-          <p class="feature-tag"></p>
         </div>
       </div>
 
@@ -1616,8 +1604,6 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
           <h3>Media</h3>
         </div>
 
-        
-          <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
           <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
         
       </div>
@@ -1626,6 +1612,7 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
         <div>
           <div>
             <h3>More content</h3>
+            
           </div>
         </div>
       </div>

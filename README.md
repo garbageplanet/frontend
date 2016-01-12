@@ -31,7 +31,7 @@ If you want to work on a specific todo below, the first thing you should do is o
 #### Bottom panel
 - [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
 - [x] fetch thumbnails from imgur instead of raw images
-- [ ] make dropdown menu display their content ()
+- [x] make dropdown menu display their content
 - [ ] implement templates for the contents of the bottom panel
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 

@@ -54,12 +54,11 @@ var sidebar = L.control.sidebar('sidebar', {
         closebutton: 'true',
         });
 map.addControl(sidebar);
-       
-// Bottombar creation and placement
-var bottombar = L.control.bar('bottombar', {
+
+// Bottombar with L.sidebar
+var bottombar = L.control.sidebar('bottombar', {
         position: 'bottom',
-        visible: false,
-        autoPan: true,
+        closebutton: 'true',
         });
 map.addControl(bottombar);
 
@@ -100,7 +99,28 @@ new L.control.scale({
 map.doubleClickZoom.disable();
 
 // Default behaviour for creating a marker
-map.on('click', onMapClick);  
+map.on('click', onMapClick );  
+
+
+
+function onMapClick(e) {
+  
+  
+  if ( $('#sidebar').not(':visible') && $('#bottombar').not(':visible') ) { 
+    
+    createGenericMarker(); 
+    
+  }
+  
+  else if ( $('#bottombar').is(':visible') ) { bottombar.hide(); }
+  
+  else if ( $('#sidebar').is(':visible') ) { sidebar.hide(); }
+  
+  // sidebar.on( 'hidden', createGenericMarker(e) );
+  // sidebar.on( 'shown', sidebar.hide() );
+  // bottombar.on( 'shown', bottombar.hide() );
+  
+};
 
 // Create a generic marker locally before it is saved
 function createGenericMarker(e) {
@@ -114,14 +134,6 @@ function createGenericMarker(e) {
         sidebar.show($("#create-marker-dialog").show());
 };
 
-function onMapClick(e) {
-  
-  sidebar.on( 'hidden', createGenericMarker(e) );
-  sidebar.on( 'shown', sidebar.hide() );
-  bottombar.on( 'shown', bottombar.hide() );
-  
-};
-
 // Disable creating markers at low zooms
 map.on('zoomend', function(e){
     if(e.target.getZoom() < 15){
@@ -131,7 +143,7 @@ map.on('zoomend', function(e){
     }
 }); 
 
-// Default marker types
+// Default marker types and set the marker classes
 var genericMarker = L.divIcon({
     className: 'map-marker marker-color-gray marker-generic',
     iconSize: [30,30],
@@ -143,6 +155,13 @@ var garbageMarker = L.divIcon({
     iconSize: [30,30],
     html:'<i class="fa fa-fw"></i>'
 });
+
+var cleaningMarker = L.divIcon({
+    className: 'map-marker marker-cleaning',
+    iconSize: [30,30],
+    html:'<i class="fa fa-fw"></i>'
+});
+
 
 var deflatedMarker = L.divIcon({
     className: 'map-marker marker-deflated',

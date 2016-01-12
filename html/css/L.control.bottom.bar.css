@@ -17,7 +17,7 @@
     bottom: 0;
 }
 .leaflet-control-bar-bottom.leaflet-control-bar.visible ~ .leaflet-bottom {
-    bottom: 58px;
+    bottom: 300px;
     transition: bottom 0.5s;
 }
 .leaflet-control-bar-bottom.leaflet-control-bar ~ .leaflet-bottom {

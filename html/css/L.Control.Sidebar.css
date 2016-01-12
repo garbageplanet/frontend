@@ -1,3 +1,8 @@
+/** author: Tobias Bieniek (Turbo87)
+// https://github.com/Turbo87/leaflet-sidebar/
+// modified by: adriennn jan-2016
+// License: MIT **/
+
 .leaflet-sidebar {
   position: absolute;
   height: 100%;
@@ -6,12 +11,12 @@
   box-sizing: border-box;
   padding: 0px;
   z-index: 500; }
-  .leaflet-sidebar.left {
-    left: -500px;
-    transition: left 0.5s, width 0.5s;
-    padding-right: 0; }
-    .leaflet-sidebar.left.visible {
-      left: 0; }
+  .leaflet-sidebar.bottom {
+    bottom: -400px;
+    transition: bottom 0.5s, height 0.5s;
+    padding-bottom: 0; }
+    .leaflet-sidebar.bottom.visible {
+      bottom: 0; }
   .leaflet-sidebar.right {
     right: -500px;
     transition: right 0.5s, width 0.5s;
@@ -21,7 +26,7 @@
   .leaflet-sidebar > .leaflet-control {
     height: 100%;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -29,26 +34,32 @@
     padding: 8px 24px;
     font-size: 1.1em;
     background: white;
-    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.65);
     -webkit-border-radius: 0px;
     border-radius: 0px; }
     .leaflet-touch .leaflet-sidebar > .leaflet-control {
       box-shadow: none;
-      border: 2px solid rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(0, 0, 0, 0);
       background-clip: padding-box; }
 
   @media (max-width: 767px) {
-    .leaflet-sidebar {
+    
+    .leaflet-sidebar.right {
       width: 100%;
       padding: 0; }
-      .leaflet-sidebar.left.visible ~ .leaflet-left {
-        left: 100%; }
+    
+    .leaflet-sidebar.bottom {
+      width: 100%;
+      height: 50%;
+      padding: 0; }
+    
+      .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
+        bottom: 0%; }
       .leaflet-sidebar.right.visible ~ .leaflet-right {
         right: 100%; }
-      .leaflet-sidebar.left {
-        left: -100%; }
-        .leaflet-sidebar.left.visible {
-          left: 0; }
+      .leaflet-sidebar.bottom {
+        bottom: -50%; }
+        .leaflet-sidebar.bottom.visible {
+          bottom: 0; }
       .leaflet-sidebar.right {
         right: -100%; }
         .leaflet-sidebar.right.visible {
@@ -63,26 +74,47 @@
   @media (min-width: 768px) and (max-width: 991px) {
     .leaflet-sidebar {
       width: 305px; }
-      .leaflet-sidebar.left.visible ~ .leaflet-left {
-        left: 305px; }
+    
+    .leaflet-sidebar.bottom {
+      width: 100%; }
+    
+    
+    .leaflet-sidebar.bottom {
+      height: 200px; }
+    
       .leaflet-sidebar.right.visible ~ .leaflet-right {
-        right: 305px; } }
+        right: 305px; }
+      .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
+        bottom: 200px; } }
 
   @media (min-width: 992px) and (max-width: 1199px) {
-    .leaflet-sidebar {
+    .leaflet-sidebar.right {
       width: 390px; }
-      .leaflet-sidebar.left.visible ~ .leaflet-left {
-        left: 390px; }
+    
+    .leaflet-sidebar.bottom {
+      width: 100%; }
+    
+    .leaflet-sidebar.bottom {
+      height: 290px; }
+    
       .leaflet-sidebar.right.visible ~ .leaflet-right {
-        right: 390px; } }
+        right: 390px; }
+    
+      .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
+        bottom: 290px; } }
 
   @media (min-width: 1200px) {
-    .leaflet-sidebar {
+    .leaflet-sidebar.right {
       width: 460px; }
-      .leaflet-sidebar.left.visible ~ .leaflet-left {
-        left: 460px; }
+    
+    .leaflet-sidebar.bottom {
+      height: 300px; }
+    
       .leaflet-sidebar.right.visible ~ .leaflet-right {
-        right: 460px; } }
+        right: 460px; }
+    
+      .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
+        bottom: 300px; } }
 
   .leaflet-sidebar .close {
     position: absolute;
@@ -100,8 +132,8 @@
     cursor: pointer;
     z-index: 8; }
 
-.leaflet-left {
-  transition: left 0.8s; }
-
 .leaflet-right {
   transition: right 0.8s; }
+
+.leaflet-bottom {
+  transition: bottom 0.8s; }

@@ -36,7 +36,7 @@ function loadRemoteGarbageMarkers() {
 
                 switch(obj.amount){
                     
-                    // make this with a ternay operator
+                    // make this with a ternary operator
                     
                 case 1:
                     $(marker._icon).addClass('marker-color-green');
@@ -82,14 +82,14 @@ function loadRemoteGarbageMarkers() {
     $.ajax({
         url: 'http://api.garbagepla.net/api/monitoringtiles',
         headers: {"Authorization": "Bearer " + useToken},
-        method: 'get',
+        method: 'GET',
         success: function (data) {
             console.log('data------tiles', data);
             for (var i = 0; i < data.length; i++) {
                 var top_right = [Number(data[i].ne_lat), Number(data[i].ne_lng)];
                 var bottom_left = [Number(data[i].sw_lat), Number(data[i].sw_lng)];
                 var rectangleBounds = [bottom_left, top_right];
-                console.log('rectangleBounds', rectangleBounds);
+                console.log('rectangle bounds', rectangleBounds);
                 var rectangle = L.rectangle(rectangleBounds);
                 rectangle.addTo(map);
             };
@@ -117,17 +117,18 @@ function onRemoteMarkerClick (marker) {
     console.log("remote marker clicked");
     console.log(marker);
     var that = this;
-  
-    //clear the data in the bottom panel
-    $("#feature-info-garbage-type").empty();
-    $("#feature-info-garbage-amount").empty();
-    $("#feature-info-image").attr("src", "");
-    $("#feature-info").find('.feature-image-link').attr("href", ""); // empty the href of the image beforehand
-  
+
     map.panTo([marker.options.mLat, marker.options.mLng]);
   
     if ($(marker._icon).hasClass('marker-garbage')){
         sidebar.hide();
+      
+        //clear the data in the bottom panel
+        $("#feature-info-garbage-type").empty();
+        $("#feature-info-garbage-amount").empty();
+        $("#feature-info-image").attr("src", "");
+        $("#feature-info").find('.feature-image-link').attr("href", "");
+
         bottombar.show();
         // start to inject info
         var markerType = marker.options.mTypes || 'Glass, Glass bottles';
@@ -193,6 +194,8 @@ function onRemoteMarkerClick (marker) {
             default:
                 $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
                 break;
+            
+            // do for the rest of values
         };
         
     } else if ($(marker._icon).hasClass('marker-cleaning')){
