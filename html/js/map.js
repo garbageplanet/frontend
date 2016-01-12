@@ -99,35 +99,28 @@ new L.control.scale({
 map.doubleClickZoom.disable();
 
 // Default behaviour for creating a marker
-map.on('click', onMapClick );  
+map.on('click', onMapClick);  
 
 
 function onMapClick(e) {
-  
-  
+
     if (!sidebar.isVisible() && !bottombar.isVisible()) {
        marker = L.marker(e.latlng, {
             icon:genericMarker,
             draggable: true
             }).on('click', onGenericMarkerClick);
-        bottombar.hide();
         map.addLayer(marker);
         map.panTo(e.latlng);
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         sidebar.show($("#create-marker-dialog").show());  
       
-   } else { bottombar.hide(); 
-            sidebar.hide(); }
-
-};
-
-// Create a generic marker locally before it is saved
-function createGenericMarker(e) {
+   } else { bottombar.hide();sidebar.hide(); }
 
 };
 
 // Disable creating markers at low zooms
+/*
 map.on('zoomend', function(e){
     if(e.target.getZoom() < 15){
         map.off('click', onMapClick);
@@ -135,6 +128,7 @@ map.on('zoomend', function(e){
         map.on('click', onMapClick);
     }
 }); 
+*/
 
 // Default marker types and set the marker classes
 var genericMarker = L.divIcon({
