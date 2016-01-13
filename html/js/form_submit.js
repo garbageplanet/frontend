@@ -17,7 +17,8 @@ $(function () {
         // Input range selector
 		amoutOfTrash = $('input[class=garbage-range-input]').val();
       
-		image_url = $(this).find('.garbage-media-hidden-value').val();
+		image_url = $(this).find('.garbage-image-hidden-value').val();
+        // video_url = $(this).find('.garbage-video-hidden-value').val();
       
         // Coordinates
 		lat = $(this).find('.marker-lat').val();

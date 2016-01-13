@@ -20,7 +20,6 @@ map.on('locationfound', function (e) {
   map.panTo(e.latlng);
 });
 
-
 // Set the marker var else some other scripts complain
 //var marker = new L.Marker();
 
@@ -185,11 +184,6 @@ function onMapClick(e) {
 
 };
 
-
-
-
-
-
 // Default marker types and set the marker classes
 var genericMarker = L.divIcon({
     className: 'map-marker marker-color-gray marker-generic',
@@ -208,7 +202,6 @@ var cleaningMarker = L.divIcon({
     iconSize: [30,30],
     html:'<i class="fa fa-fw"></i>'
 });
-
 
 var deflatedMarker = L.divIcon({
     className: 'map-marker marker-deflated',
