@@ -36,8 +36,9 @@ function loadRemoteGarbageMarkers() {
 
                 switch(obj.amount){
                     
-                    // make this with a ternary operator
-                    
+                case 0:
+                    $(marker._icon).addClass('marker-color-darkgreen');
+                    break;   
                 case 1:
                     $(marker._icon).addClass('marker-color-green');
                     break;
@@ -75,7 +76,7 @@ function loadRemoteGarbageMarkers() {
             });
         },
         error: function(data) {
-            console.log('Something went wrong when fetching remote data', data);
+            console.log('Something went wrong while fetching remote data', data);
         }
     });
     var useToken = localStorage["token"] || window.token;
@@ -101,26 +102,39 @@ function loadRemoteGarbageMarkers() {
 };
 
 // Temporary fix for local (unsaved) marker clicked
-function onGenericMarkerClick (marker) {
-    console.log("generic marker clicked");
+function onLocalMarkerClick (e) {
+    console.log("local marker clicked");
     bottombar.hide();
-    map.panToOffset(marker.latlng, _getHorizontalOffset());
+    marker = this;
+    debugger;
+    map.panToOffset(marker._latlng, _getHorizontalOffset());
+    // debugger;
+    console.log("clicked marker id:", marker._leaflet_id );
+    // debugger;
+    marker.on("dragend", function(event){
+      var newPos = event.target.getLatLng();
+      console.log("dragged marker id:", event.target._leaflet_id );
+    // debugger;
+      $('.form-garbage .marker-lat').val(newPos.lat);
+      $('.form-garbage .marker-lng').val(newPos.lng);
+    // debugger;
+    });
+  
     $('#sidebar').scrollTop =0;
     $('.sidebar-content').hide();
     sidebar.show($("#create-marker-dialog").fadeIn());
 };
 
 // onClick behaviours for saved markers
-function onRemoteMarkerClick (marker) {
+function onRemoteMarkerClick (e) {
     console.log("remote marker clicked");
-    console.log(marker);
+    console.log(e);
     var that = this;
-    
-    map.panToOffset([marker.options.mLat, marker.options.mLng], _getVerticalOffset());
+    debugger;
+    map.panToOffset([e.options.mLat, e.options.mLng], _getVerticalOffset());
   
-    if ($(marker._icon).hasClass('marker-garbage')){
+    if ($(e._icon).hasClass('marker-garbage')){
         sidebar.hide();
-      
         //clear the data in the bottom panel
         $("#feature-info-garbage-type").empty();
         $("#feature-info-garbage-amount").empty();
@@ -129,9 +143,9 @@ function onRemoteMarkerClick (marker) {
 
         bottombar.show();
         // start to inject info
-        var markerType = marker.options.mTypes || 'Glass, Glass bottles';
-        var markerAmount = marker.options.mAmount;
-        var markerRawImage = marker.options.mImageUrl;
+        var markerType = e.options.mTypes || 'Glass, Glass bottles';
+        var markerAmount = e.options.mAmount;
+        var markerRawImage = e.options.mImageUrl;
 
         // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
         String.prototype.insert = function (index, string) {
@@ -149,13 +163,14 @@ function onRemoteMarkerClick (marker) {
            $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
         };*/
       
-        var markerId = marker.options.mId;
+        var markerId = e.options.mId;
 
         $('#feature-info').find('.feature-info-garbage-type').html(markerType);
         $('#feature-info').find('.feature-image').attr('src', markerImage);
         $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
       
-        $('#feature-info').find('.delete-marker-id').click(function (e) {
+        $('#feature-info').find('.btn-delete-marker').click(function (e) {
+          debugger;
             console.log('trigger delete on id', markerId);
             e.preventDefault();
             var useToken = localStorage["token"] || window.token;
@@ -170,7 +185,7 @@ function onRemoteMarkerClick (marker) {
                     console.log('Marker successfully deleted', response);
                 },
                 error: function(response) {
-                    alert('failed to remove the marker');
+                    alert('You cannot remove this marker');
                 }
             });
         })

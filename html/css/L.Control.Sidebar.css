@@ -13,13 +13,19 @@
   z-index: 500; }
   .leaflet-sidebar.bottom {
     bottom: -400px;
-    transition: bottom 0.5s, height 0.5s;
+            transition: bottom 0.5s, height 0.5s;
+    -webkit-transition: bottom 0.5s, height 0.5s;
+       -moz-transition: bottom 0.5s, height 0.5s;
+         -o-transition: bottom 0.5s, height 0.5s;
     padding-bottom: 0; }
     .leaflet-sidebar.bottom.visible {
       bottom: 0; }
   .leaflet-sidebar.right {
     right: -500px;
-    transition: right 0.5s, width 0.5s;
+            transition: right 0.5s, width 0.5s;
+    -webkit-transition: right 0.5s, width 0.5s;
+       -moz-transition: right 0.5s, width 0.5s;
+         -o-transition: right 0.5s, width 0.5s;
     padding-left: 0; }
     .leaflet-sidebar.right.visible {
       right: 0; }
@@ -29,8 +35,9 @@
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+       -moz-box-sizing: border-box;
+         -o-box-sizing: ;
+            box-sizing: border-box;
     padding: 8px 24px;
     font-size: 1.1em;
     background: white;
@@ -38,7 +45,7 @@
     border-radius: 0px; }
     .leaflet-touch .leaflet-sidebar > .leaflet-control {
       box-shadow: none;
-      border: 2px solid rgba(0, 0, 0, 0);
+      border: 0px solid rgba(0, 0, 0, 0);
       background-clip: padding-box; }
 
   @media (max-width: 767px) {
@@ -133,7 +140,15 @@
     z-index: 8; }
 
 .leaflet-right {
-  transition: right 0.8s; }
+          transition: right 0.9s;
+  -webkit-transition: right 0.9s;
+     -moz-transition: right 0.9s;
+       -o-transition: right 0.9s;
+}
 
 .leaflet-bottom {
-  transition: bottom 0.8s; }
+          transition: bottom 0.9s;
+  -webkit-transition: bottom 0.9s;
+     -moz-transition: bottom 0.9s;
+       -o-transition: bottom 0.9s;
+}

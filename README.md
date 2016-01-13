@@ -16,6 +16,21 @@ If you want to work on a specific todo below, the first thing you should do is o
 
 ### TODO
 
+
+#### Bottom panel
+- [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
+- [x] fetch thumbnails from imgur instead of raw images
+- [x] make dropdown menu display their content
+- [ ] implement templates for the contents of the bottom panel
+- [ ] vertical scroll inside each column that is independant of other columns scroll
+- [ ] set (orientation:portrait) rules
+
+#### Map actions
+- [x] fix click unsaved marker behavior
+- [ ] make alert as warnings
+- [ ] implement editing system for map features
+- [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons 
+
 ### General coding, coding style, code review
 - [ ] make the code overall less redundant
 - [ ] implement templating for i18n
@@ -28,26 +43,11 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] implement .getScript() for lazy loading scripts that are not required globally
 - [ ] implement html templates/imports for the sidebar to be able to reuse the tabs layout and save/cancel buttons
 
-#### Bottom panel
-- [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
-- [x] fetch thumbnails from imgur instead of raw images
-- [x] make dropdown menu display their content
-- [ ] implement templates for the contents of the bottom panel
-- [ ] vertical scroll inside each column that is independant of other columns scroll
-- [ ] set (orientation:portrait) rules
-
-#### Map actions
-- [ ] implement editing system for map features
-- [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons
-- [x] clicking the `map` if any panel is open should close that panel
-- [x] fix the `.panTo()` behavior when the bottom panel is open and another marker is clicked on the map.
-- [x] add `L.Draggable()` to `generic-marker` when side panel is open 
-
 #### Future prospects
 - [ ] allow users to upload geotagged images, bypassing marejr creation form
 - [ ] implement bootstrap v4
 - [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
-- [ ] implement calendar view in the bottom panel with [bootstrap-calendar](https://github.com/Serhioromano/bootstrap-calendar)
+- [ ] implement calendar view in the bottom panel
 - [ ] implement a localized tag cloud view in the bottom bar
 - [ ] implement a localized gallery view in the bottom bar
 - [ ] upload images to the garbageplanet [imgur.com](https://api.imgur.com/oauth2) account 
@@ -56,4 +56,4 @@ If you want to work on a specific todo below, the first thing you should do is o
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 
 #### Licence
-This code is realeased under the MIT licence but some parts have a different copyright information, see [this file]().
+This code is realeased under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/bottom-bar/license.md).

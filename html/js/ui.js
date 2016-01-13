@@ -17,6 +17,9 @@ $('#mobile-menu-button').click( function(e) {
     });
 });
 
+// Login and logout classes
+
+
 // Actions for map-tools dropdown
 // Locate the user
 $('#locate-button').on('click', function(){
@@ -53,11 +56,6 @@ $('.menu-backlink').click(function(e) {
     $('#sidebar').scrollTop = 0;
     $(this.hash).fadeIn().siblings().hide();
     e.preventDefault();
-});
-
-// Change the marker-color class as well upon form completion
-$(".btn-save-garbage").on('click', function (){
-$(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
 });
 
 $(".btn-save-cleaning").on('click', function (){
@@ -117,18 +115,12 @@ $('.bottombar-close').click( function(e) {
     });
 });
 
-// Range slider for amount of garbage
-//var garbageRange = $('.garbage-input-range'), garbageValue = $('.garbage-range-value');
-
-//$('.garbage-range-value').html($('.garbage-input-range').attr('value'));
-
-/*$('.garbage-input-range').on('input', function(){
-$('.garbage-range-value').html(this.value);
-}); */
-
+// Range slider for amount of garbage 
 $('.garbage-range-input').on('change', function() {
     // Remove the generic marker class
-    $(marker._icon).removeClass('marker-generic');
+    debugger;
+    $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
+    debugger;
     $('.garbage-range-value').html(this.value);
     // Get the color value from the select options
     var selectedValue = parseInt(jQuery(this).val());
@@ -196,6 +188,14 @@ $('.garbage-range-input').on('change', function() {
 setTimeout(function() {
   $('div.marker-generic').remove();
 }, 200000);
+
+// Show marker creation dialog on button click
+
+$('.btn-edit').on('click', function() {
+  bottombar.hide();
+  sidebar.show($('#create-garbage-dialog').show());
+  // TODO preset the values of the clicked marker
+})
 
 // Activate Summarizing Tile part
 $('#l-active-tile-btn').click(function () {

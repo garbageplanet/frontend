@@ -269,7 +269,7 @@
 	text-indent: 1px;
 	}
 .leaflet-control-zoom-out {
-	font-size: 20px;
+	font-size: 25px;
 	}
 
 .leaflet-touch .leaflet-control-zoom-in {
@@ -279,23 +279,30 @@
 	font-size: 24px;
 	}
 
-
 /* layers control */
-
 .leaflet-control-layers {
 	box-shadow: 0 rgba(0,0,0,0);
 	background: #fff;
 	border-radius: 0px;
 	}
+
 .leaflet-control-layers-toggle {
-	background-image: url(../images/layers.png);
 	width: 36px;
 	height: 36px;
 	}
+
+.leaflet-control-layers a span {
+   display: block;
+  position: absolute;
+   width: 22px;
+  left: 10px;
+    top: 10px;
+	}
+
 .leaflet-retina .leaflet-control-layers-toggle {
-	background-image: url(../images/layers-2x.png);
 	background-size: 26px 26px;
 	}
+
 .leaflet-touch .leaflet-control-layers-toggle {
 	width: 44px;
 	height: 44px;

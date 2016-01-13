@@ -17,6 +17,26 @@ body {
   width:100%;
 }
 
+@media (max-width: 767px) {
+  .alert-container .alert {
+    position: absolute;
+    z-index: 5000;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .alert-container .alert {
+    position: absolute;
+    z-index: 5000;
+    top: 5px;
+    left: 50%;
+    margin: auto;
+  }
+}
+
 /* Icons color shortcuts */
 .fa-icon-green {
   color: limegreen;
@@ -49,8 +69,13 @@ body {
   color: orange;
 }
 
-/* hide all the sidebar content by default */
-.sidebar-content{
+.fa-icon-centered {
+  vertical-align: baseline;
+  align-content: center;
+}
+
+/* hide all the panel content by default */
+.sidebar-content,.bottombar-content{
   display: none;
 }
 
@@ -70,13 +95,6 @@ a.menu-backlink:hover {
 .bottombar-container .container {
   width: auto;
   margin: 10px;
-}
-
-.bottombar-close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  z-index: 1000;
 }
 
 /* Own modifications to leaflet.css*/

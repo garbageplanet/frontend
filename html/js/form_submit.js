@@ -18,14 +18,16 @@ $(function () {
 		amoutOfTrash = $('input[class=garbage-range-input]').val();
       
 		image_url = $(this).find('.garbage-media-hidden-value').val();
-		lat = $(this).find('.l-lat').val();
-		lng = $(this).find('.l-lng').val();
+      
+        // Coordinates
+		lat = $(this).find('.marker-lat').val();
+		lng = $(this).find('.marker-lng').val();
 
 		console.log('lat', lat);
 		console.log('lng', lng);
 		console.log('type of trash', typeOfTrash);
 		console.log('amout of trash', amoutOfTrash);
-		console.log('image_url', image_url);
+		console.log('image url', image_url);
 
 		setTimeout(function () {
 			var useToken = localStorage["token"] || window.token;
@@ -51,7 +53,7 @@ $(function () {
 			    },
 			    error: function (err) {
 			    	console.log('err', err);
-			    	alert('Please register or login to save markers', err);
+			    	alert('There was an error, Make sure you are logged in.', err);
                     sidebar.hide();
                     map.removeLayer(marker);
 			    }
@@ -61,7 +63,7 @@ $(function () {
 	})
 });
 
-
+/*
 $('#button-save-tile').click(function () {
 	var ne_lat = Number($('#activate-tile-dialog').find('.tile-ne-lat').text());
 	var ne_lng = Number($('#activate-tile-dialog').find('.tile-ne-lng').text());
@@ -78,6 +80,7 @@ $('#button-save-tile').click(function () {
 		url: 'http://api.garbagepla.net/api/monitoringtiles',
 		headers: {"Authorization": "Bearer " + useToken},
 		data: {
+          // this needs to have this format [[lat1, lng1], [lat2, lng2]]
 			'name': tile_name,
 		 	'ne_lat': ne_lat,
 	        'ne_lng': ne_lng,
@@ -99,3 +102,4 @@ $('#button-save-tile').click(function () {
 	    }
 	})
 })
+*/

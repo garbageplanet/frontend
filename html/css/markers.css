@@ -2,6 +2,7 @@
 .map-marker:hover {
         filter: drop-shadow(0px 0px 10px rgba(255,255,255,0.7));
 -webkit-filter: drop-shadow(0px 0px 15px rgba(255,255,255,0.7));
+     -o-filter: drop-shadow(0px 0px 15px rgba(255,255,255,0.7));
 }
 
 .map-marker{
@@ -15,6 +16,7 @@
  font-family: 'FontAwesome';
          filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
  -webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+      -o-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
 }
 
 /*Marker contents */
@@ -30,6 +32,11 @@
 }
 .map-marker.marker-deflated:before{
  content: '\f24d';
+}
+.map-marker.marker-deflated{
+         filter: drop-shadow(0 rgba(0,0,0,0));
+ -webkit-filter: drop-shadow(0 rgba(0,0,0,0));
+      -o-filter: drop-shadow(0 rgba(0,0,0,0));
 }
 
 /*Marker color for past events */
@@ -53,5 +60,6 @@
 .map-marker.marker-color-yellow {background: yellow;}
 .map-marker.marker-color-limegreen {background: limegreen;}
 .map-marker.marker-color-green {background: green;}
+.map-marker.marker-color-darkgreen {background: darkgreen;}
 
 .map-marker.marker-color-unknown {background: white;}
