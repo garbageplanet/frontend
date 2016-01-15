@@ -1,0 +1,82 @@
+/* Icon styling according to zoom */
+.z6 .map-marker, .z5 .map-marker, .z4 .map-marker, .z3 .map-marker, .z2 .map-marker, .z1 .map-marker, .z0 .map-marker {display: none;}
+
+.z7 .map-marker {
+  font-size:9px;
+  width:14px !important;
+  height:14px !important;
+  padding-left: 1px;
+  padding-bottom: 1px;
+}
+
+.z8 .map-marker {
+  font-size:10px;
+  width:16px !important;
+  height:16px !important;
+}
+.z9 .map-marker {
+  font-size:12px;
+  width:20px !important;
+  height:20px !important;
+}
+.z10 .map-marker {
+  font-size:14px;
+  width:22px !important;
+  height:22px !important;
+  padding-bottom: 1px;
+}
+.z11 .map-marker {
+  font-size:16px;
+  width:26px !important;
+  height:26px !important;
+  padding-right: 1px;
+}
+.z12 .map-marker {
+  font-size:18px;
+  width:30px !important;
+  height:30px !important;
+  padding-right: 0px;
+  padding-top: 2px;
+}
+.z13 .map-marker {
+  font-size:19px;
+  width:31px !important;
+  height:31px !important;
+  padding-top: 1px;
+}
+.z14 .map-marker {
+  font-size:19px;
+  width:32px !important;
+  height:32px !important;
+  padding-top: 3px;
+  padding-left: 1px;
+}
+.z15 .map-marker {
+  font-size:20px;
+  width:33px !important;
+  height:33px !important;
+  padding-top: 2px;
+}
+.z16 .map-marker {
+  font-size:20px;
+  width:34px !important;
+  height:34px !important;
+  padding-top: 3px;
+}
+.z17 .map-marker {
+  font-size:21px;
+  width:35px !important;
+  height:35px !important;
+  padding-top: 3px;
+}
+.z18 .map-marker {
+  font-size:21px;
+  width:36px !important;
+  height:36px !important;
+  padding-top: 4px;
+  padding-left: 1px;
+}
+
+/* Styling trashbins icons */
+
+.z0 .marker-nearby-trashbin, .z1 .marker-nearby-trashbin, .z2 .marker-nearby-trashbin, .z3 .marker-nearby-trashbin, .z4 .marker-nearby-trashbin, .z5 .marker-nearby-trashbin, .z6 .marker-nearby-trashbin, .z7 .marker-nearby-trashbin, .z8 .marker-nearby-trashbin, .z9 .marker-nearby-trashbin, .z10 .marker-nearby-trashbin, .z11 .marker-nearby-trashbin, .z12 .marker-nearby-trashbin {display: none !important;}
