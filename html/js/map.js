@@ -1,29 +1,9 @@
-//Map scripts
 // Set the map
 // deflate turns shapes into markers at high zoom (minSize in pixels)
 var map = L.map.deflate('map', { zoomControl: false, attributionControl: false, minSize: 50 });
 
-// Locate the user and set the map position
-/*map.locate({
-    setView: true,
-    maxZoom: 15
-});*/
-
-if (navigator.geolocation) {
-  map.locate({
-      setView: true,
-      maxZoom: 15
-  });
-};
-
-map.on('locationfound', function (e) {
-  map.panTo(e.latlng);
-});
-
-// Set the marker var else some other scripts complain
-//var marker = new L.Marker();
-
 // Creating attributions dynamically (GPLv2 author: humitos@github https://github.com/humitos/osm-pois)
+
 var attribution = 'Data &#169; <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> and Contributors';
 
 var tileLayerData = {
@@ -59,6 +39,15 @@ var tileLayers = {};
 tileLayers['Outdoors'].addTo(map);
 // end of GPLv2 by humitos@github
 
+// Locate the user
+map.locate({setView: true, maxZoom: 15});
+
+function onLocationError(e) {
+    console.log('location error', e.message);
+};
+
+map.on('locationerror', onLocationError);
+
 // Sidebar creation and placement
 var sidebar = L.control.sidebar('sidebar', {
         position: 'right',
@@ -76,29 +65,23 @@ map.addControl(bottombar);
 // Make the layer groups and add them to the map
 garbageLayer = new L.LayerGroup();
 areaLayer = new L.LayerGroup();
-coastLayer = new L.LayerGroup();
+pathLayer = new L.LayerGroup();
 eventLayer = new L.LayerGroup();
 
-map.addLayer(garbageLayer, coastLayer, eventLayer, areaLayer);
+map.addLayer(garbageLayer, pathLayer, eventLayer, areaLayer);
 
 var overlayGroups = {
 "Garbage markers": garbageLayer,
 "Cleaning events": eventLayer,
-"Dirty coastal areas": coastLayer,
+"Dirty coasts and roads": pathLayer,
 "Tiles and areas": areaLayer
 };
 
-map.on('moveend', function(e) {
-    console.log('log map moveend');
-    // garbageLayer.clearLayers();
-    loadRemoteGarbageMarkers();
-});
-
 // Add zoom controls above scale
-map.addControl( L.control.zoom({position: 'bottomright'}) );
+map.addControl( L.control.zoom({position: 'topright'}) );
 
 // Add the layer control
-L.control.layers(tileLayers, overlayGroups).setPosition('bottomright').addTo(map);
+L.control.layers(tileLayers, overlayGroups).setPosition('topright').addTo(map);
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-fw fa-th-large fa-icon-black fa-icon-centered'></span>");
@@ -111,6 +94,12 @@ new L.control.scale({
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
+
+map.on('moveend', function(e) {
+    console.log('log map moveend');
+    // garbageLayer.clearLayers();
+    loadRemoteGarbageMarkers();
+});
 
 //MapToOffset//////////////////////////////////////////////////////////
 //See license.md in this repo Copyright 2013 Code for America//////////

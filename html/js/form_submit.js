@@ -8,7 +8,6 @@ $(function () {
 		var lat;
 		var lng;
 		var image_url;
-        // var video_url;
 		
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
 			typeOfTrash.push($(value).val());

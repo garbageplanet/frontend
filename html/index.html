@@ -31,14 +31,15 @@
 
   <!-- Leaflet -->
   <script src="js/leaflet_077.js"></script>
+  <link rel="stylesheet" href="css/leaflet.css" />
   <script src="https://rawgit.com/dagjomar/Leaflet.ZoomCSS/master/src/leaflet.zoomcss.js"></script>
   <script src="js/L.Control.Sidebar-018a.js"></script>
   <script src="js/L.Map.Deflate.js"></script>
   <script src="js/L.Overpass.Layer.js" defer></script>
   <script src="https://rawgit.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"></script>
 
-  <!-- Google reCAPTCHA -->
-  <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+  <!-- Google reCAPTCHA 
+  <script src='https://www.google.com/recaptcha/api.js' async defer></script> -->
   
   <!-- Uploader  -->
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -46,7 +47,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js"></script>
 
   <!-- Local stylesheets -->
-  <link rel="stylesheet" href="css/leaflet.css" />
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/L.Control.Sidebar.css">
   <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
@@ -55,6 +55,7 @@
   <link rel="stylesheet" href="css/bootstrap3-ms-class.css">
   <link rel="stylesheet" href="css/trashbag.css">
   <link rel="stylesheet" href="css/leaflet.draw.css">
+  <!-- <link rel="stylesheet" href="css/bootstrap-social.css"> -->
 
 </head>
 <body>
@@ -137,9 +138,6 @@
             </a>
             <ul class="dropdown-menu" id="user-tools">
               <li><a href="#user-login-dialog">Login</a></li>
-              <li><a href="#create-account-dialog">Register</a></li>
-              <li class="divider"></li>
-              <li><a href="#glome-dialog">Glome</a></li>
               <li class="divider"></li>
               <li><a href="#user-agreement">Terms of use</a></li>
               <li><a href="#credits-dialog">About</a></li>
@@ -208,7 +206,7 @@
         <li role="presentation"><a class="sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
         <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
         <li role="presentation"><a class="sidebar-link" href="#activate-tile-dialog">Activate a tile</a></li>
-        <li role="presentation"><a class="sidebar-link" href="#create-highlight-dialog">Highlight a coastal area</a></li>
+        <li role="presentation"><a class="sidebar-link" href="#create-litter-dialog">Littered segment</a></li>
       </ul>
   
     </div>
@@ -458,36 +456,6 @@
 
                         <br>
                         
-                        <div class="dropdown hidden">
-                          <select class="selectpicker garbage-amount-select form-control"
-                                  title="How much?*"
-                                  data-width="100%"
-                                  required>
-                              <option data-content="<span><i class='icon-trashbag fa-icon-green'>
-                                                    </i> Here and there</span>"
-                                      value="0">
-                              </option>
-                              <option data-content="<span><i class='icon-trashbag fa-icon-blue' >
-                                                    </i> A little too much</span>"
-                                      value="1">
-                              </option>
-                              <option data-content="<span><i class='icon-trashbag fa-icon-yellow'>
-                                                    </i> A whole lot</span>"
-                                      value="2">
-                              </option>
-                              <option data-content="<span><i class='icon-trashbag fa-icon-orange'>
-                                                    </i> Industrial quantities</span>"
-                                      value="3">
-                              </option>
-                              <option data-content="<span><i class='icon-trashbag fa-icon-red'>
-                                                    </i> Nightmare</span>"
-                                      value="4">
-                              </option>
-                          </select>
-                      </div>
-
-                      <br>
-                        
                       <div class="dropdown" >
                           <select class="selectpicker garbage-type-select form-control"
                                   title="What kind?*"
@@ -525,12 +493,12 @@
                           <select class="selectpicker form-control"
                                   title="What to do here?*"
                                   data-width="100%">
+                              <option value="nothing">It's been cleaned already</option>  
                               <option value="pickup">Need to pick it up</option>
                               <option value="collect">Need to collect it</option>
                               <option value="organize_event">Organize a cleaning</option>
                               <option value="need_help">I need help</option>
                               <option value="inform">Tell local authorities</option>
-                              <option value="nothing">It's been cleaned already</option>
                           </select>
                       </div>
                         
@@ -646,32 +614,7 @@
                           </div>
                           <br>
                         </div>
-                        
-                        <br>
-                        
-                        <div class="input-group input-group-lg">
-                              <span class="input-group-btn">
-                                  <button class="btn btn-default"
-                                          type="button">
-                                  <span class="fa fa-fw fa-facebook"></span></button>
-                                  <input class="l-facebook-share-link" 
-                                         type="link" name="facebook-share-link" style="display:none;">
-                              </span>
-                              <input type="text" 
-                                     class="form-control l-facebook-event-hidden-value" 
-                                     placeholder="Link to the facebook share">
-                        </div>
-                        
-                        <br>
-                        
-                        <div class="input-group input-group-lg">
-                          <span class="input-group-addon"><span class="fa fa-fw fa-twitter"></span></span>
-                          <input type="text" class="form-control"
-                                 placeholder="Tweet from this account on save"
-                                 data-error=""
-                                 data-remote="">
-                        </div>
-                        
+
                         <br>
                         
                         <div class="row " id="add-marker-tag">
@@ -682,6 +625,33 @@
                                    data-role="tagsinput"
                                    placeholder="Add tags"/>
                             </div>
+                        </div>
+                        
+                        <br>
+                        
+                        <div class="pull-down">
+                          <div class="btn-group btn-group-justified" role="group">
+                            <div class="btn-group btn-group-lg" role="group">
+                              <button type="button" title="Share on Facebook" class="btn btn-facebook">
+                                <span class="fa fa-fw fa-facebook"></span><span class="hidden"></span>
+                              </button>
+                            </div>
+                            <div class="btn-group btn-group-lg" role="group">
+                              <button type="button" title="Share on Twitter" class="btn btn-twitter">
+                                <span class="fa fa-fw fa-twitter"></span><span class="hidden"></span>
+                              </button>
+                            </div>
+                            <div class="btn-group btn-group-lg" role="group">
+                              <button type="button" title="Share on google plus" class="btn btn-google-plus">
+                                <span class="fa fa-fw fa-google-plus"></span><span class="hidden">Delete</span>
+                              </button>
+                            </div>
+                            <div class="btn-group btn-group-lg" role="group">
+                              <button type="button" title="Share on instagram" class="btn btn-instagram">
+                                <span class="fa fa-fw fa-instagram"></span><span class="hidden">Cleaned</span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
                         
                       </div>  
@@ -930,41 +900,41 @@
 
         </form>
     </div>
-    <div class="sidebar-content" id="create-highlight-dialog">
+    <div class="sidebar-content" id="create-litter-dialog">
       <h2>
         <span>
            <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
               href="#create-marker-dialog">
             </a>
         </span>
-          Mark marine litter</h2>  
-                     <form id="create-highlight-form" 
+          Mark litter along a path</h2>  
+                     <form id="create-litter-form" 
                            role="form"
                            accept-charset="UTF-8"
                            data-toggle="validator">
                       <div class="tab-view">
                         <ul class="nav nav-tabs nav-justified" role="tablist">
                           <li class="active">
-                            <a href="#coastal-main" data-toggle="tab">
+                            <a href="#litter-main" data-toggle="tab">
                               <span class="fa fa-fw fa-map-marker"></span></a>
                           </li>
                           <li>
-                            <a href="#coastal-quantitative" data-toggle="tab">
+                            <a href="#litter-quantitative" data-toggle="tab">
                               <span class="fa fa-fw fa-bar-chart-o"></span></a>
                           </li>
                           <li>
-                            <a href="#coastal-media" data-toggle="tab">
+                            <a href="#litter-media" data-toggle="tab">
                               <span class="fa fa-fw fa-share-alt"></span></a>
                           </li>
                           <li>
-                            <a href="#coastal-info" data-toggle="tab">
+                            <a href="#litter-info" data-toggle="tab">
                               <span class="fa fa-fw fa-question"></span></a>
                           </li>
                         </ul>
 
                         <div class="tab-content">
                             <br>
-                          <div class="tab-pane active form-group form-group-lg" id="coastal-main" role="tabpanel">
+                          <div class="tab-pane active form-group form-group-lg" id="litter-main" role="tabpanel">
                             
                 <div class="alert alert-warning" role="alert">
                 <span class="fa fa-fw fa-exclamation"></span>
@@ -972,17 +942,16 @@
                 </div>
                             
                                                     <div class="range-slider">
-                        <p>On a scale from 1 to 10, amount of garbage: <strong><span class="range-value"></span></strong></p>
+                        <p>On a scale from 1 to 10, amount of litter: <strong><span class="range-value"></span></strong></p>
                         <input class="input-range" type="range" value="5" min="1" max="10">
     
                         </div> 
                             <br>
                             
                             <div class="dropdown" >
-                        <select id="coastal-trash-amount"
+                        <select id="litter-garbage-amount"
                                 class="selectpicker"
-                                name="coastal-trash-amount-select[]"
-                                title="How much trash is there?"
+                                title="How much litter is there?"
                                 data-width="100%">
                             <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-green'>
                                                   </i> Here and there</span>"
@@ -1004,14 +973,11 @@
                     </div>
                     <br>
                     <div class="dropdown" >
-                        <select id="coastal-trash-type"
-                                class="selectpicker"
-                                name="coastal-trash-type-select[]"
-                                title="What kind of trash? (multiple allowed)"
+                        <select id="litter-trash-type"
+                                class="selectpicker"title="What kind of litter? (multiple allowed)"
                                 multiple data-live-search="true"
                                 data-selected-text-format="count"
                                 data-width="100%"
-                                aria-labelledby="trash-type-select"
                                 multiple >
                             <option value="glass">Fishing / fisheries gears</option>
                             <option value="glass">Glass</option>
@@ -1033,18 +999,17 @@
                             
                           </div>
                           
-                           <div class="tab-pane form-group form-group-lg" id="coastal-quantitative" role="tabpanel">
+                           <div class="tab-pane form-group form-group-lg" id="litter-quantitative" role="tabpanel">
                              
                              
                              <br>
                       
                       <div class="dropdown">
                           <select class="selectpicker form-control"
-                                  name="garbage-unit-select[]"
                                   title="Which units?"
                                   data-width="100%">
-                              <option value="reeds">Metric</option>
-                               <option value="trees">Imperial</option>
+                              <option value="metric">Metric</option>
+                               <option value="imperial">Imperial</option>
                           </select>
                       </div>
 
@@ -1056,7 +1021,7 @@
                                     type="number"
                                     min="1"
                                     step="1"
-                                    placeholder="Garbage pieces per unit area">
+                                    placeholder="Garbage pieces per length unit">
                           </input>
                       </div>
                       
@@ -1068,46 +1033,37 @@
                                     type="number"
                                     min="1"
                                     step="1"
-                                    placeholder="Surface area">
+                                    placeholder="Length of the path">
                           </input>
                       </div>
                     
                       <br>
-                             
-                             
-                             <br>
-                             
-                                                 <div class="input-group input-group-lg">
-                          <span class="input-group-btn">
-                              <button class="btn btn-default"
-                                      type="button">
-                                  <span class="fa fa-fw fa-file-o"></span></button>
-                          </span>
-                          <input type="text" class="form-control"
-                                 placeholder="Upload geoJSON file">
-                    </div>
-                    <br>
-                    <div class="input-group input-group-lg">
-                          <span class="input-group-btn">
-                              <button class="btn btn-default"
-                                      type="button">
-                                  <span class="fa fa-fw fa-globe"></span><span class="hidden-xs">Add link</span></button>
-                          </span>
-                          <input type="text" class="form-control"
-                                 placeholder="WMS server url">
-                    </div>
-                    <br>
+                                    
+                      <div class="input-group input-group-lg">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" type="button"><span class="fa fa-fw fa-file-o"></span>
+                          </button>
+                        </span><input type="text" class="form-control" placeholder="Upload geoJSON file">
+                      </div>
+                      <br>
+                      <div class="input-group input-group-lg">
+                        <span class="input-group-btn"><button class="btn btn-default" type="button">
+                         <span class="fa fa-fw fa-globe"></span><span class="hidden-xs">Add link</span></button>
+                        </span>
+                        <input type="text" class="form-control" placeholder="WMS server url">
+                      </div>
+                      <br>
                              
                              
                           </div>
                           
-                           <div class="tab-pane form-group form-group-lg" id="coastal-media" role="tabpanel">
+                           <div class="tab-pane form-group form-group-lg" id="litter-media" role="tabpanel">
                           </div>
                           
-                           <div class="tab-pane form-group form-group-lg" id="coastal-info" role="tabpanel">
+                           <div class="tab-pane form-group form-group-lg" id="litter-info" role="tabpanel">
                              
                             <br>     
-                            <p> We use wind and coastal configuration data to identify regions where marine litter accumulates on the shores. Our algoritms are, however, not as good as human eyes and you can use this tool to mark area on the map where you know there is always a lot of trash on the shorelines. Coastal highlights are visible and accessible between zoom levels 5 and 20 but you can only draw them at zoom level 17 or more (<a href="#" onclick="map.setZoom(17)">zoom to level 17 now</a>). Click on the <em>polyline</em> icon on the left to manually draw a highligthing line  on the map. You can cancel drawing at any time by pressing <kbd>Esc</kbd>. Alternatively, you can upload a GeoJSON <a href="http://geojson.org/geojson-spec.html#multilinestring" target="_blank">polyline</a>. You can even link to a <a href="http://mapserver.org/ogc/wms_server.html" target="_blank">WMS resource</a> in order to create the highlight.
+                            <p> Paths identify long stretches of land that accumulate garbage, such as shorelines and  road shoulders. Click the <em>pencil</em> icon in the first tab of this form to start drawing. You can cancel drawing at any time by pressing <kbd>Esc</kbd>. Alternatively, you can upload a GeoJSON <a href="http://geojson.org/geojson-spec.html#multilinestring" target="_blank">polyline</a>. You can also link to a <a href="http://mapserver.org/ogc/wms_server.html" target="_blank">WMS resource</a> in order to display the path.
                             </p>
                              
                             <br>
@@ -1139,102 +1095,45 @@
     </div>
 
     <div class="sidebar-content" id="user-login-dialog">
+      <div>
         <div>
             <h2>
                 Login to your account.
             </h2>
         </div>
-        <form id="login-form" 
-              class="form-group"
-              accept-charset="UTF-8"
-              data-toggle="validator">
-                <div class="form-group form-group-lg">
-                    <div>
-                        <input type="email"
-                               name="email"
-                               class="form-control"
-                               placeholder="Email"
-                               id="login-email"
-                               required>
-                    </div>
-                    <br>
-                    <div>
-                        <input type="password"
-                               name="password"
-                               class="form-control"
-                               placeholder="Password"
-                               id="login-password"
-                               required>
-                    </div>
-                    <br>
-                    <div>
-                        <div>
-                            <button type="submit"
-                                    id="send"
-                                    class="btn btn-info btn-lg btn-block">Login &raquo</button>
-                        </div>
-                        <div class="help-block with-errors"></div>
-                        <!-- send the user to the #account-info page if login is succesful -->
-                    </div>
-                </div>
+        <form id="login-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
+          <div class="form-group form-group-lg">
+            <div>
+              <input type="email" name="email" class="form-control" placeholder="Email" id="login-email" required>
+            </div>
+            <br>
+            <div>
+              <input type="password" class="form-control" placeholder="Password" id="login-password" required>
+            </div>
+            <br>
+            <div>
+              <div>
+                <button type="submit" id="" class="btn btn-info btn-lg btn-block">Login &raquo</button>
+              </div>
+              <br>
+              <div>
+                <button type="submit" id="" class="btn btn-info btn-lg btn-block">Glome Go (Anonymous) &raquo</button>
+              </div>
+                <div class="help-block with-errors"></div>
+            </div>
+          </div>
         </form>
-      
         <div>
             <p>
-              <a class="sidebar-link pull-left" href="#recover-credentials">Forgotten your password?
-                      </a>
-              <a class="sidebar-link pull-right" href="#create-account-dialog">Register
-                      </a>
+              <a class="sidebar-link" href="#glome-dialog">I already have a Glome soft account</a><br>
+              <a class="sidebar-link" href="#recover-credentials">Forgotten your password?</a><br>
+              <a href="http://www.glome.me" target="_blank">About Glome</a><br>
+              <a class="sidebar-link" href="#glome-dialog">Register</a><br>
             </p>
         </div>
         <br>
-        <br>
-        <div>
-          <p>Visit our <a href="http://www.garbagepla.net" target="_blank">homepage</a> for more informations on the project                and look at the <a href="#credits-dialog" class="sidebar-link">credits</a> for the tools used to build this                     platform</p>.
         </div>
   </div>
-    <div class="sidebar-content" id="glome-dialog">
-        <div>
-            <h2>
-                Login with Glome.
-            </h2>
-            <p class="lead text-muted">
-                Glome soft accounts allow you to use the platform without using an email address or password. With a <a href="http://ww.glome.me" target="_blank">Glome</a> soft account, you can access the platform from any device simply by sharing the identification key you receive.</a>.
-            </p>
-        </div>
-        <div class="alert alert-warning" role="alert">
-            <span class="fa fa-fw fa-exclamation"></span>
-            <span class="sr-only">Note:</span>
-              This tool will be available soon.
-        </div>
-        <form id="login-form" 
-              class="form-group"
-              accept-charset="UTF-8"
-              data-toggle="validator">
-                <div class="form-group form-group-lg">
-                    <div>
-                        <div>
-                            <button id="get-glome-key-btn"
-                                    type="submit"
-                                    id="send"
-                                    class="btn btn-info btn-lg btn-block">Request key</button>
-                        </div>
-                        <br>
-                        <div class="input-group input-group-lg">
-                              <span class="input-group-btn">
-                                  <button id="send-glome-key-btn"
-                                          class="btn btn-default"
-                                          type="button">
-                                  <span class="hidden-xs">Get in!</span></button>
-                              </span>
-                              <input type="text" class="form-control" id="glome-key" placeholder="Paste your Glome key">
-                        </div>
-                       <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-        <div class="g-recaptcha" data-sitekey="6Ldf4hQTAAAAAPhHGfJBH3KO687giTSgeV8pK3c0"></div>
-        </form>
-    </div>
     <div class="sidebar-content" id="create-account-dialog">
         <div id="regisration-div">
              <div>
@@ -1330,6 +1229,56 @@
             <p>Read our <a class="sidebar-link" href="#privacy-policy">privacy policy</a> and <a class="sidebar-link" href="#user-agreement">terms of service</a> before starting to use this platform.
             </p>
         </div>
+    </div>
+    <div class="sidebar-content" id="glome-dialog"> 
+
+      <div>
+          <h2>
+            <span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#user-login-dialog"></a>    
+            </span>
+              Pair with your Glome account.
+          </h2>
+      </div>
+
+      <div>
+      <h3>Scan the QR code</h3>
+      
+        
+      </div>
+      
+      <div>
+      
+        <h3>Type in your key</h3>
+        
+        <form id="login-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
+          <div class="form-group form-group-lg">
+            <div>
+              <div class="row">
+                 <div class="input-group" style="width:100%">
+                  <div class="col-lg-4">
+                    <input type="text" class="form-control" maxlength="4" size="4" pattern="[0-9][a-f]{4}" required>
+                  </div>
+                  <div class="col-lg-4">
+                    <input type="text" class="form-control" maxlength="4" size="4" pattern="[0-9][a-f]{4}" required>
+                  </div>
+                  <div class="col-lg-4">
+                  <input type="text" class="form-control" maxlength="4" size="4" pattern="[0-9][a-f]{4}" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div>
+              <div>
+                <button type="submit" class="btn btn-info btn-lg btn-block">Submit &raquo</button>
+              </div> 
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+        </form>
+        
+      </div>
+      
     </div>
 
     <div class="sidebar-content" id="recover-credentials">

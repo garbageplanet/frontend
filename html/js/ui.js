@@ -21,8 +21,9 @@ $('#mobile-menu-button').click( function(e) {
 
 
 // Actions for map-tools dropdown
+
 // Locate the user
-$('#locate-button').on('click', function(){
+$('.btn-locate').on('click', function(){
   map.locate({setView: true, maxZoom: 20});
 });
 
@@ -187,7 +188,7 @@ $('.garbage-range-input').on('change', function() {
 setTimeout(function() {
   $('div.marker-generic').remove();
   $('div.marker-unsaved').remove();
-  sidebar.close();
+  sidebar.hide();
 }, 200000);
 
 // Show marker creation dialog on button click

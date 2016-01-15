@@ -16,17 +16,12 @@ If you want to work on a specific todo below, the first thing you should do is o
 
 ### TODO
 
-
 #### Bottom panel
 - [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
-- [x] fetch thumbnails from imgur instead of raw images
-- [x] make dropdown menu display their content
 - [ ] implement templates for the contents of the bottom panel
 - [ ] vertical scroll inside each column that is independant of other columns scroll
-- [ ] set (orientation:portrait) rules
 
 #### Map actions
-- [x] fix click unsaved marker behavior
 - [ ] make alert as warnings
 - [ ] implement editing system for map features
 - [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons 
@@ -44,14 +39,13 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] implement html templates/imports for the sidebar to be able to reuse the tabs layout and save/cancel buttons
 
 #### Future prospects
-- [ ] allow users to upload geotagged images, bypassing marejr creation form
+- [ ] allow users to upload geotagged images, bypassing marker creation form
 - [ ] implement bootstrap v4
 - [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
 - [ ] implement calendar view in the bottom panel
 - [ ] implement a localized tag cloud view in the bottom bar
 - [ ] implement a localized gallery view in the bottom bar
 - [ ] upload images to the garbageplanet [imgur.com](https://api.imgur.com/oauth2) account 
-- [ ] upload videos to the garbageplanet [youtube.com](https://developers.google.com/youtube/v3/docs/videos/insert) channel
 
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 

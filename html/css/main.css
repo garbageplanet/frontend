@@ -74,6 +74,31 @@ body {
   align-content: center;
 }
 
+.btn-facebook, .btn-facebook:hover, .btn-facebook:active, .btn-facebook:visited {
+  background-color: rgba( 59, 89, 152, 0.8) !important;
+  border-color: rgba( 59, 89, 152, 1) !important;
+  color: #FFF;
+}
+
+.btn-google-plus, .btn-google-plus:hover, .btn-google-plus:active, .btn-google-plus:visited {
+  background-color: rgba(221, 75, 57, 0.8) !important;
+  border-color: rgba(221, 75, 57, 1) !important;
+  color: #FFF;
+}
+
+.btn-twitter, .btn-twitter:hover, .btn-twitter:active, .btn-twitter:visited {
+  background-color: rgba(0, 172, 237, 0.8) !important;
+  border-color: rgba(0, 172, 237, 1) !important;
+  color: #FFF;
+}
+
+.btn-instagram, .btn-instagram:hover, .btn-instagram:active, .btn-instagram:visited {
+  background-color: rgba(18, 86, 136, 0.8) !important;
+  border-color: rgba(18, 86, 136, 1) !important;
+  color: #FFF;
+}
+
+
 /* hide all the panel content by default */
 .sidebar-content,.bottombar-content{
   display: none;
@@ -123,7 +148,7 @@ a.menu-backlink:hover {
 .leaflet-bar a,
 .leaflet-bar a:hover {
 	background-color: #fff;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 0px solid #ccc;
 	width: 40px;
 	height: 40px;
 	line-height: 40px;

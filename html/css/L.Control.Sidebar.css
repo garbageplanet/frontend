@@ -139,16 +139,16 @@
     cursor: pointer;
     z-index: 8; }
 
-.leaflet-right {
-          transition: right 0.9s;
-  -webkit-transition: right 0.9s;
-     -moz-transition: right 0.9s;
-       -o-transition: right 0.9s;
+.leaflet-top {
+          transition: right 0.5s;
+  -webkit-transition: right 0.5s;
+     -moz-transition: right 0.5s;
+       -o-transition: right 0.5s;
 }
 
 .leaflet-bottom {
-          transition: bottom 0.9s;
-  -webkit-transition: bottom 0.9s;
-     -moz-transition: bottom 0.9s;
-       -o-transition: bottom 0.9s;
+          transition: bottom 0.5s;
+  -webkit-transition: bottom 0.5s;
+     -moz-transition: bottom 0.5s;
+       -o-transition: bottom 0.5s;
 }

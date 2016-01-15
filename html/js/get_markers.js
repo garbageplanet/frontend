@@ -1,8 +1,5 @@
 //Get markers
 
-console.log('zoom is larger than 14');
-loadRemoteGarbageMarkers();
-
 function loadRemoteGarbageMarkers() {
     console.log('loadremotegarbagemarkers');
     garbageLayer.clearLayers();
