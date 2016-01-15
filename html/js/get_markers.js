@@ -73,48 +73,24 @@ function loadRemoteGarbageMarkers() {
             });
         },
         error: function(data) {
-            console.log('Something went wrong while fetching remote data', data);
+            console.log('Something went wrong while fetching the data', data);
         }
     });
     var useToken = localStorage["token"] || window.token;
-    $.ajax({
-        url: 'http://api.garbagepla.net/api/monitoringtiles',
-        headers: {"Authorization": "Bearer " + useToken},
-        method: 'GET',
-        success: function (data) {
-            console.log('data------tiles', data);
-            for (var i = 0; i < data.length; i++) {
-                var top_right = [Number(data[i].ne_lat), Number(data[i].ne_lng)];
-                var bottom_left = [Number(data[i].sw_lat), Number(data[i].sw_lng)];
-                var rectangleBounds = [bottom_left, top_right];
-                console.log('rectangle bounds', rectangleBounds);
-                var rectangle = L.rectangle(rectangleBounds);
-                rectangle.addTo(map);
-            };
-        },
-        error: function (err) {
-            console.log('tiles get err', err);
-        }
-    })
 };
 
 // Temporary fix for local (unsaved) marker clicked
 function onLocalMarkerClick (e) {
-    console.log("local marker clicked");
+    // console.log("local marker clicked");
     bottombar.hide();
     marker = this;
-    debugger;
     map.panToOffset(marker._latlng, _getHorizontalOffset());
-    // debugger;
     console.log("clicked marker id:", marker._leaflet_id );
-    // debugger;
     marker.on("dragend", function(event){
       var newPos = event.target.getLatLng();
-      console.log("dragged marker id:", event.target._leaflet_id );
-    // debugger;
+      // console.log("dragged marker id:", event.target._leaflet_id );
       $('.form-garbage .marker-lat').val(newPos.lat);
       $('.form-garbage .marker-lng').val(newPos.lng);
-    // debugger;
     });
   
     $('#sidebar').scrollTop =0;
@@ -127,7 +103,6 @@ function onRemoteMarkerClick (e) {
     console.log("remote marker clicked");
     console.log(e);
     var that = this;
-    debugger;
     map.panToOffset([e.options.mLat, e.options.mLng], _getVerticalOffset());
   
     if ($(e._icon).hasClass('marker-garbage')){
@@ -140,7 +115,7 @@ function onRemoteMarkerClick (e) {
 
         bottombar.show();
         // start to inject info
-        var markerType = e.options.mTypes || 'Glass, Glass bottles';
+        var markerType = e.options.mTypes /*|| 'Glass, Glass bottles'*/;
         var markerAmount = e.options.mAmount;
         var markerRawImage = e.options.mImageUrl;
 
@@ -167,7 +142,7 @@ function onRemoteMarkerClick (e) {
         $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
       
         $('#feature-info').find('.btn-delete-marker').click(function (e) {
-          debugger;
+          //debugger;
             console.log('trigger delete on id', markerId);
             e.preventDefault();
             var useToken = localStorage["token"] || window.token;
@@ -188,7 +163,9 @@ function onRemoteMarkerClick (e) {
         })
         // amount mapping
         switch(markerAmount) {
-            
+            case 0:
+                $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
+                break;
             case 1:
                 $('#feature-info').find('.feature-info-garbage-amount').html('You are seeing ghosts');
                 break;
@@ -196,10 +173,28 @@ function onRemoteMarkerClick (e) {
                 $('#feature-info').find('.feature-info-garbage-amount').html('Here and there');
                 break;
             case 3:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Quite');
+                $('#feature-info').find('.feature-info-garbage-amount').html('Quite some');
                 break;
             case 4:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Too much');
+                $('#feature-info').find('.feature-info-garbage-amount').html('Already too much');
+                break;
+            case 5:
+                $('#feature-info').find('.feature-info-garbage-amount').html('What happened here?');
+                break;
+            case 6:
+                $('#feature-info').find('.feature-info-garbage-amount').html('This is getting out of hand');
+                break;
+            case 7:
+                $('#feature-info').find('.feature-info-garbage-amount').html('Dude...');
+                break;
+            case 8:
+                $('#feature-info').find('.feature-info-garbage-amount').html('What the what?');
+                break;
+            case 9:
+                $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
+                break;
+            case 10:
+                $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky, lok at...');
                 break;
             default:
                 $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');

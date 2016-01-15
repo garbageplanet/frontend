@@ -19,9 +19,15 @@ $('#mobile-menu-button').click( function(e) {
 
 // Login and logout classes
 
+// Show an alert if zoom if
+map.on('zoomend', function(e){
+    var myZoom = e.target.getZoom();
+  
+    if ( myZoom < 10) { $('.alert-zoom').removeClass('hidden'); }
+    else { $('.alert-zoom').addClass('hidden'); }
+});
 
 // Actions for map-tools dropdown
-
 // Locate the user
 $('.btn-locate').on('click', function(){
   map.locate({setView: true, maxZoom: 20});
@@ -192,14 +198,14 @@ setTimeout(function() {
 }, 200000);
 
 // Show marker creation dialog on button click
-
-$('.btn-edit').on('click', function() {
+$('.btn-edit').on('click', function(marker, e) {
   bottombar.hide();
   sidebar.show($('#create-garbage-dialog').show());
   // TODO preset the values of the clicked marker
 });
 
 // Activate Summarizing Tile part
+/*
 $('#l-active-tile-btn').click(function () {
     var r = 0.01
     var lat = Number($('#activate-tile-dialog').find('.tile-center-lat').text());
@@ -227,17 +233,4 @@ $('#l-active-tile-btn').click(function () {
         $('#activate-tile-dialog').find('.tile-sw-lat').text(sw_lat);
         $('#activate-tile-dialog').find('.tile-sw-lng').text(sw_lng);
     });
-});
-
-// TODO Edit markers from a link in #marker-info or #event-info
-/*
-    $(".edit-marker").click(function(event) {
-    event.preventDefault();
-        $('.sidebar-content').hide();
-        $('#sidebar').scrollTop =0;
-        sidebar.show($("#create-cleaning-dialog").fadeIn('slow'));
-                $('#create-cleaning h2').text("Edit this cleaning event");
-                $('#set-current-location span:nth-child(1)').text('editing');
-
-    });
-*/
+});*/

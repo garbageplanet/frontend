@@ -22,14 +22,13 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
-- [ ] make alert as warnings
+- [ ] make the events markers + api routes
 - [ ] implement editing system for map features
 - [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons 
 
 ### General coding, coding style, code review
 - [ ] make the code overall less redundant
 - [ ] implement templating for i18n
-- [ ] transfer any inline css styling to external stylesheet
 - [ ] split main.css into components-specific files
 
 #### Making the code more maintainable

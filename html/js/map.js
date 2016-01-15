@@ -1,7 +1,7 @@
 // Set the map
 // deflate turns shapes into markers at high zoom (minSize in pixels)
 var map = L.map.deflate('map', { zoomControl: false, attributionControl: false, minSize: 50 });
-
+var hash = new L.Hash(map);
 // Creating attributions dynamically (GPLv2 author: humitos@github https://github.com/humitos/osm-pois)
 
 var attribution = 'Data &#169; <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> and Contributors';
@@ -131,47 +131,41 @@ map.on('click', onMapClick);
 
 function onMapClick(e) {
 
-    if (!sidebar.isVisible() && !bottombar.isVisible()) {
+    if (!sidebar.isVisible() && !bottombar.isVisible() && myZoom > 10) {
        marker = L.marker(e.latlng, {
             icon:genericMarker,
             draggable: true
             }).on('click', onLocalMarkerClick).addTo(map);
-       
-            /*map.on('zoomend', function(e){
-                if(e.target.getZoom() < 7){
-                    $('.alert-zoom').removeClass('hidden');
-                }}); */
       
         $('.form-garbage .marker-lat').val(marker._latlng.lat);
         $('.form-garbage .marker-lng').val(marker._latlng.lng);
       
-        // $('#activate-tile-dialog .tile-center-lat').html(e.latlng.lat);
-        // $('#activate-tile-dialog .tile-center-lng').html(e.latlng.lng);
-        
-        //map.addLayer(marker);
-      
         map.panToOffset(marker._latlng, _getHorizontalOffset());
-      //debugger;
+
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         sidebar.show($("#create-marker-dialog").show());
       
         marker.on("dragend", function(event){
           var newPos = event.target.getLatLng();
-          // console.log("dragged to latlng:", newPos );
-          // debugger;
+
           console.log("dragged marker id:", event.target._leaflet_id );
-          // debugger;
+
           $('.form-garbage .marker-lat').val(newPos.lat);
           $('.form-garbage .marker-lng').val(newPos.lng);
-          // console.log("dragged marker newLat:",  newPos.lat); // value is also in newPos.lat/lng
-          // console.log("dragged marker newLng:", newPos.lng );
-          // debugger;
         });
-      
-   } else { bottombar.hide();sidebar.hide(); }
+   }
+  
+  else { bottombar.hide();
+        sidebar.hide();
+       }
 
 };
+
+
+
+
+
 
 // Default marker types and set the marker classes
 var genericMarker = L.divIcon({
