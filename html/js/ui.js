@@ -1,46 +1,73 @@
 // Make dropdown menu linuks works
 $(document).ready(function() {
-$('#user-tools').find('a').click( function(e) {
-        e.preventDefault();
-        bottombar.hide();
-        sidebar.show();
-        $(this.hash).fadeIn().siblings().hide();
-    });
+  $('#user-tools').find('a').click( function(e) {
+    if ($(this).hasClass('dropdown-link')) {
+          e.preventDefault();
+          bottombar.hide();
+          sidebar.show();
+          $(this.hash).fadeIn().siblings().hide();
+    }
+  });
 });
 
 // Make collapsed menu button work
 $(document).ready(function() {
-$('#mobile-menu-button').click( function(e) {
+$('#btn-mobile-menu').click( function(e) {
         e.preventDefault();
         bottombar.hide();
         sidebar.show($('#mobile-menu-dialog').fadeIn().siblings().hide());
     });
 });
 
-// Login and logout classes
-
-// Show an alert if zoom if
-map.on('zoomend', function(e){
-    var myZoom = e.target.getZoom();
+// Swtch session function
+function switchSession(sessionStatus) {  
   
-    if ( myZoom < 10) { $('.alert-zoom').removeClass('hidden'); }
-    else { $('.alert-zoom').addClass('hidden'); }
-});
+    if (sessionStatus == logout) {
+      
+      $('#session-status a').text('Login').attr("href","#user-login-dialog");
+      $('#session-status a').addClass('dropdown-link');
+      $('li:has("a""):contains("User info"")').remove();
+      $('#user-tools').dropdown();
+      debugger;
+      
+    }
+  
+    if (sessionStatus == login) {
+      
+      $("#session-status a").text("Logout").attr("href","#");
+      $("#session-status a").removeClass('dropdown-link').addClass('btn-logout');
+      $("#user-tools").prepend('<li><a class="dropdown-link" href="#account-info">User info</a></li>');
+      $("#user-tools").dropdown();
+      debugger;
+      
+    }  
+};
+
+// Alerts by lgal http://stackoverflow.com/a/33662720/2842348
+function showAlert(errorMessage, errorType, closeDelay) {
+
+    // default to alert-info; other options include success, warning, danger
+    var errorType = errorType || "info";    
+
+    // create the alert div
+       var alert = $('<div class="alert alert-' + errorType + ' fade in">')
+        .append(errorMessage);
+    // add the alert div to top of alerts-container, use append() to add to bottom
+    $(".alert-container").prepend(alert);
+
+    // if closeDelay was passed - set a timeout to close the alert
+    if (closeDelay)
+        window.setTimeout(function() { alert.alert("close") }, closeDelay);     
+};
 
 // Actions for map-tools dropdown
 // Locate the user
-$('.btn-locate').on('click', function(){
-  map.locate({setView: true, maxZoom: 20});
-});
-
-// Show nearby trashbins
 $('#btn-locate').on('click', function(){
   sidebar.hide();
   bottombar.hide();
   map.locate({setView: true, maxZoom: 20});
 });
-
-
+// Show nearby trashbins
 $('#btn-trashbins').on('click', function(){
 
   osmTrashbinLayer = new L.OverPassLayer({
@@ -92,14 +119,6 @@ sidebar.on('hide', function () {
         // $('#user-login-dialog').find('.with-errors').hide();
         // $('#glome-dialog').find('.with-errors').hide();
     });
-
-//  General Alerts
-/* $(document).ready(function() {
-   if($(window).width() < 1024){
-       $('.alert-draw').removeClass('hidden');
-       window.setTimeout(function() { $(".alert-draw").fadeOut('slow'); }, 4000);
-   }
-}); */
 
 // Forms styling and basic actions
 $(document).ready(function() {
@@ -203,34 +222,3 @@ $('.btn-edit').on('click', function(marker, e) {
   sidebar.show($('#create-garbage-dialog').show());
   // TODO preset the values of the clicked marker
 });
-
-// Activate Summarizing Tile part
-/*
-$('#l-active-tile-btn').click(function () {
-    var r = 0.01
-    var lat = Number($('#activate-tile-dialog').find('.tile-center-lat').text());
-    var lng = Number($('#activate-tile-dialog').find('.tile-center-lng').text());
-    var bottom_left = [lat-r, lng-r];
-    var top_right = [lat+r, lng+r];
-
-    console.log('lat', lat);
-    console.log('lng', lng);
-    console.log('bottom_left', bottom_left);
-    console.log('top_right', top_right);
-
-    var rectangleBounds = [bottom_left, top_right];
-    var rectangle = L.rectangle(rectangleBounds);
-    rectangle.addTo(map);
-    rectangle.editing.enable();
-    window.rectangle = rectangle;
-    rectangle.on('edit', function(data) {
-        window.ne_lat = data.target._latlngs[1].lat;
-        window.ne_lng = data.target._latlngs[1].lng;
-        window.sw_lat = data.target._latlngs[3].lat;
-        window.sw_lng = data.target._latlngs[3].lng;
-        $('#activate-tile-dialog').find('.tile-ne-lat').text(ne_lat);
-        $('#activate-tile-dialog').find('.tile-ne-lng').text(ne_lng);
-        $('#activate-tile-dialog').find('.tile-sw-lat').text(sw_lat);
-        $('#activate-tile-dialog').find('.tile-sw-lng').text(sw_lng);
-    });
-});*/

@@ -1,23 +1,26 @@
 // authentication, login, and registering
-//
-// created by: ville glad 6.11.2015
+// author: ville glad 6.11.2015
+// modified by adriennn
+
+
+
+$(".btn-logout").on('click', logout );
 
 $(function() {
     // login
     $("#login-form").submit( login );
 
-    // logout
-    $("#logout-btn").click( logout );
+   
 
     // register
     $("#registration-form").submit( registerUser );
-    
+    /*
     // TODO get a glome key
     $("#get-glome-key-btn").click( getGlomeKey );
     
     // TODO send glome key
     $("#send-glome-key-btn").click( sendGlomeKey );
-
+*/
 });
 
  //login function
@@ -36,13 +39,14 @@ function login(e) {
             localStorage["token"] = response.token;
             console.log('logged in')
             $('#user-login-dialog').hide();
-            $('.alert-login').css({"display":"none"}); 
+            showAlert("Login successful", "success", 2000);
+            switchSession(login);
             $.ajax({
               url: 'http://api.garbagepla.net/api/authenticate/user',
               headers: {"Authorization": "Bearer " + response.token},
               method: 'get',
               success: function (data) {
-                console.log('alreay logged in', data);
+                // console.log('alreay logged in', data);
                 $('#account-info').find('.username').html(data.user.name);
                 $('#account-info').find('.user_name').html(data.user.name);
                 $('#account-info').find('.user_id').html(data.user.id);
@@ -55,9 +59,8 @@ function login(e) {
         },
         error: function(response) {
             console.log(response);
-            alert('Login failed');
+            showAlert("Failed to log in.", "danger", 2000);
             localStorage.removeItem("token");
-            // $('#user-login-dialog').find('.with-errors').html('<div class="alert alert-danger" role="alert"><span class="fa fa-fw fa-exclamation" aria-hidden="true"></span><strong>Login failed!</strong> Wrong username or password.</div>');
         }
     });
 }
@@ -65,17 +68,15 @@ function login(e) {
 //logout
 function logout() {
     if(!localStorage.token) {
-        alert('User is not logged in');
+        showAlert("User is not logged in.", "info", 2000);
         localStorage.clear();
     }
     localStorage.clear();
-    $('#account-info').hide();
-    $('#menu-dialog').show();
-    $('.alert-login').css({"display":"block"});
-    alert("User was signed out");
+    sidebar.hide();
+    switchSession(logout);
+    showAlert("You are logged out.", "info", 2000);
     return;
-
-}
+};
 
 //register
 function registerUser(e) {
@@ -94,7 +95,10 @@ function registerUser(e) {
         success: function(response) {
             localStorage["token"] = response.token;
             console.log('registered and logged in');
+            showAlert("Registration sucessful, you are now logged in.", "success", 2000);
+            switchSession(login);
             $('#create-account-dialog').hide();
+            $('#login > a').text('Logout');
             $.ajax({
               url: 'http://api.garbagepla.net/api/authenticate/user',
               headers: {"Authorization": "Bearer " + response.token},
@@ -114,15 +118,15 @@ function registerUser(e) {
         },
         error: function(response) {
             console.log(response);
-            alert('Registration failed');
+            showAlert("Something went wrong. Failed to register.", "danger", 2000);
             localStorage.removeItem("token");
         }
     });
 
-}
+};
 
 // TODO THE FUNCTIONS BELOW ARE MOCK
-
+/*
 // Submit glome key function
 function sendGlomeKey(e) {
     e.preventDefault();
@@ -167,3 +171,4 @@ function sendGlomeKey(e) {
 function getGlomeKey(e) {
     e.preventDefault();
 };
+*/

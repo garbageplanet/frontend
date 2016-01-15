@@ -75,7 +75,7 @@
         <a type="button" 
            class="btn btn-default navbar-toggle sidebar-link"
            href="#menu-dialog"
-           id="mobile-menu-button">
+           id="btn-mobile-menu">
           <span class="fa fa-fw fa-bars"></span>
         </a>
         
@@ -125,10 +125,10 @@
               <span class="hidden title-collapsed">User tools</span>
             </a>
             <ul class="dropdown-menu" id="user-tools">
-              <li><a href="#user-login-dialog">Login</a></li>
+              <li id="session-status"><a class="dropdown-link" href="#user-login-dialog">Login</a></li>
               <li class="divider"></li>
-              <li><a href="#user-agreement">Terms of use</a></li>
-              <li><a href="#credits-dialog">About</a></li>
+              <li><a class="dropdown-link" href="#user-agreement">Terms of use</a></li>
+              <li><a class="dropdown-link" href="#credits-dialog">About</a></li>
             </ul>
           </li>  
 
@@ -185,10 +185,6 @@
     <div class="sidebar-content" id="create-marker-dialog">
         <h2 class="actions-panel">Action for this location
         </h2>
-        <div class="alert alert-info alert-login" role="alert">
-            <span class="fa fa-fw fa-exclamation"></span>
-          You need to <a href="#user-login-dialog" class="alert-link sidebar-link">login</a> to save markers.
-        </div>
       
       <ul class="nav nav-pills nav-stacked">
         <li role="presentation"><a class="sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
@@ -467,11 +463,11 @@
                               <option value="party">Party leftovers</option>
                               <option value="fastfood">Fastfood garbage</option>
                               <option value="vehicle">Large vehicle</option>
-                              <option value="vehicle">Bicycle</option>
-                              <option value="vehicle">Motorcycle</option>
-                              <option value="vehicle">Fishing gears</option>
-                              <option value="vehicle">Fishing net</option>
-                              <option value="vehicle">Fishing line</option>
+                              <option value="bicycle">Bicycle</option>
+                              <option value="motorcyle">Motorcycle</option>
+                              <option value="fishing">Fishing gears</option>
+                              <option value="net">Fishing net</option>
+                              <option value="lines">Fishing line</option>
                           </select>
                       </div>
                         
@@ -1197,21 +1193,20 @@
             <h2>
                 Welcome <span class="username"></span>
             </h2>
-            <h3>User Id</h3>
+            <h4>User Id</h4>
             <p class="user_id"></p>
-            <h3>User Name</h3>
+            <h4>User Name</h4>
             <p class="user_name"></p>
-            <h3>Glome key value</h3>
+            <h4>Glome key value</h4>
             <p class="glome-key-info"></p>
-            <h3>User Email</h3>
+            <h4>User Email</h4>
             <p class="user_email"></p>
-            <h3>Created At</h3>
+            <h4>Created At</h4>
             <p class="created_at"></p>
-            <h3>Updated At</h3>
+            <h4>Updated At</h4>
             <p class="updated_at"></p>
             <button type="button"
-                id="logout-btn"
-                class="btn btn-default btn-lg btn-block">
+                    class="btn btn-default btn-lg btn-block btn-logout">
             <span class="fa fa-sign-out fa-fw"></span> Logout
             </button>
             <p>Read our <a class="sidebar-link" href="#privacy-policy">privacy policy</a> and <a class="sidebar-link" href="#user-agreement">terms of service</a> before starting to use this platform.
@@ -1548,10 +1543,31 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
   
 </div><!-- Contents of the bottom bar -->
 
-<div class="alert-container">
+<div class="alert-container text-center">
   <div class="alert alert-zoom alert-danger text-center hidden" role="alert">
     <i class="fa fa-fw fa-search-plus"></i> Zoom in to create markers.
   </div>
+  
+  <div class="alert alert-login-success alert-success text-center hidden" role="alert">
+    <i class="fa fa-fw fa-user"></i> You are now logged in.
+  </div>
+  
+    <div class="alert alert-login-danger alert-success text-center hidden" role="alert">
+    <i class="fa fa-fw fa-user"></i> You are not logged in.
+  </div>
+  
+    <div class="alert alert-marker-success alert-success text-center hidden" role="alert">
+    <i class="fa fa-fw fa-user"></i> Marker saved successfully.
+  </div>
+  
+    <div class="alert alert-marker-error alert-danger text-center hidden" role="alert">
+    <i class="fa fa-fw fa-user"></i> Failed to save the marker.
+  </div>
+  
+      <div class="alert alert-marker-error alert-waring text-center hidden" role="alert">
+    <i class="fa fa-fw fa-user"></i> You are now logged out.
+  </div>
+  
 </div><!-- Alerts -->
 
 <script src="js/map.js"></script>

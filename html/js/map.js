@@ -126,6 +126,13 @@ function _getHorizontalOffset () {
 };
 //////////////////////////////////////////////////////////////////////
 
+// Store zoom
+map.on('zoomend', function(e){
+    myZoom = e.target.getZoom();
+  
+    if ( myZoom < 10) { showAlert("Zoom in closer to create markers", "info", 1200); }
+});
+
 // Default behaviour for creating a marker
 map.on('click', onMapClick);  
 
