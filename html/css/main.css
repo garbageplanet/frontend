@@ -1,0 +1,359 @@
+@import "map.css";
+@import "markers.css";
+@import "tour.css";
+
+html {height: 100%}
+
+body { 
+  overflow: hidden;
+  height: 100%;
+
+   }
+
+.map-container { 
+  bottom:0;
+  position:absolute;
+  top:50px;
+  width:100%;
+}
+
+@media (max-width: 767px) {
+  .alert-container .alert {
+    position: absolute;
+    z-index: 5000;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .alert-container .alert {
+    position: absolute;
+    z-index: 5000;
+    top: 5px;
+    left: 50%;
+    margin: auto;
+  }
+}
+
+/* Icons color shortcuts */
+.fa-icon-green {
+  color: limegreen;
+}
+.fa-icon-red {
+  color: orangered;
+}
+.fa-icon-blue {
+  color: dodgerblue;
+}
+.fa-icon-yellow {
+  color: yellow;
+}
+.fa-icon-black {
+  color: black;
+}
+.fa-icon-white {
+  color: white;
+}
+.fa-icon-gray {
+  color: lightgray;
+}
+.fa-icon-darkgray {
+  color: #464646;
+}
+.fa-icon-seagreen {
+  color: mediumseagreen;
+}
+.fa-icon-orange {
+  color: orange;
+}
+
+.fa-icon-centered {
+  vertical-align: baseline;
+  align-content: center;
+}
+
+.btn-facebook, .btn-facebook:hover, .btn-facebook:active, .btn-facebook:visited {
+  background-color: rgba( 59, 89, 152, 0.8) !important;
+  border-color: rgba( 59, 89, 152, 1) !important;
+  color: #FFF;
+}
+
+.btn-google-plus, .btn-google-plus:hover, .btn-google-plus:active, .btn-google-plus:visited {
+  background-color: rgba(221, 75, 57, 0.8) !important;
+  border-color: rgba(221, 75, 57, 1) !important;
+  color: #FFF;
+}
+
+.btn-twitter, .btn-twitter:hover, .btn-twitter:active, .btn-twitter:visited {
+  background-color: rgba(0, 172, 237, 0.8) !important;
+  border-color: rgba(0, 172, 237, 1) !important;
+  color: #FFF;
+}
+
+.btn-instagram, .btn-instagram:hover, .btn-instagram:active, .btn-instagram:visited {
+  background-color: rgba(18, 86, 136, 0.8) !important;
+  border-color: rgba(18, 86, 136, 1) !important;
+  color: #FFF;
+}
+
+
+/* hide all the panel content by default */
+.sidebar-content,.bottombar-content{
+  display: none;
+}
+
+/* Style the menu link in the sidebar */
+a.menu-backlink {
+  color: lightgray;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+a.menu-backlink:hover {
+  color: dimgrey;
+  text-decoration: none;
+}
+
+/* Style the bottom bar */
+.bottombar-container .container {
+  width: auto;
+  margin: 10px;
+}
+
+/* Own modifications to leaflet.css*/
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.lealfet-bar,
+.lealfet-control {
+	border: 0px;
+}
+
+.leaflet-touch .leaflet-bar a {
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 40px;
+	height: 40px;
+	}
+
+.leaflet-touch .leaflet-control-layers, .leaflet-touch leaflet-control-layers-toggle {
+  border-bottom: :0px solid rgba(0,0,0,0);
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+	background-color: #fff;
+	border-bottom: 0px solid #ccc;
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+}
+
+.leaflet-control-layers, .leaflet-bar {
+	  -webkit-border-radius: 0 !important;
+         -moz-border-radius: 0 !important;
+              border-radius: 0 !important;
+}
+
+/* Override L.Sidebar styles */
+.leaflet-sidebar {
+ padding: 0px;
+}
+
+ .leaflet-sidebar .close {
+	right: 10px;
+    top: 10px;
+}
+
+/* Shift leaflet-bar control buttons */
+
+.leaflet-top .leaflet-control {
+	margin-top: 0px;
+	}
+
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 0px;
+	}
+
+.leaflet-left .leaflet-control {
+	margin-left: 0px;
+	}
+
+.leaflet-right .leaflet-control {
+	margin-right: 0px;
+	}
+
+#roska-button {
+  background-color: limegreen;
+  height: 40px;
+  width: 40px;
+-webkit-border-radius: 0 !important;
+   -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+}
+
+#search-button, #search-nearby-trashbin, #locate-button {
+-webkit-border-radius: 0 !important;
+   -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+}
+
+.leaflet-bar a:first-child {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.leaflet-touch .leaflet-bar, .easy-button-container {
+	border: 0px solid rgba(0,0,0,0);
+	background-clip: padding-box;
+    border-radius: 0;
+}
+
+.leaflet-bar, leaflet-bottom {
+  z-index: 50;
+}
+
+.leaflet-control-layers {
+          box-shadow: none;
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+}
+
+.leaflet-bar {
+          box-shadow: none;
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+}
+
+.leaflet-sidebar.right > .leaflet-control {
+          box-shadow: none;
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+}
+
+/* Custom bootstrap styles */
+
+/* Style default buttons and link colors */
+.btn-menu a, .btn-search, .nav-pills li a {
+  color: #464646 !important;
+}
+/*Style the navbar*/
+.navbar-default {
+  background-color: #FFF;
+  border-color: transparent;
+}
+
+.navbar .navbar-form {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.nav .active { background:blue !important}
+
+input {
+ border-radius: 0 !important;
+}
+button {
+ border-radius: 0 !important;
+}
+.from-control {
+ border-radius: 0 !important;
+}
+.input-group-addon {
+ border-radius: 0 !important;
+}
+textarea {
+ border-radius: 0 !important;
+}
+
+h1,h2,h3,h4, .lead, p, input, textarea, select, button, .page-name, .navbar .nav-pills > li > a {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 200
+}
+
+@media (max-width: 768px) {
+  .nav-justified > li {
+    display: table-cell;
+    width: 1%;
+  }
+ 
+  .nav-justified > li > a  {
+    border-bottom: 1px solid #ddd !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .nav-tabs.nav-justified > .active > a,
+  .nav-tabs.nav-justified > .active > a:hover,
+  .nav-tabs.nav-justified > .active > a:focus {
+    border-bottom-color: #fff !important;
+  }
+  
+}
+
+textarea {
+    resize: none;
+}
+
+.bootstrap-select .req button span {
+  font-weight: bold;
+}
+
+
+.popover.bottom .arrow:after {
+ border-bottom-color: rgba(86,86,86,0.8);
+}
+
+.popover.top .arrow:after {
+ border-top-color: rgba(86,86,86,0.8);
+}
+
+.popover-content { color: #FFF;
+          font-family: 'Work Sans', sans-serif;
+          font-weight: 400
+          /*text-shadow: 1px 1px #000;*/
+}
+
+.popover-navigation { position: absolute;
+           bottom: -4px;
+           right: -8px;
+}
+
+.btn-tour {color: #FFF;}
+
+.bootstrap-tagsinput {
+    width: 100% !important;
+    border-radius: 0px !important;
+}
+
+.nav-tabs > li > a, .nav-pills a {
+  border-radius: 0 !important;
+}
+
+ .nav-pills a {
+  font-size: 1.5em;
+  font-family: 'Work Sans', sans-serif;
+}
+
+/* Squarify bs3 buttons and alerts */
+.btn {border-radius: 0;}
+.btn-group>.btn:last-child,
+.btn-group> btn:first-child {
+  border-radius: 0;
+  border-radius: 0;
+}
+
+.alert {border-radius: 0;}
+
+.tt-menu {background-color: #fff}
