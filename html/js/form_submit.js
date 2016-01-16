@@ -8,17 +8,17 @@ $(function () {
 		var lat;
 		var lng;
 		var image_url;
-		
+
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
 			typeOfTrash.push($(value).val());
 		});
-      
+
         // Input range selector
 		amoutOfTrash = $('input[class=garbage-range-input]').val();
-      
+
 		image_url = $(this).find('.garbage-image-hidden-value').val();
         // video_url = $(this).find('.garbage-video-hidden-value').val();
-      
+
         // Coordinates
 		lat = $(this).find('.marker-lat').val();
 		lng = $(this).find('.marker-lng').val();
@@ -30,36 +30,34 @@ $(function () {
 		console.log('image url', image_url);
 
 		setTimeout(function () {
-			var useToken = localStorage["token"] || window.token;
-			$.ajax({
-				url: 'http://api.garbagepla.net/api/trashes',
-				headers: {"Authorization": "Bearer" + useToken},
-				data: {
-				 	'lat': lat,
-			        'lng': lng,
-			        'amount': amoutOfTrash,
-			        'types': typeOfTrash.join(),
-			        'image_url': image_url
-			    },
-			    method: 'post',
-			    success: function (data) {
-			    	console.log('success data', data);
-			    	alert('Marker saved successfully!');
-			    	if (amoutOfTrash > 8) {
-			    		alert('Alert open311');
-			    	};
-                    sidebar.hide('slow');
-
-			    },
-			    error: function (err) {
-			    	console.log('err', err);
-			    	alert('There was an error, Make sure you are logged in.', err);
-                    sidebar.hide();
-                    map.removeLayer(marker);
-			    }
-			})
+      var useToken = localStorage["token"] || window.token;
+      $.ajax({
+          method: api.createTrash.method,
+          url: api.createTrash.url(),
+          headers: {"Authorization": "Bearer" + useToken},
+          data: {
+              'lat': lat,
+              'lng': lng,
+              'amount': amoutOfTrash,
+              'types': typeOfTrash.join(),
+              'image_url': image_url
+          },
+          success: function (data) {
+              console.log('success data', data);
+              alert('Marker saved successfully!');
+              if (amoutOfTrash > 8) {
+                  alert('Alert open311');
+              };
+              sidebar.hide('slow');
+          },
+          error: function (err) {
+              console.log('err', err);
+              alert('There was an error, Make sure you are logged in.', err);
+              sidebar.hide();
+              map.removeLayer(marker);
+          }
+      })
 		}, 100);
-
 	})
 });
 
@@ -77,28 +75,27 @@ $('#button-save-tile').click(function () {
 	console.log('tile name', tile_name);
 	var useToken = localStorage["token"] || window.token;
 	$.ajax({
-		url: 'http://api.garbagepla.net/api/monitoringtiles',
-		headers: {"Authorization": "Bearer " + useToken},
-		data: {
-          // this needs to have this format [[lat1, lng1], [lat2, lng2]]
-			'name': tile_name,
-		 	'ne_lat': ne_lat,
-	        'ne_lng': ne_lng,
-	        'sw_lat': sw_lat,
-	        'sw_lng': sw_lng
+      method: api.createMonitoringTiles.method,
+      url: api.createMonitoringTiles.url(),
+      headers: {"Authorization": "Bearer " + useToken},
+      data: {
+            // this needs to have this format [[lat1, lng1], [lat2, lng2]]
+        'name': tile_name,
+        'ne_lat': ne_lat,
+        'ne_lng': ne_lng,
+        'sw_lat': sw_lat,
+        'sw_lng': sw_lng
 	    },
-	    method: 'post',
 	    success: function (data) {
 	    	console.log('suc data', data);
 	    	alert('Tile saved successfully!');
 	    	window.rectangle.editing.disable();
-            sidebar.hide('slow');
-
+        sidebar.hide('slow');
 	    },
 	    error: function (err) {
 	    	console.log('err', err);
 	    	alert('Please register to save markers', err);
-            sidebar.hide();
+        sidebar.hide();
 	    }
 	})
 })

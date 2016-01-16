@@ -9,11 +9,10 @@ function loadRemoteGarbageMarkers() {
 
     // ajax request
     $.ajax({
-        type: "GET",
-        url: "http://api.garbagepla.net/api/trashes/withinbounds?bounds=" + bounds,
+        type: api.readTrashWithinBounds.method,
+        url: api.readTrashWithinBounds.url(bounds),
         success: function(data) {
-
-               $(data).each(function(index, obj) {
+            $(data).each(function(index, obj) {
                 console.log(obj);
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
@@ -32,10 +31,10 @@ function loadRemoteGarbageMarkers() {
                 });
 
                 switch(obj.amount){
-                    
+
                 case 0:
                     $(marker._icon).addClass('marker-color-darkgreen');
-                    break;   
+                    break;
                 case 1:
                     $(marker._icon).addClass('marker-color-green');
                     break;
@@ -92,7 +91,7 @@ function onLocalMarkerClick (e) {
       $('.form-garbage .marker-lat').val(newPos.lat);
       $('.form-garbage .marker-lng').val(newPos.lng);
     });
-  
+
     $('#sidebar').scrollTop =0;
     $('.sidebar-content').hide();
     sidebar.show($("#create-marker-dialog").fadeIn());
@@ -104,7 +103,7 @@ function onRemoteMarkerClick (e) {
     console.log(e);
     var that = this;
     map.panToOffset([e.options.mLat, e.options.mLng], _getVerticalOffset());
-  
+
     if ($(e._icon).hasClass('marker-garbage')){
         sidebar.hide();
         //clear the data in the bottom panel
@@ -128,28 +127,28 @@ function onRemoteMarkerClick (e) {
             };
 
         markerImage = markerRawImage.insert(26, "t");
-        
+
         // TODO put a placeholder if the media is empty?
         // FIXME marker without media display a broken image icon
         /*if (markerRawImage.val().length() == null ) {
            $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
         };*/
-      
+
         var markerId = e.options.mId;
 
         $('#feature-info').find('.feature-info-garbage-type').html(markerType);
         $('#feature-info').find('.feature-image').attr('src', markerImage);
         $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
-      
+
         $('#feature-info').find('.btn-delete-marker').click(function (e) {
-          //debugger;
+            //debugger;
             console.log('trigger delete on id', markerId);
             e.preventDefault();
             var useToken = localStorage["token"] || window.token;
             $.ajax({
-                type: "DELETE",
+                type: api.deleteTrash.method,
+                url: api.deleteTrash.url(markerId),
                 headers: {"Authorization": "Bearer " + useToken},
-                url: "http://api.garbagepla.net/api/trashes/" + markerId,
                 success: function(response) {
                     bottombar.hide();
                     loadRemoteGarbageMarkers();
@@ -199,15 +198,13 @@ function onRemoteMarkerClick (e) {
             default:
                 $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
                 break;
-            
+
             // do for the rest of values
         };
-        
+
     } else if ($(marker._icon).hasClass('marker-cleaning')){
         bottombar.hide();
         $('.sidebar-content').hide();
         sidebar.show($("#cleaning-info").fadeIn())
     };
-
-
 };

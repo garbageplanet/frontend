@@ -1,9 +1,9 @@
 // Instance the tour
 var tour = new Tour({
   name: "roska-tourxx",
- template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times-circle'></i></a></div></div>",
+  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times-circle'></i></a></div></div>",
   steps: [
-  { 
+  {
     content: "Discover the platform by following this quick introductory tour.",
     duration: 4000,
     orphan: true,
@@ -45,7 +45,7 @@ var tour = new Tour({
     duration: 8000,
     placement: 'top',
   },
-  { 
+  {
     element: ".actions-panel",
     content: "Select any of these options to interact with the map and add the desired features.",
     onNext: function (tour) { $('.sidebar-content').hide(); sidebar.show($('#create-highlight-dialog').fadeIn('slow')); },
@@ -82,7 +82,7 @@ var tour = new Tour({
     duration: 8000,
     placement: 'left',
     container: 'body',
-  }, 
+  },
   {
     content: "That's it! Just remember this platform is still a prototype and many features aren't functional yet. Click on the title above the map to get in touch with us about coding some improvements!",
     duration: 12000,
@@ -101,8 +101,8 @@ window.startRoskaTour = function() {
             $('#sidebar').scrollTop = 0;
             tour.init();
             tour.start( true );
-            } 
-  
+            }
+
         };
 
 $(document).ready(function() {
