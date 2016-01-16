@@ -194,6 +194,8 @@ function sendGlomeKey(e) {
     e.preventDefault();
     var glomeKey = $("#glome-key").val();
     $.ajax({
+        // TODO: add proper entries to config.js
+        // and add support to the backend
         type: "POST",
         url: "http://api.garbagepla.net/api/glome/",
         data: {
@@ -204,9 +206,9 @@ function sendGlomeKey(e) {
             console.log('registered and logged in with glome');
             $('#create-account-dialog').hide();
             $.ajax({
+              method: 'get',
               url: 'http://api.garbagepla.net/api/authenticate/glome',
               headers: {"Authorization": "Bearer " + response.token},
-              method: 'get',
               success: function (data) {
                 console.log('succee data', data);
                 $('#account-info').find('.username').hide;
