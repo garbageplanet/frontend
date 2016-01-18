@@ -23,6 +23,7 @@ var tileLayerData = {
     }
 };
 
+
 var tileLayers = {};
     for (tile in tileLayerData) {
         var tileAttribution;
@@ -94,12 +95,6 @@ new L.control.scale({
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
-
-map.on('moveend', function(e) {
-    console.log('log map moveend');
-    // garbageLayer.clearLayers();
-    loadRemoteGarbageMarkers();
-});
 
 //MapToOffset//////////////////////////////////////////////////////////
 //See license.md in this repo Copyright 2013 Code for America//////////

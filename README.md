@@ -25,6 +25,8 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] make the events markers + api routes
 - [ ] implement editing system for map features
 - [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons 
+- [ ] make the map add new markers instead of reloading everything in the current view when map moves
+
 
 ### General coding, coding style, code review
 - [ ] make the code overall less redundant

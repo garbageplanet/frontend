@@ -1,5 +1,11 @@
-//Get markers
+// Get new markers if the map moves
+map.on('moveend', function(e) {
+    console.log('log map moveend');
+    // garbageLayer.clearLayers();
+    loadRemoteGarbageMarkers();
+});
 
+//Get markers
 function loadRemoteGarbageMarkers() {
     console.log('loadremotegarbagemarkers');
     garbageLayer.clearLayers();

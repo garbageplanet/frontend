@@ -40,8 +40,9 @@ function login(e) {
             localStorage["token"] = response.token;
             console.log('logged in')
             $('#user-login-dialog').hide();
-            showAlert("Login successful", "success", 2000);
-            switchSession(login);
+            showAlert("Login successful", "success", 1500);
+            switchSession("login");
+
             $.ajax({
                 method: api.readUser.method,
                 url: api.readUser.url(),
@@ -69,12 +70,12 @@ function login(e) {
 //logout
 function logout() {
     if(!localStorage.token) {
-        showAlert("User is not logged in.", "info", 2000);
+        showAlert("User is already logged out.", "info", 2000);
         localStorage.clear();
     }
     localStorage.clear();
     sidebar.hide();
-    switchSession(logout);
+    switchSession("logout");
     showAlert("You are logged out.", "info", 2000);
     return;
 };
@@ -97,7 +98,7 @@ function registerUser(e) {
             localStorage["token"] = response.token;
             console.log('registered and logged in');
             showAlert("Registration successful, you are now logged in.", "success", 2000);
-            switchSession(login);
+            switchSession("login");
             $('#create-account-dialog').hide();
             $('#login > a').text('Logout');
             $.ajax({

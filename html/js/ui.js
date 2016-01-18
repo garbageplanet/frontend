@@ -1,6 +1,6 @@
 // Make dropdown menu linuks works
 $(document).ready(function() {
-  $('#user-tools').find('a').click( function(e) {
+  $('#user-tools').on('click', 'a', function(e) {
     if ($(this).hasClass('dropdown-link')) {
           e.preventDefault();
           bottombar.hide();
@@ -22,32 +22,39 @@ $('#btn-mobile-menu').click( function(e) {
 // Swtch session function
 function switchSession(sessionStatus) {  
   
-    if (sessionStatus == logout) {
+    if (sessionStatus == "logout") {
       
       $('#session-status a').text('Login').attr("href","#user-login-dialog");
+      $('#session-status a').attr("id","");
       $('#session-status a').addClass('dropdown-link');
-      $('li:has("a""):contains("User info"")').remove();
+      $('#user-info-lnk').remove();
       $('#user-tools').dropdown();
-      debugger;
       
     }
   
-    if (sessionStatus == login) {
+    if (sessionStatus == "login") {
       
       $("#session-status a").text("Logout").attr("href","#");
-      $("#session-status a").removeClass('dropdown-link').addClass('btn-logout');
-      $("#user-tools").prepend('<li><a class="dropdown-link" href="#account-info">User info</a></li>');
+      $("#session-status a").attr("id","btn-logout");
+      $("#session-status a").removeClass('dropdown-link');
+      $("#session-status").on('click', '#btn-logout', function(){ switchSession("logout"); logout(); });
+      $("#user-tools").prepend('<li id="user-info-lnk"><a class="dropdown-link" href="#account-info">User info</a></li>');
+      $("#user-info-lnk a").on("click", function(e) {
+                                      e.preventDefault();
+                                      $('#sidebar').scrollTop = 0;
+                                      $(this.hash).fadeIn().siblings().hide();
+                                      sidebar.show();                          
+                                    });
       $("#user-tools").dropdown();
-      debugger;
-      
-    }  
+    } 
+  
 };
 
 // Alerts by lgal http://stackoverflow.com/a/33662720/2842348
 function showAlert(errorMessage, errorType, closeDelay) {
 
     // default to alert-info; other options include success, warning, danger
-    var errorType = errorType || "info";    
+    var errorType = errorType || "info";
 
     // create the alert div
        var alert = $('<div class="alert alert-' + errorType + ' fade in">')
@@ -67,6 +74,7 @@ $('#btn-locate').on('click', function(){
   bottombar.hide();
   map.locate({setView: true, maxZoom: 20});
 });
+
 // Show nearby trashbins
 $('#btn-trashbins').on('click', function(){
 
@@ -94,12 +102,6 @@ $('.menu-backlink').click(function(e) {
 
 $(".btn-save-cleaning").on('click', function (){
      $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
-});
-
-// Sidbar reset functions
-// Delete marker if button is clicked
-$(".btn-delete-marker").on('click', function (){
-     map.removeLayer(marker);
 });
 
 // Close sidebar and reset forms if cancel button clicked
@@ -131,14 +133,6 @@ $(document).ready(function() {
    $('.selectpicker').selectpicker({
                style: 'btn-lg btn-default text-center',
                size: 5})
-});
-
-// Close button bottombar
-$(document).ready(function() {
-$('.bottombar-close').click( function(e) {
-        e.preventDefault();
-        bottombar.hide();
-    });
 });
 
 // Range slider for amount of garbage

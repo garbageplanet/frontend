@@ -4,7 +4,7 @@
  */
 var api = {
   // Backend
-  server: 'http://api.garbage.local/api',
+  server: 'http://api.garbagepla.net/api',
 
   // API entry points
   /* User */
