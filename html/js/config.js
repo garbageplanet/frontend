@@ -5,6 +5,7 @@
 var api = {
   // Backend
   server: 'http://api.garbagepla.net/api',
+  // server: 46.101.202.69  dev.garbagepla.net
 
   // API entry points
   /* User */
@@ -49,6 +50,19 @@ var api = {
     method: 'GET',
     url: function() {
       return api.server + '/trashes';
+    }
+  },
+    /* Cleaning */
+  createCleaning: {
+    method: 'POST',
+    url: function(id) {
+      return api.readTrash.url() + '/' + id;
+    }
+  },
+  readCleaning: {
+    method: 'GET',
+    url: function() {
+      return api.server + '/cleanings';
     }
   },
   deleteTrash: {

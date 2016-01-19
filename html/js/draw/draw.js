@@ -29,6 +29,10 @@ map.on('draw:editstart', function (e) { map.off('click', onMapClick) });
 
 map.on('draw:editstop', function (e) { map.on('click', onMapClick) });
 
+// Need to make sure the user can click again on the map if the drawing is aborted
+// This needs to be called in this fashion else it messes up onMapClick's behavior
+map.on('draw:drawstop', function () { map.off('click', onMapClick); map.on('click', onMapClick); sidebar.hide() });
+
 // What to do once a shape is created
 map.on('draw:created', function (e) {
     var type = e.layerType;
@@ -189,13 +193,16 @@ $('.btn-draw-polygon').on('click', function(){
 
 // Add click events for draw layers
 pathLayerGroup.on('click', 
-                  function onPathClick (e) {
-                    sidebar.hide();
-                    bottombar.show();
+  function onPathClick (e) {
+    sidebar.hide();
+    bottombar.show();
+    map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
+    // map.panToOffset(e._latlng, _getVerticalOffset());
 });
 
 areaLayerGroup.on('click', 
-                  function onAreaClick (e) {
-                    sidebar.hide();
-                    bottombar.show();
+  function onAreaClick (e) {
+    sidebar.hide();
+    bottombar.show();
+    map.fitBounds(e.layer.getBounds());
 });
