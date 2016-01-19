@@ -57,18 +57,18 @@ var bottombar = L.control.sidebar('bottombar', { position: 'bottom', closebutton
 map.addControl(bottombar);
 
 // Make the layer groups and add them to the map
-garbageLayer = new L.LayerGroup();
-areaLayer = new L.LayerGroup();
-pathLayer = new L.LayerGroup();
-eventLayer = new L.LayerGroup();
+garbageLayerGroup = new L.LayerGroup();
+areaLayerGroup = new L.FeatureGroup();
+pathLayerGroup = new L.FeatureGroup();
+eventLayerGroup = new L.LayerGroup();
 
-map.addLayer(garbageLayer, pathLayer, eventLayer, areaLayer);
+map.addLayer(garbageLayerGroup, eventLayerGroup);
 
 var overlayGroups = {
-"Garbage markers": garbageLayer,
-"Cleaning events": eventLayer,
-"Dirty coasts and roads": pathLayer,
-"Tiles and areas": areaLayer
+"Garbage markers": garbageLayerGroup,
+"Cleaning events": eventLayerGroup,
+"Dirty coasts and roads": pathLayerGroup,
+"Tiles and areas": areaLayerGroup
 };
 
 // Add zoom controls above scale

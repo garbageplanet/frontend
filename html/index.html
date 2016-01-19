@@ -190,8 +190,8 @@
       <ul class="nav nav-pills nav-stacked">
         <li role="presentation"><a class="sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
         <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
-        <li role="presentation"><a class="sidebar-link" href="#activate-tile-dialog">Activate a tile</a></li>
-        <li role="presentation"><a class="sidebar-link" href="#create-litter-dialog">Littered segment</a></li>
+        <li role="presentation"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
+        <li role="presentation"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
       </ul>
 
     </div>
@@ -242,12 +242,6 @@
 
                       <div class="tab-pane active form-group form-group-lg" id="cleaning-main" role="tabpanel">
 
-                        <div class="alert alert-warning" role="alert">
-                          <span class="fa fa-fw fa-exclamation"></span>
-                          <span class="sr-only">Note:</span>
-                            This tool is not yet available.
-                        </div>
-
                           <!-- Date and time picker for events -->
                         <div class="container from-group" style="width:100%">
                           <div class="row">
@@ -263,9 +257,8 @@
                           </div>
                         </div>
                         <br>
-                        <div class="dropdown cleaning-recurrent">
-                                <select id="cleaning-recurrent-select"
-                                        class="selectpicker"
+                        <div class="dropdown">
+                                <select class="selectpicker cleaning-recurrent-select"
                                         name="[]"
                                         title="Make this event recurrent"
                                         data-width="100%">
@@ -375,7 +368,7 @@
                     <div class="btn-group btn-group-lg" role="group">
                         <button type="button"
                                 title="Cancel"
-                                class="btn btn-danger btn-cancel btn-delete-marker">
+                                class="btn btn-danger btn-cancel">
                             <span class="fa  fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
                         </button>
                     </div>
@@ -676,14 +669,14 @@
       </form>
 
     </div>
-    <div class="sidebar-content" id="activate-tile-dialog">
+    <div class="sidebar-content" id="create-area-dialog">
         <h2>
             <span>
              <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
                                href="#create-marker-dialog">
               </a>
             </span>
-            Activate a tile
+            Create an area
         </h2>
         <span style="display:none;" class="tile-center-lat"></span>
         <span style="display:none;" class="tile-center-lng"></span>
@@ -727,11 +720,19 @@
 
                       <div class="tab-pane active form-group form-group-lg" id="tile-main" role="tabpanel">
 
+                        <div>
+                          <button type="button" class="btn btn-lg btn-block btn-default btn-draw-polygon">
+                            <span class="fa fa-fw fa-pencil"></span> Start drawing
+                          </button>
+                        </div>
+                        
+                        <br>
+                        
                         <div class="form-group-lg" style="width:100%">
                           <input class="form-control"
                                       rows="1"
                                       id="l-tile-name"
-                                      placeholder="Use a custom tile name">
+                                      placeholder="Use a custom area name">
                           </input>
                         </div>
                         <br>
@@ -739,10 +740,28 @@
                           <textarea class="form-control"
                                       rows="3"
                                       id="tile-comment"
-                                      placeholder="Add a note about this tile">
+                                      placeholder="Add a note about this area">
                           </textarea>
                         </div>
 
+                      <br>
+
+                      <div class="form-group-lg" style="width:100%">
+                          <input class="form-control"
+                                 type="number"
+                                 min="1"
+                                 step="1"
+                                 placeholder="Garbage pieces per unit area">
+                          </input>
+                      </div>
+
+                      <br>
+
+                      <div class="form-group-lg" style="width:100%">
+                          <input class="form-control polygon-area"
+                                 placeholder="Size of the area">
+                          </input>
+                      </div>
 
                       </div>
 
@@ -755,7 +774,7 @@
 
                         <div class="checkbox form-group-lg tile-game-check">
                           <label>
-                            <input type="checkbox">Enable game mode for this tile.
+                            <input type="checkbox">Enable game mode for this area.
                           </label>
                         <br>
                         </div>
@@ -802,14 +821,7 @@
 
                               <input type="text"
                                      class="form-control l-image-hidden-value"
-                                     placeholder="Upload an image / video">
-
-                              <span class="input-group-btn">
-                                  <button class="btn btn-default trigger-video-uploader"
-                                          type="button">
-                                  <span class="fa fa-fw fa-film"></span></button>
-                                  <input class="l-video-uploader" type="file" name="video" style="display:none;">
-                              </span>
+                                     placeholder="Upload an image">
                         </div>
 
                         <br>
@@ -855,8 +867,7 @@
 
                       <div class="tab-pane form-group form-group-lg" id="tile-info" role="tabpanel">
 
-                        <p class="lead">Tiles are used to overlay a summary of map features. They can serve as feeds for a given perimeter and which can be accessed via our <a href="https://www.github.com/garbageplanet/" target="_blank">API</a>.  They can also be used to restrict actions on an area during games. Specify a <em>tilename</em> and it can be called through our API using <em>@tilename</em>. If a name is not set, a random id will be assigned to the tile. Drag the sides of the polygon on the map to set the tile's area or click on the line to add more handles to reshape the tile.
-                        </p>
+                        <p class="lead">Areas are used to overlay a summary of map features. They can serve as feeds for a given perimeter and which can be accessed via our <a href="https://www.github.com/garbageplanet/" target="_blank">API</a>.  They can also be used to restrict actions to a zone area during games. Specify an <em>areaname</em> and it can be called through our API using <em>@areaname</em>. If a name is not set, a random id will be assigned.</p>
 
                       </div>
 
@@ -957,32 +968,14 @@
                                   <option value="crude">Crude oil</option>
                               </select>
                           </div><!-- Select the type of trash -->
-
-                          </div>
-
-                           <div class="tab-pane form-group form-group-lg" id="litter-quantitative" role="tabpanel">
-
-
-                             <br>
-
-                      <div class="dropdown">
-                          <select class="selectpicker form-control"
-                                  title="Which units?"
-                                  data-width="100%">
-                              <option value="metric">Metric</option>
-                               <option value="imperial">Imperial</option>
-                          </select>
-                      </div>
-
-                      <br>
-
+                          
                       <div class="form-group-lg" style="width:100%">
                           <input class="form-control"
                                     id=""
                                     type="number"
                                     min="1"
                                     step="1"
-                                    placeholder="Garbage pieces per length unit">
+                                    placeholder="Garbage pieces per unit length">
                           </input>
                       </div>
 
@@ -994,6 +987,10 @@
                           </input>
                       </div>
 
+                          </div>
+
+                           <div class="tab-pane form-group form-group-lg" id="litter-quantitative" role="tabpanel">
+
                       <br>
 
                       <div class="input-group input-group-lg">
@@ -1004,13 +1001,11 @@
                       </div>
                       <br>
                       <div class="input-group input-group-lg">
-                        <span class="input-group-btn"><button class="btn btn-default" type="button">
-                         <span class="fa fa-fw fa-globe"></span><span class="hidden-xs">Add link</span></button>
+                        <span class="input-group-btn"><button href="#" class="btn btn-default" type="button"><span class="fa fa-fw fa-globe"></span><span class="hidden-xs">Add link</span></button>
                         </span>
                         <input type="text" class="form-control" placeholder="WMS server url">
                       </div>
                       <br>
-
 
                           </div>
 

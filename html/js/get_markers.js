@@ -8,7 +8,7 @@ map.on('moveend', function(e) {
 //Get markers
 function loadRemoteGarbageMarkers() {
     console.log('loadremotegarbagemarkers');
-    garbageLayer.clearLayers();
+    garbageLayerGroup.clearLayers();
     var bounds = map.getBounds();
     console.log(bounds);
     bounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
@@ -30,8 +30,8 @@ function loadRemoteGarbageMarkers() {
                         mLat: obj.lat,
                         mLng: obj.lng
                     });
-                garbageLayer.addLayer(marker);
-                map.addLayer(garbageLayer);
+                garbageLayerGroup.addLayer(marker);
+                map.addLayer(garbageLayerGroup);
                 marker.on('click', function() {
                     onRemoteMarkerClick(marker);
                 });

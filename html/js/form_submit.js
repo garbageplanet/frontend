@@ -1,14 +1,12 @@
 window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw';
 
+// Save garbage markers
 $(function () {
 	$('.form-garbage').on( 'submit', function (event) {
 		var that = this;
 		event.preventDefault();
 		var typeOfTrash = [];
-		var amoutOfTrash;
-		var lat;
-		var lng;
-		var image_url;
+		var amoutOfTrash, lat, lng, image_url;
 
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
 			typeOfTrash.push($(value).val());
@@ -61,41 +59,55 @@ $(function () {
 	})
 });
 
-// Tiles
-$('#button-save-tile').click(function () {
-	var ne_lat = Number($('#activate-tile-dialog').find('.tile-ne-lat').text());
-	var ne_lng = Number($('#activate-tile-dialog').find('.tile-ne-lng').text());
-	var sw_lat = Number($('#activate-tile-dialog').find('.tile-sw-lat').text());
-	var sw_lng = Number($('#activate-tile-dialog').find('.tile-sw-lng').text());
-	var tile_name = $('#l-tile-name').val();
-	console.log('ne_lat',ne_lat);
-	console.log('ne_lng',ne_lng);
-	console.log('sw_lat',sw_lat);
-	console.log('sw_lng', sw_lng);
-	console.log('tile name', tile_name);
-	var useToken = localStorage["token"] || window.token;
-	$.ajax({
-      method: api.createMonitoringTiles.method,
-      url: api.createMonitoringTiles.url(),
-      headers: {"Authorization": "Bearer " + useToken},
-      data: {
-      // this needs to have this format [[lat1, lng1], [lat2, lng2]]
-        'name': tile_name,
-        'ne_lat': ne_lat,
-        'ne_lng': ne_lng,
-        'sw_lat': sw_lat,
-        'sw_lng': sw_lng
-	    },
-	    success: function (data) {
-	    	console.log('suc data', data);
-	    	alert('Tile saved successfully!');
-	    	window.rectangle.editing.disable();
-        sidebar.hide('slow');
-	    },
-	    error: function (err) {
-	    	console.log('err', err);
-	    	alert('Please register to save markers', err);
-        sidebar.hide();
-	    }
+// Save cleaning events markers
+$(function () {
+	$('.form-cleaning').on( 'submit', function (event) {
+		var that = this;
+		event.preventDefault();
+        var date, time, lat, lng, image_url, recurrence;
+
+        $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
+			date.push($(value).val());
+		});
+        $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
+			time.push($(value).val());
+		});
+
+		image_url = $(this).find('.cleaning-image-hidden-value').val();
+      
+        $(this).find('.selectpicker.cleaning-recurrent-select option:selected').each(function(index, value) {
+			recurrence.push($(value).val());
+		});
+      
+        // Coordinates
+		lat = $(this).find('.cleaning-lat').val();
+		lng = $(this).find('.cleaning-lng').val();
+
+		setTimeout(function () {
+          var useToken = localStorage["token"] || window.token;
+          $.ajax({
+              method: api.createCleaning.method,
+              url: api.createCleaning.url(),
+              headers: {"Authorization": "Bearer" + useToken},
+              data: {
+                  'lat': lat,
+                  'lng': lng,
+                  'time': date,
+                  'date': time,
+                  'image_url': image_url
+              },
+              success: function (data) {
+                  console.log('success data', data);
+                  showAlert("Cleaning event saved successfully!", "success", 3000);
+                  sidebar.hide('slow');
+              },
+              error: function (err) {
+                  console.log('err', err);
+                  showAlert("Failed to save the event, are you logged in?", "danger", 3000);
+                  sidebar.hide();
+                  map.removeLayer(marker);
+              }
+          })
+		}, 100);
 	})
 });
