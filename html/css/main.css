@@ -175,7 +175,7 @@ a.menu-backlink:hover {
 
  .leaflet-sidebar .close {
 	right: 10px;
-    top: 10px;
+    top: -5px !important;
 }
 
 /* Shift leaflet-bar control buttons */
@@ -202,12 +202,14 @@ a.menu-backlink:hover {
   width: 40px;
 -webkit-border-radius: 0 !important;
    -moz-border-radius: 0 !important;
+     -o-border-radius: 0 !important;
         border-radius: 0 !important;
 }
 
 #search-button, #search-nearby-trashbin, #locate-button {
 -webkit-border-radius: 0 !important;
    -moz-border-radius: 0 !important;
+     -o-border-radius: 0 !important;
         border-radius: 0 !important;
 }
 
@@ -239,12 +241,14 @@ a.menu-backlink:hover {
           box-shadow: none;
   -webkit-box-shadow: none;
      -moz-box-shadow: none;
+       -o-box-shadow: none;
 }
 
 .leaflet-sidebar.right > .leaflet-control {
           box-shadow: none;
   -webkit-box-shadow: none;
      -moz-box-shadow: none;
+       -o-box-shadow: none
 }
 
 /* Custom bootstrap styles */
@@ -326,7 +330,6 @@ textarea {
 .popover-content { color: #FFF;
           font-family: 'Work Sans', sans-serif;
           font-weight: 400
-          /*text-shadow: 1px 1px #000;*/
 }
 
 .popover-navigation { position: absolute;
@@ -361,3 +364,20 @@ textarea {
 .alert {border-radius: 0;}
 
 .tt-menu {background-color: #fff}
+
+/* Leaflet Draw button behavior*/
+.leaflet-draw-edit-edit, .leaflet-draw-edit-remove  {
+  margin-right: -50px;
+            transition: margin-right 0.3s;
+    -webkit-transition: margin-right 0.3s;
+       -moz-transition: margin-right 0.3s;
+         -o-transition: margin-right 0.3s;
+}
+
+.leaflet-draw-draw-polyline, .leaflet-draw-draw-polygon  {
+  display: none !important;
+}
+
+.leaflet-draw-edit-edit.visible, .leaflet-draw-edit-remove.visible  {
+  margin-right: 0px;
+}

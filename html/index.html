@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300' rel='stylesheet' type='text/css'>
   <!-- JQUERY, BS3 and other JS libraries -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js" defer></script>
   <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" defer></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -29,14 +29,14 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js" defer></script>
 
   <!-- Leaflet -->
-  <script src="js/leaflet_077.js"></script>
-  <script src="js/L.hash.js"></script>
-  <link rel="stylesheet" href="css/leaflet.css" />
-  <script src="js/L.zoomCSS.js"></script>
-  <script src="js/L.Control.Sidebar-018a.js"></script>
-  <script src="js/L.Map.Deflate.js"></script>
-  <script src="js/L.Overpass.Layer.js" defer></script>
-  <script src="js/config.js"></script>
+  <script src="js/libs/leaflet_077.js"></script>
+  <script src="js/libs/L.hash.js"></script>
+  <link rel="stylesheet" href="css/libs/leaflet.css" />
+  <script src="js/libs/L.zoomCSS.js"></script>
+  <script src="js/libs/L.Control.Sidebar-018a.js"></script>
+  <!-- <script src="js/libs/L.Map.Deflate.js"></script> -->
+  <script src="js/libs/L.Overpass.Layer.js" defer></script>
+  <script src="js/libs/L.Draw.js"></script>
   <!-- <script src="js/L.ajax.js"></script> -->
 
   <!-- Uploader  -->
@@ -46,13 +46,13 @@
 
   <!-- Local stylesheets -->
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/L.Control.Sidebar.css">
-  <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
-  <link rel="stylesheet" href="css/bootstrap-select.min.css">
-  <link rel="stylesheet" href="css/bootstrap-tagsinput.css">
-  <link rel="stylesheet" href="css/bootstrap3-ms-class.css">
+  <link rel="stylesheet" href="css/libs/L.Control.Sidebar.css">
+  <link rel="stylesheet" href="css/libs/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" href="css/libs/bootstrap-select.min.css">
+  <link rel="stylesheet" href="css/libs/bootstrap-tagsinput.css">
+  <link rel="stylesheet" href="css/libs/bootstrap3-ms-class.css">
   <link rel="stylesheet" href="css/trashbag.css">
-  <link rel="stylesheet" href="css/leaflet.draw.css">
+  <link rel="stylesheet" href="css/libs/leaflet.draw.css">
 
 </head>
 <body>
@@ -435,7 +435,7 @@
                         <input type="hidden" name="lng" class="marker-lng">
 
                         <div class="range-slider">
-                        <p>On a scale from 1 to 10, amount of garbage: <strong><span class="garbage-range-value"></span></strong></p>
+                        <p class="lead">Amount of garbage: <strong><span class="garbage-range-value"></span></strong>                                     </p>
                         <input class="garbage-range-input" type="range" value="1" min="1" max="10">
                         </div>
 
@@ -892,7 +892,7 @@
               href="#create-marker-dialog">
             </a>
         </span>
-          Mark litter along a path</h2>
+          Mark a stretch of land</h2>
                      <form id="create-litter-form"
                            role="form"
                            accept-charset="UTF-8"
@@ -919,68 +919,44 @@
 
                         <div class="tab-content">
                             <br>
-                          <div class="tab-pane active form-group form-group-lg" id="litter-main" role="tabpanel">
+                        <div class="tab-pane active form-group form-group-lg" id="litter-main" role="tabpanel">
 
-                <div class="alert alert-warning" role="alert">
-                <span class="fa fa-fw fa-exclamation"></span>
-                  This tool is not yet available.
-                </div>
-
-                                                    <div class="range-slider">
-                        <p>On a scale from 1 to 10, amount of litter: <strong><span class="range-value"></span></strong></p>
-                        <input class="input-range" type="range" value="5" min="1" max="10">
-
+                          <div>
+                            <button type="button" class="btn btn-lg btn-block btn-default btn-draw-polyline">
+                              <span class="fa fa-fw fa-pencil"></span> Start drawing
+                            </button>
+                          </div>
+                          
+                          <br>
+                          
+                        <div class="range-slider">
+                        <p class="lead">Amount of garbage: <strong><span class="polyline-range-value"></span></strong>                                     </p>
+                        <input class="polyline-range-input" type="range" value="1" min="1" max="10">
                         </div>
-                            <br>
-
-                            <div class="dropdown" >
-                        <select id="litter-garbage-amount"
-                                class="selectpicker"
-                                title="How much litter is there?"
-                                data-width="100%">
-                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-green'>
-                                                  </i> Here and there</span>"
-                                    value="0"></option>
-                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-blue'>
-                                                  </i> A little too much</span>"
-                                    value="1"></option>
-                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-yellow'>
-                                                  </i> A whole lot</span>"
-                                    value="2">
-                            </option>
-                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-orange'>
-                                                  </i> Industrial quantities</span>"
-                                    value="3"></option>
-                            <option data-content="<span><i class='fa fa-arrows-h fa-fw fa-icon-red'>
-                                                  </i> Nightmare</span>"
-                                    value="4"></option>
-                        </select>
-                    </div>
-                    <br>
-                    <div class="dropdown" >
-                        <select id="litter-trash-type"
-                                class="selectpicker"title="What kind of litter? (multiple allowed)"
-                                multiple data-live-search="true"
-                                data-selected-text-format="count"
-                                data-width="100%"
-                                multiple >
-                            <option value="glass">Fishing / fisheries gears</option>
-                            <option value="glass">Glass</option>
-                            <option value="bottles">Glass bottles</option>
-                            <option value="metal">Metal</option>
-                            <option value="alu">Aluminium</option>
-                            <option value="plastic">Plastic</option>
-                            <option value="pet">PET bottles</option>
-                            <option value="poly">Polypropylene and polystyrene</option>
-                            <option value="wood">Plywood, treated/painted wood</option>
-                            <option value="chemicals">Chemicals</option>
-                            <option value="industrial">Industrial wastes</option>
-                            <option value="gas">Gasoline, petroleum</option>
-                            <option value="crude">Crude oil</option>
-                        </select>
-                    </div><!-- Select the type of trash -->
-                    <br>
-
+                          
+                          <br>
+                          <div class="dropdown" >
+                              <select id="litter-garbage-type"
+                                      class="selectpicker"title="What kind of litter? (multiple allowed)"
+                                      multiple data-live-search="true"
+                                      data-selected-text-format="count"
+                                      data-width="100%"
+                                      multiple >
+                                  <option value="glass">Fishing / fisheries gears</option>
+                                  <option value="glass">Glass</option>
+                                  <option value="bottles">Glass bottles</option>
+                                  <option value="metal">Metal</option>
+                                  <option value="alu">Aluminium</option>
+                                  <option value="plastic">Plastic</option>
+                                  <option value="pet">PET bottles</option>
+                                  <option value="poly">Polypropylene and polystyrene</option>
+                                  <option value="wood">Plywood, treated/painted wood</option>
+                                  <option value="chemicals">Chemicals</option>
+                                  <option value="industrial">Industrial wastes</option>
+                                  <option value="gas">Gasoline, petroleum</option>
+                                  <option value="crude">Crude oil</option>
+                              </select>
+                          </div><!-- Select the type of trash -->
 
                           </div>
 
@@ -1013,12 +989,8 @@
                       <br>
 
                       <div class="form-group-lg" style="width:100%">
-                          <input class="form-control"
-                                    id=""
-                                    type="number"
-                                    min="1"
-                                    step="1"
-                                    placeholder="Length of the path">
+                          <input class="form-control polyline-path-length"
+                                 placeholder="Length of the path">
                           </input>
                       </div>
 
@@ -1063,13 +1035,13 @@
                         <div class="btn-group btn-group-justified" role="group">
                             <div class="btn-group btn-group-lg" role="group">
                                 <button type="button"
-                                        class="btn btn-success btn-save btn-save-shape disabled">
+                                        class="btn btn-success btn-save btn-save-shape">
                                 <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
                                 </button>
                             </div>
                             <div class="btn-group btn-group-lg" role="group">
                                 <button type="button"
-                                        class="btn btn-danger btn-cancel btn-delete-shape">
+                                        class="btn btn-danger btn-cancel btn-cancel-shape">
                                 <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
                                 </button>
                             </div>
@@ -1113,7 +1085,7 @@
               <a class="sidebar-link" href="#glome-dialog">I already have a Glome soft account</a><br>
               <a class="sidebar-link" href="#recover-credentials">Forgotten your password?</a><br>
               <a href="http://www.glome.me" target="_blank">About Glome</a><br>
-              <a class="sidebar-link" href="#glome-dialog">Register</a><br>
+              <a class="sidebar-link" href="#create-account-dialog">Register</a><br>
             </p>
         </div>
         <br>
@@ -1373,7 +1345,11 @@
     </div>
     <div class="sidebar-content" id="credits-dialog">
       <div>
-        <h2>Credits</h2>
+        <h2>
+          <span>
+            <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#user-login-dialog"></a>
+          </span>Credits
+        </h2>
         <div>
             <p class="lead">Please refer to each component source files and repositories for license information.<img src="images/logo.png" style='float: right;' alt="The garbagepla.net logo" width="100" height="100"></p>
         </div>
@@ -1578,6 +1554,7 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 <script src="js/authenticate.js"></script>
 <script src="js/uploader.js"></script>
 <script src="js/form_submit.js"></script>
+<script src="js/draw/draw.js"></script>
 
 </body>
 </html>

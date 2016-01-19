@@ -1,3 +1,8 @@
+// Alert mobile phone user (check if this appears on tablets)
+if (L.Browser.mobile) {
+    showAlert("Drawing tools are not available on mobile.", "info", 2000);
+};
+
 // Make dropdown menu linuks works
 $(document).ready(function() {
   $('#user-tools').on('click', 'a', function(e) {
@@ -118,9 +123,8 @@ sidebar.on('hide', function () {
         $("textarea").val('');
         $("input").val('');
         $('.selectpicker').selectpicker('render');
-        // $('#user-login-dialog').find('.with-errors').hide();
-        // $('#glome-dialog').find('.with-errors').hide();
-    });
+        $('.leaflet-draw-edit-edit').removeClass('visible');
+});
 
 // Forms styling and basic actions
 $(document).ready(function() {
@@ -135,7 +139,7 @@ $(document).ready(function() {
                size: 5})
 });
 
-// Range slider for amount of garbage
+// Range slider for amount of garbage on marker icon
 $('.garbage-range-input').on('change', function() {
     // Remove the generic marker class
     $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');

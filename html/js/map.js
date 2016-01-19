@@ -1,6 +1,9 @@
 // Set the map
 // deflate turns shapes into markers at high zoom (minSize in pixels)
-var map = L.map.deflate('map', { zoomControl: false, attributionControl: false, minSize: 50 });
+// var map = L.map.deflate('map', { zoomControl: false, attributionControl: false, minSize: 50 });
+// L.Deflate messes up L.Draw
+var map = L.map('map', { zoomControl: false, attributionControl: false });
+
 var hash = new L.Hash(map);
 // Creating attributions dynamically (GPLv2 author: humitos@github https://github.com/humitos/osm-pois)
 
@@ -42,25 +45,15 @@ tileLayers['Outdoors'].addTo(map);
 
 // Locate the user
 map.locate({setView: true, maxZoom: 15});
-
-function onLocationError(e) {
-    console.log('location error', e.message);
-};
-
+function onLocationError(e) { showAlert("Couldn't find your position.", "warning", 2000)};
 map.on('locationerror', onLocationError);
 
 // Sidebar creation and placement
-var sidebar = L.control.sidebar('sidebar', {
-        position: 'right',
-        closebutton: 'true',
-        });
+var sidebar = L.control.sidebar('sidebar', { position: 'right', closebutton: 'true' });
 map.addControl(sidebar);
 
 // Bottombar with L.sidebar
-var bottombar = L.control.sidebar('bottombar', {
-        position: 'bottom',
-        closebutton: 'true',
-        });
+var bottombar = L.control.sidebar('bottombar', { position: 'bottom', closebutton: 'true' });
 map.addControl(bottombar);
 
 // Make the layer groups and add them to the map
@@ -88,10 +81,7 @@ L.control.layers(tileLayers, overlayGroups).setPosition('topright').addTo(map);
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-fw fa-th-large fa-icon-black fa-icon-centered'></span>");
 
 // Add a scale
-new L.control.scale({
-    metric: true,
-    imperial: false
-}).addTo(map);
+new L.control.scale({ metric: true, imperial: false }).addTo(map);
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
@@ -164,11 +154,6 @@ function onMapClick(e) {
 
 };
 
-
-
-
-
-
 // Default marker types and set the marker classes
 var genericMarker = L.divIcon({
     className: 'map-marker marker-color-gray marker-generic',
@@ -193,3 +178,24 @@ var deflatedMarker = L.divIcon({
     iconSize: [30,30],
     html:'<i class="fa fa-fw"></i>'
 });
+
+///////////////////////////////
+// http://jquery-howto.blogspot.fi/2009/09/get-url-parameters-values-with-jquery.html
+/*
+$.extend({
+  getUrlVars: function(){
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  },
+  getUrlVar: function(name){
+    return $.getUrlVars()[name];
+  }
+});
+*/

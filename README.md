@@ -24,7 +24,6 @@ If you want to work on a specific todo below, the first thing you should do is o
 #### Map actions
 - [ ] make the events markers + api routes
 - [ ] implement editing system for map features
-- [ ] implement leaflet.draw and leaflet.measurables for polyline and polygons 
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 
 
@@ -51,4 +50,4 @@ If you want to work on a specific todo below, the first thing you should do is o
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 
 #### Licence
-This code is realeased under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/bottom-bar/license.md).
+This code is released under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/bottom-bar/license.md).
