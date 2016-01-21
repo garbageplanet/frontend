@@ -11,7 +11,7 @@ map.on('moveend', function(e) {
 
 // Get markers
 // TODO only get marker if the layer is set as visible in leaflet
-function loadRemoteGarbageMarkers(allBounds) {
+function loadRemoteGarbageMarkers(currentViewBounds) {
     console.log('loading markers from db');
     garbageLayerGroup.clearLayers();
     // ajax request
@@ -87,7 +87,7 @@ function loadRemoteGarbageMarkers(allBounds) {
 };
 
 //Get shapes
-function loadRemoteShapes(allBounds) {
+function loadRemoteShapes(currentViewBounds) {
     console.log('loading remote shapes');
   
     if (! map.hasLayer ('pathLayerGroup')) {return;}
