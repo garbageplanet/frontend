@@ -90,9 +90,9 @@ function loadRemoteGarbageMarkers() {
 function loadRemoteShapes() {
     console.log('loading remote shapes');
   
-    if (! map.hasLayer('pathLayerGroup')) {return;}
+    // if (! map.hasLayer('pathLayerGroup')) {return;}
   
-    if (! map.hasLayer('areaLayerGroup')) {return;}
+    // if (! map.hasLayer('areaLayerGroup')) {return;}
   
     if ( map.hasLayer('pathLayerGroup') || map.hasLayer('areaLayerGroup')) {
       pathLayerGroup.clearLayers();
