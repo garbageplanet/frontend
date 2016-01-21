@@ -6,7 +6,7 @@ map.on('moveend', function(e) {
     console.log("leaflet map bounds object:",bounds);
     //  renamed bounds to currentViewBounds
     currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
-    console.log("parsed bounds:", currentViewBounds)
+    console.log("parsed bounds:", currentViewBounds);
 });
 
 // Get markers
@@ -90,8 +90,9 @@ function loadRemoteGarbageMarkers(currentViewBounds) {
 function loadRemoteShapes(currentViewBounds) {
     console.log('loading remote shapes');
   
-    if (! map.hasLayer ('pathLayerGroup')) {return;}
-    if (! map.hasLayer ('areaLayerGroup')) {return;}
+    if (! map.hasLayer('pathLayerGroup')) {return;}
+  
+    if (! map.hasLayer('areaLayerGroup')) {return;}
   
     if ( map.hasLayer('pathLayerGroup') || map.hasLayer('areaLayerGroup')) {
       pathLayerGroup.clearLayers();
@@ -108,7 +109,6 @@ function loadRemoteShapes(currentViewBounds) {
 
           $(data).each(function(index, obj) {
             console.log("object data", obj);
-            var obj.type;
             if (obj.type === 'polyline') {
                   
               var polylineLayer = new L.Polyline(obj.latLngs,
@@ -182,12 +182,11 @@ function loadRemoteShapes(currentViewBounds) {
                 
             }
           );        
+        },
+        error: function (data) {
+          console.log('Error geting shape data', data);
         }
-      },
-        error: function (err) {
-          console.log('Error geting shape data', err);
-        }
-    );
+      });
   
   }
 };
@@ -324,7 +323,7 @@ function onRemoteMarkerClick (e) {
 };
 
 // TODO onClick behavior for saved shapes
-function onRemoteShapeCLick (e {                          
+function onRemoteShapeCLick (e) {                          
     console.log("remote shape clicked");
     console.log(e);
-});
+};
