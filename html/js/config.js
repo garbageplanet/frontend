@@ -78,7 +78,14 @@ var api = {
     }
   },
   /* Monitoring Tiles */
+  // TODO add new routes to API
   // TODO replace route name by '/shapes'
+    readShapesWithinBounds: {
+    method: 'GET',
+    url: function(allBounds) {
+      return api.readShape.url() + '/withinbounds?bounds=' + allBounds;
+    }
+  },
   createShape: {
     method: 'POST',
     url: function() {

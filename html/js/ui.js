@@ -8,7 +8,7 @@ if (L.Browser.mobile) {
 // Swtch session function
 function switchSession(sessionStatus) {  
   
-    if (sessionStatus == "logout") {
+    if (sessionStatus === "logout") {
       
       $('#session-status a').text('Login').attr("href","#user-login-dialog");
       $('#session-status a').attr("id","");

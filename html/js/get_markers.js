@@ -1,22 +1,23 @@
 // Get new markers if the map moves
 map.on('moveend', function(e) {
     loadRemoteGarbageMarkers();
+    loadRemoteShapes();
+    var bounds = map.getBounds();
+    console.log("leaflet map bounds object:",bounds);
+    //  renamed bounds to currentViewBounds
+    currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
+    console.log("parsed bounds:", currentViewBounds)
 });
 
 // Get markers
 // TODO only get marker if the layer is set as visible in leaflet
-function loadRemoteGarbageMarkers() {
+function loadRemoteGarbageMarkers(allBounds) {
     console.log('loading markers from db');
     garbageLayerGroup.clearLayers();
-    var bounds = map.getBounds();
-    console.log("leaflet map bounds object:",bounds);
-    //  renamed bounds to allBounds
-    allBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
-    console.log("parsed bounds:", allBounds)
     // ajax request
     $.ajax({
         type: api.readTrashWithinBounds.method,
-        url: api.readTrashWithinBounds.url(allBounds),
+        url: api.readTrashWithinBounds.url(currentViewBounds),
         success: function(data) {
             $(data).each(function(index, obj) {
                 console.log(obj);
@@ -86,52 +87,110 @@ function loadRemoteGarbageMarkers() {
 };
 
 //Get shapes
-// TODO only get shapes if their correspondinglayers are set as visible in leaflet
-// if (map.hasLayer(pathLayerGroup)){}
-// if (map.hasLayer(areaLayerGroup)){}
-function loadRemoteShapes() {
+function loadRemoteShapes(allBounds) {
     console.log('loading remote shapes');
-    pathLayerGroup.clearLayers();
-    areaLayerGroup.clearLayers();
-
-    var bounds = map.getBounds();
-    console.log("leaflet map bounds object:",bounds);
-    //  renamed bounds to allBounds
-    allBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
-    console.log("parsed bounds:", allBounds)
-    // ajax request
+  
+    if (! map.hasLayer ('pathLayerGroup')) {return;}
+    if (! map.hasLayer ('areaLayerGroup')) {return;}
+  
+    if ( map.hasLayer('pathLayerGroup') || map.hasLayer('areaLayerGroup')) {
+      pathLayerGroup.clearLayers();
+      areaLayerGroup.clearLayers();   
     
-     var useToken = localStorage["token"] || window.token;
-    $.ajax({
-        url: 'http://api.garbagepla.net/api/monitoringtiles',
+      var useToken = localStorage["token"] || window.token;
+      // TODO Use glome token here?
+      $.ajax({
+        type: api.readShapesWithinBounds.method,
+        url: api.readShapesWithinBounds.url(currentViewBounds),
         headers: {"Authorization": "Bearer " + useToken},
-        method: 'get',
         success: function (data) {
-            console.log('data------tiles', data);
-            for (var i = 0; i < data.length; i++) {
-                var top_right = [Number(data[i].ne_lat), Number(data[i].ne_lng)];
-                var bottom_left = [Number(data[i].sw_lat), Number(data[i].sw_lng)];
-                var rectangleBounds = [bottom_left, top_right];
-                console.log('rectangleBounds', rectangleBounds);
-                var rectangle = L.rectangle(rectangleBounds);
-                rectangle.addTo(map);
-            };
-        },
-        error: function (err) {
-            console.log('tiles get err', err);
+          console.log('shape data', data);
+
+          $(data).each(function(index, obj) {
+            console.log("object data", obj);
+            var obj.type;
+            if (obj.type === 'polyline') {
+                  
+              var polylineLayer = new L.Polyline(obj.latLngs,
+                {
+                  polylineId: obj.id,
+                  polylineAmount: obj.amount,
+                  polylineTypes: obj.types,
+                  polylineImageUrl: obj.image_url,
+                  polylineLatLngs: obj.latLngs,
+                })
+              ;
+
+              switch(obj.amount){
+                case 1:
+                    polylineLayer.setStyle({color:"green"}); 
+                    break;
+                case 2:
+                    polylineLayer.setStyle({color:"limegreen"}); 
+                    break;
+                case 3:
+                    polylineLayer.setStyle({color:"yellow"}); 
+                    break;
+                case 4:
+                    polylineLayer.setStyle({color:"gold"}); 
+                    break;
+                case 5:
+                    polylineLayer.setStyle({color:"orange"}); 
+                    break;
+                case 6:
+                    polylineLayer.setStyle({color:"orangered"});
+                    break;
+                case 7:
+                    polylineLayer.setStyle({color:"red"});
+                    break;
+                case 8:
+                    polylineLayer.setStyle({color:"darkred"}); 
+                    break;
+                case 9:
+                    polylineLayer.setStyle({color:"purple"}); 
+                    break;
+                case 10:
+                    polylineLayer.setStyle({color:"black"}); 
+                    break;
+                default:
+                    polylineLayer.resetStyle();
+                    break;
+              };
+                            
+              pathLayerGroup.addLayer(polylineLayer);
+              map.addLayer(pathLayerGroup);
+              polylineLayer.on('click', function() {
+                  onRemoteShapeClick(polylineLayer);
+              });
+    
+            }
+              
+            if (obj.type === 'polygon'){
+              var polygonLayer = new L.Polygon(obj.latLngs,
+                {
+                  polygonId: obj.id,
+                  polygonLatLngs: obj.latLngs,
+                }
+              );
+
+              areaLayerGroup.addLayer(areaLayer);
+              map.addLayer(areaLayerGroup);
+              areaLayer.on('click', function() {
+                onRemoteShapeClick(areaLayer);
+              });
+            }
+                
+            }
+          );        
         }
-    });
-    
-    var useToken = localStorage["token"] || window.token;
+      },
+        error: function (err) {
+          console.log('Error geting shape data', err);
+        }
+    );
+  
+  }
 };
-    
-    
-    
-    
-    
-    
-    
-    
 
 // Temporary fix for local (unsaved) marker clicked
 function onLocalMarkerClick (e) {
@@ -152,7 +211,7 @@ function onLocalMarkerClick (e) {
     sidebar.show($("#create-marker-dialog").fadeIn());
 };
 
-// onClick behaviours for saved markers
+// onClick behavior for saved markers
 function onRemoteMarkerClick (e) {
     console.log("remote marker clicked");
     console.log(e);
@@ -263,3 +322,9 @@ function onRemoteMarkerClick (e) {
         sidebar.show($("#cleaning-info").fadeIn())
     };
 };
+
+// TODO onClick behavior for saved shapes
+function onRemoteShapeCLick (e {                          
+    console.log("remote shape clicked");
+    console.log(e);
+});
