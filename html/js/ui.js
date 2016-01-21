@@ -1,28 +1,9 @@
+// TODO Arrange functions in group in this file
+
 // Alert mobile phone user (check if this appears on tablets)
 if (L.Browser.mobile) {
     showAlert("Drawing tools are not available on mobile.", "info", 2000);
 };
-
-// Make dropdown menu linuks works
-$(document).ready(function() {
-  $('#user-tools').on('click', 'a', function(e) {
-    if ($(this).hasClass('dropdown-link')) {
-          e.preventDefault();
-          bottombar.hide();
-          sidebar.show();
-          $(this.hash).fadeIn().siblings().hide();
-    }
-  });
-});
-
-// Make collapsed menu button work
-$(document).ready(function() {
-$('#btn-mobile-menu').click( function(e) {
-        e.preventDefault();
-        bottombar.hide();
-        sidebar.show($('#mobile-menu-dialog').fadeIn().siblings().hide());
-    });
-});
 
 // Swtch session function
 function switchSession(sessionStatus) {  
@@ -72,25 +53,72 @@ function showAlert(errorMessage, errorType, closeDelay) {
         window.setTimeout(function() { alert.alert("close") }, closeDelay);     
 };
 
-// Actions for map-tools dropdown
-// Locate the user
-$('#btn-locate').on('click', function(){
-  sidebar.hide();
-  bottombar.hide();
-  map.locate({setView: true, maxZoom: 20});
-});
-
-// Show nearby trashbins
-$('#btn-trashbins').on('click', function(){
-
-  osmTrashbinLayer = new L.OverPassLayer({
-     query: '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;'
+// Make dropdown menu linuks works
+// Make collapsed menu button work
+$(document).ready(function() {
+  $('#user-tools').on('click', 'a', function(e) {
+    if ($(this).hasClass('dropdown-link')) {
+          e.preventDefault();
+          bottombar.hide();
+          sidebar.show();
+          $(this.hash).fadeIn().siblings().hide();
+    }
   });
-  map.addLayer(osmTrashbinLayer);
+  
+  $('#btn-mobile-menu').click( function(e) {
+        e.preventDefault();
+        bottombar.hide();
+        sidebar.show($('#mobile-menu-dialog').fadeIn().siblings().hide());
+  });
   
 });
 
-// Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
+
+$(document).ready(function() {
+  // Actions for map-tools dropdown
+  // Locate the user
+  $('.btn-locate').on('click', function(){
+    sidebar.hide();
+    bottombar.hide();
+    map.locate({setView: true, maxZoom: 20});
+  });
+  
+  // Show nearby trashbins
+  $('#btn-trashbins').on('click', function(){
+    debugger;
+    osmTrashbinLayer = new L.OverPassLayer({
+       query: '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;'
+    });
+    map.addLayer(osmTrashbinLayer);
+  });
+  
+  // Show marker creation dialog on button click
+  // TODO edit needs to send to different forms given the marker type
+  $('.btn-edit').on('click', function(marker, e) {
+    bottombar.hide();
+    sidebar.show($('#create-garbage-dialog').show());
+    // TODO preset the values of the clicked marker
+  });
+  
+  // Display the date and time picker and get the data in the cleaning form on change
+  $(function () { $('#event-date-time-picker')
+    .datetimepicker(
+                    {
+                    format: 'DD-MM-YYYY',
+                    minDate: new Date(2015, 0, 1),
+                    showTodayButton: true
+                    }
+    )
+  });
+  
+  $('#event-date-time-picker').on('dp.change', function(e) {
+    console.log('e.date=', e.date);
+  });
+  
+  // Display all the select pickers
+  $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 5})
+
+  // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
 $('.sidebar-link').click(function(e) {
     e.preventDefault();
     $(this.hash).fadeIn().siblings().hide();
@@ -103,6 +131,8 @@ $('.menu-backlink').click(function(e) {
     $('#sidebar').scrollTop = 0;
     $(this.hash).fadeIn().siblings().hide();
     e.preventDefault();
+});
+  
 });
 
 $(".btn-save-cleaning").on('click', function (){
@@ -120,23 +150,10 @@ sidebar.on('hide', function () {
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         $('form').each(function() { this.reset() });
-        $("textarea").val('');
-        $("input").val('');
+        $('textarea').val('');
+        $('input').val('');
         $('.selectpicker').selectpicker('render');
         $('.leaflet-draw-edit-edit').removeClass('visible');
-});
-
-// Forms styling and basic actions
-$(document).ready(function() {
-   $(function () {
-       $('#event-date-time-picker').datetimepicker();
-   });
-});
-
-$(document).ready(function() {
-   $('.selectpicker').selectpicker({
-               style: 'btn-lg btn-default text-center',
-               size: 5})
 });
 
 // Range slider for amount of garbage on marker icon
@@ -210,13 +227,5 @@ $('.garbage-range-input').on('change', function() {
 // Move this logic to onMapClick and onLocalMarkerClick
 setTimeout(function() {
   $('div.marker-generic').remove();
-  $('div.marker-unsaved').remove();
   sidebar.hide();
-}, 200000);
-
-// Show marker creation dialog on button click
-$('.btn-edit').on('click', function(marker, e) {
-  bottombar.hide();
-  sidebar.show($('#create-garbage-dialog').show());
-  // TODO preset the values of the clicked marker
-});
+}, 400000);

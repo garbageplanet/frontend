@@ -42,7 +42,6 @@ function login(e) {
             $('#user-login-dialog').hide();
             showAlert("Login successful", "success", 1500);
             switchSession("login");
-
             $.ajax({
                 method: api.readUser.method,
                 url: api.readUser.url(),
@@ -100,7 +99,6 @@ function registerUser(e) {
             showAlert("Registration successful, you are now logged in.", "success", 2000);
             switchSession("login");
             $('#create-account-dialog').hide();
-            $('#login > a').text('Logout');
             $.ajax({
                 method: api.readUser.method,
                 url: api.readUser.url(),
@@ -144,7 +142,7 @@ function glomego(e) {
 
             if (! glomeid || typeof glomeid == 'undefined') {
                 console.log('bad luck with soft account creation');
-                 showAlert("Failed to login anonymously. Reload the page and try again.", "warning", 3000);
+                showAlert("Failed to login anonymously. Reload the page and try again.", "warning", 3000);
                 return;
             }
 
@@ -157,8 +155,9 @@ function glomego(e) {
             console.log('local authUser: ');
             console.log(authUser);
             console.log('------------------------------------------------------------');
-
+            switchSession("login");
             $('#menu-dialog').hide();
+            showAlert("You are now logged in anonimously.", "success", 2000);
 
             $.ajax({
                 method: api.readSoftAccount.method,
@@ -178,7 +177,7 @@ function glomego(e) {
                         $('#account-info').find('.username').html(authUser.name);
                         $('#account-info').find('.user_name').html(authUser.name);
                         $('#account-info').find('.user_id').html(authUser.id);
-                        $('#account-info').find('.user_email').html(authUser.email);
+                        $('#account-info').find('.user_email').hide();
                         $('#account-info').find('.created_at').html(authUser.created_at);
                         $('#account-info').find('.updated_at').html(authUser.updated_at);
                         $('#account-info').show();
@@ -211,6 +210,8 @@ function sendGlomeKey(e) {
             localStorage["token"] = response.token;
             console.log('registered and logged in with glome');
             $('#create-account-dialog').hide();
+            switchSession("login");
+            showAlert("Welcome back, anonmymous!.", "success", 2000);
             $.ajax({
               method: 'get',
               url: 'http://api.garbagepla.net/api/authenticate/glome',

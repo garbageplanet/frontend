@@ -1,3 +1,4 @@
+// All code related to drawing shapes
 var drawControl = new L.Control.Draw({
     position: 'topright',
     draw: { circle: false,
@@ -31,7 +32,7 @@ map.on('draw:editstop', function (e) { map.on('click', onMapClick) });
 
 // Need to make sure the user can click again on the map if the drawing is aborted
 // This needs to be called in this fashion else it messes up onMapClick's behavior
-map.on('draw:drawstop', function () { map.off('click', onMapClick); map.on('click', onMapClick); sidebar.hide() });
+map.on('draw:drawstop', function () { map.off('click', onMapClick); map.on('click', onMapClick) });
 
 // What to do once a shape is created
 map.on('draw:created', function (e) {
@@ -135,13 +136,6 @@ map.on('draw:edited', function (e) {
     if( type === 'polyline') {}
       
     if( type === 'polygon') {}
-        
-      // TODO
-      //ajax success
-        showAlert("Feature saved successfully!", "success", 1200);
-      //ajax error
-        showAlert("There was an error while saving the feature.", "error", 1200);
-      
       
     });
     map.on('click', onMapClick);

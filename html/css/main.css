@@ -178,6 +178,11 @@ a.menu-backlink:hover {
     top: -5px !important;
 }
 
+ .bottom .close {
+	right: 10px;
+    top: 10px !important;
+}
+
 /* Shift leaflet-bar control buttons */
 
 .leaflet-top .leaflet-control {

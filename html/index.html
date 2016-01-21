@@ -112,7 +112,7 @@
               <li class="disabled"><a class="" href="#">Garbage forecast</a></li>
               <li class="disabled"><a class="" href="#">Garbage hotspots</a></li>
               <li class="divider"></li>
-              <li><a id="btn-locate" href="#">Locate me</a></li>
+              <li><a class="btn-locate" href="#">Locate me</a></li>
               <li class="disabled"><a class="" href="#">Upload a geotagged image</a></li>
               <li class="divider"></li>
               <li class="disabled"><a href="http://www.garbagepla.net" target="_blank">Blog</a></li>
@@ -168,8 +168,7 @@
         </a>
 
         <a href="#"
-           id="btn-locate"
-           class="sidebar-link btn btn-default btn-lg btn-block">
+           class="sidebar-link btn btn-default btn-lg btn-block btn-locate">
            <span class="fa fa-fw fa-compass"></span> Locate me
         </a>
 
@@ -242,6 +241,9 @@
 
                       <div class="tab-pane active form-group form-group-lg" id="cleaning-main" role="tabpanel">
 
+                        <input type="hidden" name="lat" class="cleaning-lat">
+                        <input type="hidden" name="lng" class="cleaning-lng">
+     
                           <!-- Date and time picker for events -->
                         <div class="container from-group" style="width:100%">
                           <div class="row">
@@ -359,9 +361,8 @@
             <div>
                 <div class="btn-group btn-group-justified" role="group">
                     <div class="btn-group btn-group-lg" role="group">
-                        <button type="button"
-                                title="Save"
-                                class="btn btn-success btn-save btn-save-cleaning disabled">
+                        <button type="submit"
+                                class="btn btn-success btn-save">
                             <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
                         </button>
                     </div>
@@ -1287,9 +1288,7 @@
             <p class="lead">
                 As a platform that allows users to submit sensitive information related to environmental pollution, we                     make certain that none of the information we collectthat could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
 
-            <p>For more information regarding our user privacy policy please click on the button below. Note that as of November 2015, the policy is not complete as this platform is currently used for demonstration purpose only.</p>
-
-            <p><a href="//www.iubenda.com/privacy-policy/888670" class="iubenda-white iubenda-embed" title="Privacy Policy by iubenda.com">Privacy Policy</a><script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "//cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script></p>
+            <p>Note that as of January 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
 
     </div>
     <div class="sidebar-content" id="user-agreement">
@@ -1481,6 +1480,12 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
           <h4>Amount of trash</h4>
           <p class="feature-info-garbage-amount"></p>
           <h4>Tags</h4>
+          <p class="feature-tag"></p>
+          <h4>Creation date</h4>
+          <p class="feature-tag"></p>
+          <h4>Created by</h4>
+          <p class="feature-tag"></p>
+          <h4>Coordinates</h4>
           <p class="feature-tag"></p>
         </div>
       </div>

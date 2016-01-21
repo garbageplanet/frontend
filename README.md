@@ -26,7 +26,7 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] implement editing system for map features
 - [ ] make the map pan to follow newly created point while drawing a polyline
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
-
+- [ ] separate click events for draw features that are just created and those thata are saved
 
 ### General coding, coding style, code review
 - [ ] make the code overall less redundant

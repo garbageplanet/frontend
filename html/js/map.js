@@ -128,9 +128,11 @@ function onMapClick(e) {
             icon:genericMarker,
             draggable: true
             }).on('click', onLocalMarkerClick).addTo(map);
-      
+        // TODO move this logic somehwere else
         $('.form-garbage .marker-lat').val(marker._latlng.lat);
         $('.form-garbage .marker-lng').val(marker._latlng.lng);
+        $('.form-cleaning .marker-lat').val(marker._latlng.lat);
+        $('.form-cleaning .marker-lng').val(marker._latlng.lng);
       
         map.panToOffset(marker._latlng, _getHorizontalOffset());
 
@@ -142,9 +144,11 @@ function onMapClick(e) {
           var newPos = event.target.getLatLng();
 
           console.log("dragged marker id:", event.target._leaflet_id );
-
+          // TODO move this logic somehwere else
           $('.form-garbage .marker-lat').val(newPos.lat);
           $('.form-garbage .marker-lng').val(newPos.lng);
+          $('.form-cleaning .marker-lat').val(newPos.lat);
+          $('.form-cleaning .marker-lng').val(newPos.lng)
         });
    }
   
