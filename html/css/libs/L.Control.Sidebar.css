@@ -50,6 +50,14 @@
 
   @media (max-width: 767px) {
     
+    .leaflet-sidebar > .leaflet-control {
+      /*needed to scroll in chrome with hidden scrollbars*/
+      overflow-y: auto; }
+    
+    .leaflet-sidebar > .leaflet-control::-webkit-scrollbar {
+      display: none; 
+    }
+    
     .leaflet-sidebar.right {
       width: 100%;
       padding: 0; }

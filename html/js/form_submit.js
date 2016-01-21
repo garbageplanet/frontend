@@ -26,6 +26,7 @@ $(function () {
 		console.log('type of trash', typeOfTrash);
 		console.log('amout of trash', amoutOfTrash);
 		console.log('image url', image_url);
+        debugger;
 
 		setTimeout(function () {
           var useToken = localStorage["token"] || window.token;
@@ -64,23 +65,25 @@ $(function () {
 	$('.form-cleaning').on( 'submit', function (event) {
 		var that = this;
 		event.preventDefault();
-        var dateTime, date, time, lat, lng, image_url, recurrence;
-
-        debugger;
-        var dateTime = $("#event-date-time-picker").data("datetimepicker").getDate();
-        console.log("currently set time and date", dateTime)
-        debugger;
-
+        var dateTime, lat, lng, image_url, eventRecurrence;
+      
+        $('#event-date-time-picker').on('dp.change', function(e) {
+          // TODO format date and time before storage?
+           var dateTime = e.date;
+        });
+        console.log("time", dateTime);
 
 		image_url = $(this).find('.cleaning-image-hidden-value').val();
-      
+        console.log('cleaning image url',image_url);
         $(this).find('.selectpicker.cleaning-recurrent-select option:selected').each(function(index, value) {
-			recurrence.push($(value).val());
+			eventRecurrence.push($(value).val());
 		});
+        console.log("recurrence values", eventRecurrence);
       
         // Coordinates
 		lat = $(this).find('.cleaning-lat').val();
 		lng = $(this).find('.cleaning-lng').val();
+        console.log("cleaning marker coordinates", lat + lng);
 
 		setTimeout(function () {
           var useToken = localStorage["token"] || window.token;
@@ -91,18 +94,19 @@ $(function () {
               data: {
                   'lat': lat,
                   'lng': lng,
-                  'time': date,
-                  'date': time,
-                  'image_url': image_url
+                  'dateTime': dateTime,
+                  'image_url': image_url,
+                  'eventRecurrence': eventRecurrence
               },
               success: function (data) {
+                  $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
                   console.log('success data', data);
                   showAlert("Cleaning event saved successfully!", "success", 2000);
                   sidebar.hide('slow');
               },
               error: function (err) {
                   console.log('err', err);
-                  showAlert("Failed to save the event.", "danger", 3000);
+                  showAlert("Sorry, failed to save the event.", "danger", 3000);
                   sidebar.hide();
                   map.removeLayer(marker);
               }
@@ -110,3 +114,5 @@ $(function () {
 		}, 100);
 	})
 });
+
+// NOTE Save shapes forms are in draw/draw.js

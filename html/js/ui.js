@@ -53,8 +53,7 @@ function showAlert(errorMessage, errorType, closeDelay) {
         window.setTimeout(function() { alert.alert("close") }, closeDelay);     
 };
 
-// Make dropdown menu linuks works
-// Make collapsed menu button work
+// Activate dropdown menu links
 $(document).ready(function() {
   $('#user-tools').on('click', 'a', function(e) {
     if ($(this).hasClass('dropdown-link')) {
@@ -73,9 +72,8 @@ $(document).ready(function() {
   
 });
 
-
+// Actions for map-tools dropdown
 $(document).ready(function() {
-  // Actions for map-tools dropdown
   // Locate the user
   $('.btn-locate').on('click', function(){
     sidebar.hide();
@@ -102,41 +100,28 @@ $(document).ready(function() {
   
   // Display the date and time picker and get the data in the cleaning form on change
   $(function () { $('#event-date-time-picker')
-    .datetimepicker(
-                    {
-                    format: 'DD-MM-YYYY',
-                    minDate: new Date(2015, 0, 1),
-                    showTodayButton: true
-                    }
-    )
-  });
-  
-  $('#event-date-time-picker').on('dp.change', function(e) {
-    console.log('e.date=', e.date);
+    .datetimepicker( {minDate: new Date(2015, 0, 1)});
   });
   
   // Display all the select pickers
   $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 5})
 
   // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
-$('.sidebar-link').click(function(e) {
-    e.preventDefault();
-    $(this.hash).fadeIn().siblings().hide();
-    $('#sidebar').scrollTop = 0;
-});
+  $('.sidebar-link').click(function(e) {
+      e.preventDefault();
+      $(this.hash).fadeIn().siblings().hide();
+      $('#sidebar').scrollTop = 0;
+  });
 
-// Go back to the marker creation menu link
-$('.menu-backlink').click(function(e) {
-    $('.panel-collapse').collapse('hide');
-    $('#sidebar').scrollTop = 0;
-    $(this.hash).fadeIn().siblings().hide();
-    e.preventDefault();
-});
+  // Go back to the marker creation menu link
+  // TODO hide the backlinks when user is logged in, add logic in switchSession()
+  $('.menu-backlink').click(function(e) {
+      $('.panel-collapse').collapse('hide');
+      $('#sidebar').scrollTop = 0;
+      $(this.hash).fadeIn().siblings().hide();
+      e.preventDefault();
+  });
   
-});
-
-$(".btn-save-cleaning").on('click', function (){
-     $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
 });
 
 // Close sidebar and reset forms if cancel button clicked
@@ -156,6 +141,7 @@ sidebar.on('hide', function () {
         $('.leaflet-draw-edit-edit').removeClass('visible');
 });
 
+// TODO Move this logic to onMapClick so the var stay local
 // Range slider for amount of garbage on marker icon
 $('.garbage-range-input').on('change', function() {
     // Remove the generic marker class

@@ -126,6 +126,7 @@ function registerUser(e) {
 };
 
 // Glome authentification
+// TODO fix glome token useage in window
 function glomego(e) {
     console.log('glomego clicked');
     e.preventDefault();
@@ -156,8 +157,8 @@ function glomego(e) {
             console.log(authUser);
             console.log('------------------------------------------------------------');
             switchSession("login");
-            $('#menu-dialog').hide();
-            showAlert("You are now logged in anonimously.", "success", 2000);
+            $('#user-login-dialog').hide();
+            showAlert("You are now logged in anonymously.", "success", 2000);
 
             $.ajax({
                 method: api.readSoftAccount.method,
@@ -173,11 +174,9 @@ function glomego(e) {
 
                     if (typeof authUser !== 'undefined') {
                         console.log('authUser: ', authUser);
-
                         $('#account-info').find('.username').html(authUser.name);
                         $('#account-info').find('.user_name').html(authUser.name);
                         $('#account-info').find('.user_id').html(authUser.id);
-                        $('#account-info').find('.user_email').hide();
                         $('#account-info').find('.created_at').html(authUser.created_at);
                         $('#account-info').find('.updated_at').html(authUser.updated_at);
                         $('#account-info').show();
@@ -211,7 +210,7 @@ function sendGlomeKey(e) {
             console.log('registered and logged in with glome');
             $('#create-account-dialog').hide();
             switchSession("login");
-            showAlert("Welcome back, anonmymous!.", "success", 2000);
+            showAlert("Welcome back, anonymous!.", "success", 2000);
             $.ajax({
               method: 'get',
               url: 'http://api.garbagepla.net/api/authenticate/glome',

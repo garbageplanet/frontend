@@ -29,6 +29,7 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] separate click events for draw features that are just created and those thata are saved
 
 ### General coding, coding style, code review
+- [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
 - [ ] make the code overall less redundant
 - [ ] implement templating for i18n
 - [ ] split main.css into components-specific files

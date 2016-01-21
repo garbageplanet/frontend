@@ -1,22 +1,22 @@
 // Get new markers if the map moves
 map.on('moveend', function(e) {
-    console.log('log map moveend');
-    // garbageLayer.clearLayers();
     loadRemoteGarbageMarkers();
 });
 
-//Get markers
+// Get markers
+// TODO only get marker if the layer is set as visible in leaflet
 function loadRemoteGarbageMarkers() {
-    console.log('loadremotegarbagemarkers');
+    console.log('loading markers from db');
     garbageLayerGroup.clearLayers();
     var bounds = map.getBounds();
-    console.log(bounds);
-    bounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
-
+    console.log("leaflet map bounds object:",bounds);
+    //  renamed bounds to allBounds
+    allBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
+    console.log("parsed bounds:", allBounds)
     // ajax request
     $.ajax({
         type: api.readTrashWithinBounds.method,
-        url: api.readTrashWithinBounds.url(bounds),
+        url: api.readTrashWithinBounds.url(allBounds),
         success: function(data) {
             $(data).each(function(index, obj) {
                 console.log(obj);
@@ -30,6 +30,7 @@ function loadRemoteGarbageMarkers() {
                         mLat: obj.lat,
                         mLng: obj.lng
                     });
+                // TODO add hasLayer() logic here to only add absent markers?
                 garbageLayerGroup.addLayer(marker);
                 map.addLayer(garbageLayerGroup);
                 marker.on('click', function() {
@@ -83,6 +84,54 @@ function loadRemoteGarbageMarkers() {
     });
     var useToken = localStorage["token"] || window.token;
 };
+
+//Get shapes
+// TODO only get shapes if their correspondinglayers are set as visible in leaflet
+// if (map.hasLayer(pathLayerGroup)){}
+// if (map.hasLayer(areaLayerGroup)){}
+function loadRemoteShapes() {
+    console.log('loading remote shapes');
+    pathLayerGroup.clearLayers();
+    areaLayerGroup.clearLayers();
+
+    var bounds = map.getBounds();
+    console.log("leaflet map bounds object:",bounds);
+    //  renamed bounds to allBounds
+    allBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
+    console.log("parsed bounds:", allBounds)
+    // ajax request
+    
+     var useToken = localStorage["token"] || window.token;
+    $.ajax({
+        url: 'http://api.garbagepla.net/api/monitoringtiles',
+        headers: {"Authorization": "Bearer " + useToken},
+        method: 'get',
+        success: function (data) {
+            console.log('data------tiles', data);
+            for (var i = 0; i < data.length; i++) {
+                var top_right = [Number(data[i].ne_lat), Number(data[i].ne_lng)];
+                var bottom_left = [Number(data[i].sw_lat), Number(data[i].sw_lng)];
+                var rectangleBounds = [bottom_left, top_right];
+                console.log('rectangleBounds', rectangleBounds);
+                var rectangle = L.rectangle(rectangleBounds);
+                rectangle.addTo(map);
+            };
+        },
+        error: function (err) {
+            console.log('tiles get err', err);
+        }
+    });
+    
+    var useToken = localStorage["token"] || window.token;
+};
+    
+    
+    
+    
+    
+    
+    
+    
 
 // Temporary fix for local (unsaved) marker clicked
 function onLocalMarkerClick (e) {

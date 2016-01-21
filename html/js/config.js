@@ -5,7 +5,7 @@
 var api = {
   // Backend
   // server: 'http://api.garbagepla.net/api',
-  server: 'dev.garbagepla.net',
+  server: 'http://dev.garbagepla.net:8080/api',
 
   // API entry points
   /* User */
@@ -73,18 +73,19 @@ var api = {
   },
   readTrashWithinBounds: {
     method: 'GET',
-    url: function(bounds) {
-      return api.readTrash.url() + '/withinbounds?bounds=' + bounds;
+    url: function(allBounds) {
+      return api.readTrash.url() + '/withinbounds?bounds=' + allBounds;
     }
   },
   /* Monitoring Tiles */
-  createMonitoringTiles: {
+  // TODO replace route name by '/shapes'
+  createShape: {
     method: 'POST',
     url: function() {
-      return api.readMonitoringTiles.url();
+      return api.readShape.url();
     }
   },
-  readMonitoringTiles: {
+  readShape: {
     method: 'GET',
     url: function() {
       return api.server + '/monitoringtiles';

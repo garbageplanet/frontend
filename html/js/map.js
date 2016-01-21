@@ -75,7 +75,8 @@ var overlayGroups = {
 map.addControl( L.control.zoom({position: 'topright'}) );
 
 // Add the layer control
-L.control.layers(tileLayers, overlayGroups).setPosition('topright').addTo(map);
+// Layer control is disabled until a good solution for obile UI comes up
+//L.control.layers(tileLayers, overlayGroups).setPosition('topright').addTo(map);
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-fw fa-th-large fa-icon-black fa-icon-centered'></span>");

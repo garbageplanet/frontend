@@ -1,3 +1,5 @@
+//TODO use removeControl() rather than hiding the control with CSS when they are not in use
+
 // All code related to drawing shapes
 var drawControl = new L.Control.Draw({
     position: 'topright',
@@ -84,13 +86,6 @@ map.on('draw:created', function (e) {
                           break;
               }
       });
-      
-      //TODO
-      // get the points at e._latlngs[0]...[n]
-      //ajax success
-      showAlert("Path saved successfully!", "success", 1200);
-      //ajax error
-      showAlert("There was an error while saving the path.", "danger", 1200);
 
       pathLayerGroup.addLayer(polylineLayer)
       map.addLayer(pathLayerGroup);
@@ -99,6 +94,54 @@ map.on('draw:created', function (e) {
         $('.leaflet-draw-edit-edit').removeClass('visible');
         map.removeLayer(polylineLayer);
       });
+      
+      
+      // Saving form
+       //TODO
+      /*
+      $('#button-save-tile').click(function () {
+          var ne_lat = Number($('#activate-tile-dialog').find('.tile-ne-lat').text());
+          var ne_lng = Number($('#activate-tile-dialog').find('.tile-ne-lng').text());
+          var sw_lat = Number($('#activate-tile-dialog').find('.tile-sw-lat').text());
+          var sw_lng = Number($('#activate-tile-dialog').find('.tile-sw-lng').text());
+          var tile_name = $('#l-tile-name').val();
+          // Set the type of the shape so we can use if (shapeType = polyline ) in GET
+          var shapeType = polyline
+          // get the points
+          var latLngs = e._latlngs[0]...[n]
+          console.log('tile name', tile_name);
+          var useToken = localStorage["token"] || window.token;
+          $.ajax({
+              method: api.createShape.method,
+              url: api.createShape.url(),
+              headers: {"Authorization": "Bearer " + useToken},
+              data: {
+                  'name': tile_name,
+                  'ne_lat': ne_lat, 
+                  'ne_lng': ne_lng,
+                  'sw_lat': sw_lat,
+                  'sw_lng': sw_lng
+              },
+              method: 'post',
+              success: function (data) {
+                  console.log('suc data', data);
+                  alert('Tile saved successfully!');
+                  showAlert("Path saved successfully!", "success", 1200);
+                  window.rectangle.editing.disable();
+                  sidebar.hide('slow');
+
+              },
+              error: function (err) {
+                  console.log('err', err);
+                  alert('Something went wrong, please try again', err);
+                  showAlert("There was an error while saving the path.", "danger", 1200);
+                  sidebar.hide();
+                  map.removeLayer(polylineLayer);
+              }
+          })
+      })*/
+      
+      
     }
   
     if( type === 'polygon') {
