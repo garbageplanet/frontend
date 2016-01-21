@@ -1,17 +1,17 @@
 // Get new markers if the map moves
 map.on('moveend', function(e) {
-    loadRemoteGarbageMarkers();
-    loadRemoteShapes();
     var bounds = map.getBounds();
-    console.log("leaflet map bounds object:",bounds);
+    console.log("leaflet map bounds object:", bounds);
     //  renamed bounds to currentViewBounds
     currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
-    console.log("parsed bounds:", currentViewBounds);
+    console.log("currentViewBounds:", currentViewBounds);
+    loadRemoteGarbageMarkers();
+    loadRemoteShapes();
 });
 
 // Get markers
 // TODO only get marker if the layer is set as visible in leaflet
-function loadRemoteGarbageMarkers(currentViewBounds) {
+function loadRemoteGarbageMarkers() {
     console.log('loading markers from db');
     garbageLayerGroup.clearLayers();
     // ajax request
@@ -87,7 +87,7 @@ function loadRemoteGarbageMarkers(currentViewBounds) {
 };
 
 //Get shapes
-function loadRemoteShapes(currentViewBounds) {
+function loadRemoteShapes() {
     console.log('loading remote shapes');
   
     if (! map.hasLayer('pathLayerGroup')) {return;}
