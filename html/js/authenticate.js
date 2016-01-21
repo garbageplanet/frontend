@@ -48,7 +48,6 @@ function login(e) {
                 headers: {"Authorization": "Bearer " + response.token},
                 success: function (data) {
                     console.log('alreay logged in', data);
-                    $('#account-info').find('.username').html(data.user.name);
                     $('#account-info').find('.user_name').html(data.user.name);
                     $('#account-info').find('.user_id').html(data.user.id);
                     $('#account-info').find('.user_email').html(data.user.email);
@@ -104,7 +103,7 @@ function registerUser(e) {
                 url: api.readUser.url(),
                 headers: {"Authorization": "Bearer " + response.token},
                 success: function (data) {
-                    console.log('succee data', data);
+                    console.log('success data', data);
                     $('#account-info').find('.username').html(data.user.name);
                     $('#account-info').find('.glome-info').hide;
                     $('#account-info').find('.user_id').html(data.user.id);
@@ -174,8 +173,9 @@ function glomego(e) {
 
                     if (typeof authUser !== 'undefined') {
                         console.log('authUser: ', authUser);
-                        $('#account-info').find('.username').html(authUser.name);
-                        $('#account-info').find('.user_name').html(authUser.name);
+                        $('#account-info').find('.user_name').text('anon (⌐■_■)');
+                        $('#account-info').find('.user_email').hide;
+                        $('#account-info').find('.glome-key-info').html(authUser.name);
                         $('#account-info').find('.user_id').html(authUser.id);
                         $('#account-info').find('.created_at').html(authUser.created_at);
                         $('#account-info').find('.updated_at').html(authUser.updated_at);
@@ -217,7 +217,7 @@ function sendGlomeKey(e) {
               headers: {"Authorization": "Bearer " + response.token},
               success: function (data) {
                 console.log('succee data', data);
-                $('#account-info').find('.username').hide;
+                $('#account-info').find('.user_name').hide;
                 $('#account-info').find('.glome-key-info').html(data.user.key);
                 $('#account-info').find('.user_id').hide;
                 $('#account-info').find('.user_name').hide;
