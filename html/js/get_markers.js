@@ -231,29 +231,32 @@ function onRemoteMarkerClick (e) {
         var markerAmount = e.options.mAmount;
         var markerRawImage = e.options.mImageUrl;
 
-        // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
-        String.prototype.insert = function (index, string) {
-            if (index > 0)
-                return this.substring(0, index) + string + this.substring(index, this.length);
-            else
-            return string + this;
-            };
-
-        markerImage = markerRawImage.insert(26, "t");
-
-        // TODO put a placeholder if the media is empty?
-        // FIXME marker without media display a broken image icon
-        /*if (markerRawImage.val().length() == null ) {
-           $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
-        };*/
+        // Put a placeholder if the media is empty?
+        if (! markerRawImage ) {
+          $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
+          $('#feature-info').find('.feature-image-link').attr('href', '');
+        };
+        console.log("value of rawimage", markerRawImage);
+        
+        if ( markerRawImage) {
+          // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
+          String.prototype.insert = function (index, string) {
+              if (index > 0)
+                  return this.substring(0, index) + string + this.substring(index, this.length);
+              else
+              return string + this;
+              };
+          markerImage = markerRawImage.insert(26, "t");
+          console.log("value of parsed image", markerImage);
+          $('#feature-info').find('.feature-image').attr('src', markerImage);
+          $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
+        };
 
         var markerId = e.options.mId;
 
         $('#feature-info').find('.feature-info-garbage-type').html(markerType);
-        $('#feature-info').find('.feature-image').attr('src', markerImage);
-        $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
 
-        $('#feature-info').find('.btn-delete-marker').click(function (e) {
+        $('#feature-info').find('.btn-delete').click(function (e) {
             //debugger;
             console.log('trigger delete on id', markerId);
             e.preventDefault();
@@ -272,7 +275,16 @@ function onRemoteMarkerClick (e) {
                     alert('You cannot remove this marker');
                 }
             });
-        })
+        });
+      
+        $('#feature-info').find('.btn-edit').click(function (e) {
+            //debugger;
+            console.log('show data on id', markerId);
+            e.preventDefault();
+            // TODO load the marker data into the form
+
+        });
+      
         // amount mapping
         switch(markerAmount) {
             case 0:
@@ -326,4 +338,9 @@ function onRemoteMarkerClick (e) {
 function onRemoteShapeCLick (e) {                          
     console.log("remote shape clicked");
     console.log(e);
+  
+  // load data
+  // btn-delete action
+  // btn-edit action
+  // styling with if obj.type == 'polyline'
 };

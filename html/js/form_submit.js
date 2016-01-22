@@ -115,4 +115,4 @@ $(function () {
 	})
 });
 
-// NOTE Save shapes forms are in draw/draw.js
+// NOTE Save shapes forms are nested in draw:created event listener in draw/draw.js
