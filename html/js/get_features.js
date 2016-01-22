@@ -114,6 +114,7 @@ function loadRemoteShapes() {
               var polylineLayer = new L.Polyline(obj.latLngs,
                 {
                   polylineId: obj.id,
+                  polylineType: obj.type,
                   polylineAmount: obj.amount,
                   polylineTypes: obj.types,
                   polylineImageUrl: obj.image_url,
@@ -170,6 +171,7 @@ function loadRemoteShapes() {
                 {
                   polygonId: obj.id,
                   polygonLatLngs: obj.latLngs,
+                  polygonType: obj.type,
                 }
               );
 
@@ -231,14 +233,14 @@ function onRemoteMarkerClick (e) {
         var markerAmount = e.options.mAmount;
         var markerRawImage = e.options.mImageUrl;
 
-        // Put a placeholder if the media is empty?
+        // Put a placeholder if the media is empty
         if (! markerRawImage ) {
           $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
           $('#feature-info').find('.feature-image-link').attr('href', '');
         };
         console.log("value of rawimage", markerRawImage);
         
-        if ( markerRawImage) {
+        if ( markerRawImage ) {
           // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
           String.prototype.insert = function (index, string) {
               if (index > 0)
@@ -327,7 +329,9 @@ function onRemoteMarkerClick (e) {
             // do for the rest of values
         };
 
-    } else if ($(marker._icon).hasClass('marker-cleaning')){
+    } 
+  
+    if ($(marker._icon).hasClass('marker-cleaning')) {
         bottombar.hide();
         $('.sidebar-content').hide();
         sidebar.show($("#cleaning-info").fadeIn())
@@ -335,12 +339,132 @@ function onRemoteMarkerClick (e) {
 };
 
 // TODO onClick behavior for saved shapes
-function onRemoteShapeCLick (e) {                          
+// TODO can we move all this logic in a single function for all features?
+function onRemoteShapeClick (e) {                          
     console.log("remote shape clicked");
     console.log(e);
+    console.log(e.options.latLngs)
+    sidebar.hide();
+    var that = this;
+    map.panToOffset(e.getCenter(), _getVerticalOffset());
+    //clear the data in the bottom panel
+    $("#feature-info-garbage-type").empty();
+    $("#feature-info-garbage-amount").empty();
+    $("#feature-info-image").attr("src", "");
+    $("#feature-info").find('.feature-image-link').attr("href", "");
+    bottombar.show();
+
+    if ( e.option.polylineType == 'polyline'){
+      map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
+      // inject info for the polyline
+      var shapeType = e.options.polylineType;
+      var shapeTypes = e.options.polylineTypes;
+      var shapeAmount = e.options.polylineAmount;
+      var shapeRawImage = e.options.polylineImageUrl;
+      var shapeLatLngs =e.options.polylineLatLngs;
+      var shapeId = e.options.polylineId;
+    }
   
-  // load data
-  // btn-delete action
-  // btn-edit action
-  // styling with if obj.type == 'polyline'
+    if ( e.option.polylineType == 'polygon'){
+      map.fitBounds(e.layer.getBounds());
+      // inject info for the polygon
+      var shapeType = e.options.polygonTgon
+      var shapeTypes = e.options.polygonTypes;
+      var shapeAmount = e.options.polygonAmount;
+      var shapeRawImage = e.options.polygonImageUrl;
+      var shapeLatLngs =e.options.polygonLatLngs;
+      var shapeId = e.options.polygonId;
+    }
+
+    // Put a placeholder if the media is empty
+    if (! shapeRawImage ) {
+      $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
+      $('#feature-info').find('.feature-image-link').attr('href', '');
+    };
+
+    if ( shapeRawImage ) {
+      // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
+      String.prototype.insert = function (index, string) {
+          if (index > 0)
+              return this.substring(0, index) + string + this.substring(index, this.length);
+          else
+          return string + this;
+          };
+      shapeImage = shapeImage.insert(26, "t");
+      $('#feature-info').find('.feature-image').attr('src', shapeImage);
+      $('#feature-info').find('.feature-image-link').attr('href', shapeRawImage);
+    };
+
+    $('#feature-info').find('.feature-info-garbage-type').html(shapeTypes);
+    $('#feature-info').find('.btn-delete').click(function (e) {
+        //debugger;
+        console.log('trigger shape delete on id', shapeId);
+        e.preventDefault();
+        var useToken = localStorage["token"] || window.token;
+        $.ajax({
+            type: api.deleteShape.method,
+            url: api.deleteShape.url(markerId),
+            headers: {"Authorization": "Bearer " + useToken},
+            success: function(response) {
+                bottombar.hide();
+                loadRemoteShapes();
+                alert('Feature successfully deleted!');
+                console.log('Shape successfully deleted', response);
+            },
+            error: function(response) {
+                alert('You cannot remove this feature.');
+            }
+        });
+    });
+
+    $('#feature-info').find('.btn-edit').click(function (e) {
+        //debugger;
+        console.log('show data on id', shapeId);
+        e.preventDefault();
+        // TODO load the marker data into the form
+
+    });
+
+    // amount mapping
+    switch(shapeAmount) {
+        case 0:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
+            break;
+        case 1:
+            $('#feature-info').find('.feature-info-garbage-amount').html('You are seeing ghosts');
+            break;
+        case 2:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Here and there');
+            break;
+        case 3:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Quite some');
+            break;
+        case 4:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Already too much');
+            break;
+        case 5:
+            $('#feature-info').find('.feature-info-garbage-amount').html('What happened here?');
+            break;
+        case 6:
+            $('#feature-info').find('.feature-info-garbage-amount').html('This is getting out of hand');
+            break;
+        case 7:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Dude...');
+            break;
+        case 8:
+            $('#feature-info').find('.feature-info-garbage-amount').html('What the what?');
+            break;
+        case 9:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
+            break;
+        case 10:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky, lok at...');
+            break;
+        default:
+            $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
+            break;
+
+        // do for the rest of values
+    };
+
 };

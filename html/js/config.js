@@ -79,7 +79,7 @@ var api = {
   },
   /* Monitoring Tiles */
   // TODO add new routes to API
-  // TODO replace route name by '/shapes'
+  // TODO replace '/monitoringtiles' route name by '/shapes'
     readShapesWithinBounds: {
     method: 'GET',
     url: function(allBounds) {
@@ -97,5 +97,11 @@ var api = {
     url: function() {
       return api.server + '/monitoringtiles';
     }
-  }
+  },
+  deleteShape: {
+    method: 'DELETE',
+    url: function(id) {
+      return api.readShape.url() + '/' + id;
+    }
+  },
 };

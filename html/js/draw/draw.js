@@ -228,6 +228,8 @@ $('.btn-draw-polygon').on('click', function(){
                                  }}).enable();
 });
 
+
+// FIXME make sure the function below don't mess the shapes onClick in get_features.js
 // Add click events for draw layers
 pathLayerGroup.on('click', 
   function onPathClick (e) {
