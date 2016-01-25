@@ -270,11 +270,10 @@ function onRemoteMarkerClick (e) {
                 success: function(response) {
                     bottombar.hide();
                     loadRemoteGarbageMarkers();
-                    alert('Marker successfully deleted!');
-                    console.log('Marker successfully deleted', response);
+                    showAlert("Marker deleted successfully!", "success", 1500);
                 },
                 error: function(response) {
-                    alert('You cannot remove this marker');
+                    showAlert("Failed to remove this marker.", "warning", 2000);
                 }
             });
         });
@@ -282,6 +281,7 @@ function onRemoteMarkerClick (e) {
         $('#feature-info').find('.btn-edit').click(function (e) {
             //debugger;
             console.log('show data on id', markerId);
+                    
             e.preventDefault();
             // TODO load the marker data into the form
 
@@ -320,7 +320,7 @@ function onRemoteMarkerClick (e) {
                 $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
                 break;
             case 10:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky, lok at...');
+                $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky, look at...');
                 break;
             default:
                 $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
@@ -331,7 +331,7 @@ function onRemoteMarkerClick (e) {
 
     } 
   
-    if ($(marker._icon).hasClass('marker-cleaning')) {
+    if ( $(marker._icon).hasClass('marker-cleaning') ) {
         bottombar.hide();
         $('.sidebar-content').hide();
         sidebar.show($("#cleaning-info").fadeIn())
@@ -354,7 +354,7 @@ function onRemoteShapeClick (e) {
     $("#feature-info").find('.feature-image-link').attr("href", "");
     bottombar.show();
 
-    if ( e.option.polylineType == 'polyline'){
+    if ( e.option.polylineType === 'polyline'){
       map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
       // inject info for the polyline
       var shapeType = e.options.polylineType;
@@ -365,10 +365,10 @@ function onRemoteShapeClick (e) {
       var shapeId = e.options.polylineId;
     }
   
-    if ( e.option.polylineType == 'polygon'){
+    if ( e.option.polylineType === 'polygon'){
       map.fitBounds(e.layer.getBounds());
       // inject info for the polygon
-      var shapeType = e.options.polygonTgon
+      var shapeType = e.options.polygonType
       var shapeTypes = e.options.polygonTypes;
       var shapeAmount = e.options.polygonAmount;
       var shapeRawImage = e.options.polygonImageUrl;
@@ -383,24 +383,30 @@ function onRemoteShapeClick (e) {
     };
 
     if ( shapeRawImage ) {
+      
       // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
       String.prototype.insert = function (index, string) {
+        
           if (index > 0)
               return this.substring(0, index) + string + this.substring(index, this.length);
           else
           return string + this;
           };
+      
       shapeImage = shapeImage.insert(26, "t");
+      
       $('#feature-info').find('.feature-image').attr('src', shapeImage);
       $('#feature-info').find('.feature-image-link').attr('href', shapeRawImage);
+      
     };
 
     $('#feature-info').find('.feature-info-garbage-type').html(shapeTypes);
+  
     $('#feature-info').find('.btn-delete').click(function (e) {
-        //debugger;
-        console.log('trigger shape delete on id', shapeId);
+        
         e.preventDefault();
         var useToken = localStorage["token"] || window.token;
+      
         $.ajax({
             type: api.deleteShape.method,
             url: api.deleteShape.url(markerId),
@@ -408,11 +414,10 @@ function onRemoteShapeClick (e) {
             success: function(response) {
                 bottombar.hide();
                 loadRemoteShapes();
-                alert('Feature successfully deleted!');
-                console.log('Shape successfully deleted', response);
+                showAlert("Feature deleted successfully.", "success", 1500);
             },
             error: function(response) {
-                alert('You cannot remove this feature.');
+                showAlert("Failed to delete this feature.", "warning", 2000);
             }
         });
     });
@@ -463,8 +468,6 @@ function onRemoteShapeClick (e) {
         default:
             $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
             break;
-
-        // do for the rest of values
     };
 
 };

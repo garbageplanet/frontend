@@ -2362,8 +2362,8 @@ L.Tooltip = L.Class.extend({
 			'<span>' + labelText.text + '</span>';
       
         // FIXME update the value of lenght/area to the input in the forms
-          // document.getElementsByClassName('polygon-area').value = labelText.subtext; 
-          // document.getElementsByClassName('polyline-length').value = labelText.subtext; 
+        // window.getElementsByClassName('polygon-area').value = labelText.subtext; 
+        // window.getElementsByClassName('polyline-length').value = labelText.subtext; 
 
 		return this;
 	},

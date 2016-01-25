@@ -143,19 +143,13 @@ map.on('draw:created', function (e) {
       $('input[class=polygon-area]').val($('span.leaflet-draw-tooltip-subtext').val());
       
       var polygonLayer = e.layer;
-      //TODO ajax calls
-      //ajax success
-        showAlert("Area saved successfully!", "success", 1200);
-      //ajax error
-        showAlert("There was an error while saving the area.", "danger", 1200);
+      areaLayerGroup.addLayer(polygonLayer);
+      map.addLayer(areaLayerGroup);
       
-        areaLayerGroup.addLayer(polygonLayer);
-        map.addLayer(areaLayerGroup);
-      
-        $('.btn-cancel').on('click', function(){
-          $('.leaflet-draw-edit-edit').removeClass('visible');
-          map.removeLayer(polygonLayer);
-        });  
+      $('.btn-cancel').on('click', function(){
+        $('.leaflet-draw-edit-edit').removeClass('visible');
+        map.removeLayer(polygonLayer);
+      });
     }
     
     // Reactivate default marker event listener

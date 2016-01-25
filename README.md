@@ -22,7 +22,8 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
-- [ ] make the events markers + api routes
+- [ ] changes event listener for features to use `onEachFeature()`
+- [ ] make the cleaning api routes
 - [ ] make shapes api routes
 - [ ] implement editing system for map features
 - [ ] make the map pan to follow newly created point while drawing a polyline
@@ -33,11 +34,9 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
 - [ ] make the code overall less redundant
 - [ ] implement templating for i18n
-- [ ] split main.css into components-specific files
 
 #### Making the code more maintainable
 - [ ] create build script with minification (closure compiler) for deployment
-- [ ] better structure/split script files
 - [ ] implement .getScript() for lazy loading scripts that are not required globally
 - [ ] implement html templates/imports for the sidebar to be able to reuse the tabs layout and save/cancel buttons
 
@@ -53,4 +52,4 @@ If you want to work on a specific todo below, the first thing you should do is o
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 
 #### Licence
-This code is released under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/bottom-bar/license.md).
+This code is available under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/bottom-bar/license.md).

@@ -135,7 +135,7 @@ sidebar.on('hide', function () {
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         $('form').each(function() { this.reset() });
-        $('textarea').val('');
+        $('textarea').each().val('');
         $('input').val('');
         $('.selectpicker').selectpicker('render');
         $('.leaflet-draw-edit-edit').removeClass('visible');
