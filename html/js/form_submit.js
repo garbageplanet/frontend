@@ -26,7 +26,6 @@ $(function () {
 		console.log('type of trash', typeOfTrash);
 		console.log('amout of trash', amoutOfTrash);
 		console.log('image url', image_url);
-        debugger;
 
 		setTimeout(function () {
           var useToken = localStorage["token"] || window.token;
@@ -115,4 +114,67 @@ $(function () {
 	})
 });
 
-// NOTE Save shapes forms are nested in draw:created event listener in draw/draw.js
+// Save polyline / litter
+$(function () {
+  $('.form-litter').on( 'submit', function (event) {
+    var that = this;
+    event.preventDefault();
+    var typeOfTrash = [];
+    var amoutOfTrash, 
+        latlngs, 
+        image_url, 
+        length,
+        geojson_data,
+        wms_url;
+
+    latlngs = $(this).find('.litter-latlngs').val();
+
+    $(this).find('.selectpicker.litter-type-select option:selected').each(function(index, value) {
+        typeOfTrash.push($(value).val());
+    });
+
+    // Input range selector
+    amoutOfTrash = $('input[class=litter-range-input]').val();
+
+    image_url = $(this).find('.litter-image-hidden-value').val();
+
+    wms_url = $('input[class=polyline-wms-url]').val();
+    geojson_data =  $('input[class=polyline-geojson-data]').val();
+
+    console.log('coordinates', latlngs)
+    console.log('type of trash', typeOfTrash);
+    console.log('amout of trash', amoutOfTrash);
+    console.log('image url', image_url);
+    console.log('length of the line', length);
+
+    setTimeout(function () {
+      var useToken = localStorage["token"] || window.token;
+      $.ajax({
+          method: api.createShape.method,
+          url: api.createShape.url(),
+          headers: {"Authorization": "Bearer" + useToken},
+          data: {
+              'latlngs': latlngs,
+              'amount': amoutOfTrash,
+              'types': typeOfTrash.join(),
+              'image_url': image_url,
+              'length': length,
+              'wms_url': wms_url,
+              'geojson_data': geojson_data
+          },
+          success: function (data) {
+              console.log('success data', data);
+              showAlert("Litter saved successfully!", "success", 1500);
+              sidebar.hide('slow');
+          },
+          error: function (err) {
+              console.log('err', err);
+              showAlert("Sorry, failed to save the litter.", "danger", 2000);
+              sidebar.hide();
+              // FIXME remove the feature on error?
+              map.removeLayer(polylineLayer);
+          }
+      })
+    }, 200);
+  });
+});

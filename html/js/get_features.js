@@ -229,7 +229,7 @@ function onRemoteMarkerClick (e) {
 
         bottombar.show();
         // start to inject info
-        var markerType = e.options.mTypes /*|| 'Glass, Glass bottles'*/;
+        var markerTypes = e.options.mTypes /*|| 'Glass, Glass bottles'*/;
         var markerAmount = e.options.mAmount;
         var markerRawImage = e.options.mImageUrl;
 
@@ -256,7 +256,7 @@ function onRemoteMarkerClick (e) {
 
         var markerId = e.options.mId;
 
-        $('#feature-info').find('.feature-info-garbage-type').html(markerType);
+        $('#feature-info').find('.feature-info-garbage-type').html(markerTypes.join(", "));
 
         $('#feature-info').find('.btn-delete').click(function (e) {
             //debugger;

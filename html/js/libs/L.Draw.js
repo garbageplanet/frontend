@@ -105,7 +105,9 @@ L.drawLocal = {
 	}
 };
 
-
+var distanceStr;
+var areaStr;
+  
 L.Draw = {};
 
 L.Draw.Feature = L.Handler.extend({
@@ -340,6 +342,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		}
 
 		this._vertexChanged(latlng, true);
+        //debugger;
 	},
 
 	_finishShape: function () {
@@ -351,6 +354,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		}
 
 		this._fireCreatedEvent();
+        
 		this.disable();
 		if (this.options.repeatMode) {
 			this.enable();
@@ -1791,7 +1795,7 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
 
 		if (isMetric) {
 			if (area >= 10000) {
-				areaStr = (area * 0.0001).toFixed(2) + ' ha';
+				areaStr = (area * 0.000001).toFixed(2) + ' km&sup2';
 			} else {
 				areaStr = area.toFixed(2) + ' m&sup2;';
 			}
@@ -1806,17 +1810,19 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
 				areaStr = Math.ceil(area) + ' yd&sup2;';
 			}
 		}
-
+        
 		return areaStr;
 	},
 
 	readableDistance: function (distance, isMetric) {
 		var distanceStr;
+        
 
 		if (isMetric) {
 			// show metres when distance is < 1km, then show km
 			if (distance > 1000) {
 				distanceStr = (distance  / 1000).toFixed(2) + ' km';
+
 			} else {
 				distanceStr = Math.ceil(distance) + ' m';
 			}
@@ -1829,8 +1835,10 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
 				distanceStr = Math.ceil(distance) + ' yd';
 			}
 		}
-
+                // get the value of distanceStr into the ui
+        
 		return distanceStr;
+
 	}
 });
 
@@ -2352,6 +2360,10 @@ L.Tooltip = L.Class.extend({
 		this._container.innerHTML =
 			(labelText.subtext.length > 0 ? '<span class="leaflet-draw-tooltip-subtext">' + labelText.subtext + '</span>' + '<br />' : '') +
 			'<span>' + labelText.text + '</span>';
+      
+        // FIXME update the value of lenght/area to the input in the forms
+          // document.getElementsByClassName('polygon-area').value = labelText.subtext; 
+          // document.getElementsByClassName('polyline-length').value = labelText.subtext; 
 
 		return this;
 	},

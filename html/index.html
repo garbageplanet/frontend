@@ -209,7 +209,7 @@
                 </h3>
             </div>
             <br>
-            <form id="create-cleaning-form"
+            <form class="form-cleaning"
                   role="form"
                   data-toggle="validator"
                   accept-charset="UTF-8">
@@ -723,7 +723,7 @@
                       <div class="tab-pane active form-group form-group-lg" id="tile-main" role="tabpanel">
 
                         <div>
-                          <button type="button" class="btn btn-lg btn-block btn-default btn-draw-polygon">
+                          <button type="button" class="btn btn-lg btn-block btn-default btn-draw btn-draw-polygon">
                             <span class="fa fa-fw fa-pencil"></span> Start drawing
                           </button>
                         </div>
@@ -906,7 +906,7 @@
             </a>
         </span>
           Mark a stretch of land</h2>
-                     <form id="create-litter-form"
+                     <form class="form-litter"
                            role="form"
                            accept-charset="UTF-8"
                            data-toggle="validator">
@@ -935,7 +935,7 @@
                         <div class="tab-pane active form-group form-group-lg" id="litter-main" role="tabpanel">
 
                           <div>
-                            <button type="button" class="btn btn-lg btn-block btn-default btn-draw-polyline">
+                            <button type="button" class="btn btn-lg btn-block btn-default btn-draw btn-draw-polyline">
                               <span class="fa fa-fw fa-pencil"></span> Start drawing
                             </button>
                           </div>
@@ -943,14 +943,17 @@
                           <br>
                           
                         <div class="range-slider">
-                        <p class="lead">Amount of garbage: <strong><span class="polyline-range-value"></span></strong>                                     </p>
-                        <input class="polyline-range-input" type="range" value="1" min="1" max="10">
+                        <p class="lead">Amount of garbage: <strong><span class="litter-range-value"></span></strong></p>
+                        
+                        <input type="hidden" name="latlngs" class="litter-latlngs">
+                        
+                        <input class="litter-range-input" type="range" value="1" min="1" max="10">
                         </div>
                           
                           <br>
                           <div class="dropdown" >
-                              <select id="litter-garbage-type"
-                                      class="selectpicker"title="What kind of litter? (multiple allowed)"
+                              <select class="selectpicker litter-type-select form-control"
+                                      title="What kind of litter? (multiple allowed)"
                                       multiple data-live-search="true"
                                       data-selected-text-format="count"
                                       data-width="100%"
@@ -1033,7 +1036,7 @@
                     <div class="">
                         <div class="btn-group btn-group-justified" role="group">
                             <div class="btn-group btn-group-lg" role="group">
-                                <button type="button"
+                                <button type="submit"
                                         class="btn btn-success btn-save btn-save-shape">
                                 <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
                                 </button>
