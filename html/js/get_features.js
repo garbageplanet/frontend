@@ -1,10 +1,10 @@
 // Get new markers if the map moves
 map.on('moveend', function(e) {
     var bounds = map.getBounds();
-    console.log("leaflet map bounds object:", bounds);
+    // console.log("leaflet map bounds object:", bounds);
     //  renamed bounds to currentViewBounds
     currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
-    console.log("currentViewBounds:", currentViewBounds);
+    // console.log("currentViewBounds:", currentViewBounds);
     loadRemoteGarbageMarkers();
     loadRemoteShapes();
 });
@@ -90,11 +90,7 @@ function loadRemoteGarbageMarkers() {
 function loadRemoteShapes() {
     console.log('loading remote shapes');
   
-    // if (! map.hasLayer('pathLayerGroup')) {return;}
-  
-    // if (! map.hasLayer('areaLayerGroup')) {return;}
-  
-    if ( map.hasLayer('pathLayerGroup') || map.hasLayer('areaLayerGroup')) {
+    if ( map.hasLayer('pathLayerGroup') || map.hasLayer('areaLayerGroup') ) {
       pathLayerGroup.clearLayers();
       areaLayerGroup.clearLayers();   
     
@@ -111,14 +107,14 @@ function loadRemoteShapes() {
             console.log("object data", obj);
             if (obj.type === 'polyline') {
                   
-              var polylineLayer = new L.Polyline(obj.latLngs,
+              var polylineLayer = new L.Polyline(obj.latlngs,
                 {
                   polylineId: obj.id,
                   polylineType: obj.type,
                   polylineAmount: obj.amount,
                   polylineTypes: obj.types,
-                  polylineImageUrl: obj.image_url,
-                  polylineLatLngs: obj.latLngs,
+                  polylineImageUrl: obj.image_url
+                  // TODO add the rest of the options
                 })
               ;
 
@@ -170,8 +166,8 @@ function loadRemoteShapes() {
               var polygonLayer = new L.Polygon(obj.latLngs,
                 {
                   polygonId: obj.id,
-                  polygonLatLngs: obj.latLngs,
-                  polygonType: obj.type,
+                  polygonType: obj.type
+                  // TODO add the rest of the options
                 }
               );
 
@@ -186,11 +182,18 @@ function loadRemoteShapes() {
           );        
         },
         error: function (data) {
-          console.log('Error geting shape data', data);
+          console.log('Error getting shape data', data);
         }
       });
   
   }
+  
+  if ( ! map.hasLayer('pathLayerGroup') || ! map.hasLayer('areaLayerGroup') ) {
+    // FIXME this displays too much
+    // showAlert("Show other types of layer by selecting them from the menu.", "info", 2000);
+    return;
+  }
+  
 };
 
 // Temporary fix for local (unsaved) marker clicked

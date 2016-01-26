@@ -6,23 +6,23 @@ $(function () {
 		var that = this;
 		event.preventDefault();
 		var typeOfTrash = [];
-        var tags = [];
-        var garbageSize = [];
-        var garbageEmbed = [];
-        var garbageTodo = [];
-		var amoutOfTrash, 
+        // var tags = [];
+        // var garbageSize = [];
+        // var garbageEmbed = [];
+        // var garbageTodo = [];
+		var amountOfTrash, 
             lat, 
             lng, 
-            image_url, 
+            image_url/*, 
             note,
             garbageSize,
-            embed;
+            embed*/;
 
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
 			typeOfTrash.push($(value).val());
 		});
       
-        $(this).find('.selectpicker.garbage-size-select option:selected').each(function(index, value) {
+        /*$(this).find('.selectpicker.garbage-size-select option:selected').each(function(index, value) {
 			garbageSize.push($(value).val());
 		});
       
@@ -32,18 +32,18 @@ $(function () {
       
         $(this).find('.selectpicker.garbage-todo-select option:selected').each(function(index, value) {
 			garbageTodo.push($(value).val());
-		});
+		});*/
 
-		amoutOfTrash = $('input[class=garbage-range-input]').val();
-        note = $(this).find('.garbage-note').val();
+		amountOfTrash = $('input[class=garbage-range-input]').val();
+        // note = $(this).find('.garbage-note').val();
 
 		image_url = $(this).find('.garbage-image-hidden-value').val();
 
-        tags = $(this).find('.garbage-tags').tagsinput('items');
+        // tags = $(this).find('.garbage-tags').tagsinput('items');
       
-        console.log("tags", tags);
-        console.log("note", note);
-        console.log("todo", garbageTodo);
+        // console.log("tags", tags);
+       //  console.log("note", note);
+        // console.log("todo", garbageTodo);
       
         // Coordinates
 		lat = $(this).find('.marker-lat').val();
@@ -52,11 +52,11 @@ $(function () {
 		console.log('lat', lat);
 		console.log('lng', lng);
 		console.log('type of trash', typeOfTrash);
-		console.log('amout of trash', amoutOfTrash);
+		console.log('amount of trash', amountOfTrash);
 		console.log('image url', image_url);
 
 		setTimeout(function () {
-          var useToken = localStorage["token"] || window.token;
+          var useToken = localStorage["token"] || window.token || authUser;
           $.ajax({
               method: api.createTrash.method,
               url: api.createTrash.url(),
@@ -64,14 +64,14 @@ $(function () {
               data: {
                   'lat': lat,
                   'lng': lng,
-                  'amount': amoutOfTrash,
+                  'amount': amountOfTrash,
                   'types': typeOfTrash.join(),
                   'image_url': image_url
               },
               success: function (data) {
                   console.log('success data', data);
                   showAlert("Marker saved successfully!", "success", 3000);
-                  if (amoutOfTrash > 8) {
+                  if (amountOfTrash > 8) {
                       showAlert("That's a lot of trash, we opened a 311 ticket!", "warning", 3000);
                   };
                   sidebar.hide('slow');
@@ -93,18 +93,27 @@ $(function () {
 		var that = this;
 		event.preventDefault();
         var tags = [];
-        var dateTime, 
+        var dateTime,
+            date,
+            time,
             lat, 
             lng, 
             image_url, 
             eventRecurrence;
       
         // Get the data from the form
-        $('#event-date-time-picker').on('dp.change', function(e) {
-          // TODO format date and time before storage?
-           var dateTime = e.date;
-        });
+         var dateTime = 
+      
+        /*
+        dateTime = $(this).find('.event-date-hidden').val();
         console.log("time", dateTime);
+        var date = dateTime.substring(1, 4);
+        var time = dateTime.substring(2, 6);
+        */
+       
+        
+        console.log("time", dateTime);
+        debugger;
               
         tags = $(this).find('.cleaning-tags').tagsinput('items');
 
@@ -122,7 +131,7 @@ $(function () {
         console.log("cleaning marker coordinates", lat + lng);
 
 		setTimeout(function () {
-          var useToken = localStorage["token"] || window.token;
+          var useToken = localStorage["token"] || window.token || authUser;
           $.ajax({
               method: api.createCleaning.method,
               url: api.createCleaning.url(),
@@ -130,7 +139,8 @@ $(function () {
               data: {
                   'lat': lat,
                   'lng': lng,
-                  'dateTime': dateTime,
+                  'time': time,
+                  'date': date,
                   'image_url': image_url,
                   'eventRecurrence': eventRecurrence
               },
@@ -182,20 +192,21 @@ $(function () {
     wms_url = $('input[class=litter-wms-url]').val();
     geojson_data =  $('input[class=litter-geojson-data]').val();
 
-    console.log('coordinates', latlngs)
+    console.log('coordinates', latlngs);
     console.log('type of trash', typeOfTrash);
     console.log('amout of trash', amoutOfTrash);
     console.log('image url', image_url);
     console.log('length of the line', length);
+    console.log('tags', tags);
 
     setTimeout(function () {
-      var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage["token"] || window.token || authUser;
       $.ajax({
           method: api.createShape.method,
           url: api.createShape.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
-              'latlngs': latlngs,
+              'lat_lngs': latlngs.join(),
               'amount': amoutOfTrash,
               'types': typeOfTrash.join(),
               'image_url': image_url,
@@ -228,7 +239,6 @@ $(function () {
     event.preventDefault();
     var tags = [];
     var latlngs,
-        surfacearea,
         note,
         secret,
         players,
@@ -246,15 +256,17 @@ $(function () {
 
     console.log('coordinates', latlngs);
     console.log('surface area', surfacearea);
-
+    console.log('tags', tags);
+    console.log('title', title);
+    
     setTimeout(function () {
-      var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage["token"] || window.token || authUser;
       $.ajax({
           method: api.createShape.method,
           url: api.createShape.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
-              'latlngs': latlngs.join(),
+              'latlngs': latlngs.toGeoJSON(),
               'players': players.join(),
               'note': note,
               'contact': contact,

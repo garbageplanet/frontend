@@ -45,7 +45,7 @@ tileLayers['Outdoors'].addTo(map);
 
 // Locate the user
 map.locate({setView: true, maxZoom: 15});
-function onLocationError(e) { showAlert("Couldn't find your position.", "warning", 2000)};
+function onLocationError(e) { showAlert("Couldn't find your position.", "warning", 4000)};
 map.on('locationerror', onLocationError);
 
 // Sidebar creation and placement
@@ -72,11 +72,11 @@ var overlayGroups = {
 };
 
 // Add zoom controls above scale
-map.addControl( L.control.zoom({position: 'topright'}) );
+map.addControl( L.control.zoom( {position: 'topright'} ) );
 
 // Add the layer control
-// Layer control is disabled until a good solution for obile UI comes up
-//L.control.layers(tileLayers, overlayGroups).setPosition('topright').addTo(map);
+// Layer control toggle bugs on mobile
+L.control.layers(tileLayers, overlayGroups).setPosition('topright').addTo(map);
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-fw fa-th-large fa-icon-black fa-icon-centered'></span>");
@@ -123,8 +123,7 @@ map.on('zoomend', function(e){
 map.on('click', onMapClick);  
 
 function onMapClick(e) {
-
-    if (!sidebar.isVisible() && !bottombar.isVisible() && myZoom > 10) {
+    if (!sidebar.isVisible() && !bottombar.isVisible() && myZoom >= 10 && !$('.dropdown').hasClass('open')) {
        marker = L.marker(e.latlng, {
             icon:genericMarker,
             draggable: true
@@ -155,6 +154,7 @@ function onMapClick(e) {
   
   else { bottombar.hide();
         sidebar.hide();
+        $('.dropdown').removeClass('open');
        }
 
 };

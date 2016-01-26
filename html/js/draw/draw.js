@@ -1,5 +1,4 @@
 //TODO use removeControl() rather than hiding the control with CSS when they are not in use
-
 // All code related to drawing shapes
 var drawControl = new L.Control.Draw({
     position: 'topright',
@@ -37,6 +36,7 @@ map.on('draw:editstart', function (e) {
 map.on('draw:editstop', function (e) { 
   map.on('click', onMapClick);
   $('.btn-draw').removeClass('disabled');
+  $('.leaflet-draw-edit-edit').removeClass('visible');
   // pathLayerGroup.off('click', onPathClick);
   // areLayerGroup.off('click', onAreaClick);
 });
@@ -51,6 +51,7 @@ map.on('draw:deletestart', function (e) {
 map.on('draw:deletestop', function (e) { 
   map.on('click', onMapClick);
   $('.btn-draw').removeClass('disabled');
+  $('.leaflet-draw-edit-edit').removeClass('visible');
   // pathLayerGroup.off('click', onPathClick);
   // areLayerGroup.off('click', onAreaClick);
 });
@@ -60,36 +61,38 @@ map.on('draw:deletestop', function (e) {
 map.on('draw:drawstop', function () { 
     map.off('click', onMapClick); 
     map.on('click', onMapClick)
-    $('.btn-draw').removeClass('disabled');  
+    $('.btn-draw').removeClass('disabled');
 });
 
 // What to do once a shape is created
 map.on('draw:created', function (e) {
     // var distanceStr, areaStr;
-  
     var type = e.layerType;
   
-    if (type == 'polyline') {
-      
+    if (type === 'polyline') {
+      var polylineLayer = e.layer;
       //FIXME get the lenght inside $('.polyline-length')
       // console.log("distance size", distanceStr);
       // the value is sotred as distanceStr in L.Draw.js
       // $('input[class=polyline-length]').val(distanceStr);
       // seems the the data gets cleared at draw:created
-      console.log("length", $('.leaflet-draw-tooltip-subtext').val() )
-      $('input[class=polyline-length]').val($('.leaflet-draw-tooltip-subtext').val());  
+      // console.log("length", $('.leaflet-draw-tooltip-subtext').val() )
+      // $('input[class=polyline-length]').val($('.leaflet-draw-tooltip-subtext').val());  
       
       // push the latlngs to the form
-      $('.form-litter .litter-latlngs').val(e.layer._latlngs);
+      
+      var latlngs = polylineLayer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
+            
+      $('.form-litter .litter-latlngs').val( latlngs );
+      console.log("layer's latlngs", latlngs );
   
-      var polylineLayer = e.layer;
+      
       // Range slider for amount of garbage on polyline
       $('.litter-range-input').on('change', function() {
           $('.litter-range-value').html(this.value);
           // Get the color value from the select options
           var selectedValue = parseInt(jQuery(this).val());
             switch(selectedValue){
-                    // so much cringe here, let's try to do this with ternaries
                       case 1:
                           polylineLayer.setStyle({color:"green"}); 
                           break;
@@ -136,13 +139,13 @@ map.on('draw:created', function (e) {
       
     }
   
-    if( type == 'polygon') {
-      //FIXME get the area inside $('.polygone-area')
-      // console.log("area size", areaStr);
-      // $('input[class=polygon-area]').val(areaStr);
-      $('input[class=polygon-area]').val($('span.leaflet-draw-tooltip-subtext').val());
-      
+    if( type === 'polygon') {
       var polygonLayer = e.layer;
+
+      // push the latlngs to the form
+      var latlngs = polygonLayer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
+      $('.form-area .area-latlngs').val( latlngs );
+      
       areaLayerGroup.addLayer(polygonLayer);
       map.addLayer(areaLayerGroup);
       
@@ -152,8 +155,7 @@ map.on('draw:created', function (e) {
       });
     }
     
-    // Reactivate default marker event listener
-    // reactivate the drawing button
+    // Reactivate default marker event listener and drawing button
     map.on('click', onMapClick);
     $('.btn-draw').removeClass('disabled');  
 });
@@ -174,7 +176,6 @@ map.on('draw:edited', function (e) {
     map.on('click', onMapClick);
 });
 
-// Show the edit button on draw, hide on cancel / save
 // Own handlers for calling L.Draw
 $('.btn-draw-polyline').on('click', function(){
   // Stop default marker event listener

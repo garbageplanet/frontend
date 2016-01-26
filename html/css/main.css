@@ -1,6 +1,6 @@
 @import "map.css";
 @import "markers.css";
-@import "tour.css";
+/*@import "tour.css";*/
 
 html {height: 100%}
 
@@ -165,6 +165,7 @@ a.menu-backlink:hover {
 .leaflet-control-layers, .leaflet-bar {
 	  -webkit-border-radius: 0 !important;
          -moz-border-radius: 0 !important;
+           -o-border-radius: 0 !important;
               border-radius: 0 !important;
 }
 
@@ -200,23 +201,6 @@ a.menu-backlink:hover {
 .leaflet-right .leaflet-control {
 	margin-right: 0px;
 	}
-
-#roska-button {
-  background-color: limegreen;
-  height: 40px;
-  width: 40px;
--webkit-border-radius: 0 !important;
-   -moz-border-radius: 0 !important;
-     -o-border-radius: 0 !important;
-        border-radius: 0 !important;
-}
-
-#search-button, #search-nearby-trashbin, #locate-button {
--webkit-border-radius: 0 !important;
-   -moz-border-radius: 0 !important;
-     -o-border-radius: 0 !important;
-        border-radius: 0 !important;
-}
 
 .leaflet-bar a:first-child {
 	border-top-left-radius: 0;

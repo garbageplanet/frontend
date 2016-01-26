@@ -2,7 +2,7 @@
 
 // Alert mobile phone user (check if this appears on tablets)
 if (L.Browser.mobile) {
-    showAlert("Drawing tools are not available on mobile.", "info", 2000);
+    showAlert("Drawing tools are not available on mobile.", "info", 4000);
 };
 
 // Swtch session function
@@ -55,6 +55,7 @@ function showAlert(errorMessage, errorType, closeDelay) {
 
 // Activate dropdown menu links
 $(document).ready(function() {
+  
   $('#user-tools').on('click', 'a', function(e) {
     if ($(this).hasClass('dropdown-link')) {
           e.preventDefault();
@@ -74,6 +75,7 @@ $(document).ready(function() {
 
 // Actions for map-tools dropdown
 $(document).ready(function() {
+  
   // Locate the user
   $('.btn-locate').on('click', function(){
     sidebar.hide();
@@ -98,30 +100,46 @@ $(document).ready(function() {
     // TODO preset the values of the clicked marker
   });
   
-  // Display the date and time picker and get the data in the cleaning form on change
+});
+
+// Display all the select pickers
+$(document).ready(function() {
+  $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 5});
+});
+  
+// Display the date and time picker and get the data in the cleaning form on change
+// FIXME this doesn' work
+$(document).ready(function() {
+  
+  var dateTime;
+  
   $(function () { $('#event-date-time-picker')
-    .datetimepicker( {minDate: new Date(2015, 0, 1)});
-  });
-  
-  // Display all the select pickers
-  $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 5})
+    .datetimepicker( {minDate: new Date(2015, 11, 31)});
+  }); 
 
-  // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
-  $('.sidebar-link').click(function(e) {
-      e.preventDefault();
-      $(this.hash).fadeIn().siblings().hide();
-      $('#sidebar').scrollTop = 0;
+  $('#event-date-time-picker').on('dp.change', function(e) {
+    // TODO format date and time before storage?
+     var dateTime = e.date;
   });
 
-  // Go back to the marker creation menu link
-  // TODO hide the backlinks when user is logged in, add logic in switchSession()
-  $('.menu-backlink').click(function(e) {
-      $('.panel-collapse').collapse('hide');
-      $('#sidebar').scrollTop = 0;
-      $(this.hash).fadeIn().siblings().hide();
-      e.preventDefault();
-  });
+  $('.event-date-time-hidden').val('dateTime');
   
+});
+
+// Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
+$('.sidebar-link').click(function(e) {
+    e.preventDefault();
+    $(this.hash).fadeIn().siblings().hide();
+    $('#sidebar').scrollTop = 0;
+});
+
+// Go back to the marker creation menu link
+// TODO hide the backlinks when user is logged in, add logic in switchSession()
+$('.menu-backlink').click(function(e) {
+    $('.panel-collapse').collapse('hide');
+    $('#sidebar').scrollTop = 0;
+    $(this.hash).fadeIn().siblings().hide();
+    e.preventDefault();
 });
 
 // Close sidebar and reset forms if cancel button clicked
@@ -131,7 +149,6 @@ $(".btn-cancel").on('click', function (){
 
 // Empty the sidebar on hide, reset accordion and reset scroll
 sidebar.on('hide', function () {
-        $('.panel-collapse').collapse('hide');
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         $('form').each(function() { this.reset() });
