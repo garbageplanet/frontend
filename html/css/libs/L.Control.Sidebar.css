@@ -131,21 +131,23 @@
       .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
         bottom: 300px; } }
 
-  .leaflet-sidebar .close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    width: 32px;
-    height: 32px;
-    color: #333;
-    font-size: 25pt;
-    line-height: 1em;
-    text-align: center;
-    background: white;
-    -webkit-border-radius: 16px;
-    border-radius: 16px;
-    cursor: pointer;
-    z-index: 8; }
+.leaflet-sidebar .close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  width: 32px;
+  height: 32px;
+  color: #333;
+  font-size: 25pt;
+  line-height: 1em;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10; }
+
+.bottom .close {
+	right: 10px;
+    top: 10px !important;
+}
 
 .leaflet-top {
           transition: right 0.5s;

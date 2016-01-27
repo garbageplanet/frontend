@@ -48,11 +48,12 @@ function login(e) {
                 headers: {"Authorization": "Bearer " + response.token},
                 success: function (data) {
                     console.log('alreay logged in', data);
-                    $('#account-info').find('.user_name').html(data.user.name);
-                    $('#account-info').find('.user_id').html(data.user.id);
-                    $('#account-info').find('.user_email').html(data.user.email);
-                    $('#account-info').find('.created_at').html(data.user.created_at);
-                    $('#account-info').find('.updated_at').html(data.user.updated_at);
+                    $('#account-info').find('.user-name').html(data.user.name);
+                    $('#account-info').find('.user-id').html(data.user.id);
+                    $('#account-info').find('.user-glome-key').addClass('hidden');
+                    $('#account-info').find('.user-email p').html(data.user.email);
+                    $('#account-info').find('.created-at').html(data.user.created_at);
+                    $('#account-info').find('.updated-at').html(data.user.updated_at);
                     $('#account-info').show();
                 }
             });
@@ -105,7 +106,7 @@ function registerUser(e) {
                 success: function (data) {
                     console.log('success data', data);
                     $('#account-info').find('.username').html(data.user.name);
-                    $('#account-info').find('.glome-info').hide;
+                    $('#account-info').find('.glome-key-info').addClass('hidden');
                     $('#account-info').find('.user_id').html(data.user.id);
                     $('#account-info').find('.user_name').html(data.user.name);
                     $('#account-info').find('.user_email').html(data.user.email);
@@ -115,9 +116,10 @@ function registerUser(e) {
                 }
             });
         },
-        error: function(response) {
+        error: function(response, responseJSON) {
             console.log(response);
             showAlert("Something went wrong. Failed to register.", "danger", 2000);
+            showAlert(responseJSON, "danger", 2000);
             localStorage.removeItem("token");
         }
     });
@@ -173,12 +175,12 @@ function glomego(e) {
 
                     if (typeof authUser !== 'undefined') {
                         console.log('authUser: ', authUser);
-                        $('#account-info').find('.user_name').text('anon (⌐■_■)');
-                        $('#account-info').find('.user_email').hide;
-                        $('#account-info').find('.glome-key-info').html(authUser.name);
-                        $('#account-info').find('.user_id').html(authUser.id);
-                        $('#account-info').find('.created_at').html(authUser.created_at);
-                        $('#account-info').find('.updated_at').html(authUser.updated_at);
+                        $('#account-info').find('.user-name').text('anon (⌐■_■)');
+                        $('#account-info').find('.user-email').addClass('hidden');
+                        $('#account-info').find('.user-glome-key p').html(authUser.name);
+                        $('#account-info').find('.user-id').html(authUser.id);
+                        $('#account-info').find('.created-at').html(authUser.created_at);
+                        $('#account-info').find('.updated-at').html(authUser.updated_at);
                         $('#account-info').show();
                     }
                 }
@@ -217,13 +219,10 @@ function sendGlomeKey(e) {
               headers: {"Authorization": "Bearer " + response.token},
               success: function (data) {
                 console.log('succee data', data);
-                $('#account-info').find('.user_name').hide;
-                $('#account-info').find('.glome-key-info').html(data.user.key);
-                $('#account-info').find('.user_id').hide;
-                $('#account-info').find('.user_name').hide;
-                $('#account-info').find('.user_email').hide;
-                $('#account-info').find('.created_at').html(data.user.created_at);
-                $('#account-info').find('.updated_at').html(data.user.updated_at);
+                $('#account-info').find('.user-glome-key p').html(data.user.key);
+                $('#account-info').find('.user-email').addClass('hidden');
+                $('#account-info').find('.created-at').html(data.user.created_at);
+                $('#account-info').find('.updated-at').html(data.user.updated_at);
                 $('#account-info').show();
               }
             });

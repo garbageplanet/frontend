@@ -56,7 +56,7 @@ $(function () {
 		console.log('image url', image_url);
 
 		setTimeout(function () {
-          var useToken = localStorage["token"] || window.token || authUser;
+          var useToken = localStorage["token"] || window.token || authUser.name;
           $.ajax({
               method: api.createTrash.method,
               url: api.createTrash.url(),
@@ -70,7 +70,7 @@ $(function () {
               },
               success: function (data) {
                   console.log('success data', data);
-                  showAlert("Marker saved successfully!", "success", 3000);
+                  showAlert("Marker saved successfully!", "success", 1500);
                   if (amountOfTrash > 8) {
                       showAlert("That's a lot of trash, we opened a 311 ticket!", "warning", 3000);
                   };
@@ -78,7 +78,7 @@ $(function () {
               },
               error: function (err) {
                   console.log('err', err);
-                  showAlert("Failed to save the marker, are you logged in?", "danger", 3000);
+                  showAlert("Failed to save the marker, are you logged in?", "danger", 2000);
                   sidebar.hide();
                   map.removeLayer(marker);
               }
@@ -94,24 +94,13 @@ $(function () {
 		event.preventDefault();
         var tags = [];
         var dateTime,
-            date,
-            time,
             lat, 
             lng, 
             image_url, 
             eventRecurrence;
       
-        // Get the data from the form
-         var dateTime = 
-      
-        /*
         dateTime = $(this).find('.event-date-hidden').val();
-        console.log("time", dateTime);
-        var date = dateTime.substring(1, 4);
-        var time = dateTime.substring(2, 6);
-        */
-       
-        
+
         console.log("time", dateTime);
         debugger;
               
@@ -131,7 +120,7 @@ $(function () {
         console.log("cleaning marker coordinates", lat + lng);
 
 		setTimeout(function () {
-          var useToken = localStorage["token"] || window.token || authUser;
+          var useToken = localStorage["token"] || window.token || authUser.name;
           $.ajax({
               method: api.createCleaning.method,
               url: api.createCleaning.url(),
@@ -139,8 +128,7 @@ $(function () {
               data: {
                   'lat': lat,
                   'lng': lng,
-                  'time': time,
-                  'date': date,
+                  'date': dateTime,
                   'image_url': image_url,
                   'eventRecurrence': eventRecurrence
               },
@@ -200,7 +188,7 @@ $(function () {
     console.log('tags', tags);
 
     setTimeout(function () {
-      var useToken = localStorage["token"] || window.token || authUser;
+      var useToken = localStorage["token"] || window.token || authUser.name;
       $.ajax({
           method: api.createShape.method,
           url: api.createShape.url(),
@@ -260,7 +248,7 @@ $(function () {
     console.log('title', title);
     
     setTimeout(function () {
-      var useToken = localStorage["token"] || window.token || authUser;
+      var useToken = localStorage["token"] || window.token || authUser.name;
       $.ajax({
           method: api.createShape.method,
           url: api.createShape.url(),

@@ -169,21 +169,6 @@ a.menu-backlink:hover {
               border-radius: 0 !important;
 }
 
-/* Override L.Sidebar styles */
-.leaflet-sidebar {
- padding: 0px;
-}
-
- .leaflet-sidebar .close {
-	right: 10px;
-    top: -5px !important;
-}
-
- .bottom .close {
-	right: 10px;
-    top: 10px !important;
-}
-
 /* Shift leaflet-bar control buttons */
 
 .leaflet-top .leaflet-control {
@@ -307,7 +292,6 @@ textarea {
   font-weight: bold;
 }
 
-
 .popover.bottom .arrow:after {
  border-bottom-color: rgba(86,86,86,0.8);
 }
@@ -357,16 +341,20 @@ textarea {
 /* Leaflet Draw button behavior*/
 .leaflet-draw-edit-edit, .leaflet-draw-edit-remove  {
   margin-right: -50px;
-            transition: margin-right 0.3s;
-    -webkit-transition: margin-right 0.3s;
-       -moz-transition: margin-right 0.3s;
-         -o-transition: margin-right 0.3s;
+            transition: margin-right 0.5s;
+    -webkit-transition: margin-right 0.5s;
+       -moz-transition: margin-right 0.5s;
+         -o-transition: margin-right 0.5s;
 }
 
-.leaflet-draw-draw-polyline, .leaflet-draw-draw-polygon  {
+.leaflet-draw-draw-polyline, 
+.leaflet-draw-draw-polygon,
+.leaflet-draw-edit-edit,
+.leaflet-draw-edit-remove {
   display: none !important;
 }
 
 .leaflet-draw-edit-edit.visible, .leaflet-draw-edit-remove.visible  {
+  display:inherit !important;
   margin-right: 0px;
 }

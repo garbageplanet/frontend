@@ -42,7 +42,7 @@ var api = {
   createTrash: {
     method: 'POST',
     url: function(id) {
-      return api.readTrash.url() + '/' + id;
+      return api.readTrash.url();
     }
   },
   readTrash: {
@@ -51,20 +51,7 @@ var api = {
       return api.server + '/trashes';
     }
   },
-    /* Cleaning */
-  createCleaning: {
-    method: 'POST',
-    url: function(id) {
-      return api.readTrash.url() + '/' + id;
-    }
-  },
-  readCleaning: {
-    method: 'GET',
-    url: function() {
-      return api.server + '/cleanings';
-    }
-  },
-  deleteTrash: {
+    deleteTrash: {
     method: 'DELETE',
     url: function(id) {
       return api.readTrash.url() + '/' + id;
@@ -76,9 +63,33 @@ var api = {
       return api.readTrash.url() + '/withinbounds?bounds=' + currentViewBounds;
     }
   },
+    /* Cleaning */
+  createCleaning: {
+    method: 'POST',
+    url: function(id) {
+      return api.readCleaning.url();
+    }
+  },
+  readCleaning: {
+    method: 'GET',
+    url: function() {
+      return api.server + '/cleanings';
+    }
+  },
+  deleteCleaning: {
+    method: 'DELETE',
+    url: function(id) {
+      return api.readCleaning.url() + '/' + id;
+    }
+  },
+    readTrashWithinBounds: {
+    method: 'GET',
+    url: function(allBounds) {
+      return api.readTrash.url() + '/withinbounds?bounds=' + currentViewBounds;
+    }
+  },
   /* Monitoring Tiles */
-  // TODO add new routes to API
-  // TODO replace '/monitoringtiles' route name by '/shapes'
+  // TODO add new routes to API and replace '/monitoringtiles' route name by '/shapes'
     readShapesWithinBounds: {
     method: 'GET',
     url: function(allBounds) {

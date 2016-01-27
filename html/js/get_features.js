@@ -5,8 +5,11 @@ map.on('moveend', function(e) {
     //  renamed bounds to currentViewBounds
     currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
     // console.log("currentViewBounds:", currentViewBounds);
-    loadRemoteGarbageMarkers();
-    loadRemoteShapes();
+  
+    if ( mapZoom >= 10 ){
+      loadRemoteGarbageMarkers();
+      // loadRemoteShapes();  
+    }
 });
 
 // Get markers
@@ -85,7 +88,7 @@ function loadRemoteGarbageMarkers() {
     });
     var useToken = localStorage["token"] || window.token;
 };
-
+/*
 //Get shapes
 function loadRemoteShapes() {
     console.log('loading remote shapes');
@@ -195,7 +198,7 @@ function loadRemoteShapes() {
   }
   
 };
-
+*/
 // Temporary fix for local (unsaved) marker clicked
 function onLocalMarkerClick (e) {
     // console.log("local marker clicked");

@@ -17,18 +17,22 @@
   <meta property="og:description" content="Garbagepla.net is an online platform that aims at putting garbage back on the map. We have all seen the images of beaches littered with tons of plastic, the wales tangled in fishing nets, the birds that dided from eating plastic and the rivers covered in floating trash. With garbagepla.net, you will be able to join forces with others to act locally and keep your nature clean." />
 
   <!-- Fonts -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300' rel='stylesheet' type='text/css'>
-  <!-- JQUERY, BS3 and other JS libraries -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300' rel='stylesheet' type='text/css'>
+  <!-- JQUERY and other JS libraries -->
   <script type="text/javascript" src="js/libs/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js" defer></script>
-  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" defer></script> -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js" defer></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js" defer></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.5.0/bootstrap-tagsinput.min.js" defer></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js" defer></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  <!-- Bootstrap -->
+  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.5.0/bootstrap-tagsinput.min.js"> </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js"></script>
 
   <!-- Leaflet -->
   <script src="js/libs/leaflet_077.js"></script>
@@ -36,15 +40,14 @@
   <link rel="stylesheet" href="css/libs/leaflet.css" />
   <script src="js/libs/L.zoomCSS.js"></script>
   <script src="js/libs/L.Control.Sidebar-018a.js"></script>
-  <!-- <script src="js/libs/L.Map.Deflate.js"></script> -->
   <script src="js/libs/L.Overpass.Layer.js" defer></script>
   <script src="js/libs/L.Draw.js"></script>
   <!-- <script src="js/L.ajax.js"></script> -->
 
   <!-- Uploader  -->
-  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js" defer></script>
 
   <!-- Local stylesheets -->
   <link rel="stylesheet" href="css/main.css">
@@ -451,7 +454,10 @@
                     <option value="wood">Plywood, treated/painted wood</option>
                     <option value="chemicals">Chemicals</option>
                     <option value="household">Household garbage</option>
+                    <option value="electronic">Electronics</option>
+                    <option value="electric">Electric appliances</option>
                     <option value="industrial">Industrial wastes</option>
+                    <option value="construction">Construction wastes</option>
                     <option value="gas">Gasoline, petroleum oil</option>
                     <option value="crude">Crude oil</option>
                     <option value="party">Party leftovers</option>
@@ -459,9 +465,15 @@
                     <option value="vehicle">Large vehicle</option>
                     <option value="bicycle">Bicycle</option>
                     <option value="motorcyle">Motorcycle</option>
+                    <option value="tyres">Tyres</option>
                     <option value="fishing">Fishing gears</option>
                     <option value="net">Fishing net</option>
                     <option value="lines">Fishing line</option>
+                    <option value="boat">Small boat</option>
+                    <option value="vessel">Large boat, wreck</option>
+                    <option value="boating">Boating equipment</option>
+                    <option value="maritime">Maritime equipment</option>
+
                 </select>
             </div>
 
@@ -1052,10 +1064,6 @@
                  <p>By creating an account, you agree to our <a class="sidebar-link" href="#user-agreement">Terms of service</a> and
                     <a class="sidebar-link" href="#privacy-policy">Privacy Policy</a>. Using an email to register can help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a> if you forget them.
                 </p>
-               <div class="alert alert-warning" role="alert">
-                <span class="fa fa-fw fa-exclamation"></span>
-                  Use a fake email to register for this demo.
-               </div>
             </div>
             <!-- Registration form -->
             <form id="registration-form"
@@ -1077,7 +1085,8 @@
                            name="email"
                            class="form-control"
                            placeholder="Email address"
-                           id="register-email">
+                           id="register-email"
+                           data-error="Email already in use">
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group form-group-lg">
@@ -1087,6 +1096,7 @@
                                class="form-control"
                                placeholder="Password min 6 characters"
                                name="password"
+                               data-error="Password too short"
                                required>
                         <div class="help-block with-errors"></div>
                 </div>
@@ -1113,18 +1123,25 @@
     <div class="sidebar-content" id="account-info">
         <div>
             <h2>
-                Welcome, <span class="user_name"></span>
+                Welcome, <span class="user-name"></span>
             </h2>
             <h4>User Id</h4>
-            <p class="user_id"></p>
-            <h4>Glome key value</h4>
-            <p class="glome-key-info"></p>
-            <h4>User Email</h4>
-            <p class="user_email"></p>
+            <p class="user-id"></p>
+          
+            <div class="user-glome-key">
+              <h4>Glome key value</h4>
+              <p></p>
+            </div>
+          
+            <div class="user-email">
+              <h4>User Email</h4>
+              <p></p>
+            </div>
+          
             <h4>Created At</h4>
-            <p class="created_at"></p>
+            <p class="created-at"></p>
             <h4>Updated At</h4>
-            <p class="updated_at"></p>
+            <p class="updated-at"></p>
             <button type="button"
                     class="btn btn-default btn-lg btn-block btn-logout">
             <span class="fa fa-sign-out fa-fw"></span> Logout

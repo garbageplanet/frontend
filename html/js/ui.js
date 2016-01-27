@@ -6,7 +6,8 @@ if (L.Browser.mobile) {
 };
 
 // Swtch session function
-function switchSession(sessionStatus) {  
+function switchSession(sessionStatus) {
+    var authUser;
   
     if (sessionStatus === "logout") {
       
@@ -15,7 +16,7 @@ function switchSession(sessionStatus) {
       $('#session-status a').addClass('dropdown-link');
       $('#user-info-lnk').remove();
       $('#user-tools').dropdown();
-      
+      $('.user-email, .user-glome-key').removeClass('hidden');
     }
   
     if (sessionStatus == "login") {
@@ -133,8 +134,8 @@ $('.sidebar-link').click(function(e) {
     $('#sidebar').scrollTop = 0;
 });
 
+
 // Go back to the marker creation menu link
-// TODO hide the backlinks when user is logged in, add logic in switchSession()
 $('.menu-backlink').click(function(e) {
     $('.panel-collapse').collapse('hide');
     $('#sidebar').scrollTop = 0;
@@ -145,6 +146,7 @@ $('.menu-backlink').click(function(e) {
 // Close sidebar and reset forms if cancel button clicked
 $(".btn-cancel").on('click', function (){
     sidebar.hide();
+    map.removeLayer(marker);
 });
 
 // Empty the sidebar on hide, reset accordion and reset scroll
@@ -152,7 +154,7 @@ sidebar.on('hide', function () {
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         $('form').each(function() { this.reset() });
-        $('textarea').each().val('');
+        // $('textarea').each().val('');
         $('input').val('');
         $('.selectpicker').selectpicker('render');
         $('.leaflet-draw-edit-edit').removeClass('visible');

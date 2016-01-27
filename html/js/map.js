@@ -114,16 +114,17 @@ function _getHorizontalOffset () {
 
 // Store zoom
 map.on('zoomend', function(e){
-    myZoom = e.target.getZoom();
+    mapZoom = e.target.getZoom();
   
-    if ( myZoom < 10) { showAlert("Zoom in closer to create markers", "info", 1200); }
+    if ( mapZoom < 10) { showAlert("Zoom in closer to create markers", "info", 1200); }
 });
 
 // Default behaviour for creating a marker
 map.on('click', onMapClick);  
 
+// FIXME on mobile stop onMapClick if the control layer hasClass('leaflet-control-layers-expanded')
 function onMapClick(e) {
-    if (!sidebar.isVisible() && !bottombar.isVisible() && myZoom >= 10 && !$('.dropdown').hasClass('open')) {
+    if (!sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open')) {
        marker = L.marker(e.latlng, {
             icon:genericMarker,
             draggable: true
