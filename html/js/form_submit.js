@@ -75,6 +75,7 @@ $(function () {
                       showAlert("That's a lot of trash, we opened a 311 ticket!", "warning", 3000);
                   };
                   sidebar.hide('slow');
+                  map.removeLayer(marker);
               },
               error: function (err) {
                   console.log('err', err);

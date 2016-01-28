@@ -5,8 +5,8 @@
 var map = L.map('map', { zoomControl: false, attributionControl: false });
 
 var hash = new L.Hash(map);
-// Creating attributions dynamically (GPLv2 author: humitos@github https://github.com/humitos/osm-pois)
 
+// Creating attributions dynamically (GPLv2 author: humitos@github https://github.com/humitos/osm-pois)
 var attribution = 'Data &#169; <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> and Contributors';
 
 var tileLayerData = {
@@ -72,14 +72,14 @@ var overlayGroups = {
 };
 
 // Add zoom controls above scale
-map.addControl( L.control.zoom( {position: 'topright'} ) );
+map.addControl( L.control.zoom( {position: 'topleft'} ) );
 
 // Add the layer control
-// Layer control toggle bugs on mobile
-L.control.layers(tileLayers, overlayGroups).setPosition('topright').addTo(map);
+// FIXME Layer control toggle bugs on mobile
+L.control.layers(tileLayers, overlayGroups).setPosition('topleft').addTo(map);
 
 // Set an icon on the layer select button
-$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-fw fa-th-large fa-icon-black fa-icon-centered'></span>");
+$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-centered'></span>");
 
 // Add a scale
 new L.control.scale({ metric: true, imperial: false }).addTo(map);
@@ -124,16 +124,14 @@ map.on('click', onMapClick);
 
 // FIXME on mobile stop onMapClick if the control layer hasClass('leaflet-control-layers-expanded')
 function onMapClick(e) {
-    if (!sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open')) {
+    if ( !sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open') ) {
        marker = L.marker(e.latlng, {
             icon:genericMarker,
             draggable: true
             }).on('click', onLocalMarkerClick).addTo(map);
-        // TODO move this logic somehwere else
-        $('.form-garbage .marker-lat').val(marker._latlng.lat);
-        $('.form-garbage .marker-lng').val(marker._latlng.lng);
-        $('.form-cleaning .marker-lat').val(marker._latlng.lat);
-        $('.form-cleaning .marker-lng').val(marker._latlng.lng);
+      
+        $('.marker-lat').val(marker._latlng.lat);
+        $('.marker-lng').val(marker._latlng.lng);
       
         map.panToOffset(marker._latlng, _getHorizontalOffset());
 
@@ -146,10 +144,8 @@ function onMapClick(e) {
 
           console.log("dragged marker id:", event.target._leaflet_id );
           // TODO move this logic somehwere else
-          $('.form-garbage .marker-lat').val(newPos.lat);
-          $('.form-garbage .marker-lng').val(newPos.lng);
-          $('.form-cleaning .marker-lat').val(newPos.lat);
-          $('.form-cleaning .marker-lng').val(newPos.lng)
+          $('.marker-lat').val(newPos.lat);
+          $('.marker-lng').val(newPos.lng);
         });
    }
   

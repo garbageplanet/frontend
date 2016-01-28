@@ -16,6 +16,10 @@ If you want to work on a specific todo below, the first thing you should do is o
 
 ### TODO
 
+### Side panel
+
+- [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)
+
 #### Bottom panel
 - [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
 - [ ] implement templates for the contents of the bottom panel
@@ -26,13 +30,14 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] make the cleaning api routes
 - [ ] make shapes api routes
 - [ ] implement editing system for map features
-- [ ] make the map pan to follow newly created point while drawing a polyline
+- [ ] make the map center pan to follow newly created point while drawing a polyline
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 - [ ] separate click events for draw features that are just created and those thata are saved
+- [ ] fix the tagsinput input resizing
 
 ### General coding, coding style, code review
 - [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
-- [ ] make the code overall less redundant
+- [ ] make the code overall less redundant (loading forms elements and building lists for `<select>` )
 - [ ] implement templating for i18n
 
 #### Making the code more maintainable
@@ -44,9 +49,8 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] allow users to upload geotagged images, bypassing marker creation form
 - [ ] implement bootstrap v4
 - [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
-- [ ] implement calendar view in the bottom panel
-- [ ] implement a localized tag cloud view in the bottom bar
-- [ ] implement a localized gallery view in the bottom bar
+- [ ] calendar view in the bottom panel
+- [ ] localized tag cloudanf gallery in the bottom bar
 - [ ] upload images to the garbageplanet [imgur.com](https://api.imgur.com/oauth2) account 
 
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).

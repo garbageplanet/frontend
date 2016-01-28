@@ -51,7 +51,7 @@
   @media (max-width: 767px) {
     
     .leaflet-sidebar > .leaflet-control {
-      /*needed to scroll in chrome with hidden scrollbars*/
+      /* needed to scroll in chrome with hidden scrollbars */
       overflow-y: auto; }
     
     .leaflet-sidebar > .leaflet-control::-webkit-scrollbar {
@@ -93,14 +93,13 @@
     .leaflet-sidebar.bottom {
       width: 100%; }
     
-    
     .leaflet-sidebar.bottom {
-      height: 200px; }
+      height: 300px; }
     
       .leaflet-sidebar.right.visible ~ .leaflet-right {
         right: 305px; }
-      .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
-        bottom: 200px; } }
+       .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
+        bottom: 300px; } }
 
   @media (min-width: 992px) and (max-width: 1199px) {
     .leaflet-sidebar.right {
@@ -110,13 +109,13 @@
       width: 100%; }
     
     .leaflet-sidebar.bottom {
-      height: 290px; }
+      height: 300px; }
     
       .leaflet-sidebar.right.visible ~ .leaflet-right {
         right: 390px; }
     
       .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
-        bottom: 290px; } }
+        bottom: 300px; } }
 
   @media (min-width: 1200px) {
     .leaflet-sidebar.right {

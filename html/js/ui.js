@@ -1,13 +1,26 @@
 // TODO Arrange functions in group in this file
 
+// TODO check if the localStorage has token / auth token, if yes log the user in
+$('document').ready( function(){
+   if ( localStorage["token"] /*|| userAuth*/ ) {
+     switchSession("login")
+   }
+});
+
 // Alert mobile phone user (check if this appears on tablets)
 if (L.Browser.mobile) {
     showAlert("Drawing tools are not available on mobile.", "info", 4000);
 };
 
+//for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
+$('.pull-down').each(function() {
+    $(this).css('margin-top', $(this).parent().height()-$(this).height())
+});
+
 // Swtch session function
 function switchSession(sessionStatus) {
-    var authUser;
+  
+  // TODO add user info through this function not the ajax calls
   
     if (sessionStatus === "logout") {
       
@@ -154,7 +167,6 @@ sidebar.on('hide', function () {
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
         $('form').each(function() { this.reset() });
-        // $('textarea').each().val('');
         $('input').val('');
         $('.selectpicker').selectpicker('render');
         $('.leaflet-draw-edit-edit').removeClass('visible');

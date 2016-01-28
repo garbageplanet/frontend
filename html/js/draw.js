@@ -6,7 +6,8 @@ var drawControl = new L.Control.Draw({
             rectangle: false,
             marker: false },
     edit: {
-        featureGroup: pathLayerGroup,
+    // FIXME: one draw toolbar only allows to edit feature inside itw own layer, need a second if we want two layers (area and paths)
+        featureGroup: pathLayerGroup, 
         remove: true
     }
 });

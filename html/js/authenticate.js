@@ -116,18 +116,17 @@ function registerUser(e) {
                 }
             });
         },
-        error: function(response, responseJSON) {
-            console.log(response);
-            showAlert("Something went wrong. Failed to register.", "danger", 2000);
-            showAlert(responseJSON, "danger", 2000);
-            localStorage.removeItem("token");
+        error: function(response, responseText) {
+          console.log(response);
+          // showAlert("Failed to register.", "danger", 2000);
+          // TODO add remote validatorin backend data-remote="http://dev.garbagepla.net:8080/api/authenticate/validate"
+          localStorage.removeItem("token");
         }
     });
 
 };
 
 // Glome authentification
-// TODO fix glome token useage in window
 function glomego(e) {
     console.log('glomego clicked');
     e.preventDefault();

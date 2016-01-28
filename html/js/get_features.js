@@ -7,13 +7,14 @@ map.on('moveend', function(e) {
     // console.log("currentViewBounds:", currentViewBounds);
   
     if ( mapZoom >= 10 ){
+      console.log("mapZoom value from get feature.js",mapZoom)
+      // TODO call the functions only if map.hasLayer(...)
       loadRemoteGarbageMarkers();
       // loadRemoteShapes();  
     }
 });
 
 // Get markers
-// TODO only get marker if the layer is set as visible in leaflet
 function loadRemoteGarbageMarkers() {
     console.log('loading markers from db');
     garbageLayerGroup.clearLayers();
@@ -27,12 +28,12 @@ function loadRemoteGarbageMarkers() {
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon:garbageMarker,
-                        mId: obj.id,
-                        mAmount: obj.amount,
-                        mTypes: obj.types,
-                        mImageUrl: obj.image_url,
-                        mLat: obj.lat,
-                        mLng: obj.lng
+                        Id: obj.id,
+                        Amount: obj.amount,
+                        Types: obj.types,
+                        ImageUrl: obj.image_url,
+                        Lat: obj.lat,
+                        Lng: obj.lng
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
                 garbageLayerGroup.addLayer(marker);
@@ -86,10 +87,11 @@ function loadRemoteGarbageMarkers() {
             console.log('Something went wrong while fetching the data', data);
         }
     });
-    var useToken = localStorage["token"] || window.token;
+    var useToken = localStorage["token"] || window.token || userAuth.name;
 };
-/*
+
 //Get shapes
+/*
 function loadRemoteShapes() {
     console.log('loading remote shapes');
   
@@ -97,8 +99,7 @@ function loadRemoteShapes() {
       pathLayerGroup.clearLayers();
       areaLayerGroup.clearLayers();   
     
-      var useToken = localStorage["token"] || window.token;
-      // TODO Use glome token here?
+      var useToken = localStorage["token"] || window.token || userAuth.name;
       $.ajax({
         type: api.readShapesWithinBounds.method,
         url: api.readShapesWithinBounds.url(currentViewBounds),
@@ -199,7 +200,8 @@ function loadRemoteShapes() {
   
 };
 */
-// Temporary fix for local (unsaved) marker clicked
+
+// onClick behavior for non-saved markers
 function onLocalMarkerClick (e) {
     // console.log("local marker clicked");
     bottombar.hide();
@@ -209,8 +211,8 @@ function onLocalMarkerClick (e) {
     marker.on("dragend", function(event){
       var newPos = event.target.getLatLng();
       // console.log("dragged marker id:", event.target._leaflet_id );
-      $('.form-garbage .marker-lat').val(newPos.lat);
-      $('.form-garbage .marker-lng').val(newPos.lng);
+      $('.marker-lat').val(newPos.lat);
+      $('.marker-lng').val(newPos.lng);
     });
 
     $('#sidebar').scrollTop =0;
@@ -223,21 +225,27 @@ function onRemoteMarkerClick (e) {
     console.log("remote marker clicked");
     console.log(e);
     var that = this;
-    map.panToOffset([e.options.mLat, e.options.mLng], _getVerticalOffset());
+    map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
 
     if ($(e._icon).hasClass('marker-garbage')){
         sidebar.hide();
+        
         //clear the data in the bottom panel
         $("#feature-info-garbage-type").empty();
         $("#feature-info-garbage-amount").empty();
+        $("#feature-info-created-by").empty();
         $("#feature-info-image").attr("src", "");
         $("#feature-info").find('.feature-image-link').attr("href", "");
-
+        
         bottombar.show();
+        $('#feature-info').fadeIn();
+      
         // start to inject info
-        var markerTypes = e.options.mTypes /*|| 'Glass, Glass bottles'*/;
-        var markerAmount = e.options.mAmount;
-        var markerRawImage = e.options.mImageUrl;
+        var markerTypes = e.options.Types /*|| 'Glass, Glass bottles'*/;
+        var markerAmount = e.options.Amount;
+        var markerRawImage = e.options.ImageUrl;
+        var markerId = e.options.Id;
+        var markerCreatedBy = e.options.marked_by;
 
         // Put a placeholder if the media is empty
         if (! markerRawImage ) {
@@ -260,12 +268,14 @@ function onRemoteMarkerClick (e) {
           $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
         };
 
-        var markerId = e.options.mId;
-
         $('#feature-info').find('.feature-info-garbage-type').html(markerTypes.join(", "));
+       $("#feature-info-created-by").html(markerCreatedBy);
 
         $('#feature-info').find('.btn-delete').click(function (e) {
-            //debugger;
+            // FIXME this send one request the first time deletion is requested (delete button)
+            // two requests the second time the deletino is requested
+            // thre requests ...
+            // TODO only allow if session is valid and id matches
             console.log('trigger delete on id', markerId);
             e.preventDefault();
             var useToken = localStorage["token"] || window.token;
@@ -286,7 +296,7 @@ function onRemoteMarkerClick (e) {
       
         $('#feature-info').find('.btn-edit').click(function (e) {
             //debugger;
-            console.log('show data on id', markerId);
+            console.log('edit data on id', markerId);
                     
             e.preventDefault();
             // TODO load the marker data into the form
@@ -337,15 +347,13 @@ function onRemoteMarkerClick (e) {
 
     } 
   
-    if ( $(marker._icon).hasClass('marker-cleaning') ) {
-        bottombar.hide();
-        $('.sidebar-content').hide();
-        sidebar.show($("#cleaning-info").fadeIn())
+    if ( $(e._icon).hasClass('marker-cleaning') ) {
+        sidebar.hide();
+      // TODO load data of cleaning event inside the bottombar
     };
 };
 
-// TODO onClick behavior for saved shapes
-// TODO can we move all this logic in a single function for all features?
+// TODO onClick behavior for saved shapes only 
 function onRemoteShapeClick (e) {                          
     console.log("remote shape clicked");
     console.log(e);
@@ -358,7 +366,9 @@ function onRemoteShapeClick (e) {
     $("#feature-info-garbage-amount").empty();
     $("#feature-info-image").attr("src", "");
     $("#feature-info").find('.feature-image-link').attr("href", "");
+  
     bottombar.show();
+    $('#feature-info').fadeIn();
 
     if ( e.option.polylineType === 'polyline'){
       map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
