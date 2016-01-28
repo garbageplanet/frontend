@@ -297,13 +297,18 @@ textarea {
     resize: none;
 }
 
+.bootstrap-tagsinput input {
+  line-height: 1.3333333 !important;
+  height: 34px;
+}
+
 /* Style nav tabs links */
 .nav > li.disabled > a {
-  color: #f2f2f2 !important;
+  color:  #cccccc !important;
 }
 
 .nav-tabs > li > a {
-  color: #f2f2f2 !important;
+  color: #cccccc !important;
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li.active:hover > a {

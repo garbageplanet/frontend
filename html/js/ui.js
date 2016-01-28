@@ -184,10 +184,11 @@ $(document).ready(function() {
 
   $('#event-date-time-picker').on('dp.change', function(e) {
     // TODO format date and time before storage?
-     var dateTime = e.date;
+     var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
+     console.log("date and time", eventDateTime);
+    $('.date-time-value').val(eventDateTime);
+    
   });
-
-  $('.event-date-time-hidden').val('dateTime');
   
 });
 

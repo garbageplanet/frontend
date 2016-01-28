@@ -94,10 +94,7 @@
           <li class="hidden-xs hidden-sm">
             <form class="navbar-form" role="search">
               <div class="input-group">
-                <input class="form-control"
-                       placeholder="Search"
-                       name="srch-term" id="search-term"
-                       type="text">
+                <input class="form-control" placeholder="Search" id="search-term" type="text">
                 <div class="input-group-btn">
                     <button class="btn btn-default" type="submit"><i class="fa fa-fw fa-search"></i></button>
                 </div>
@@ -216,7 +213,6 @@
               <div class="tab-view">
                 <ul class="nav nav-tabs nav-justified" role="tablist">
                   <li class="active"><a href="#cleaning-main" data-toggle="tab"><span class="fa fa-fw fa-calendar"></span></a></li>
-                  <li><a href="#cleaning-media" data-toggle="tab"><span class="fa fa-fw fa-share-alt"></span></a></li>
                   <li><a href="#cleaning-info" data-toggle="tab"><span class="fa fa-fw fa-question"></span></a></li>
                 </ul>
                 
@@ -226,8 +222,8 @@
 
                     <div class="tab-pane active form-group form-group-lg" id="cleaning-main" role="tabpanel">
 
-                      <input type="hidden" name="lat" class="marker-lat cleaning-lat">
-                      <input type="hidden" name="lng" class="marker-lng cleaning-lng">
+                      <input type="hidden" class="marker-lat cleaning-lat">
+                      <input type="hidden" class="marker-lng cleaning-lng">
                       <input type="hidden" class="event-date-time-hidden">
 
                         <!-- Date and time picker for events -->
@@ -235,7 +231,8 @@
                         <div class="row">
                             <div class="form-group">
                                     <div class="input-group date" id='event-date-time-picker'>
-                                        <input type='text' class="form-control"/>
+                                        <input type='text' class="form-control">
+                                         <input type='hidden' class="date-time-value">
                                         <span class="input-group-addon">
                                         <span class="fa fa-fw fa-clock-o"></span>
                                         </span>
@@ -248,10 +245,10 @@
                               <select class="selectpicker cleaning-recurrent-select"
                                       title="Make this event recurrent"
                                       data-width="100%">
-                                  <option value="0">Daily</option>
-                                  <option value="1">Weekly</option>
-                                  <option value="2">Monthly</option>
-                                  <option value="3">Yearly</option>
+                                  <option value="daily">Daily</option>
+                                  <option value="weekly">Weekly</option>
+                                  <option value="monthly">Monthly</option>
+                                  <option value="yearly">Yearly</option>
                               </select>
                       </div>
 
@@ -275,45 +272,21 @@
                       
                       <br>
                       
-                    </div>
-
-                    <div class="tab-pane form-group form-group-lg" id="cleaning-media" role="tabpanel">
-
-                      <div class="input-group input-group-lg">
-                        <!-- Uploader part need to follow the following strict format -->
-                            <span class="input-group-btn">
-                                <button class="btn btn-default btn-image-uploader"
-                                        type="button">
-                                <span class="fa fa-fw fa-file-image-o"></span><span class="hidden-xs"></span></button>
-                                <input class="image-uploader" type="file" name="image" style="display:none;">
-                            </span>
-                            <input type="text" class="form-control" placeholder="Upload an image">
-                      </div>
-
-                      <br>
-
                       <div class="input-group input-group-lg">
                             <span class="input-group-btn">
                                 <button class="btn btn-default"
                                         type="button">
                                 <span class="fa fa-fw fa-facebook"></span></button>
                                 <input class="-facebook-share-link"
-                                       type="link" name="facebook-share-link" style="display:none;">
+                                       type="link" style="display:none;">
                             </span>
                             <input type="text"
                                    class="form-control l-facebook-event-hidden-value"
                                    placeholder="Link to the event">
                       </div>
-
+                      
                       <br>
-
-                      <div class="input-group input-group-lg">
-                        <span class="input-group-addon"><span class="fa fa-fw fa-twitter"></span></span>
-                        <input type="text" class="form-control"
-                               placeholder="Tweet from this account on save"
-                               data-error=""
-                               data-remote="">
-                      </div>
+                      
                     </div>
 
                     <div class="tab-pane form-group form-group-lg" id="cleaning-info" role="tabpanel">
@@ -374,8 +347,8 @@
 
               <br>
 
-              <input type="hidden" name="lat" class="marker-lat garbage-lat">
-              <input type="hidden" name="lng" class="marker-lng garbage-lng">
+              <input type="hidden" class="marker-lat garbage-lat">
+              <input type="hidden" class="marker-lng garbage-lng">
 
               <div class="range-slider">
                 <p class="lead">Amount of garbage: <strong><span class="garbage-range-value"></span></strong></p>
@@ -496,7 +469,7 @@
                       <button class="btn btn-default btn-image-uploader"
                               type="button">
                       <span class="fa fa-fw fa-file-image-o"></span></button>
-                      <input class="image-uploader" type="file" name="image" style="display:none;">
+                      <input class="image-uploader" type="file" style="display:none;">
                   </span>
 
                   <input type="text"
@@ -595,7 +568,7 @@
                         
                         <br>
                         
-                         <input type="hidden" name="latlngs" class="area-latlngs">
+                         <input type="hidden" class="area-latlngs">
 
                         
                         <div class="form-group-lg" style="width:100%">
@@ -735,7 +708,7 @@
 
             <div class="range-slider">
               <p class="lead">Amount of garbage: <strong><span class="litter-range-value"></span></strong></p>
-              <input type="hidden" name="latlngs" class="litter-latlngs">
+              <input type="hidden" class="litter-latlngs">
               <input class="litter-range-input" type="range" value="1" min="1" max="10">
             </div>
 
@@ -876,7 +849,7 @@
             
             <h2>Login with an account</h2>
             <div>
-              <input type="email" name="email" class="form-control" placeholder="Email" id="login-email" required>
+              <input type="email" class="form-control" placeholder="Email" id="login-email" required>
             </div>
             <br>
             <div>
@@ -926,7 +899,6 @@
                   accept-charset="UTF-8">
                 <div class="form-group form-group-lg">
                     <input type="text"
-                           name="name"
                            id="register-name"
                            class="form-control"
                            placeholder="Username (min 4 characters)"
@@ -937,7 +909,6 @@
                 </div>
                 <div class="form-group form-group-lg">
                     <input type="email"
-                           name="email"
                            class="form-control"
                            placeholder="Email address"
                            id="register-email"
@@ -950,7 +921,6 @@
                                type="password"
                                class="form-control"
                                placeholder="Password min 6 characters"
-                               name="password"
                                data-minlength="6"
                                required>
                         <div class="help-block with-errors"></div>

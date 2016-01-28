@@ -98,31 +98,19 @@ $(function () {
 		var that = this;
 		event.preventDefault();
         var tags = [];
+        var eventRecurrence = [];
         var dateTime,
             lat, 
-            lng, 
-            image_url, 
-            eventRecurrence;
-      
-        dateTime = $(this).find('.event-date-hidden').val();
+            lng;
 
-        console.log("time", dateTime);
-        debugger;
-              
+        dateTime = $('.date-time-value').val();
         tags = $(this).find('.cleaning-tags').tagsinput('items');
-
-		image_url = $(this).find('.cleaning-image-hidden-value').val();
+        lat = $(this).find('.cleaning-lat').val();
+		lng = $(this).find('.cleaning-lng').val();
       
         $(this).find('.selectpicker.cleaning-recurrent-select option:selected').each(function(index, value) {
 			eventRecurrence.push($(value).val());
-		});
-      
-        console.log("recurrence values", eventRecurrence);
-      
-        // Coordinates
-		lat = $(this).find('.cleaning-lat').val();
-		lng = $(this).find('.cleaning-lng').val();
-        console.log("cleaning marker coordinates", lat + lng);
+		});      
 
 		setTimeout(function () {
           // var useToken = localStorage["token"] || window.token;
@@ -136,7 +124,6 @@ $(function () {
                   'lat': lat,
                   'lng': lng,
                   'date': dateTime,
-                  'image_url': image_url,
                   'eventRecurrence': eventRecurrence
               },
               success: function (data) {
