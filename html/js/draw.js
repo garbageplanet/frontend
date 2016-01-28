@@ -1,4 +1,4 @@
-//TODO use removeControl() rather than hiding the control with CSS when they are not in use
+// TODO use rectangles rather than polygon for simplicity.
 // All code related to drawing shapes
 var drawControl = new L.Control.Draw({
     position: 'topright',
@@ -35,9 +35,10 @@ map.on('draw:editstart', function (e) {
 });
 
 map.on('draw:editstop', function (e) { 
-  map.on('click', onMapClick);
   $('.btn-draw').removeClass('disabled');
   $('.leaflet-draw-edit-edit').removeClass('visible');
+  $('.leaflet-draw-edit-remove').removeClass('visible');
+
   // pathLayerGroup.off('click', onPathClick);
   // areLayerGroup.off('click', onAreaClick);
 });
@@ -49,10 +50,12 @@ map.on('draw:deletestart', function (e) {
   // areLayerGroup.off('click', onAreaClick);
 });
 
-map.on('draw:deletestop', function (e) { 
+map.on('draw:deletestop', function (e) {
   map.on('click', onMapClick);
   $('.btn-draw').removeClass('disabled');
   $('.leaflet-draw-edit-edit').removeClass('visible');
+  $('.leaflet-draw-edit-remove').removeClass('visible');
+
   // pathLayerGroup.off('click', onPathClick);
   // areLayerGroup.off('click', onAreaClick);
 });
@@ -135,6 +138,8 @@ map.on('draw:created', function (e) {
       
       $('.btn-cancel').on('click', function(){
         $('.leaflet-draw-edit-edit').removeClass('visible');
+        $('.leaflet-draw-edit-remove').removeClass('visible');
+
         map.removeLayer(polylineLayer);
       });
       
@@ -152,6 +157,8 @@ map.on('draw:created', function (e) {
       
       $('.btn-cancel').on('click', function(){
         $('.leaflet-draw-edit-edit').removeClass('visible');
+        $('.leaflet-draw-edit-remove').removeClass('visible');
+
         map.removeLayer(polygonLayer);
       });
     }
@@ -162,18 +169,21 @@ map.on('draw:created', function (e) {
 });
 
 // What to do once a shape was edited
+// FIXME if the user saves after editing the onMapClick function fails
 map.on('draw:edited', function (e) {
     var layers = e.layers;
+  
     layers.eachLayer(function (layer) {
       
-    var type = e.layerType,
-    layer = e.layer;
+      var type = e.layerType,
+      layer = e.layer;
       
-    if( type === 'polyline') {}
+      if( type === 'polyline') { /*save to backend*/ }
       
-    if( type === 'polygon') {}
+      if( type === 'polygon') { /*save to backend*/ }
       
     });
+  
     map.on('click', onMapClick);
 });
 
@@ -183,6 +193,7 @@ $('.btn-draw-polyline').on('click', function(){
   map.off('click', onMapClick);
   map.removeLayer(marker);
   $('.leaflet-draw-edit-edit').addClass('visible');
+  $('.leaflet-draw-edit-remove').addClass('visible');
   new L.Draw.Polyline(map, 
                           { allowIntersection: false,
                                drawError: {
@@ -203,6 +214,8 @@ $('.btn-draw-polygon').on('click', function(){
   map.off('click', onMapClick);
   map.removeLayer(marker);
   $('.leaflet-draw-edit-edit').addClass('visible');
+  $('.leaflet-draw-edit-remove').addClass('visible');
+
   new L.Draw.Polygon(map, 
                           { 
                            shapeOptions: {

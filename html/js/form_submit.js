@@ -56,7 +56,9 @@ $(function () {
 		console.log('image url', image_url);
 
 		setTimeout(function () {
-          var useToken = localStorage["token"] || window.token || authUser.name;
+          // var useToken = localStorage["token"] || window.token;
+          var useToken = localStorage.getItem('token') || window.token;
+
           $.ajax({
               method: api.createTrash.method,
               url: api.createTrash.url(),
@@ -76,12 +78,14 @@ $(function () {
                   };
                   sidebar.hide('slow');
                   map.removeLayer(marker);
+                  loadRemoteGarbageMarkers();
               },
               error: function (err) {
                   console.log('err', err);
                   showAlert("Failed to save the marker, are you logged in?", "danger", 2000);
                   sidebar.hide();
                   map.removeLayer(marker);
+                  
               }
           })
 		}, 100);
@@ -121,7 +125,9 @@ $(function () {
         console.log("cleaning marker coordinates", lat + lng);
 
 		setTimeout(function () {
-          var useToken = localStorage["token"] || window.token || authUser.name;
+          // var useToken = localStorage["token"] || window.token;
+          var useToken = localStorage.getItem('token') || window.token;
+
           $.ajax({
               method: api.createCleaning.method,
               url: api.createCleaning.url(),
@@ -138,6 +144,7 @@ $(function () {
                   console.log('success data', data);
                   showAlert("Cleaning event saved successfully!", "success", 2000);
                   sidebar.hide('slow');
+                  loadRemoteGarbageMarkers();
               },
               error: function (err) {
                   console.log('err', err);
@@ -189,7 +196,9 @@ $(function () {
     console.log('tags', tags);
 
     setTimeout(function () {
-      var useToken = localStorage["token"] || window.token || authUser.name;
+      // var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage.getItem('token') || window.token;
+
       $.ajax({
           method: api.createShape.method,
           url: api.createShape.url(),
@@ -207,13 +216,14 @@ $(function () {
               console.log('success data', data);
               showAlert("Litter saved successfully!", "success", 1500);
               sidebar.hide('slow');
+              // loadRemoteShapes(); 
           },
           error: function (err) {
               console.log('err', err);
               showAlert("Sorry, failed to save the litter.", "danger", 2000);
               sidebar.hide();
               // FIXME remove the feature on error?
-              map.removeLayer(polylineLayer);
+              map.removeLayer(polylineLayer);    
           }
       })
     }, 200);
@@ -249,7 +259,8 @@ $(function () {
     console.log('title', title);
     
     setTimeout(function () {
-      var useToken = localStorage["token"] || window.token || authUser.name;
+      // var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage.getItem('token') || window.token;
       $.ajax({
           method: api.createShape.method,
           url: api.createShape.url(),
@@ -264,15 +275,16 @@ $(function () {
           },
           success: function (data) {
               console.log('success data', data);
-              showAlert("Litter saved successfully!", "success", 1500);
+              showAlert("Area saved successfully!", "success", 1500);
               sidebar.hide('slow');
+              // loadRemoteShapes(); 
           },
           error: function (err) {
               console.log('err', err);
-              showAlert("Sorry, failed to save the litter.", "danger", 2000);
+              showAlert("Sorry, failed to save the area.", "danger", 2000);
               sidebar.hide();
               // FIXME remove the feature on error?
-              map.removeLayer(polylineLayer);
+              map.removeLayer(polygonLayer);
           }
       })
     }, 200);

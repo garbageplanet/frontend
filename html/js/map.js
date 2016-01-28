@@ -201,3 +201,5 @@ $.extend({
   }
 });
 */
+
+// Emulate clicks : map.FireEvent() see http://stackoverflow.com/a/34669697/2842348

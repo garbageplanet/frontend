@@ -2,9 +2,31 @@
 
 // TODO check if the localStorage has token / auth token, if yes log the user in
 $('document').ready( function(){
-   if ( localStorage["token"] /*|| userAuth*/ ) {
-     switchSession("login")
-   }
+  var classicSessionType = localStorage.getItem('classic')
+
+  if ( classicSessionType ) {
+    
+    if ( classicSessionType === "true" ) {
+        sessionStorage.clear();
+        $('#account-info').find('.user-email').removeClass('hidden');
+        $('#account-info').find('.user-name').text( localStorage.getItem('username') );
+        $('#account-info').find('.user-email p').html( localStorage.getItem('useremail') );
+        $('#account-info').find('.user-glome-key').addClass('hidden');
+        $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
+        $('#account-info').show();
+        
+      }
+      
+      if  ( classicSessionType === "false" ) {
+        localStorage.clear();
+        $('#account-info').find('.user-name').text('anon (⌐■_■)');
+        $('#account-info').find('.user-email').addClass('hidden');
+        $('#account-info').find('.user-glome-key p').html( sessionStorage.getItem('username') );
+        $('#account-info').find('.user-id').html( sessionStorage.getItem('userid') );
+        $('#account-info').show();
+        
+      }
+  }
 });
 
 // Alert mobile phone user (check if this appears on tablets)
@@ -21,6 +43,7 @@ $('.pull-down').each(function() {
 function switchSession(sessionStatus) {
   
   // TODO add user info through this function not the ajax calls
+  var classicSessionType = localStorage.getItem('classic')
   
     if (sessionStatus === "logout") {
       
@@ -46,6 +69,34 @@ function switchSession(sessionStatus) {
                                       sidebar.show();                          
                                     });
       $("#user-tools").dropdown();
+      
+      
+      
+      // get the data from localStorage or sessionStorage and clear the other
+      
+      if ( classicSessionType === "true" ) {
+        sessionStorage.clear();
+        
+        $('#account-info').find('.user-email').removeClass('hidden');
+        $('#account-info').find('.user-name').text( localStorage.getItem('username') );
+        $('#account-info').find('.user-email p').html( localStorage.getItem('useremail') );
+        $('#account-info').find('.user-glome-key').addClass('hidden');
+        $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
+        $('#account-info').show();
+        
+      }
+      
+      if  ( classicSessionType === "false" ) {
+        localStorage.clear();
+        
+        $('#account-info').find('.user-name').text('anon (⌐■_■)');
+        $('#account-info').find('.user-email').addClass('hidden');
+        $('#account-info').find('.user-glome-key p').html( sessionStorage.getItem('username') );
+        $('#account-info').find('.user-id').html( sessionStorage.getItem('userid') );
+        $('#account-info').show();
+        
+      }
+      
     } 
   
 };
@@ -170,6 +221,8 @@ sidebar.on('hide', function () {
         $('input').val('');
         $('.selectpicker').selectpicker('render');
         $('.leaflet-draw-edit-edit').removeClass('visible');
+        $('.leaflet-draw-edit-remove').removeClass('visible');
+
 });
 
 // TODO Move this logic to onMapClick so the var stay local

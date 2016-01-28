@@ -1,7 +1,7 @@
 // authentication, login, and registering
-// author: ville glad 6.11.2015
+// author: villeglad 6.11.2015
 // modified by adriennn
-// modified by ferencszekely
+// modified by feri
 
 // Why do these calls sit inside an anon function?
 $(function() {
@@ -37,24 +37,28 @@ function login(e) {
             "password":password
         },
         success: function(response) {
-            localStorage["token"] = response.token;
+            localStorage.setItem('token', response.token);
+          
             console.log('logged in')
             $('#user-login-dialog').hide();
-            showAlert("Login successful", "success", 1500);
-            switchSession("login");
             $.ajax({
                 method: api.readUser.method,
                 url: api.readUser.url(),
                 headers: {"Authorization": "Bearer " + response.token},
                 success: function (data) {
-                    console.log('alreay logged in', data);
-                    $('#account-info').find('.user-name').html(data.user.name);
-                    $('#account-info').find('.user-id').html(data.user.id);
-                    $('#account-info').find('.user-glome-key').addClass('hidden');
-                    $('#account-info').find('.user-email p').html(data.user.email);
-                    $('#account-info').find('.created-at').html(data.user.created_at);
-                    $('#account-info').find('.updated-at').html(data.user.updated_at);
-                    $('#account-info').show();
+                  
+                    // Push the data into localStorage
+                    localStorage.setItem('classic','true')
+                    localStorage.setItem('username', data.user.name);
+                    localStorage.setItem('userid', data.user.id);
+                    localStorage.setItem('useremail', data.user.email);
+                  
+                    console.log('session type is classic', localStorage.getItem('classic') )
+                    console.log('username value: ', localStorage.getItem('username') )
+                  
+                    switchSession("login");
+                    showAlert("Login successful", "success", 1500);
+                  
                 }
             });
         },
@@ -71,8 +75,10 @@ function logout() {
     if(!localStorage.token) {
         showAlert("User is already logged out.", "info", 2000);
         localStorage.clear();
+        sessionStorage.clear();
     }
     localStorage.clear();
+    sessionStorage.clear();
     sidebar.hide();
     switchSession("logout");
     showAlert("You are logged out.", "info", 2000);
@@ -94,25 +100,25 @@ function registerUser(e) {
             "name":name
         },
         success: function(response) {
-            localStorage["token"] = response.token;
+            localStorage.setItem('token', response.token);
+
             console.log('registered and logged in');
-            showAlert("Registration successful, you are now logged in.", "success", 2000);
-            switchSession("login");
             $('#create-account-dialog').hide();
             $.ajax({
                 method: api.readUser.method,
                 url: api.readUser.url(),
                 headers: {"Authorization": "Bearer " + response.token},
                 success: function (data) {
-                    console.log('success data', data);
-                    $('#account-info').find('.username').html(data.user.name);
-                    $('#account-info').find('.glome-key-info').addClass('hidden');
-                    $('#account-info').find('.user_id').html(data.user.id);
-                    $('#account-info').find('.user_name').html(data.user.name);
-                    $('#account-info').find('.user_email').html(data.user.email);
-                    $('#account-info').find('.created_at').html(data.user.created_at);
-                    $('#account-info').find('.updated_at').html(data.user.updated_at);
-                    $('#account-info').show();
+                    
+                    // Push the data into localStorage
+                    localStorage.setItem('classic','true')
+                    localStorage.setItem('username', data.user.name);
+                    localStorage.setItem('userid',data.user.id);
+                    localStorage.setItem('useremail',data.user.email);
+                  
+                    switchSession("login");
+                    showAlert("Registration successful, you are now logged in.", "success", 2000);
+
                 }
             });
         },
@@ -139,7 +145,7 @@ function glomego(e) {
             console.log('------------------------------------------------------------');
 
             var glomeid = response.user.name;
-
+          
             if (! glomeid || typeof glomeid == 'undefined') {
                 console.log('bad luck with soft account creation');
                 showAlert("Failed to login anonymously. Reload the page and try again.", "warning", 3000);
@@ -148,17 +154,15 @@ function glomego(e) {
 
             var authUser = response.user;
             var token = response.token;
-            localStorage["glomeid"] = glomeid;
-            localStorage["token"] = token;
+          
+            localStorage.setItem('token', token);
+            localStorage.setItem('glomeid', glomeid);
 
             console.log('created soft account: ' + glomeid);
-            console.log('local authUser: ');
-            console.log(authUser);
+            console.log('local authUser: ', authUser);
             console.log('------------------------------------------------------------');
-            switchSession("login");
             $('#user-login-dialog').hide();
-            showAlert("You are now logged in anonymously.", "success", 2000);
-
+          
             $.ajax({
                 method: api.readSoftAccount.method,
                 url: api.readSoftAccount.url(glomeid),
@@ -172,14 +176,18 @@ function glomego(e) {
                     }
 
                     if (typeof authUser !== 'undefined') {
-                        console.log('authUser: ', authUser);
-                        $('#account-info').find('.user-name').text('anon (⌐■_■)');
-                        $('#account-info').find('.user-email').addClass('hidden');
-                        $('#account-info').find('.user-glome-key p').html(authUser.name);
-                        $('#account-info').find('.user-id').html(authUser.id);
-                        $('#account-info').find('.created-at').html(authUser.created_at);
-                        $('#account-info').find('.updated-at').html(authUser.updated_at);
-                        $('#account-info').show();
+                      
+                      // Push the data into sessionStorage
+                      localStorage.setItem('classic','false')
+                      sessionStorage.setItem('username', authUser.name);
+                      sessionStorage.setItem('userid', authUser.id);
+                      
+                      console.log('session type is classic', localStorage.getItem('classic') )
+                      console.log('glome key value', localStorage.getItem('username') )
+                  
+                      switchSession("login");
+                      showAlert("You are now logged in anonymously.", "success", 2000);  
+
                     }
                 }
             });
