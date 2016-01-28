@@ -116,10 +116,9 @@ function registerUser(e) {
                 }
             });
         },
-        error: function(response, responseText) {
+        error: function(response) {
           console.log(response);
-          // showAlert("Failed to register.", "danger", 2000);
-          // TODO add remote validatorin backend data-remote="http://dev.garbagepla.net:8080/api/authenticate/validate"
+          showAlert(response.responseText.substring(2,30), "danger", 3500);
           localStorage.removeItem("token");
         }
     });
