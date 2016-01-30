@@ -64,6 +64,7 @@ $(function () {
               url: api.createTrash.url(),
               headers: {"Authorization": "Bearer" + useToken},
               data: {
+                  /* 'type': 'garbage',*/
                   'lat': lat,
                   'lng': lng,
                   'amount': amountOfTrash,
@@ -121,6 +122,7 @@ $(function () {
               url: api.createCleaning.url(),
               headers: {"Authorization": "Bearer" + useToken},
               data: {
+                  'type': 'cleaning',
                   'lat': lat,
                   'lng': lng,
                   'date': dateTime,
@@ -132,6 +134,8 @@ $(function () {
                   showAlert("Cleaning event saved successfully!", "success", 2000);
                   sidebar.hide('slow');
                   loadRemoteGarbageMarkers();
+                  map.removeLayer(marker);
+
               },
               error: function (err) {
                   console.log('err', err);
@@ -191,6 +195,7 @@ $(function () {
           url: api.createShape.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
+              'type': 'polyline',
               'lat_lngs': latlngs.join(),
               'amount': amoutOfTrash,
               'types': typeOfTrash.join(),
@@ -253,6 +258,7 @@ $(function () {
           url: api.createShape.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
+              'type': 'polygon',
               'latlngs': latlngs.toGeoJSON(),
               'players': players.join(),
               'note': note,

@@ -9,19 +9,16 @@ $(function() {
     $(".btn-logout").on('click', logout );
   
     // login
-    $("#login-btn").click( login )
+    $(".btn-login").click( login )
 
     // register
     $("#registration-form").submit( registerUser );
 
     // glome go
-    $("#glome-go-btn").click( glomego );
-
-    // TODO get a glome key
-    $("#get-glome-key-btn").click( getGlomeKey );
+    $(".btn-glome-go").click( glomego );
 
     // TODO send glome key
-    $("#send-glome-key-btn").click( sendGlomeKey );
+    $(".btn-glome-key-send").click( sendGlomeKey );
 });
 
 //login function
@@ -240,9 +237,4 @@ function sendGlomeKey(e) {
             localStorage.removeItem("token");
         }
     });
-};
-
-// Get own glome key function
-function getGlomeKey(e) {
-    e.preventDefault();
 };

@@ -75,6 +75,7 @@ map.on('draw:created', function (e) {
   
     if (type === 'polyline') {
       var polylineLayer = e.layer;
+      map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
       //FIXME get the lenght inside $('.polyline-length')
       // console.log("distance size", distanceStr);
       // the value is sotred as distanceStr in L.Draw.js
@@ -147,7 +148,7 @@ map.on('draw:created', function (e) {
   
     if( type === 'polygon') {
       var polygonLayer = e.layer;
-
+      map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
       // push the latlngs to the form
       var latlngs = polygonLayer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
       $('.form-area .area-latlngs').val( latlngs );
@@ -191,7 +192,6 @@ map.on('draw:edited', function (e) {
 $('.btn-draw-polyline').on('click', function(){
   // Stop default marker event listener
   map.off('click', onMapClick);
-  map.removeLayer(marker);
   $('.leaflet-draw-edit-edit').addClass('visible');
   $('.leaflet-draw-edit-remove').addClass('visible');
   new L.Draw.Polyline(map, 
@@ -212,7 +212,6 @@ $('.btn-draw-polyline').on('click', function(){
 $('.btn-draw-polygon').on('click', function(){
   // Stop default marker event listener
   map.off('click', onMapClick);
-  map.removeLayer(marker);
   $('.leaflet-draw-edit-edit').addClass('visible');
   $('.leaflet-draw-edit-remove').addClass('visible');
 

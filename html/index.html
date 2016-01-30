@@ -19,35 +19,25 @@
   <!-- Fonts -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300' rel='stylesheet' type='text/css'>
-  
-  <!-- JQUERY and other JS libraries -->
-  <script type="text/javascript" src="js/libs/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-  
+    
   <!-- Bootstrap -->
-    <script src="js/libs/bootstrap-tagsinput.js"></script>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"</script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.9.0/validator.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js" defer></script>
-
-
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+  
   <!-- Leaflet -->
   <script src="js/libs/leaflet_077.js"></script>
   <script src="js/libs/L.hash.js"></script>
   <link rel="stylesheet" href="css/libs/leaflet.css"/>
   <script src="js/libs/L.zoomCSS.js"></script>
-  <script src="js/libs/L.Control.Sidebar-018a.js"></script>
+  <script src="js/libs/L.Control.Sidebar-019a.js"></script>
   <script src="js/libs/L.Overpass.Layer.js" defer></script>
-  <script src="js/libs/L.Draw.js"></script>
-  <!-- <script src="js/L.ajax.js"></script> -->
-
-  <!-- Uploader  -->
-  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js" defer></script>
+  <script src="js/libs/L.Draw.js" defer></script>
+  <!-- <script src="js/L.ajax.js" defer></script> -->
 
   <!-- Local stylesheets -->
   <link rel="stylesheet" href="css/main.css">
@@ -147,41 +137,22 @@
     <div class="sidebar-content" id="mobile-menu-dialog">
 
         <div class="form-group form-group-lg btn-menu">
-        <a href="#create-account-dialog"
-                class="sidebar-link btn btn-default btn-lg btn-block">
-            <span class="fa fa-fw fa-user"></span> Register
-        </a>
+  <a href="#create-account-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-user"></span> Register</a>
 
-        <a href="#user-login-dialog"
-           class="sidebar-link btn btn-default btn-lg btn-block">
-           <span class="fa fa-fw fa-key"></span> Login
-        </a>
+  <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-key"></span> Login</a>
 
-        <a href="#glome-dialog"
-           class="sidebar-link btn btn-default btn-lg btn-block">
-           <span class="fa fa-fw fa-google"></span> Go Glome!
-        </a>
+  <a href="#" class="btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
 
-        <a href="#search-dialog"
-           class="sidebar-link btn btn-default btn-lg btn-block">
-           <span class="fa fa-fw fa-search"></span> Search
-        </a>
+  <a href="#search-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-search"></span> Search</a>
 
-        <a href="#"
-           class="sidebar-link btn btn-default btn-lg btn-block btn-locate">
-           <span class="fa fa-fw fa-compass"></span> Locate me
-        </a>
+  <a href="#" class="sidebar-link btn btn-default btn-lg btn-block btn-locate"><span class="fa fa-fw fa-compass"></span> Locate me</a>
 
-        <a href="#"
-           class="sidebar-link btn btn-default btn-lg btn-block">
-           <span class="fa fa-fw fa-calendar-o"></span> Calendar
-        </a>
+  <a href="#" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-calendar-o"></span> Calendar</a>
 
 
 
     </div>
   </div>
-
     <div class="sidebar-content" id="create-marker-dialog">
         <h2 class="actions-panel">Action for this location
         </h2>
@@ -208,19 +179,19 @@
                 </h3>
             </div>
       
-            <form class="form-cleaning" role="form" data-toggle="validator" accept-charset="UTF-8">
+            <form class="form-cleaning" role="form" data-toggle="validator">
 
               <div class="tab-view">
                 <ul class="nav nav-tabs nav-justified" role="tablist">
-                  <li class="active"><a href="#cleaning-main" data-toggle="tab"><span class="fa fa-fw fa-calendar"></span></a></li>
-                  <li><a href="#cleaning-info" data-toggle="tab"><span class="fa fa-fw fa-question"></span></a></li>
+                  <li class="active"><a href="#cleaning-main-tab" data-toggle="tab"><span class="fa fa-fw fa-calendar"></span></a></li>
+                  <li><a href="#cleaning-info-tab" data-toggle="tab"><span class="fa fa-fw fa-question"></span></a></li>
                 </ul>
                 
                   <div class="tab-content">
 
                     <br>
 
-                    <div class="tab-pane active form-group form-group-lg" id="cleaning-main" role="tabpanel">
+                    <div class="tab-pane active form-group form-group-lg" id="cleaning-main-tab" role="tabpanel">
 
                       <input type="hidden" class="marker-lat cleaning-lat">
                       <input type="hidden" class="marker-lng cleaning-lng">
@@ -231,8 +202,8 @@
                         <div class="row">
                             <div class="form-group">
                                     <div class="input-group date" id='event-date-time-picker'>
-                                        <input type='text' class="form-control">
-                                         <input type='hidden' class="date-time-value">
+                                        <input type='datetime' class="form-control">
+                                        <input type='hidden' class="date-time-value" required>
                                         <span class="input-group-addon">
                                         <span class="fa fa-fw fa-clock-o"></span>
                                         </span>
@@ -255,10 +226,14 @@
                       <br>
 
                       <div class="form-group-lg" style="width:100%">
-                        <textarea class="form-control cleaning-note"
+                        <textarea class="cleaning-note form-control"
                                   rows="3"
+                                  type="text"
                                   placeholder="Add a note about this event"
-                                  maxlength="140"></textarea>
+                                  data-maxlength="140"
+                                  data-minlength="10"
+                                  data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"></textarea>
+                          <div class="help-block with-errors"></div>
                       </div>
 
                       <div class="row">
@@ -271,25 +246,10 @@
                       </div>
                       
                       <br>
-                      
-                      <div class="input-group input-group-lg">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default"
-                                        type="button">
-                                <span class="fa fa-fw fa-facebook"></span></button>
-                                <input class="-facebook-share-link"
-                                       type="link" style="display:none;">
-                            </span>
-                            <input type="text"
-                                   class="form-control l-facebook-event-hidden-value"
-                                   placeholder="Link to the event">
-                      </div>
-                      
-                      <br>
-                      
+                                            
                     </div>
 
-                    <div class="tab-pane form-group form-group-lg" id="cleaning-info" role="tabpanel">
+                    <div class="tab-pane form-group form-group-lg" id="cleaning-info-tab" role="tabpanel">
 
                       <p class="lead">A marker for a cleaning event is meant for a location where trash has already been identified. Facebook users can choose whether to create a Facebook event simultaneously. <a class="sidebar-link" href="#user-login-dialog">Login</a> or <a class="sidebar-link" href="#create-account-dialog" >register</a> with an email to create an event.</p>
 
@@ -326,7 +286,7 @@
                   <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
                      href="#create-marker-dialog">
                   </a>
-              </span> Mark trash on the map.
+              </span> Mark trash on the map
           </h3>
       </div>
       <form role="form"
@@ -346,24 +306,27 @@
             <div class="tab-pane active form-group form-group-lg" id="garbage-main" role="tabpanel">
 
               <br>
-
+              
               <input type="hidden" class="marker-lat garbage-lat">
               <input type="hidden" class="marker-lng garbage-lng">
 
-              <div class="range-slider">
+              <div class="range-slider form-group">
                 <p class="lead">Amount of garbage: <strong><span class="garbage-range-value"></span></strong></p>
-              <input class="garbage-range-input" type="range" value="1" min="1" max="10">
+              <input class="garbage-range-input form-control" type="range" value="1" min="1" max="10" required>
+              <div class="help-block with-errors"></div>
               </div>
 
               <br>
 
-            <div class="dropdown" >
+            <div class="dropdown form-group">
                 <select class="selectpicker garbage-type-select form-control"
-                        title="What kind?*"
+                        title="What kind?"
+                        name="garbageTypeName"
                         data-selected-text-format="count"
                         data-width="100%"
                         required
                         multiple >
+                    <option value="" disabled="disabled"></option>
                     <option value="glass">Glass</option>
                     <option value="bottles">Glass bottles</option>
                     <option value="metal">Metal</option>
@@ -394,16 +357,19 @@
                     <option value="boating">Boating equipment</option>
                     <option value="buoy">Buoys and floats</option>
                     <option value="maritime">Maritime equipment</option>
-
                 </select>
+            <div class="help-block with-errors"></div>
             </div>
 
             <br>
 
             <div class="dropdown">
                 <select class="selectpicker form-control garbage-todo-select"
-                        title="What to do here?*"
-                        data-width="100%">
+                        title="What to do here?"
+                        name="garbageTodoName"
+                        data-width="100%"
+                        required>
+                    <option value="" disabled="disabled"></option>
                     <option value="nothing">It's been cleaned already</option>
                     <option value="pickup">Need to pick it up</option>
                     <option value="collect">Need to collect it</option>
@@ -411,16 +377,23 @@
                     <option value="need_help">I need help</option>
                     <option value="inform">Tell local authorities</option>
                 </select>
+            <div class="help-block with-errors"></div>
             </div>
 
             <br>
 
-            <div class="form-group-lg" style="width:100%">
+            <div class="form-group-lg form-group" style="width:100%">
                 <textarea class="form-control garbage-note"
                           rows="3"
+                          type="text"
+                          name="garbage-note-name"
                           placeholder="Add a note about this marker"
-                          maxlength="140"></textarea>
+                          data-maxlength="140"
+                          data-minlength="10"
+                          data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"></textarea>
+            <div class="help-block with-errors"></div>
             </div>
+            
 
             </div><!-- main garbage pane -->
 
@@ -476,9 +449,9 @@
                          class="form-control garbage-image-hidden-value"
                          placeholder="Upload an image">
             </div>
-
-            <div class="progress hidden">
               <br>
+            <div class="progress hidden">
+              
               <div class="progress-bar progress-bar-success" role="progressbar" style="width:%"></div>
             </div>
 
@@ -497,7 +470,7 @@
 
             <div class="tab-pane form-group form-group-lg" id="garbage-info" role="tabpanel">
             <br>
-              <p class="lead"> Anybody can anonymously mark trash on the map. Markers can only be placed between zoom level 15 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 15 now</a>). When editing any of the marker type, all the changes are tracked and publicly visible in the marker information panel.</p>
+              <p class="lead"> Anybody can anonymously mark trash on the map. Markers can only be placed between zoom level 10 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 10 now</a>). When editing any of the marker type, all the changes are tracked and publicly visible in the marker information panel.</p>
             </div>
           </div>
         </div>
@@ -532,8 +505,7 @@
 
         <form class="form-area"
               role="form"
-              data-toggle="validator"
-              accept-charset="UTF-8">
+              data-toggle="validator">
 
                   <div class="tab-view">
                     <ul class="nav nav-tabs nav-justified" role="tablist">
@@ -571,15 +543,20 @@
                          <input type="hidden" class="area-latlngs">
 
                         
-                        <div class="form-group-lg" style="width:100%">
-                          <input class="form-control area-title" placeholder="Use a custom area name">
-                          </input>
+                        <div class="form-group form-group-lg" style="width:100%">
+                          <input class="form-control area-title" placeholder="Use a custom area name"></input>
+                          <div class="help-block with-errors"></div>
                         </div>
                         <br>
-                        <div class="form-group-lg" style="width:100%">
+                        <div class="form-group form-group-lg" style="width:100%">
                           <textarea class="form-control area-note"
-                                      rows="3"
-                                      placeholder="Add a note about this area"></textarea>
+                                    rows="3"
+                                    type="text"
+                                    data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"
+                                    data-maxlength="140"
+                                    data-minlength="10"
+                                    placeholder="Add a note about this area"></textarea>
+                        <div class="help-block with-errors"></div>
                         </div>
 
                       
@@ -608,29 +585,31 @@
                         <br>
                         </div>
 
-                        <div class="form-group-lg" style="width:100%">
+                        <div class="form-group form-group-lg" style="width:100%">
                           <input class="form-control area-players"
-                                    id=""
-                                    type="number"
-                                    min="1"
-                                    max="100"
-                                    step="1"
-                                    placeholder="Number of players">
-                          </input>
+                                 id=""
+                                 type="number"
+                                 min="1"
+                                 max="100"
+                                 step="1"
+                                 placeholder="Number of players"
+                                 required>/input>
+                          <div class="help-block with-errors"></div>
                         </div>
 
                         <br>
 
                         <div class="tile-game-secret">
 
-                            <div class="form-group-lg" style="width:100%">
+                            <div class="form-group form-group-lg" style="width:100%">
                                 <input class="form-control disabled area-secret"
-                                       placeholder="Set the secret to access this game">
-                                </input>
+                                       placeholder="Set the secret to access this game"
+                                       required></input>
                                 <br>
                                 <input class="form-control disabled area-contact"
-                                       placeholder="Set a contact info for this game">
-                                </input>
+                                       placeholder="Set a contact info for this game"
+                                       required></input>
+                            <div class="help-block with-errors"></div>
                             </div>
 
                         </div>
@@ -639,7 +618,7 @@
 
                       <div class="tab-pane form-group form-group-lg" id="area-info" role="tabpanel">
 
-                        <p class="lead">Areas are used to overlay a summary of map features. They can serve as feeds for a given perimeter and which can be accessed via our <a href="https://www.github.com/garbageplanet/" target="_blank">API</a>.  They can also be used to restrict actions to a zone area during games. Specify an <em>areaname</em> and it can be called through our API using <em>@areaname</em>. If a name is not set, a random id will be assigned.</p>
+                        <p class="lead">Areas are used to overlay a summary of map features. They can serve as feeds for a given perimeter which can be accessed via our <a href="https://www.github.com/garbageplanet/" target="_blank">API</a>.  They can also be used to restrict actions to a zone during games. Specify an <em>areaname</em> and it can be called through our API using <em>@areaname</em>. If a name is not set, a random id will be assigned.</p>
 
                       </div>
 
@@ -650,17 +629,13 @@
               <div>
                 <div class="btn-group btn-group-justified" role="group">
                     <div class="btn-group btn-group-lg" role="group">
-                        <button id="button-save-tile"
-                                type="submit"
-                                class="btn btn-success btn-save">
+                        <button type="submit" class="btn btn-success btn-save">
                             <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
                         </button>
                     </div>
                     <div class="btn-group btn-group-lg" role="group">
-                        <button id="button-delete-tile"
-                                type="button"
-                                class="btn btn-danger btn-cancel">
-                            <span class="fa  fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
+                        <button type="button" class="btn btn-danger btn-cancel">
+                            <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
                         </button>
                     </div>
                 </div>
@@ -676,7 +651,7 @@
         </span>
           Mark a stretch of land
       </h2>
-      <form class="form-litter" role="form" accept-charset="UTF-8" data-toggle="validator">
+      <form class="form-litter" role="form" data-toggle="validator">
 
         <div class="tab-view">
           <ul class="nav nav-tabs nav-justified" role="tablist">
@@ -706,21 +681,24 @@
 
             <br>
 
-            <div class="range-slider">
+            <div class="range-slider form-group form-group-lg">
               <p class="lead">Amount of garbage: <strong><span class="litter-range-value"></span></strong></p>
               <input type="hidden" class="litter-latlngs">
-              <input class="litter-range-input" type="range" value="1" min="1" max="10">
+              <input class="litter-range-input form-control" type="range" value="1" min="1" max="10" required>
+                <div class="help-block with-errors"></div>
             </div>
 
             <br>
 
-            <div class="dropdown" >
+            <div class="dropdown form-group form-group-lg" >
                 <select class="selectpicker litter-type-select form-control"
                         title="What kind of litter?"
+                        name="litterTypeName"
                         multiple data-live-search="true"
                         data-selected-text-format="count"
                         data-width="100%"
-                        multiple >
+                        multiple
+                        required>
                     <option value="glass">Fishing / fisheries gears</option>
                     <option value="glass">Glass</option>
                     <option value="bottles">Glass bottles</option>
@@ -735,26 +713,22 @@
                     <option value="gas">Gasoline, petroleum</option>
                     <option value="crude">Crude oil</option>
                 </select>
+            <div class="help-block with-errors"></div>
             </div><!-- Select the type of trash -->
 
             <br>
             
-            <div class="form-group-lg" style="width:100%">
+            <div class="form-group form-group-lg" style="width:100%">
               <textarea class="form-control litter-note"
-                      rows="3"
-                      placeholder="Add a note about this feature"></textarea>
+                        rows="3"
+                        type="text"
+                        placeholder="Add a note about this feature"
+                        data-minlength="10"
+                        data-maxlength="140"
+                        data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"></textarea>
             </div>
-            
+            <div class="help-block with-errors"></div>
             <br>
-          
-            <div class="row">
-              <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
-              <input class="form-control litter-tags"
-                     type="text"
-                     data-role="tagsinput"
-                     placeholder="Add tags">
-              </div>
-            </div>  
           
           </div>
 
@@ -794,11 +768,24 @@
                 <button href="#" class="btn btn-default" type="button">
                   <span class="fa fa-fw fa-globe"></span><span class="hidden-xs">Add link</span></button>
               </span>
-              <input type="text" 
+              <input type="url" 
                      class="form-control litter-wms-url" 
                      placeholder="WMS server url">
             </div>
+              
+            <br>
+                      
+            <div class="row">
+              <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
+              <input class="form-control litter-tags"
+                     type="text"
+                     data-role="tagsinput"
+                     placeholder="Add tags">
+              </div>
+            </div>  
 
+            <br>
+              
           </div>
         
           <div class="tab-pane form-group form-group-lg" id="litter-info" role="tabpanel">
@@ -844,7 +831,7 @@
         <form id="login-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
           <div class="form-group form-group-lg">
             <div>
-                <button type="submit" id="glome-go-btn" class="btn btn-info btn-lg btn-block">Glome Go &raquo</button>
+                <button type="submit" id="glome-go-btn" class="btn btn-info btn-lg btn-block btn-glome-go">Glome Go &raquo</button>
             </div>
             
             <h2>Login with an account</h2>
@@ -858,7 +845,7 @@
             <br>
             <div>
               <div>
-                <button type="submit" id="login-btn" class="btn btn-info btn-lg btn-block">Login &raquo</button>
+                <button type="submit" class="btn btn-info btn-lg btn-block btn-login">Login &raquo</button>
               </div>
               <div class="help-block with-errors"></div>
             </div>
@@ -912,6 +899,7 @@
                            class="form-control"
                            placeholder="Email address"
                            id="register-email"
+                           data-minlength="6"
                            data-error="Email invalid">
                     <div class="help-block with-errors"></div>
                 </div>
@@ -998,22 +986,23 @@
             <div>
               <div class="row">
                  <div class="input-group" style="width:100%">
-                  <div class="col-lg-4">
-                    <input type="text" class="form-control" maxlength="4" size="4" pattern="[0-9][a-f]{4}" required>
+                  <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    <input type="text" 
+                           class="form-control" 
+                           maxlength="12" 
+                           size="14" 
+                           pattern="[0-9][a-f]{4}-[0-9][a-f]{4}-[0-9][a-f]{4}" 
+                           data-error="Invalid input"
+                           required>
                   </div>
-                  <div class="col-lg-4">
-                    <input type="text" class="form-control" maxlength="4" size="4" pattern="[0-9][a-f]{4}" required>
-                  </div>
-                  <div class="col-lg-4">
-                  <input type="text" class="form-control" maxlength="4" size="4" pattern="[0-9][a-f]{4}" required>
-                  </div>
+
                 </div>
               </div>
             </div>
             <br>
             <div>
               <div>
-                <button type="submit" class="btn btn-info btn-lg btn-block">Submit &raquo</button>
+                <button type="submit" class="btn btn-info btn-lg btn-block btn-glome-key-send">Submit &raquo</button>
               </div>
               <div class="help-block with-errors"></div>
             </div>
@@ -1189,10 +1178,7 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
       <div class="bottombar-content" id="feature-info">
 
       <div class="card card-actions col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <div>
-          <h3><span>Actions</span>
-          </h3>
-        </div>
+        <div><h3>Actions</h3></div>
         <br>
         <div>
           <div class="btn-group btn-group-justified" role="group">
@@ -1212,7 +1198,7 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
               </button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Confirm there is garbage here." class="btn btn-round btn-info">
+              <button type="button" title="Confirm there is garbage here." class="btn btn-round btn-info btn-confirm">
                 <span class="fa fa-check-square"></span><span class="hidden">Confirm</span>
               </button>
             </div>
@@ -1256,36 +1242,28 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
       </div>
 
       <div class="card card-data col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div>
-          <h3>Data</h3>
-        </div>
-
-        <div class="data-info-details">
+        <div><h3>Data</h3></div>
+        <div class="feature-data-card">
           <h4>Type of trash</h4>
-          <p class="feature-info-garbage-type"></p>
+          <p class="feature-info feature-info-garbage-type"></p>
           <h4>Amount of trash</h4>
-          <p class="feature-info-garbage-amount"></p>
-          <h4>Confirmations</h4>
-          <p class="feature-info-confirmed"> users have confirmed this report</p>
-          <h4>Tags</h4>
-          <p class="feature-info-tags"></p>
+          <p class="feature-info feature-info-garbage-amount"></p>
+          <hr>
+          <p class="feature-info-confirmed"><strong>0</strong> users have confirmed this report</p>
+          <p class="feature-info feature-info-tags">tags</p>
         </div>
       </div>
 
       <div class="card card-media col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div>
-          <h3>Media</h3>
-        </div>
+        <div><h3>Media</h3></div>
 
           <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
 
       </div>
 
       <div class="card card-track col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div>
-          <div>
-            <h3>Track changes</h3>
-          </div>
+        <div><h3>Track changes</h3></div>
+        <div class="feature-track-card">
           <h4>Creation date</h4>
           <p class="feature-info-creation-time"></p>
           <h4>Created by</h4>
@@ -1297,32 +1275,29 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 
     </div><!-- Feature info -->
       
-      <div class="bottombar-content" id="event-info">
+      <div class="bottombar-content" id="cleaning-info">
 
       <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div><h3>Actions</h3></div>
+        <br>
         <div>
-          <h3><span>Actions</span>
-
-            <div class="dropdown pull-right">
-              <button class="btn btn-default dropdown-toggle"
-                      type="button"
-                      id="dropdownMenu1"
-                      data-toggle="dropdown">
-                Options <span class="caret"></span>
+          <div class="btn-group btn-group-justified" role="group">
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" title="Edit feature" class="btn btn-warning btn-edit btn-round sidebar-link">
+                <span class="fa fa-pencil"></span><span class="hidden">Edit</span>
               </button>
-              <ul class="dropdown-menu">
-               <li><a href="#" class="fa fa-fw fa-heart-o" title="Add to favorites"> Favorite</a></li>
-               <li><a href="#" class="fa fa-fw fa-pencil" title="Add to favorites"> Edit</a></li>
-               <li><a href="#" class="fa fa-fw fa-times" title="Add to favorites"> Delete</a></li>
-
-               <li role="separator" class="divider"></li>
-               <li><a href="#" class="fa fa-fw fa-facebook-square" title="Share on Facebook"> Share</a></li>
-               <li><a href="#" class="fa fa-fw fa-twitter-square" title="Share on Twitter"> Share</a></li>
-               <li><a href="#" class="fa fa-fw fa-instagram" title="Share images on Instagram"> Share</a></li>
-               <li><a href="#" class="fa fa-fw fa-google-plus-square" title="Share images on Instagram"> Share</a></li>
-              </ul>
             </div>
-          </h3>
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" title="Delete this feature" class="btn btn-danger btn-round btn-delete">
+                <span class="fa fa-times"></span><span class="hidden">Cancel</span>
+              </button>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" title="Watch this marker." class="btn btn-round btn-default">
+                <span class="fa fa-heart"></span><span class="hidden">Favorite</span>
+              </button>
+            </div>
+          </div>
         </div>
         <br>
         <div class="pull-down">
@@ -1338,7 +1313,7 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
               </button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Say you will join." class="btn btn-round btn-info">
+              <button type="button" title="Say you will join." class="btn btn-round btn-success">
                 <span class="fa fa-check-square"></span><span class="hidden">Join</span>
               </button>
             </div>
@@ -1352,44 +1327,33 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
       </div>
         
       <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div>
-          <h3>Info</h3>
-        </div>
-
-        <div class="data-info-details">
+        <div> <h3>Info</h3></div>
+        <div class="cleaning-info-card">
           <h4>Location</h4>
-          <p class="cleaning-info-location"></p>
+          <p class="cleaning-info cleaning-info-location"></p>
           <h4>Time</h4>
-          <p class="cleaning-info-time"></p>
-          <h4>Participants</h4>
-          <p class="cleaning-info-time"> users have said they would attend</p>
-          <h4>Note</h4>
-          <p class="cleaning-info-note"></p>
+          <p class="cleaning-info cleaning-info-time"></p>
           <h4>Tags</h4>
-          <p class="cleaning-info-tags"></p>
+          <p class="cleaning-info cleaning-info-tags"></p>
+        </div>
+        
+      </div>
+
+      <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div><h3>Details</h3></div>
+        <div class="cleaning-details-card">
           <h4>Created by</h4>
-          <p class="cleaning-info-created-by"></p>
-          <h4>Coordinates</h4>
-          <p class="cleaning-info-coordinates"></p>
+          <p class="cleaning-info cleaning-info-created-by"></p>
+          <h4>Participants</h4>
+          <p class="cleaning-info cleaning-info-participant"><stron>0</stron> users have said they would attend</p>
+          <h4>Note</h4>
+          <p class="cleaning-info cleaning-info-note"></p>
         </div>
       </div>
 
       <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div>
-          <h3>Media</h3>
-        </div>
-
-          <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
-
-      </div>
-
-      <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div>
-          <div>
-            <h3>Access minimap</h3>
-
-          </div>
-        </div>
+        <div><h3>Access minimap</h3></div>
+        <div class="cleaning-minimap-card"></div>
       </div>
 
     </div><!-- Cleaning event info -->
@@ -1431,13 +1395,27 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
   
 </div><!-- Alerts -->
 
+
+<script type="text/javascript" src="js/libs/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/libs/moment.js"></script>
+<script src="js/libs/bootstrap-tagsinput.js"></script>
+<script src="js/libs/bootstrap-datetimepicker.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="js/libs/bootstrap-select.js"> </script>
+<script src="js/libs/bootstrap-validator.js"></script>
+
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js" defer></script>
+
 <script src="js/config.js"></script>
 <script src="js/map.js"></script>
 <script src="js/get_features.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/authenticate.js"></script>
-<script src="js/uploader.js"></script>
-<script src="js/form_submit.js"></script>
-<script src="js/draw.js"></script>
+<script src="js/map_actions.js"></script>
+<script src="js/uploader.js" defer></script>
+<script src="js/form_submit.js" defer></script>
+<script src="js/draw.js" defer></script>
 </body>
 </html>

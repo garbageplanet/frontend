@@ -1,7 +1,7 @@
 // TODO Arrange functions in group in this file
 
-// TODO check if the localStorage has token / auth token, if yes log the user in
-$('document').ready( function(){
+// FIXME check if the localStorage has token / auth token, if yes log the user in
+$('document').ready(function () {
   var classicSessionType = localStorage.getItem('classic')
 
   if ( classicSessionType ) {
@@ -13,18 +13,16 @@ $('document').ready( function(){
         $('#account-info').find('.user-email p').html( localStorage.getItem('useremail') );
         $('#account-info').find('.user-glome-key').addClass('hidden');
         $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
-        $('#account-info').show();
-        
+        $('#account-info').show();     
       }
       
-      if  ( classicSessionType === "false" ) {
+      if ( classicSessionType === "false" ) {
         localStorage.clear();
         $('#account-info').find('.user-name').text('anon (⌐■_■)');
         $('#account-info').find('.user-email').addClass('hidden');
         $('#account-info').find('.user-glome-key p').html( sessionStorage.getItem('username') );
         $('#account-info').find('.user-id').html( sessionStorage.getItem('userid') );
         $('#account-info').show();
-        
       }
   }
 });
@@ -34,15 +32,9 @@ if (L.Browser.mobile) {
     showAlert("Drawing tools are not available on mobile.", "info", 4000);
 };
 
-//for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
-$('.pull-down').each(function() {
-    $(this).css('margin-top', $(this).parent().height()-$(this).height())
-});
-
 // Swtch session function
 function switchSession(sessionStatus) {
   
-  // TODO add user info through this function not the ajax calls
   var classicSessionType = localStorage.getItem('classic')
   
     if (sessionStatus === "logout") {
@@ -108,8 +100,7 @@ function showAlert(errorMessage, errorType, closeDelay) {
     var errorType = errorType || "info";
 
     // create the alert div
-       var alert = $('<div class="alert alert-' + errorType + ' fade in">')
-        .append(errorMessage);
+       var alert = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
     // add the alert div to top of alerts-container, use append() to add to bottom
     $(".alert-container").prepend(alert);
 
@@ -157,39 +148,25 @@ $(document).ready(function() {
     map.addLayer(osmTrashbinLayer);
   });
   
-  // Show marker creation dialog on button click
-  // TODO edit needs to send to different forms given the marker type
-  $('.btn-edit').on('click', function(marker, e) {
-    bottombar.hide();
-    sidebar.show($('#create-garbage-dialog').show());
-    // TODO preset the values of the clicked marker
-  });
-  
 });
 
 // Display all the select pickers
 $(document).ready(function() {
   $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 5});
 });
-  
+
 // Display the date and time picker and get the data in the cleaning form on change
-// FIXME this doesn' work
 $(document).ready(function() {
-  
-  var dateTime;
   
   $(function () { $('#event-date-time-picker')
     .datetimepicker( {minDate: new Date(2015, 11, 31)});
   }); 
 
   $('#event-date-time-picker').on('dp.change', function(e) {
-    // TODO format date and time before storage?
      var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
-     console.log("date and time", eventDateTime);
     $('.date-time-value').val(eventDateTime);
-    
   });
-  
+
 });
 
 // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
@@ -198,7 +175,6 @@ $('.sidebar-link').click(function(e) {
     $(this.hash).fadeIn().siblings().hide();
     $('#sidebar').scrollTop = 0;
 });
-
 
 // Go back to the marker creation menu link
 $('.menu-backlink').click(function(e) {
@@ -223,80 +199,31 @@ sidebar.on('hide', function () {
         $('.selectpicker').selectpicker('render');
         $('.leaflet-draw-edit-edit').removeClass('visible');
         $('.leaflet-draw-edit-remove').removeClass('visible');
-
 });
 
-// TODO Move this logic to onMapClick so the var stay local
-// Range slider for amount of garbage on marker icon
-$('.garbage-range-input').on('change', function() {
-    // Remove the generic marker class
-    $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
-    $('.garbage-range-value').html(this.value);
-    // Get the color value from the select options
-    var selectedValue = parseInt(jQuery(this).val());
-      switch(selectedValue){
-              // so much cringe here, let's try to do this with ternaries
-                case 1:
-                    $(marker._icon).removeClass(function (index, css) {
-                      return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-green');
-                    break;
-                case 2:
-                    $(marker._icon).removeClass(function (index, css) {
-                      return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-limegreen');
-                    break;
-                case 3:
-                    $(marker._icon).removeClass(function (index, css) {
-                     return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-yellow');
-                    break;
-                case 4:
-                    $(marker._icon).removeClass(function (index, css) {
-                     return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-gold');
-                    break;
-                case 5:
-                    $(marker._icon).removeClass(function (index, css) {
-                      return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-orange');
-                    break;
-                case 6:
-                    $(marker._icon).removeClass(function (index, css) {
-                     return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-orangered');
-                    break;
-                case 7:
-                    $(marker._icon).removeClass(function (index, css) {
-                     return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-red');
-                    break;
-                case 8:
-                    $(marker._icon).removeClass(function (index, css) {
-                     return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-darkred');
-                    break;
-                case 9:
-                    $(marker._icon).removeClass(function (index, css) {
-                      return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-purple');
-                    break;
-                case 10:
-                    $(marker._icon).removeClass(function (index, css) {
-                     return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-black');
-                    break;
-                default:
-                    $(marker._icon).removeClass(function (index, css) {
-                      return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                    }).addClass('marker-color-unknown');
-                    break;
-        }
-});
+// Empty the bottom panel on call of this function
+function clearBottomPanelContent(){
+  //TODO ad methods depending on the type of object clicked
+  $(".feature-info").empty();
+  $(".feature-info-confirmed strong").text('0');
+  $("#feature-info-image").attr("src", "");
+  $("#feature-info").find('.feature-image-link').attr("href", "");
+};
 
-//Remove unsaved markers with class 'marker-generic' after a timeout
-// Move this logic to onMapClick and onLocalMarkerClick
-setTimeout(function() {
-  $('div.marker-generic').remove();
-  sidebar.hide();
-}, 400000);
+// Confirm garbage function
+$('.btn-confirm').on('click', confirmGarbage );
+
+function confirmGarbage(){
+  // TODO make session-dependant and allow once per user per marker
+  if (! localStorage.getItem('username') || ! sessionStorage.getItem('username')){ 
+    showAlert("You need to login to do that.", "info", 2000);
+  }
+  
+  var counts = parseInt($(".feature-info-confirmed strong").val, 10);
+  counts = isNaN(counts) ? 0 : value;
+  counts++;
+  $(".feature-info-confirmed strong").val = counts;
+
+  // TODO set the value on the marker options and submit to db
+  
+};

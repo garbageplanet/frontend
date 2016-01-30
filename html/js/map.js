@@ -119,43 +119,6 @@ map.on('zoomend', function(e){
     if ( mapZoom < 10) { showAlert("Zoom in closer to create markers", "info", 1200); }
 });
 
-// Default behaviour for creating a marker
-map.on('click', onMapClick);  
-
-// FIXME on mobile stop onMapClick if the control layer hasClass('leaflet-control-layers-expanded')
-function onMapClick(e) {
-    if ( !sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open') ) {
-       marker = L.marker(e.latlng, {
-            icon:genericMarker,
-            draggable: true
-            }).on('click', onLocalMarkerClick).addTo(map);
-      
-        $('.marker-lat').val(marker._latlng.lat);
-        $('.marker-lng').val(marker._latlng.lng);
-      
-        map.panToOffset(marker._latlng, _getHorizontalOffset());
-
-        $('.sidebar-content').hide();
-        $('#sidebar').scrollTop = 0;
-        sidebar.show($("#create-marker-dialog").show());
-      
-        marker.on("dragend", function(event){
-          var newPos = event.target.getLatLng();
-
-          console.log("dragged marker id:", event.target._leaflet_id );
-          // TODO move this logic somehwere else
-          $('.marker-lat').val(newPos.lat);
-          $('.marker-lng').val(newPos.lng);
-        });
-   }
-  
-  else { bottombar.hide();
-        sidebar.hide();
-        $('.dropdown').removeClass('open');
-       }
-
-};
-
 // Default marker types and set the marker classes
 var genericMarker = L.divIcon({
     className: 'map-marker marker-color-gray marker-generic',
@@ -171,12 +134,6 @@ var garbageMarker = L.divIcon({
 
 var cleaningMarker = L.divIcon({
     className: 'map-marker marker-cleaning',
-    iconSize: [30,30],
-    html:'<i class="fa fa-fw"></i>'
-});
-
-var deflatedMarker = L.divIcon({
-    className: 'map-marker marker-deflated',
     iconSize: [30,30],
     html:'<i class="fa fa-fw"></i>'
 });
@@ -203,3 +160,5 @@ $.extend({
 */
 
 // Emulate clicks : map.FireEvent() see http://stackoverflow.com/a/34669697/2842348
+
+// Filter markers http://stackoverflow.com/a/19118143/2842348

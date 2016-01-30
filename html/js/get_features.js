@@ -25,6 +25,8 @@ function loadRemoteGarbageMarkers() {
         success: function(data) {
             $(data).each(function(index, obj) {
                 console.log(obj);
+              
+              if(obj.type === "garbage") {
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon:garbageMarker,
@@ -33,7 +35,9 @@ function loadRemoteGarbageMarkers() {
                         Types: obj.types,
                         ImageUrl: obj.image_url,
                         Lat: obj.lat,
-                        Lng: obj.lng
+                        Lng: obj.lng,
+                        Type: obj.type
+                        // TODO add the rest of the vars
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
                 garbageLayerGroup.addLayer(marker);
@@ -81,6 +85,23 @@ function loadRemoteGarbageMarkers() {
                     $(marker._icon).addClass('marker-color-unknown');
                     break;
                 }
+            }
+              
+                if(obj.type === "cleaning") { 
+                  var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
+                    {
+                        icon:cleaningMarker,
+                        Id: obj.id,
+                        Amount: obj.amount,
+                        Types: obj.types,
+                        ImageUrl: obj.image_url,
+                        Lat: obj.lat,
+                        Lng: obj.lng,
+                        Type: obj.type
+                        // TODO add the rest of the vars
+                    });
+                  
+                }
             });
         },
         error: function(data) {
@@ -113,11 +134,11 @@ function loadRemoteShapes() {
                   
               var polylineLayer = new L.Polyline(obj.latlngs,
                 {
-                  polylineId: obj.id,
-                  polylineType: obj.type,
-                  polylineAmount: obj.amount,
-                  polylineTypes: obj.types,
-                  polylineImageUrl: obj.image_url
+                  Id: obj.id,
+                  Type: obj.type,
+                  Amount: obj.amount,
+                  Types: obj.types,
+                  ImageUrl: obj.image_url
                   // TODO add the rest of the options
                 })
               ;
@@ -227,26 +248,20 @@ function onRemoteMarkerClick (e) {
     var that = this;
     map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
 
+    // if (e.options.Type === "garbage") {
     if ($(e._icon).hasClass('marker-garbage')){
         sidebar.hide();
-        
-        //clear the data in the bottom panel
-        $("#feature-info-garbage-type").empty();
-        $("#feature-info-garbage-amount").empty();
-        $("#feature-info-created-by").empty();
-        $("#feature-info-image").attr("src", "");
-        $("#feature-info").find('.feature-image-link').attr("href", "");
-        
-        bottombar.show();
-        $('#feature-info').fadeIn();
-      
-        // start to inject info
-        var markerTypes = e.options.Types /*|| 'Glass, Glass bottles'*/;
+        clearBottomPanelContent();
+            
+        // var markerType = e.options.Type;
+        var markerTypes = e.options.Types;
         var markerAmount = e.options.Amount;
         var markerRawImage = e.options.ImageUrl;
         var markerId = e.options.Id;
         var markerCreatedBy = e.options.marked_by;
-
+        // var markerConfirmed = e.options.confirmed;
+        // TODO add the rest of the option once the api route is ready
+      
         // Put a placeholder if the media is empty
         if (! markerRawImage ) {
           $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
@@ -255,7 +270,7 @@ function onRemoteMarkerClick (e) {
         console.log("value of rawimage", markerRawImage);
         
         if ( markerRawImage ) {
-          // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
+          // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
           String.prototype.insert = function (index, string) {
               if (index > 0)
                   return this.substring(0, index) + string + this.substring(index, this.length);
@@ -269,16 +284,22 @@ function onRemoteMarkerClick (e) {
         };
 
         $('#feature-info').find('.feature-info-garbage-type').html(markerTypes.join(", "));
-       $("#feature-info-created-by").html(markerCreatedBy);
-
+        $("#feature-info-created-by").html(markerCreatedBy);
+        // $('#feature-info').find('.feature-info-confirmed p strong').html(markerConfirmed);
+      
+        // Show the bottombar with content
+        bottombar.show();
+        $('#feature-info').fadeIn();
+        
+        // TODO move this logic outside this function and call it with a function and the marker obj as param
         $('#feature-info').find('.btn-delete').click(function (e) {
             // FIXME this send one request the first time deletion is requested (delete button)
-            // two requests the second time the deletino is requested
-            // thre requests ...
-            // TODO only allow if session is valid and id matches
+            // two requests the second time the deletion is requested
+            // three requests ...
+            // TODO only allow if session is valid and userid matches
             console.log('trigger delete on id', markerId);
             e.preventDefault();
-            var useToken = localStorage["token"] || window.token;
+            var useToken = localStorage.getItem('token') || window.token;
             $.ajax({
                 type: api.deleteTrash.method,
                 url: api.deleteTrash.url(markerId),
@@ -293,14 +314,11 @@ function onRemoteMarkerClick (e) {
                 }
             });
         });
-      
-        $('#feature-info').find('.btn-edit').click(function (e) {
-            //debugger;
+        // TODO move this logic outside this function and call it with a function and the marker obj as param
+        $('#feature-info').find('.btn-edit').click(function (e, obj) {
             console.log('edit data on id', markerId);
-                    
+            editFeature(obj);
             e.preventDefault();
-            // TODO load the marker data into the form
-
         });
       
         // amount mapping
@@ -346,10 +364,14 @@ function onRemoteMarkerClick (e) {
         };
 
     } 
-  
+    // if (e.options.Type === "cleaning") {
     if ( $(e._icon).hasClass('marker-cleaning') ) {
-        sidebar.hide();
+      sidebar.hide();
+      clearBottomPanelContent();
+
       // TODO load data of cleaning event inside the bottombar
+      bottombar.show();
+      $('#cleaning-info').fadeIn();
     };
 };
 
@@ -361,35 +383,28 @@ function onRemoteShapeClick (e) {
     sidebar.hide();
     var that = this;
     map.panToOffset(e.getCenter(), _getVerticalOffset());
-    //clear the data in the bottom panel
-    $("#feature-info-garbage-type").empty();
-    $("#feature-info-garbage-amount").empty();
-    $("#feature-info-image").attr("src", "");
-    $("#feature-info").find('.feature-image-link').attr("href", "");
-  
-    bottombar.show();
-    $('#feature-info').fadeIn();
 
-    if ( e.option.polylineType === 'polyline'){
+    clearBottomPanelContent();
+
+    if ( e.option.Type === 'polyline'){
       map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
       // inject info for the polyline
-      var shapeType = e.options.polylineType;
-      var shapeTypes = e.options.polylineTypes;
-      var shapeAmount = e.options.polylineAmount;
-      var shapeRawImage = e.options.polylineImageUrl;
-      var shapeLatLngs =e.options.polylineLatLngs;
-      var shapeId = e.options.polylineId;
+      var shapeType = e.options.Type;
+      var shapeTypes = e.options.Types;
+      var shapeAmount = e.options.Amount;
+      var shapeRawImage = e.options.ImageUrl;
+      var shapeLatLngs =e.options.LatLngs;
+      var shapeId = e.options.Id;
+      // TODO add the rest of the option once the api route is ready
     }
   
-    if ( e.option.polylineType === 'polygon'){
+    if ( e.option.Type === 'polygon'){
       map.fitBounds(e.layer.getBounds());
       // inject info for the polygon
-      var shapeType = e.options.polygonType
-      var shapeTypes = e.options.polygonTypes;
-      var shapeAmount = e.options.polygonAmount;
-      var shapeRawImage = e.options.polygonImageUrl;
-      var shapeLatLngs =e.options.polygonLatLngs;
-      var shapeId = e.options.polygonId;
+      var shapeType = e.options.Type
+      var shapeLatLngs =e.options.LatLngs;
+      var shapeId = e.options.Id;
+      // TODO add the rest of the option once the api route is ready
     }
 
     // Put a placeholder if the media is empty
@@ -415,8 +430,9 @@ function onRemoteShapeClick (e) {
       $('#feature-info').find('.feature-image-link').attr('href', shapeRawImage);
       
     };
-
-    $('#feature-info').find('.feature-info-garbage-type').html(shapeTypes);
+  
+    bottombar.show();
+    $('#feature-info').fadeIn();
   
     $('#feature-info').find('.btn-delete').click(function (e) {
         
@@ -442,6 +458,7 @@ function onRemoteShapeClick (e) {
         //debugger;
         console.log('show data on id', shapeId);
         e.preventDefault();
+        setEditingValues(featureType);
         // TODO load the marker data into the form
 
     });

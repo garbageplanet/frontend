@@ -342,7 +342,8 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		}
 
 		this._vertexChanged(latlng, true);
-        //debugger;
+        // OWN ADDITION
+        this._map.panToOffset(latlng, _getHorizontalOffset());
 	},
 
 	_finishShape: function () {
