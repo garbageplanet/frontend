@@ -7,8 +7,7 @@ map.on('moveend', function(e) {
     // console.log("currentViewBounds:", currentViewBounds);
   
     if ( mapZoom >= 10 ){
-      console.log("mapZoom value from get feature.js",mapZoom)
-      // TODO call the functions only if map.hasLayer(...)
+      console.log("mapZoom value from get feature.js", mapZoom)
       loadGarbageMarkers();
       loadCleaningMarkers();
     }
@@ -18,7 +17,7 @@ map.on('moveend', function(e) {
     }
     
     if ( mapZoom >= 7 && mapZoom <=15 ){
-      // loadAreas();  
+        loadAreas();  
     }
 });
 
@@ -43,8 +42,13 @@ function loadGarbageMarkers() {
                         ImageUrl: obj.image_url,
                         Lat: obj.lat,
                         Lng: obj.lng,
-                        Type: obj.type
-                        // TODO add the rest of the vars
+                        Type: obj.type,
+                        Confirm: obj.confirm,
+                        Todo: obj.todo,
+                        Tags: obj.tag,
+                        Embed: obj.embed,
+                        Sieze: obj.size,
+                        Note: obj.note
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
                 garbageLayerGroup.addLayer(marker);
@@ -122,7 +126,6 @@ function loadCleaningMarkers() {
                         Date: obj.date,
                         Lat: obj.lat,
                         Lng: obj.lng,
-                        // TODO add the rest of the vars
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
                 cleaningLayerGroup.addLayer(marker);
@@ -159,7 +162,11 @@ function loadAreas() {
               var polygonLayer = new L.Polygon(obj.latlngs,
                 {
                   Id: obj.id,
-                  // TODO add the rest of the options
+                  Title: obj.title,
+                  Players: obj.players,
+                  Note: obj.note,
+                  Tags: obj.tag,
+                  Contact: obj.contact
                 });
                             
               areaLayerGroup.addLayer(polygonLayer);
@@ -305,9 +312,15 @@ function onGarbageMarkerClick (e) {
         var markerRawImage = e.options.ImageUrl;
         var markerId = e.options.Id;
         var markerCreatedBy = e.options.marked_by;
-        // var markerConfirmed = e.options.confirmed;
-        // TODO add the rest of the option once the api route is ready
+        var markerSize = e.options.size;
+        var markerEmbed = e.options.embed;
+        var markerNote = e.options.note;
+        var markerTags = e.options.tag;
+        var markerTodo = e.options.todo;
+        var markerConfirm = e.options.confirm;
       
+        // TODO push the rest of the data to the bottombar
+    
         // Put a placeholder if the media is empty
         if (! markerRawImage ) {
           $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
@@ -461,9 +474,8 @@ function onCleaningMarkerClick(e) {
         });
 };
 
-// TODO onClick behavior for saved shapes only 
 function onAreaClick(e) {                          
-    console.log("remote shape clicked");
+    console.log("remote polygon clicked");
     console.log(e);
     console.log(e.options.latLngs)
     sidebar.hide();
@@ -472,26 +484,76 @@ function onAreaClick(e) {
 
     clearBottomPanelContent();
 
-    if ( e.option.Type === 'polyline'){
-      map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
-      // inject info for the polyline
-      var shapeType = e.options.Type;
-      var shapeTypes = e.options.Types;
-      var shapeAmount = e.options.Amount;
-      var shapeRawImage = e.options.ImageUrl;
-      var shapeLatLngs =e.options.LatLngs;
-      var shapeId = e.options.Id;
-      // TODO add the rest of the option once the api route is ready
-    }
+    map.fitBounds(e.layer.getBounds());
+    
+    var areaLatLngs = e.layer.options.LatLngs;
+    var areaId = e.layer.options.Id;
+    var areatags = e.layer.options.Tags;
+    var areacontact = e.layer.options.Contact;
+    var areanote = e.layer.options.Note;
+    var areatitle = e.layer.options.Title;
+    var areaplayers = e.layer.options.Players;
+    var areaCreatedBy = e.options.marked_by;
+
+    
+    // TODO push the data to the bottom bar
   
-    if ( e.option.Type === 'polygon'){
-      map.fitBounds(e.layer.getBounds());
-      // inject info for the polygon
-      var shapeType = e.options.Type
-      var shapeLatLngs =e.options.LatLngs;
-      var shapeId = e.options.Id;
-      // TODO add the rest of the option once the api route is ready
-    }
+    bottombar.show();
+    $('#feature-info').fadeIn();
+  
+    $('#feature-info').find('.btn-delete').click(function (e) {
+        
+        e.preventDefault();
+        var useToken = localStorage["token"] || window.token;
+      
+        $.ajax({
+            type: api.deleteArea.method,
+            url: api.deleteArea.url(markerId),
+            headers: {"Authorization": "Bearer " + useToken},
+            success: function(response) {
+                bottombar.hide();
+                loadAreas();
+                showAlert("Area deleted successfully.", "success", 1500);
+            },
+            error: function(response) {
+                showAlert("Failed to delete this area.", "warning", 2000);
+            }
+        });
+    });
+
+    $('#feature-info').find('.btn-edit').click(function (e) {
+        console.log('show data on id', shapeId);
+        e.preventDefault();
+        editFeature(e.obj, "polygon");
+
+    });
+};
+
+function onLitterClick(e) {                     
+    console.log("remote polyline clicked");
+    console.log(e);
+    console.log(e.options.latLngs)
+    sidebar.hide();
+    var that = this;
+    map.panToOffset(e.getCenter(), _getVerticalOffset());
+
+    clearBottomPanelContent();
+
+    map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
+    
+    var litterType = e.layer.options.Type;
+    var litterAmount = e.layer.options.Amount;
+    var litterRawImage = e.layer.options.ImageUrl;
+    var litterLatLngs =e.layer.options.LatLngs;
+    var litterId = e.layer.options.Id;
+    var litterTags = e.layer.options.Tags;
+    var litterNote = e.layer.options.Note;
+    var litterLength = e.layer.options.Length;
+    var litterId = e.layer.options.Id;
+    var litterConfirm = e.layer.options.Confirm;
+    var litterCreatedBy = e.options.marked_by;
+
+    // TODO push data to the bottom bar
 
     // Put a placeholder if the media is empty
     if (! shapeRawImage ) {
@@ -510,10 +572,10 @@ function onAreaClick(e) {
           return string + this;
           };
       
-      shapeImage = shapeImage.insert(26, "t");
+      litterImage = shapeImage.insert(26, "t");
       
-      $('#feature-info').find('.feature-image').attr('src', shapeImage);
-      $('#feature-info').find('.feature-image-link').attr('href', shapeRawImage);
+      $('#feature-info').find('.feature-image').attr('src', litterImage);
+      $('#feature-info').find('.feature-image-link').attr('href', litterRawImage);
       
     };
   
@@ -531,11 +593,11 @@ function onAreaClick(e) {
             headers: {"Authorization": "Bearer " + useToken},
             success: function(response) {
                 bottombar.hide();
-                loadRemoteShapes();
-                showAlert("Feature deleted successfully.", "success", 1500);
+                loadRemoteLitter();
+                showAlert("Litter line deleted successfully.", "success", 1500);
             },
             error: function(response) {
-                showAlert("Failed to delete this feature.", "warning", 2000);
+                showAlert("Failed to delete this litter line.", "warning", 2000);
             }
         });
     });
@@ -544,7 +606,7 @@ function onAreaClick(e) {
         //debugger;
         console.log('show data on id', shapeId);
         e.preventDefault();
-        setEditingValues(featureType);
+        editFeature(e.obj, "litter");
         // TODO load the marker data into the form
 
     });
@@ -587,8 +649,4 @@ function onAreaClick(e) {
         default:
             $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
             break;
-    };
-
-};
-
-function onLitterClick(e) {};
+    };};

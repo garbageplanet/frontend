@@ -2,7 +2,7 @@
 
 ### What is this repository for? ###
 
-Repository for the garbagepla.net UI. This responsive layout adds a top bar for navigation and a bottom bar for displaying map feature data.
+Repository for the [garbagepla.net](http://www.garbagepla.net) frontend. This responsive layout adds a top bar for navigation and a bottom bar for displaying map feature data.
 
 ### How to get started? ###
 

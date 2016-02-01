@@ -211,8 +211,10 @@ function clearBottomPanelContent(){
 };
 
 // Confirm garbage function
+// TODO bind this to the db
 $('.btn-confirm').on('click', confirmGarbage );
 
+// Confirmation for features
 function confirmGarbage(){
   // TODO make session-dependant and allow once per user per marker
   if (! localStorage.getItem('username') || ! sessionStorage.getItem('username')){ 
@@ -223,7 +225,14 @@ function confirmGarbage(){
   counts = isNaN(counts) ? 0 : value;
   counts++;
   $(".feature-info-confirmed strong").val = counts;
-
-  // TODO set the value on the marker options and submit to db
   
+};
+
+function editFeature(obj, featureType) {
+    
+    if(featureType === "garbage"){}
+    if(featureType === "cleaning"){}
+    if(featureType === "litter"){}
+    if(featureType === "area"){}
+    
 };

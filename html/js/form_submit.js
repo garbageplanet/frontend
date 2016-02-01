@@ -5,24 +5,22 @@ $(function () {
 	$('.form-garbage').on( 'submit', function (event) {
 		var that = this;
 		event.preventDefault();
-		var typeOfTrash = [];
-        // var tags = [];
-        // var garbageSize = [];
-        // var garbageEmbed = [];
-        // var garbageTodo = [];
-		var amountOfTrash, 
+		var garbageType = [];
+        var tags = [];
+        var garbageSize = [];
+        var garbageEmbed = [];
+        var garbageTodo = [];
+		var garbageAmount, 
             lat, 
             lng, 
-            image_url/*, 
-            note,
-            garbageSize,
-            embed*/;
+            image_url, 
+            note;
 
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
-			typeOfTrash.push($(value).val());
+			garbageType.push($(value).val());
 		});
       
-        /*$(this).find('.selectpicker.garbage-size-select option:selected').each(function(index, value) {
+        $(this).find('.selectpicker.garbage-size-select option:selected').each(function(index, value) {
 			garbageSize.push($(value).val());
 		});
       
@@ -32,18 +30,16 @@ $(function () {
       
         $(this).find('.selectpicker.garbage-todo-select option:selected').each(function(index, value) {
 			garbageTodo.push($(value).val());
-		});*/
+		});
 
-		amountOfTrash = $('input[class=garbage-range-input]').val();
-        // note = $(this).find('.garbage-note').val();
-
+		garbageAmout = $('input[class=garbage-range-input]').val();
+        note = $(this).find('.garbage-note').val();
 		image_url = $(this).find('.garbage-image-hidden-value').val();
-
-        // tags = $(this).find('.garbage-tags').tagsinput('items');
+        tags = $(this).find('.garbage-tags').tagsinput('items');
       
-        // console.log("tags", tags);
-       //  console.log("note", note);
-        // console.log("todo", garbageTodo);
+        console.log("tags", tags);
+        console.log("note", note);
+        console.log("todo", garbageTodo);
       
         // Coordinates
 		lat = $(this).find('.marker-lat').val();
@@ -64,22 +60,26 @@ $(function () {
               url: api.createTrash.url(),
               headers: {"Authorization": "Bearer" + useToken},
               data: {
-                  /* 'type': 'garbage',*/
                   'lat': lat,
                   'lng': lng,
-                  'amount': amountOfTrash,
-                  'types': typeOfTrash.join(),
-                  'image_url': image_url
+                  'amount': garbageAmount,
+                  'types': garbageType.join(),
+                  'size':garbageSize,
+                  'embed':garbageEmbed,
+                  'todo':garbageTodo,
+                  'image_url': image_url,
+                  'tag':tags.join(),
+                  'note': note
               },
               success: function (data) {
                   console.log('success data', data);
                   showAlert("Marker saved successfully!", "success", 1500);
-                  if (amountOfTrash > 8) {
+                  if (garbageAmount > 8) {
                       showAlert("That's a lot of trash, we opened a 311 ticket!", "warning", 3000);
                   };
                   sidebar.hide('slow');
                   map.removeLayer(marker);
-                  loadRemoteGarbageMarkers();
+                  loadGarbageMarkers();
               },
               error: function (err) {
                   console.log('err', err);
@@ -122,18 +122,18 @@ $(function () {
               url: api.createCleaning.url(),
               headers: {"Authorization": "Bearer" + useToken},
               data: {
-                  'type': 'cleaning',
                   'lat': lat,
                   'lng': lng,
                   'date': dateTime,
-                  'eventRecurrence': eventRecurrence
+                  'recurrence': eventRecurrence,
+                  'tag':tags.join()
               },
               success: function (data) {
                   $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
                   console.log('success data', data);
                   showAlert("Cleaning event saved successfully!", "success", 2000);
                   sidebar.hide('slow');
-                  loadRemoteGarbageMarkers();
+                  loadCleaningMarkers();
                   map.removeLayer(marker);
 
               },
@@ -153,9 +153,9 @@ $(function () {
   $('.form-litter').on( 'submit', function (event) {
     var that = this;
     event.preventDefault();
-    var typeOfTrash = [];
+    var litterType = [];
     var tags = [];
-    var amoutOfTrash, 
+    var litterAmount, 
         latlngs, 
         image_url, 
         length,
@@ -166,13 +166,13 @@ $(function () {
     latlngs = $(this).find('.litter-latlngs').val();
 
     $(this).find('.selectpicker.litter-type-select option:selected').each(function(index, value) {
-        typeOfTrash.push($(value).val());
+        litterType.push($(value).val());
     });
         
     tags = $(this).find('.litter-tags').tagsinput('items');
 
     // Input range selector
-    amoutOfTrash = $('input[class=litter-range-input]').val();
+    litterAmount = $('input[class=litter-range-input]').val();
 
     image_url = $(this).find('.litter-image-hidden-value').val();
     note = $('input[class=litter-note]').val();
@@ -195,14 +195,15 @@ $(function () {
           url: api.createShape.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
-              'type': 'polyline',
-              'lat_lngs': latlngs.join(),
+              'latlngs': latlngs.join(),
               'amount': amoutOfTrash,
-              'types': typeOfTrash.join(),
+              'type': litterType.join(),
               'image_url': image_url,
               'length': length,
               'wms_url': wms_url,
-              'geojson_data': geojson_data
+              'geojson_data': geojson_data,
+              'tag': tags.join()
+              // TODO add quantitative amountfields
           },
           success: function (data) {
               console.log('success data', data);
@@ -223,7 +224,6 @@ $(function () {
 });
 
 // Save polygon / area
-// TODO how to store the secret in the db?
 $(function () {
   $('.form-area').on( 'submit', function (event) {
     var that = this;
@@ -259,12 +259,13 @@ $(function () {
           headers: {"Authorization": "Bearer" + useToken},
           data: {
               'type': 'polygon',
-              'latlngs': latlngs.toGeoJSON(),
+              'latlngs': latlngs.join(),
               'players': players.join(),
               'note': note,
               'contact': contact,
               'secret': secret,
-              'title': title
+              'title': title,
+              'tag': tags.join()
           },
           success: function (data) {
               console.log('success data', data);
