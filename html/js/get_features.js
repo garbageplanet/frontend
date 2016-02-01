@@ -11,7 +11,10 @@ map.on('moveend', function(e) {
       // TODO call the functions only if map.hasLayer(...)
       loadGarbageMarkers();
       loadCleaningMarkers();
-      loadLitters();
+    }
+    
+    if (mapZoom >= 8 && mapZoom <= 17 ){
+        loadLitters();
     }
     
     if ( mapZoom >= 7 && mapZoom <=15 ){

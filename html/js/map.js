@@ -62,7 +62,7 @@ areaLayerGroup = new L.FeatureGroup();
 pathLayerGroup = new L.FeatureGroup();
 cleaningLayerGroup = new L.LayerGroup();
 
-map.addLayer(garbageLayerGroup, eventLayerGroup);
+map.addLayer(garbageLayerGroup, cleaningLayerGroup, pathLayerGroup, areaLayerGroup);
 
 var overlayGroups = {
 "Garbage markers": garbageLayerGroup,
