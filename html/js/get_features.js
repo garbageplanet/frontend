@@ -141,6 +141,8 @@ function loadCleaningMarkers() {
     });
     var useToken = localStorage["token"] || window.token || userAuth.name;};
 
+// TODO loading litters and areas only if they are toggled on the map
+
 // Get areas (polygons)
 function loadAreas() {
     console.log('loading remote area polygons');
