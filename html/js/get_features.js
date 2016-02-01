@@ -9,14 +9,19 @@ map.on('moveend', function(e) {
     if ( mapZoom >= 10 ){
       console.log("mapZoom value from get feature.js",mapZoom)
       // TODO call the functions only if map.hasLayer(...)
-      loadRemoteGarbageMarkers();
-      // loadRemoteShapes();  
+      loadGarbageMarkers();
+      loadCleaningMarkers();
+      loadLitters();
+    }
+    
+    if ( mapZoom >= 7 && mapZoom <=15 ){
+      // loadAreas();  
     }
 });
 
-// Get markers
-function loadRemoteGarbageMarkers() {
-    console.log('loading markers from db');
+// Get garbage
+function loadGarbageMarkers() {
+    console.log('loading garbage markers from db');
     garbageLayerGroup.clearLayers();
     // ajax request
     $.ajax({
@@ -26,7 +31,6 @@ function loadRemoteGarbageMarkers() {
             $(data).each(function(index, obj) {
                 console.log(obj);
               
-              if(obj.type === "garbage") {
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon:garbageMarker,
@@ -43,7 +47,7 @@ function loadRemoteGarbageMarkers() {
                 garbageLayerGroup.addLayer(marker);
                 map.addLayer(garbageLayerGroup);
                 marker.on('click', function() {
-                    onRemoteMarkerClick(marker);
+                    onGarbageMarkerClick(marker);
                 });
 
                 switch(obj.amount){
@@ -85,23 +89,8 @@ function loadRemoteGarbageMarkers() {
                     $(marker._icon).addClass('marker-color-unknown');
                     break;
                 }
-            }
+        
               
-                if(obj.type === "cleaning") { 
-                  var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
-                    {
-                        icon:cleaningMarker,
-                        Id: obj.id,
-                        Amount: obj.amount,
-                        Types: obj.types,
-                        ImageUrl: obj.image_url,
-                        Lat: obj.lat,
-                        Lng: obj.lng,
-                        Type: obj.type
-                        // TODO add the rest of the vars
-                    });
-                  
-                }
             });
         },
         error: function(data) {
@@ -111,31 +100,108 @@ function loadRemoteGarbageMarkers() {
     var useToken = localStorage["token"] || window.token || userAuth.name;
 };
 
-//Get shapes
-/*
-function loadRemoteShapes() {
-    console.log('loading remote shapes');
+// Get cleanings
+function loadCleaningMarkers() {
+    console.log('loading cleaning markers from db');
+    cleaningLayerGroup.clearLayers();
+    // ajax request
+    $.ajax({
+        type: api.readCleaningWithinBounds.method,
+        url: api.readCleaningWithinBounds.url(currentViewBounds),
+        success: function(data) {
+            $(data).each(function(index, obj) {
+                console.log(obj);
+              
+                var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
+                    {
+                        icon:cleaningMarker,
+                        Id: obj.id,
+                        Date: obj.date,
+                        Lat: obj.lat,
+                        Lng: obj.lng,
+                        // TODO add the rest of the vars
+                    });
+                // TODO add hasLayer() logic here to only add absent markers?
+                cleaningLayerGroup.addLayer(marker);
+                map.addLayer(cleaningLayerGroup);
+                marker.on('click', function() {
+                    onCleaningMarkerClick(marker);
+                });          
+            });
+        },
+        error: function(data) {
+            console.log('Something went wrong while fetching the data', data);
+        }
+    });
+    var useToken = localStorage["token"] || window.token || userAuth.name;};
+
+// Get areas (polygons)
+function loadAreas() {
+    console.log('loading remote area polygons');
   
-    if ( map.hasLayer('pathLayerGroup') || map.hasLayer('areaLayerGroup') ) {
-      pathLayerGroup.clearLayers();
-      areaLayerGroup.clearLayers();   
+    if ( map.hasLayer('areaLayerGroup') ) {
+      areaLayerGroup.clearLayers(); 
     
       var useToken = localStorage["token"] || window.token || userAuth.name;
       $.ajax({
-        type: api.readShapesWithinBounds.method,
-        url: api.readShapesWithinBounds.url(currentViewBounds),
+        type: api.readAreaWithinBounds.method,
+        url: api.readAreaWithinBounds.url(currentViewBounds),
         headers: {"Authorization": "Bearer " + useToken},
         success: function (data) {
-          console.log('shape data', data);
+          console.log('area data', data);
 
           $(data).each(function(index, obj) {
             console.log("object data", obj);
-            if (obj.type === 'polyline') {
-                  
+                                
+              var polygonLayer = new L.Polygon(obj.latlngs,
+                {
+                  Id: obj.id,
+                  // TODO add the rest of the options
+                });
+                            
+              areaLayerGroup.addLayer(polygonLayer);
+              map.addLayer(areaLayerGroup);
+              polygonLayer.on('click', function() {
+                  onAreaClick(polygonLayer);
+              });
+                
+            }
+          );        
+        },
+        error: function (data) {
+          console.log('Error getting area data', data);
+        }
+      });
+  
+  }
+  
+  if ( ! map.hasLayer('areaLayerGroup') ) {
+    // FIXME this displays too much
+    // showAlert("Show other types of layer by selecting them from the eye button.", "info", 2000);
+    return;
+  }};
+
+// Get litters (polylines)
+function loadLitters() {
+    console.log('loading remote litter polylines');
+  
+    if ( map.hasLayer('pathLayerGroup') ) {
+      pathLayerGroup.clearLayers(); 
+    
+      var useToken = localStorage["token"] || window.token || userAuth.name;
+      $.ajax({
+        type: api.readLitterWithinBounds.method,
+        url: api.readLitterWithinBounds.url(currentViewBounds),
+        headers: {"Authorization": "Bearer " + useToken},
+        success: function (data) {
+          console.log('litter data', data);
+
+          $(data).each(function(index, obj) {
+            console.log("object data", obj);
+                                
               var polylineLayer = new L.Polyline(obj.latlngs,
                 {
                   Id: obj.id,
-                  Type: obj.type,
                   Amount: obj.amount,
                   Types: obj.types,
                   ImageUrl: obj.image_url
@@ -182,26 +248,8 @@ function loadRemoteShapes() {
               pathLayerGroup.addLayer(polylineLayer);
               map.addLayer(pathLayerGroup);
               polylineLayer.on('click', function() {
-                  onRemoteShapeClick(polylineLayer);
+                  onLitterClick(polylineLayer);
               });
-    
-            }
-              
-            if (obj.type === 'polygon'){
-              var polygonLayer = new L.Polygon(obj.latLngs,
-                {
-                  polygonId: obj.id,
-                  polygonType: obj.type
-                  // TODO add the rest of the options
-                }
-              );
-
-              areaLayerGroup.addLayer(areaLayer);
-              map.addLayer(areaLayerGroup);
-              areaLayer.on('click', function() {
-                onRemoteShapeClick(areaLayer);
-              });
-            }
                 
             }
           );        
@@ -213,14 +261,12 @@ function loadRemoteShapes() {
   
   }
   
-  if ( ! map.hasLayer('pathLayerGroup') || ! map.hasLayer('areaLayerGroup') ) {
+  if ( ! map.hasLayer('pathLayerGroup') ) {
     // FIXME this displays too much
     // showAlert("Show other types of layer by selecting them from the menu.", "info", 2000);
     return;
   }
-  
 };
-*/
 
 // onClick behavior for non-saved markers
 function onLocalMarkerClick (e) {
@@ -242,18 +288,15 @@ function onLocalMarkerClick (e) {
 };
 
 // onClick behavior for saved markers
-function onRemoteMarkerClick (e) {
-    console.log("remote marker clicked");
+function onGarbageMarkerClick (e) {
+    console.log("Garbage marker clicked");
     console.log(e);
     var that = this;
     map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
 
-    // if (e.options.Type === "garbage") {
-    if ($(e._icon).hasClass('marker-garbage')){
         sidebar.hide();
         clearBottomPanelContent();
             
-        // var markerType = e.options.Type;
         var markerTypes = e.options.Types;
         var markerAmount = e.options.Amount;
         var markerRawImage = e.options.ImageUrl;
@@ -306,7 +349,7 @@ function onRemoteMarkerClick (e) {
                 headers: {"Authorization": "Bearer " + useToken},
                 success: function(response) {
                     bottombar.hide();
-                    loadRemoteGarbageMarkers();
+                    loadGarbageMarkers();
                     showAlert("Marker deleted successfully!", "success", 1500);
                 },
                 error: function(response) {
@@ -360,23 +403,63 @@ function onRemoteMarkerClick (e) {
                 $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
                 break;
 
-            // do for the rest of values
         };
+};
 
-    } 
-    // if (e.options.Type === "cleaning") {
-    if ( $(e._icon).hasClass('marker-cleaning') ) {
-      sidebar.hide();
-      clearBottomPanelContent();
+function onCleaningMarkerClick(e) {
+    console.log("Garbage marker clicked");
+    console.log(e);
+    var that = this;
+    map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
 
-      // TODO load data of cleaning event inside the bottombar
-      bottombar.show();
-      $('#cleaning-info').fadeIn();
-    };
+        sidebar.hide();
+        clearBottomPanelContent();
+            
+        var markerTypes = e.options.Types;
+        var markerDate = e.options.Date;
+        var markerId = e.options.Id;
+        var markerCreatedBy = e.options.marked_by;
+        // TODO add the rest of the option once the api route is ready
+
+        $("#cleaning-info-created-by").html(markerCreatedBy);
+      
+        // Show the bottombar with content
+        bottombar.show();
+        $('#cleaning-info').fadeIn();
+        
+        // TODO move this logic outside this function and call it with a function and the marker obj as param
+        $('#cleaning-info').find('.btn-delete').click(function (e) {
+            // FIXME this send one request the first time deletion is requested (delete button)
+            // two requests the second time the deletion is requested
+            // three requests ...
+            // TODO only allow if session is valid and userid matches
+            console.log('trigger delete on id', markerId);
+            e.preventDefault();
+            var useToken = localStorage.getItem('token') || window.token;
+            $.ajax({
+                type: api.deleteCleaning.method,
+                url: api.deleteCleaning.url(markerId),
+                headers: {"Authorization": "Bearer " + useToken},
+                success: function(response) {
+                    bottombar.hide();
+                    loadCleaningMarkers();
+                    showAlert("Marker deleted successfully!", "success", 1500);
+                },
+                error: function(response) {
+                    showAlert("Failed to remove this marker.", "warning", 2000);
+                }
+            });
+        });
+        // TODO move this logic outside this function and call it with a function and the marker obj as param
+        $('#feature-info').find('.btn-edit').click(function (e, obj) {
+            console.log('edit data on id', markerId);
+            editFeature(obj);
+            e.preventDefault();
+        });
 };
 
 // TODO onClick behavior for saved shapes only 
-function onRemoteShapeClick (e) {                          
+function onAreaClick(e) {                          
     console.log("remote shape clicked");
     console.log(e);
     console.log(e.options.latLngs)
@@ -504,3 +587,5 @@ function onRemoteShapeClick (e) {
     };
 
 };
+
+function onLitterClick(e) {};

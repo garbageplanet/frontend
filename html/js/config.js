@@ -82,36 +82,72 @@ var api = {
       return api.readCleaning.url() + '/' + id;
     }
   },
-    readTrashWithinBounds: {
+    readCleaningWithinBounds: {
     method: 'GET',
     url: function(allBounds) {
-      return api.readTrash.url() + '/withinbounds?bounds=' + currentViewBounds;
+      return api.readCleaning.url() + '/withinbounds?bounds=' + currentViewBounds;
     }
   },
-  /* Monitoring Tiles */
-  // TODO add new routes to API and replace '/monitoringtiles' route name by '/shapes'
-    readShapesWithinBounds: {
+  /* Litter */
+  readLitterWithinBounds: {
     method: 'GET',
     url: function(allBounds) {
-      return api.readShape.url() + '/withinbounds?bounds=' + currentViewBounds;
+      return api.readLitter.url() + '/withinbounds?bounds=' + currentViewBounds;
     }
   },
-  createShape: {
+  createLitter: {
     method: 'POST',
     url: function() {
-      return api.readShape.url();
+      return api.readLitter.url();
     }
   },
-  readShape: {
+  editLitter: {
+    method: 'PUT',
+    url: function() {
+      return api.readLitter.url();
+    }
+  },
+  readLitter: {
     method: 'GET',
     url: function() {
-      return api.server + '/monitoringtiles';
+      return api.server + '/litter';
     }
   },
-  deleteShape: {
+  deleteLitter: {
     method: 'DELETE',
     url: function(id) {
-      return api.readShape.url() + '/' + id;
+      return api.readLitter.url() + '/' + id;
+    }
+  },
+  /* Area */
+  readAreaWithinBounds: {
+    method: 'GET',
+    url: function(allBounds) {
+      return api.readArea.url() + '/withinbounds?bounds=' + currentViewBounds;
+    }
+  },
+  createArea: {
+    method: 'POST',
+    url: function() {
+      return api.readArea.url();
+    }
+  },
+  editArea: {
+    method: 'PUT',
+    url: function() {
+      return api.readArea.url();
+    }
+  },
+  readArea: {
+    method: 'GET',
+    url: function() {
+      return api.server + '/area';
+    }
+  },
+  deleteArea: {
+    method: 'DELETE',
+    url: function(id) {
+      return api.readArea.url() + '/' + id;
     }
   },
 };

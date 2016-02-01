@@ -27,19 +27,15 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
-- [ ] changes event listeners for features to use `onEachFeature()`
-- [ ] make the cleaning api routes
-- [ ] make shapes api routes
 - [ ] implement editing system for map features
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 - [ ] separate click events for draw features that are just created and those thata are saved
 - [ ] fix cancel drawing on Esc key
 
 ### General coding, coding style, code review
-- [ ] do the file upload with html5 only
+- [ ] file upload with html5 only
 - [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
 - [ ] make the code overall less redundant (loading forms elements and building lists for `<select>` )
-- [ ] implement templating for i18n
 
 #### Making the code more maintainable
 - [ ] create build script with minification (closure compiler) for deployment
@@ -56,4 +52,4 @@ If you want to work on a specific todo below, the first thing you should do is o
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 
 #### Licence
-This code is available under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/bottom-bar/license.md).
+This code is available under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).

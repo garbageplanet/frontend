@@ -60,14 +60,14 @@ map.addControl(bottombar);
 garbageLayerGroup = new L.LayerGroup();
 areaLayerGroup = new L.FeatureGroup();
 pathLayerGroup = new L.FeatureGroup();
-eventLayerGroup = new L.LayerGroup();
+cleaningLayerGroup = new L.LayerGroup();
 
 map.addLayer(garbageLayerGroup, eventLayerGroup);
 
 var overlayGroups = {
 "Garbage markers": garbageLayerGroup,
-"Cleaning events": eventLayerGroup,
-"Dirty coasts and roads": pathLayerGroup,
+"Cleaning events": cleaningLayerGroup,
+"Littered coasts and roads": pathLayerGroup,
 "Tiles and areas": areaLayerGroup
 };
 
