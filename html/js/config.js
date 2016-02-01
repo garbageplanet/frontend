@@ -51,6 +51,18 @@ var api = {
       return api.server + '/trashes';
     }
   },
+  editTrash: {
+    method: 'PUT',
+    url: function() {
+      return api.readTrash.url();
+    }
+  },
+  confirmTrash: {
+    method: 'PUT',
+    url: function() {
+      return api.readTrash.url();
+    }
+  },
     deleteTrash: {
     method: 'DELETE',
     url: function(id) {
@@ -74,6 +86,12 @@ var api = {
     method: 'GET',
     url: function() {
       return api.server + '/cleanings';
+    }
+  },
+  editCleaning: {
+    method: 'PUT',
+    url: function() {
+      return api.readCleaning.url() + '/' + id;
     }
   },
   deleteCleaning: {
@@ -104,7 +122,7 @@ var api = {
   editLitter: {
     method: 'PUT',
     url: function() {
-      return api.readLitter.url();
+      return api.readLitter.url() + '/' + id;
     }
   },
   readLitter: {
@@ -135,7 +153,7 @@ var api = {
   editArea: {
     method: 'PUT',
     url: function() {
-      return api.readArea.url();
+      return api.readArea.url() + '/' + id;
     }
   },
   readArea: {

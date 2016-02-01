@@ -27,7 +27,7 @@ If you want to work on a specific todo below, the first thing you should do is o
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
-- [ ] implement editing system for map features
+- [ ] implement editing system for map features with [L.Editable](https://github.com/Leaflet/Leaflet.Editable)
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 - [ ] separate click events for draw features that are just created and those thata are saved
 - [ ] fix cancel drawing on Esc key

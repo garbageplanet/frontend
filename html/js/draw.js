@@ -1,5 +1,8 @@
 // TODO use rectangles rather than polygon for simplicity.
 // All code related to drawing shapes
+
+editableLayerGroup = new L.FeatureGroup();
+
 var drawControl = new L.Control.Draw({
     position: 'topright',
     draw: { circle: false,
@@ -7,7 +10,7 @@ var drawControl = new L.Control.Draw({
             marker: false },
     edit: {
     // FIXME: one draw toolbar only allows to edit feature inside itw own layer, need a second if we want two layers (area and paths)
-        featureGroup: pathLayerGroup, 
+        featureGroup: editableLayerGroup, 
         remove: true
     }
 });
@@ -24,9 +27,6 @@ map.on('draw:drawstart', function (e) {
 });
 
 // Stop click listeners when editing and deleting features
-// FIXME stop listening to onPathClick and onAreaClick during delete event
-// the implementation below (commented out) stops all click going to the features
-// editing works though
 map.on('draw:editstart', function (e) { 
   map.off('click', onMapClick);
   $('.btn-draw').addClass('disabled');
@@ -76,7 +76,7 @@ map.on('draw:created', function (e) {
     if (type === 'polyline') {
       var polylineLayer = e.layer;
       map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
-      //FIXME get the lenght inside $('.polyline-length')
+      //FIXME get the length inside $('.polyline-length')
       // console.log("distance size", distanceStr);
       // the value is sotred as distanceStr in L.Draw.js
       // $('input[class=polyline-length]').val(distanceStr);
@@ -134,8 +134,8 @@ map.on('draw:created', function (e) {
               }
       });
 
-      pathLayerGroup.addLayer(polylineLayer)
-      map.addLayer(pathLayerGroup);
+      editableLayerGroup.addLayer(polylineLayer)
+      map.addLayer(editableLayerGroup);
       
       $('.btn-cancel').on('click', function(){
         $('.leaflet-draw-edit-edit').removeClass('visible');
@@ -153,8 +153,8 @@ map.on('draw:created', function (e) {
       var latlngs = polygonLayer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
       $('.form-area .area-latlngs').val( latlngs );
       
-      areaLayerGroup.addLayer(polygonLayer);
-      map.addLayer(areaLayerGroup);
+      editableLayerGroup.addLayer(polygonLayer);
+      map.addLayer(editableLayerGroup);
       
       $('.btn-cancel').on('click', function(){
         $('.leaflet-draw-edit-edit').removeClass('visible');
@@ -170,6 +170,7 @@ map.on('draw:created', function (e) {
 });
 
 // What to do once a shape was edited
+// TODO save edited features
 // FIXME if the user saves after editing the onMapClick function fails
 map.on('draw:edited', function (e) {
     var layers = e.layers;
@@ -232,21 +233,3 @@ $('.btn-draw-polygon').on('click', function(){
                                  timeout: 2000 
                                  }}).enable();
 });
-
-// FIXME make sure the function below don't mess the shapes onClick in get_features.js
-// Add click events for draw layers
-function onAreaClick (e) {
-    sidebar.hide();
-    bottombar.show();
-    map.fitBounds(e.layer.getBounds());
-};
-
-function onPathClick (e) {
-    sidebar.hide();
-    bottombar.show();
-    map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
-    // map.panToOffset(e._latlng, _getVerticalOffset());
-};
-
-pathLayerGroup.on('click', onPathClick)
-areaLayerGroup.on('click', onAreaClick)

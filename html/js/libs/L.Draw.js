@@ -342,8 +342,8 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		}
 
 		this._vertexChanged(latlng, true);
-        // OWN ADDITION
-        this._map.panToOffset(latlng, _getHorizontalOffset());
+        // TODO fix the panTO on new point creation, this line prevent finishing the polyline but not a polygon
+        // this._map.panToOffset(latlng, _getHorizontalOffset());
 	},
 
 	_finishShape: function () {

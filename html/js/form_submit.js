@@ -173,15 +173,15 @@ $(function () {
 
     // Input range selector
     litterAmount = $('input[class=litter-range-input]').val();
-
+    length = $(this).find('.litter-path-length').val();
     image_url = $(this).find('.litter-image-hidden-value').val();
     note = $('input[class=litter-note]').val();
     wms_url = $('input[class=litter-wms-url]').val();
     geojson_data =  $('input[class=litter-geojson-data]').val();
 
     console.log('coordinates', latlngs);
-    console.log('type of trash', typeOfTrash);
-    console.log('amout of trash', amoutOfTrash);
+    console.log('type of trash', litterType);
+    console.log('amout of trash', litterAmount);
     console.log('image url', image_url);
     console.log('length of the line', length);
     console.log('tags', tags);
@@ -196,7 +196,7 @@ $(function () {
           headers: {"Authorization": "Bearer" + useToken},
           data: {
               'latlngs': latlngs.join(),
-              'amount': amoutOfTrash,
+              'amount': litterAmount,
               'type': litterType.join(),
               'image_url': image_url,
               'length': length,
@@ -242,11 +242,9 @@ $(function () {
     secret = $(this).find('.area-secret').val();
     contact = $(this).find('.area-contact').val();
     players = $(this).find('.area-players').val();
-         
     tags = $(this).find('.area-tags').tagsinput('items');
 
     console.log('coordinates', latlngs);
-    console.log('surface area', surfacearea);
     console.log('tags', tags);
     console.log('title', title);
     

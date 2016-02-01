@@ -214,10 +214,10 @@ function clearBottomPanelContent(){
 // TODO bind this to the db
 $('.btn-confirm').on('click', confirmGarbage );
 
-// Confirmation for features
-function confirmGarbage(){
+// Confirmation for garage abd polylines
+function confirmGarbage(obj){
   // TODO make session-dependant and allow once per user per marker
-  if (! localStorage.getItem('username') || ! sessionStorage.getItem('username')){ 
+  if (! localStorage.getItem('token') || ! sessionStorage.getItem('token')){ 
     showAlert("You need to login to do that.", "info", 2000);
   }
   
@@ -225,14 +225,43 @@ function confirmGarbage(){
   counts = isNaN(counts) ? 0 : value;
   counts++;
   $(".feature-info-confirmed strong").val = counts;
-  
+    
+    setTimeout(function () {
+      // var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage.getItem('token') || window.token;
+
+      $.ajax({
+          method: api.confirmTrash.method,
+          url: api.confirmTrash.url(),
+          headers: {"Authorization": "Bearer" + useToken},
+          data: {
+              'confirm': counts // ow how to do this?
+          },
+          success: function (data) {
+              console.log('success data', data);
+              // todo change the value in the UI
+          },
+          error: function (err) {
+              console.log('err', err);                  
+          }
+      })
+    }, 100);
 };
 
 function editFeature(obj, featureType) {
+    // TODO handle edit shapes with L.Editable (https://github.com/Leaflet/Leaflet.Editable)
+    if(featureType === "garbage"){
+        // load data into the form
+    }
+    if(featureType === "cleaning"){
+        // load data into the form
+    }
     
-    if(featureType === "garbage"){}
-    if(featureType === "cleaning"){}
-    if(featureType === "litter"){}
-    if(featureType === "area"){}
-    
+    if(featureType === "litter" || eatureType === "area" ){
+        // do stuff related to both types of shape then do shape-specific actions
+        // NOTE make sure to fix the draw:events in draw.js
+            if(featureType === "litter"){}
+            if(featureType === "area" ){}
+    }
+
 };

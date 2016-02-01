@@ -107,6 +107,24 @@ function onMapClick(e) {
 // Default behaviour for creating a marker
 map.on('click', onMapClick);  
 
+// onClick behavior for non-saved markers
+function onLocalMarkerClick (e) {
+    // console.log("local marker clicked");
+    bottombar.hide();
+    marker = this;
+    map.panToOffset(marker._latlng, _getHorizontalOffset());
+    console.log("clicked marker id:", marker._leaflet_id );
+    marker.on("dragend", function(event){
+      var newPos = event.target.getLatLng();
+      $('.marker-lat').val(newPos.lat);
+      $('.marker-lng').val(newPos.lng);
+    });
+
+    $('#sidebar').scrollTop =0;
+    $('.sidebar-content').hide();
+    sidebar.show($("#create-marker-dialog").fadeIn());
+};
+
 // TODO edit marker by pushing the values of the currently viewed feature in the form fields upon edit
 function editFeature(obj) {
   bottombar.hide();
