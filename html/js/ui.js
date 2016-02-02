@@ -134,7 +134,7 @@ $(document).ready(function() {
   $('#btn-mobile-menu').click( function(e) {
         e.preventDefault();
         bottombar.hide();
-        sidebar.show($('#mobile-menu-dialog').fadeIn().siblings().hide());
+        sidebar.toggle($('#mobile-menu-dialog').fadeIn().siblings().hide());
   });
   
 });
@@ -194,7 +194,7 @@ $('.menu-backlink').click(function(e) {
     e.preventDefault();
 });
 
-// Close sidebar and reset forms if cancel button clicked
+// Close sidebar if cancel button clicked
 $(".btn-cancel").on('click', function (){
     sidebar.hide();
     map.removeLayer(marker);

@@ -1,4 +1,31 @@
+
+//MapToOffset//////////////////////////////////////////////////////////
+//See license.md in this repo Copyright 2013 Code for America//////////
+L.Map.prototype.panToOffset = function (latlng, offset, options) {
+    var x = this.latLngToContainerPoint(latlng).x - offset[0]
+    var y = this.latLngToContainerPoint(latlng).y - offset[1]
+    var point = this.containerPointToLatLng([x, y])
+    return this.setView(point, this._zoom, { pan: options })
+};
+
+// Adapted functions
+function _getVerticalOffset () {
+  var vOffset = [0, 0]
+  vOffset[1] = - $(window).height() / 4;
+  vOffset[0] = 0;
+  return vOffset;
+};
+
+function _getHorizontalOffset () {
+  var hOffset = [0, 0]
+  hOffset[0] = - $(window).height() / 4;
+  hOffset[1] = 0;
+  return hOffset;
+};
+//////////////////////////////////////////////////////////////////////
+
 // Default behavior for map clicks
+// FIXME layers control toggle behaviour on mobile
 function onMapClick(e) {
   if ( !sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open')  && !$('.leaflet-control-layers').hasClass('.leaflet-control-layers-expanded') ) {
     marker = L.marker(e.latlng, {
@@ -9,8 +36,10 @@ function onMapClick(e) {
   $('.marker-lat').val(marker._latlng.lat);
   $('.marker-lng').val(marker._latlng.lng);
 
-  map.panToOffset(marker._latlng, _getHorizontalOffset());
-
+  if ($(window).height() >= 768 ) {
+    map.panToOffset(marker._latlng, _getHorizontalOffset());
+  }  
+      
   $('.sidebar-content').hide();
   $('#sidebar').scrollTop = 0;
   sidebar.show($("#create-marker-dialog").show());
@@ -23,62 +52,61 @@ function onMapClick(e) {
       // Get the color value from the select options
       var selectedValue = parseInt(jQuery(this).val());
         switch(selectedValue){
-                // so much cringe here, let's try to do this with ternaries
-                  case 1:
-                      $(marker._icon).removeClass(function (index, css) {
-                        return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-green');
-                      break;
-                  case 2:
-                      $(marker._icon).removeClass(function (index, css) {
-                        return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-limegreen');
-                      break;
-                  case 3:
-                      $(marker._icon).removeClass(function (index, css) {
-                       return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-yellow');
-                      break;
-                  case 4:
-                      $(marker._icon).removeClass(function (index, css) {
-                       return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-gold');
-                      break;
-                  case 5:
-                      $(marker._icon).removeClass(function (index, css) {
-                        return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-orange');
-                      break;
-                  case 6:
-                      $(marker._icon).removeClass(function (index, css) {
-                       return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-orangered');
-                      break;
-                  case 7:
-                      $(marker._icon).removeClass(function (index, css) {
-                       return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-red');
-                      break;
-                  case 8:
-                      $(marker._icon).removeClass(function (index, css) {
-                       return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-darkred');
-                      break;
-                  case 9:
-                      $(marker._icon).removeClass(function (index, css) {
-                        return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-purple');
-                      break;
-                  case 10:
-                      $(marker._icon).removeClass(function (index, css) {
-                       return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-black');
-                      break;
-                  default:
-                      $(marker._icon).removeClass(function (index, css) {
-                        return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
-                      }).addClass('marker-color-unknown');
-                      break;
+            case 1:
+                $(marker._icon).removeClass(function (index, css) {
+                  return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-green');
+                break;
+            case 2:
+                $(marker._icon).removeClass(function (index, css) {
+                  return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-limegreen');
+                break;
+            case 3:
+                $(marker._icon).removeClass(function (index, css) {
+                 return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-yellow');
+                break;
+            case 4:
+                $(marker._icon).removeClass(function (index, css) {
+                 return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-gold');
+                break;
+            case 5:
+                $(marker._icon).removeClass(function (index, css) {
+                  return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-orange');
+                break;
+            case 6:
+                $(marker._icon).removeClass(function (index, css) {
+                 return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-orangered');
+                break;
+            case 7:
+                $(marker._icon).removeClass(function (index, css) {
+                 return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-red');
+                break;
+            case 8:
+                $(marker._icon).removeClass(function (index, css) {
+                 return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-darkred');
+                break;
+            case 9:
+                $(marker._icon).removeClass(function (index, css) {
+                  return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-purple');
+                break;
+            case 10:
+                $(marker._icon).removeClass(function (index, css) {
+                 return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-black');
+                break;
+            default:
+                $(marker._icon).removeClass(function (index, css) {
+                  return (css.match (/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-color-unknown');
+                break;
           }
   });
     
@@ -103,7 +131,6 @@ function onMapClick(e) {
         $('.dropdown').removeClass('open');
         $('.leaflet-control-layers').removeClass('.leaflet-control-layers-expanded');
        }
-
 };
 
 // Default behaviour for creating a marker

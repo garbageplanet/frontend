@@ -17,12 +17,11 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 ### TODO
 
 ### Mobile
-
-- [ ] toggle mobile menu on collapsed button tap
+- [ ] layers control fix
 - [ ] map control placement on mobile
-- [ ] side panel close button placement on mobile
 - [ ] mobile menu session hooks
 - [ ] shift layout up when keyboard is shown
+- [ ] panToOffset() behavior for landscape vs portrait orientation
 
 ### Side panel
 - [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)
@@ -36,8 +35,6 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 #### Map actions
 - [ ] editing system for map features with [L.Editable](https://github.com/Leaflet/Leaflet.Editable)
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
-- [ ] separate click events for draw features that are just created and those thata are saved
-- [ ] fix cancel drawing on Esc key
 
 ### General coding, coding style, code review
 - [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates);

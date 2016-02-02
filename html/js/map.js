@@ -87,31 +87,6 @@ new L.control.scale({ metric: true, imperial: false }).addTo(map);
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
 
-//MapToOffset//////////////////////////////////////////////////////////
-//See license.md in this repo Copyright 2013 Code for America//////////
-L.Map.prototype.panToOffset = function (latlng, offset, options) {
-    var x = this.latLngToContainerPoint(latlng).x - offset[0]
-    var y = this.latLngToContainerPoint(latlng).y - offset[1]
-    var point = this.containerPointToLatLng([x, y])
-    return this.setView(point, this._zoom, { pan: options })
-};
-
-// Adapted functions
-function _getVerticalOffset () {
-  var vOffset = [0, 0]
-  vOffset[1] = - $(window).height() / 4;
-  vOffset[0] = 0;
-  return vOffset;
-};
-
-function _getHorizontalOffset () {
-  var hOffset = [0, 0]
-  hOffset[0] = - $(window).height() / 4;
-  hOffset[1] = 0;
-  return hOffset;
-};
-//////////////////////////////////////////////////////////////////////
-
 // Store zoom
 map.on('zoomend', function(e){
     mapZoom = e.target.getZoom();
