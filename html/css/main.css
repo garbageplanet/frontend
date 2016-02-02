@@ -319,26 +319,6 @@ textarea {
   color: #FFF !important;
 }
 
-.popover.bottom .arrow:after {
- border-bottom-color: rgba(86,86,86,0.8);
-}
-
-.popover.top .arrow:after {
- border-top-color: rgba(86,86,86,0.8);
-}
-
-.popover-content { color: #FFF;
-          font-family: 'Work Sans', sans-serif;
-          font-weight: 400
-}
-
-.popover-navigation { position: absolute;
-           bottom: -4px;
-           right: -8px;
-}
-
-.btn-tour {color: #FFF;}
-
 .bootstrap-tagsinput {
     width: 100% !important;
     border-radius: 0px !important;

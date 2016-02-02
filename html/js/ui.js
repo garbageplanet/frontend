@@ -13,7 +13,7 @@ $('document').ready(function () {
         $('#account-info').find('.user-email p').html( localStorage.getItem('useremail') );
         $('#account-info').find('.user-glome-key').addClass('hidden');
         $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
-        $('#account-info').show();     
+        $('#account-info').show(); 
       }
       
       if ( classicSessionType === "false" ) {
@@ -85,7 +85,8 @@ function switchSession(sessionStatus) {
         $('#account-info').find('.user-email').addClass('hidden');
         $('#account-info').find('.user-glome-key p').html( sessionStorage.getItem('username') );
         $('#account-info').find('.user-id').html( sessionStorage.getItem('userid') );
-        $('#account-info').show();
+        sidebar.show();
+        $('#account-info').fadeIn();
         
       }
       

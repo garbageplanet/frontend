@@ -37,19 +37,9 @@ $(function () {
 		image_url = $(this).find('.garbage-image-hidden-value').val();
         tags = $(this).find('.garbage-tags').tagsinput('items');
       
-        console.log("tags", tags);
-        console.log("note", note);
-        console.log("todo", garbageTodo);
-      
         // Coordinates
 		lat = $(this).find('.marker-lat').val();
 		lng = $(this).find('.marker-lng').val();
-
-		console.log('lat', lat);
-		console.log('lng', lng);
-		console.log('type of trash', typeOfTrash);
-		console.log('amount of trash', amountOfTrash);
-		console.log('image url', image_url);
 
 		setTimeout(function () {
           // var useToken = localStorage["token"] || window.token;
