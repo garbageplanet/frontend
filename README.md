@@ -12,35 +12,42 @@ Just open /html/index.html in your browser.
 
 We don't have a build process yet, so for the moment, if you add a new feature/function, you need to manually check that it doesn't break the user interface's main functions (check the console). When adding a new js function to the code, add a comment about what it does.
 
-If you want to work on a specific todo below, the first thing you should do is open an issue and repo owners will add you as collaborator and assign you to the issue.
+If you want to cnotribute to a specific todo below, the first thing you should do is open an issue and repo owners will add you as collaborator and assign you to the issue.
 
 ### TODO
 
-### Side panel
+### Mobile
 
+- [ ] toggle mobile menu on collapsed button tap
+- [ ] map control placement on mobile
+- [ ] side panel close button placement on mobile
+- [ ] mobile menu session hooks
+- [ ] shift layout up when keyboard is shown
+
+### Side panel
 - [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)
 - [ ] fix the tagsinput input resizing
+- [ ] image upload restriction if user is not logged in
 
 #### Bottom panel
-- [ ] any media displayed in the bottom panel should take the width of its parent `<div>`
 - [ ] implement templates for the contents of the bottom panel
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
-- [ ] implement editing system for map features with [L.Editable](https://github.com/Leaflet/Leaflet.Editable)
+- [ ] editing system for map features with [L.Editable](https://github.com/Leaflet/Leaflet.Editable)
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 - [ ] separate click events for draw features that are just created and those thata are saved
 - [ ] fix cancel drawing on Esc key
 
 ### General coding, coding style, code review
-- [ ] file upload with html5 only
+- [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates);
 - [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
 - [ ] make the code overall less redundant (loading forms elements and building lists for `<select>` )
+- [ ] implement .getScript() for lazy loading scripts that are not required globally
 
 #### Making the code more maintainable
 - [ ] create build script with minification (closure compiler) for deployment
-- [ ] implement .getScript() for lazy loading scripts that are not required globally
-- [ ] implement html templates/imports for the sidebar to be able to reuse the tabs layout
+- [ ] cycle current public keys and add new one during build process
 
 #### Future prospects
 - [ ] allow users to upload geotagged images, bypassing marker creation form

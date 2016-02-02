@@ -1,6 +1,5 @@
-// TODO Arrange functions in group in this file
-
-// FIXME check if the localStorage has token / auth token, if yes log the user in
+// TODO check if the localStorage has token, if yes log the user in with data
+/*
 $('document').ready(function () {
   var classicSessionType = localStorage.getItem('classic')
 
@@ -26,13 +25,14 @@ $('document').ready(function () {
       }
   }
 });
-
+*/
 // Alert mobile phone user (check if this appears on tablets)
 if (L.Browser.mobile) {
     showAlert("Drawing tools are not available on mobile.", "info", 4000);
 };
 
 // Swtch session function
+// TODO add hooks for the mobile menu
 function switchSession(sessionStatus) {
   
   var classicSessionType = localStorage.getItem('classic')
@@ -45,6 +45,7 @@ function switchSession(sessionStatus) {
       $('#user-info-lnk').remove();
       $('#user-tools').dropdown();
       $('.user-email, .user-glome-key').removeClass('hidden');
+      $('.glome-lnk', '.btn-glome-mobile').removeClass('hidden');
     }
   
     if (sessionStatus == "login") {
@@ -61,32 +62,40 @@ function switchSession(sessionStatus) {
                                       sidebar.show();                          
                                     });
       $("#user-tools").dropdown();
-      
-      
+      $('.glome-lnk', '.btn-glome-mobile').addClass('hidden');
       
       // get the data from localStorage or sessionStorage and clear the other
       
       if ( classicSessionType === "true" ) {
-        sessionStorage.clear();
         
         $('#account-info').find('.user-email').removeClass('hidden');
         $('#account-info').find('.user-name').text( localStorage.getItem('username') );
         $('#account-info').find('.user-email p').html( localStorage.getItem('useremail') );
         $('#account-info').find('.user-glome-key').addClass('hidden');
         $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
+        $('.sidebar-content').hide();
+        
+        if ( !sidebar.isVisible() ) {
+            sidebar.show();
+        }
+          
         $('#account-info').show();
         
       }
       
       if  ( classicSessionType === "false" ) {
-        localStorage.clear();
         
         $('#account-info').find('.user-name').text('anon (⌐■_■)');
         $('#account-info').find('.user-email').addClass('hidden');
-        $('#account-info').find('.user-glome-key p').html( sessionStorage.getItem('username') );
-        $('#account-info').find('.user-id').html( sessionStorage.getItem('userid') );
-        sidebar.show();
-        $('#account-info').fadeIn();
+        $('#account-info').find('.user-glome-key p').html( localStorage.getItem('glomekey') );
+        $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
+        $('.sidebar-content').hide();
+          
+        if ( !sidebar.isVisible() ) {
+            sidebar.show();
+        }
+          
+        $('#account-info').show();
         
       }
       

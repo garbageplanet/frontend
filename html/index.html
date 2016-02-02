@@ -95,7 +95,7 @@
             </form>
           </li>
             
-        <li><a class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-sign-in"></i></a></li>
+        <li class="glome-lnk"><a class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-sign-in"></i></a></li>
 
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -146,7 +146,7 @@
 
   <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-key"></span> Login</a>
 
-  <a href="#" class="btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
+  <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go btn-glome-mobile"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
 
   <a href="#search-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-search"></span> Search</a>
 
@@ -962,7 +962,7 @@
                     class="btn btn-default btn-lg btn-block btn-logout">
             <span class="fa fa-sign-out fa-fw"></span> Logout
             </button>
-            <p>Read our <a class="sidebar-link" href="#privacy-policy">privacy policy</a> and <a class="sidebar-link" href="#user-agreement">terms of service</a> before starting to use this platform.
+            <p>Read our <a class="sidebar-link" href="#privacy-policy">privacy policy</a> and <a class="sidebar-link" href="#user-agreement">terms of service</a> before you start using this platform.
             </p>
         </div>
     </div>
@@ -1409,9 +1409,8 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 <script src="js/libs/bootstrap-select.js"> </script>
 <script src="js/libs/bootstrap-validator.js"></script>
 
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js" defer></script>
+<script src="js/libs/jquery.ui.widget.js" defer></script>
+<script src="js/libs/jquery-fileupload,min.js" defer></script>
 
 <script src="js/config.js"></script>
 <script src="js/map.js"></script>
@@ -1424,6 +1423,3 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 <script src="js/draw.js" defer></script>
 </body>
 </html>
-
-<p><span class="font-regular">Timed tooltip example on a href</span>—like
-    <a href="#" rel="tooltip" data-original-title="Place your stuff here">this example</a>, 

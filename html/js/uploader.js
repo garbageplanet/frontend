@@ -1,8 +1,10 @@
 // Image upload to Imgur
 // author: xr@github
+
+// TODO make this available only to logged in users.
 $(function () {
 	$('.image-uploader').fileupload({
-        headers: {"Authorization": "Client-ID 24642f1bed0f5a2"},
+        headers: {"Authorization": "Client-ID " + $IMGUR_CLIENT_ID},
         url: "https://api.imgur.com/3/image",
         dataType: 'json',
         progressall: function (e, data) {
@@ -13,7 +15,7 @@ $(function () {
         done: function (e, data) {
             $(e.target).parent().next().val(data.result.data.link);
             //$('.progress').hide().delay(500);
-            $('.progress').addClass('hidden').delay(300);
+            $('.progress').addClass('hidden').delay(200);
         }
     });
 

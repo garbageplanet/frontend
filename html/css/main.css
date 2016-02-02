@@ -143,11 +143,6 @@ a.menu-backlink:hover {
 	line-height: 40px;
 }
 
-.leaflet-touch .leaflet-control-layers {
-	width: 40px;
-	height: 40px;
-	}
-
 .leaflet-touch .leaflet-control-layers, .leaflet-touch leaflet-control-layers-toggle {
   border-bottom: :0px;
 }
@@ -168,12 +163,12 @@ a.menu-backlink:hover {
 .leaflet-control-layers,
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-border-radius: 20px !important;
-	}
+    border-radius: 20px !important;
+}
 
 .leaflet-control-layers-expanded {
-border-radius: 0px !important;
-	}
+    border-radius: 0px !important;
+}
 
 /* Shift leaflet-bar control buttons */
 .leaflet-top .leaflet-control {
@@ -182,15 +177,15 @@ border-radius: 0px !important;
 
 .leaflet-bottom .leaflet-control {
 	margin-bottom: 2px;
-	}
+}
 
 .leaflet-left .leaflet-control {
 	margin-left: 0px;
-	}
+}
 
 .leaflet-right .leaflet-control {
 	margin-right: 0px;
-	}
+}
 
 .leaflet-bar a:first-child {
 	border-top-left-radius: 0;
@@ -199,11 +194,6 @@ border-radius: 0px !important;
 .leaflet-bar a:last-child {
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
-}
-.leaflet-touch .leaflet-bar, .easy-button-container {
-	border: 0px solid rgba(0,0,0,0);
-	background-clip: padding-box;
-    border-radius: 0;
 }
 
 .leaflet-bar, leaflet-bottom {

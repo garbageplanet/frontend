@@ -85,7 +85,7 @@ map.on('draw:created', function (e) {
       // $('input[class=polyline-length]').val($('.leaflet-draw-tooltip-subtext').val());  
       
       // push the latlngs to the form
-      
+      // The latlngs array must follow the format (lat1 lng1, lat2 lng2, ...) for easier transformation to geom
       var latlngs = polylineLayer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
             
       $('.form-litter .litter-latlngs').val( latlngs );

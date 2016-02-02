@@ -72,10 +72,9 @@ function logout() {
     if(!localStorage.token) {
         showAlert("User is already logged out.", "info", 2000);
         localStorage.clear();
-        sessionStorage.clear();
     }
+    
     localStorage.clear();
-    sessionStorage.clear();
     sidebar.hide();
     switchSession("logout");
     showAlert("You are logged out.", "info", 2000);
@@ -110,8 +109,8 @@ function registerUser(e) {
                     // Push the data into localStorage
                     localStorage.setItem('classic','true')
                     localStorage.setItem('username', data.user.name);
-                    localStorage.setItem('userid',data.user.id);
-                    localStorage.setItem('useremail',data.user.email);
+                    localStorage.setItem('userid', data.user.id);
+                    localStorage.setItem('useremail', data.user.email);
                   
                     switchSession("login");
                     showAlert("Registration successful, you are now logged in.", "success", 2000);
@@ -151,9 +150,10 @@ function glomego(e) {
 
             var authUser = response.user;
             var token = response.token;
-          
+            
             localStorage.setItem('token', token);
-            localStorage.setItem('glomeid', glomeid);
+            localStorage.setItem('glomekey', glomeid);
+            localStorage.setItem('userid', response.user.id);
 
             console.log('created soft account: ' + glomeid);
             console.log('local authUser: ', authUser);
@@ -173,15 +173,8 @@ function glomego(e) {
                     }
 
                     if (typeof authUser !== 'undefined') {
-                      
-                      // Push the data into sessionStorage
+                        
                       localStorage.setItem('classic','false')
-                      sessionStorage.setItem('username', authUser.name);
-                      sessionStorage.setItem('userid', authUser.id);
-                      
-                      console.log('session type is classic', localStorage.getItem('classic') )
-                      console.log('glome key value', localStorage.getItem('username') )
-                  
                       switchSession("login");
                       showAlert("You are now logged in anonymously.", "success", 2000);  
 

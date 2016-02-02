@@ -71,9 +71,9 @@ $(function () {
                   map.removeLayer(marker);
                   loadGarbageMarkers();
               },
-              error: function (err) {
-                  console.log('err', err);
-                  showAlert("Failed to save the marker, are you logged in?", "danger", 2000);
+              error: function (response) {
+                  showAlert("Something went wrong, HTTP error " + response.status, "danger", 2500);
+                  console.log(response.status)
                   sidebar.hide();
                   map.removeLayer(marker);
                   
@@ -161,7 +161,6 @@ $(function () {
         
     tags = $(this).find('.litter-tags').tagsinput('items');
 
-    // Input range selector
     litterAmount = $('input[class=litter-range-input]').val();
     length = $(this).find('.litter-path-length').val();
     image_url = $(this).find('.litter-image-hidden-value').val();
@@ -177,7 +176,6 @@ $(function () {
     console.log('tags', tags);
 
     setTimeout(function () {
-      // var useToken = localStorage["token"] || window.token;
       var useToken = localStorage.getItem('token') || window.token;
 
       $.ajax({
