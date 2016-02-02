@@ -1,6 +1,6 @@
-// FIXME on mobile stop onMapClick if the control layer hasClass('leaflet-control-layers-expanded')
+// Default behavior for map clicks
 function onMapClick(e) {
-  if ( !sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open') ) {
+  if ( !sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open')  && !$('.leaflet-control-layers').hasClass('.leaflet-control-layers-expanded') ) {
     marker = L.marker(e.latlng, {
       icon:genericMarker,
       draggable: true
@@ -97,9 +97,11 @@ function onMapClick(e) {
     
 }
   
-  else { bottombar.hide();
+  else { 
+        bottombar.hide();
         sidebar.hide();
         $('.dropdown').removeClass('open');
+        $('.leaflet-control-layers').removeClass('.leaflet-control-layers-expanded');
        }
 
 };

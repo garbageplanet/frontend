@@ -137,7 +137,7 @@ a.menu-backlink:hover {
 	border: 0px;
 }
 
-.leaflet-touch .leaflet-bar a {
+.leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {
 	width: 40px;
 	height: 40px;
 	line-height: 40px;
@@ -146,6 +146,8 @@ a.menu-backlink:hover {
 .leaflet-touch .leaflet-control-layers, .leaflet-touch leaflet-control-layers-toggle {
   border-bottom: :0px;
 }
+
+
 
 .leaflet-bar a,
 .leaflet-bar a:hover {
