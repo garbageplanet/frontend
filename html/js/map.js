@@ -1,7 +1,4 @@
 // Set the map
-// deflate turns shapes into markers at high zoom (minSize in pixels)
-// var map = L.map.deflate('map', { zoomControl: false, attributionControl: false, minSize: 50 });
-// L.Deflate messes up L.Draw
 var map = L.map('map', { zoomControl: false, attributionControl: false });
 
 var hash = new L.Hash(map);
@@ -28,24 +25,29 @@ var tileLayerData = {
 
 
 var tileLayers = {};
-    for (tile in tileLayerData) {
-        var tileAttribution;
-        var subdomains = tileLayerData[tile].subdomains ? tileLayerData[tile].subdomains : 'abc';
-            if (tileLayerData[tile].attribution) {
-                tileAttribution = tileLayerData[tile].attribution + ' &mdash; ' + attribution;
-            }
-            else tileAttribution = attribution;
-                tileLayers[tileLayerData[tile].name] = L.tileLayer(
-                tileLayerData[tile].url,
-                {attribution: tileAttribution, subdomains: subdomains}
-            )
-};
+for (tile in tileLayerData) {
+    var tileAttribution;
+    var subdomains = tileLayerData[tile].subdomains ? tileLayerData[tile].subdomains : 'abc';
+        if (tileLayerData[tile].attribution) {
+            tileAttribution = tileLayerData[tile].attribution + ' &mdash; ' + attribution;
+        }
+        else tileAttribution = attribution;
+            tileLayers[tileLayerData[tile].name] = L.tileLayer(
+            tileLayerData[tile].url,
+            {attribution: tileAttribution, subdomains: subdomains}
+        )
+}
+
 tileLayers['Outdoors'].addTo(map);
 // end of GPLv2 by humitos@github
 
 // Locate the user
 map.locate({setView: true, maxZoom: 15});
-function onLocationError(e) { showAlert("Couldn't find your position.", "warning", 4000)};
+
+function onLocationError(e) { 
+  showAlert("Couldn't find your position.", "warning", 4000);
+}
+
 map.on('locationerror', onLocationError);
 
 // Sidebar creation and placement
@@ -72,7 +74,7 @@ var overlayGroups = {
 };
 
 // Add zoom controls above scale
-map.addControl( L.control.zoom( {position: 'topleft'} ) );
+map.addControl(L.control.zoom({position: 'topleft'}));
 
 // Add the layer control
 // FIXME Layer control toggle bugs on mobile
@@ -82,16 +84,19 @@ L.control.layers(tileLayers, overlayGroups).setPosition('topleft').addTo(map);
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-centered'></span>");
 
 // Add a scale
-new L.control.scale({ metric: true, imperial: false }).addTo(map);
+new L.control.scale({metric: true, imperial: false}).addTo(map);
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
 
 // Store zoom
-map.on('zoomend', function(e){
-    mapZoom = e.target.getZoom();
+map.on('zoomend', function (e){
+  mapZoom = e.target.getZoom();
   
-    if ( mapZoom < 10) { showAlert("Zoom in closer to create markers", "info", 1200); }
+  if (mapZoom < 10) { 
+    showAlert("Zoom in closer to create markers", "info", 1200);
+    }
+  
 });
 
 // Default marker types and set the marker classes

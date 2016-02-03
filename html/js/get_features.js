@@ -1,35 +1,35 @@
 // Get new markers if the map moves
-map.on('moveend', function(e) {
+map.on('moveend', function (e) {
     var bounds = map.getBounds();
     // console.log("leaflet map bounds object:", bounds);
     //  renamed bounds to currentViewBounds
     currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
     // console.log("currentViewBounds:", currentViewBounds);
   
-    if ( mapZoom >= 10 ){
+    if (mapZoom >= 10){
       console.log("mapZoom value from get_feature.js", mapZoom)
       loadGarbageMarkers();
       loadCleaningMarkers();
     }
     
-    if (mapZoom >= 8 && mapZoom <= 17 ){
+    if (mapZoom >= 8 && mapZoom <= 17){
         loadLitters();
     }
     
-    if ( mapZoom >= 7 && mapZoom <=15 ){
+    if ( mapZoom >= 7 && mapZoom <=15){
         loadAreas();  
     }
 });
 
 // Get garbage
-function loadGarbageMarkers() {
+function loadGarbageMarkers () {
     console.log('loading garbage markers from db');
     garbageLayerGroup.clearLayers();
     // ajax request
     $.ajax({
         type: api.readTrashWithinBounds.method,
         url: api.readTrashWithinBounds.url(currentViewBounds),
-        success: function(data) {
+        success: function (data) {
             $(data).each(function(index, obj) {
                 console.log(obj);
               
@@ -42,13 +42,13 @@ function loadGarbageMarkers() {
                         ImageUrl: obj.image_url,
                         Lat: obj.lat,
                         Lng: obj.lng,
-                        Type: obj.type,
                         Confirm: obj.confirm,
                         Todo: obj.todo,
                         Tags: obj.tag,
                         Embed: obj.embed,
                         Sieze: obj.size,
-                        Note: obj.note
+                        Note: obj.note,
+                        FeatureType: obj.featuretype
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
                 garbageLayerGroup.addLayer(marker);
@@ -96,19 +96,17 @@ function loadGarbageMarkers() {
                     $(marker._icon).addClass('marker-color-unknown');
                     break;
                 }
-        
-              
             });
         },
         error: function(data) {
             console.log('Something went wrong while fetching the data', data);
         }
     });
-    var useToken = localStorage["token"] || window.token;
+    var useToken = localStorage.getItem('token') || window.token;
 };
 
 // Get cleanings
-function loadCleaningMarkers() {
+function loadCleaningMarkers () {
     console.log('loading cleaning markers from db');
     cleaningLayerGroup.clearLayers();
     // ajax request
@@ -126,6 +124,10 @@ function loadCleaningMarkers() {
                         Date: obj.date,
                         Lat: obj.lat,
                         Lng: obj.lng,
+                        FeatureType: obj.featuretype,
+                        Paticipants: obj.participants,
+                        Recurrence: obj.recurrence
+
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
                 cleaningLayerGroup.addLayer(marker);
@@ -139,16 +141,16 @@ function loadCleaningMarkers() {
             console.log('Something went wrong while fetching the data', data);
         }
     });
-    var useToken = localStorage["token"] || window.token;
+    var useToken = localStorage.getItem('token') || window.token;
 };
 
 // Get areas (polygons)
-function loadAreas() {
-    console.log('loading remote area polygons');
+function loadAreas () {
+  console.log('loading remote area polygons');
   
   areaLayerGroup.clearLayers(); 
 
-  var useToken = localStorage["token"] || window.token;
+  var useToken = localStorage.getItem('token') || window.token;
   $.ajax({
     type: api.readAreaWithinBounds.method,
     url: api.readAreaWithinBounds.url(currentViewBounds),
@@ -166,7 +168,8 @@ function loadAreas() {
               Players: obj.players,
               Note: obj.note,
               Tags: obj.tag,
-              Contact: obj.contact
+              Contact: obj.contact,
+              FeatureType: obj.featuretype
             });
 
           areaLayerGroup.addLayer(polygonLayer);
@@ -185,12 +188,12 @@ function loadAreas() {
 };
 
 // Get litters (polylines)
-function loadLitters() {
+function loadLitters () {
     console.log('loading remote litter polylines');
   
   pathLayerGroup.clearLayers(); 
 
-  var useToken = localStorage["token"] || window.token;
+  var useToken = localStorage.getItem('token') || window.token;
   $.ajax({
     type: api.readLitterWithinBounds.method,
     url: api.readLitterWithinBounds.url(currentViewBounds),
@@ -206,7 +209,9 @@ function loadLitters() {
               Id: obj.id,
               Amount: obj.amount,
               Types: obj.types,
-              ImageUrl: obj.image_url
+              ImageUrl: obj.image_url,
+              Tags: obj.tag,
+              FeatureType: obj.featuretype,              
               // TODO add the rest of the options
             })
           ;
@@ -252,7 +257,6 @@ function loadLitters() {
           polylineLayer.on('click', function() {
               onLitterClick(polylineLayer);
           });
-
         }
       );        
     },
@@ -272,17 +276,17 @@ function onGarbageMarkerClick (e) {
         sidebar.hide();
         clearBottomPanelContent();
             
-        var markerTypes = e.options.Types;
-        var markerAmount = e.options.Amount;
-        var markerRawImage = e.options.ImageUrl;
-        var markerId = e.options.Id;
-        var markerCreatedBy = e.options.marked_by;
-        var markerSize = e.options.size;
-        var markerEmbed = e.options.embed;
-        var markerNote = e.options.note;
-        var markerTags = e.options.tag;
-        var markerTodo = e.options.todo;
-        var markerConfirm = e.options.confirm;
+        var markerTypes = e.options.Types,
+            markerAmount = e.options.Amount,
+            markerRawImage = e.options.ImageUrl,
+            markerId = e.options.Id,
+            markerCreatedBy = e.options.marked_by,
+            markerSize = e.options.size,
+            markerEmbed = e.options.embed,
+            markerNote = e.options.note,
+            markerTags = e.options.tag,
+            markerTodo = e.options.todo,
+            markerConfirm = e.options.confirm;
       
         // TODO push the rest of the data to the bottombar
     
@@ -346,7 +350,7 @@ function onGarbageMarkerClick (e) {
         });
       
         // amount mapping
-        switch(markerAmount) {
+        switch (markerAmount) {
             case 0:
                 $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
                 break;
@@ -383,12 +387,11 @@ function onGarbageMarkerClick (e) {
             default:
                 $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
                 break;
-
         };
 };
 
 // onClick behavior for saved cleaning markers
-function onCleaningMarkerClick(e) {
+function onCleaningMarkerClick (e) {
     console.log("Garbage marker clicked");
     console.log(e);
     var that = this;
@@ -397,10 +400,10 @@ function onCleaningMarkerClick(e) {
         sidebar.hide();
         clearBottomPanelContent();
             
-        var markerTypes = e.options.Types;
-        var markerDate = e.options.Date;
-        var markerId = e.options.Id;
-        var markerCreatedBy = e.options.marked_by;
+        var markerTypes = e.options.Types,
+            markerDate = e.options.Date,
+            markerId = e.options.Id,
+            markerCreatedBy = e.options.marked_by;
         // TODO add the rest of the option once the api route is ready
 
         $("#cleaning-info-created-by").html(markerCreatedBy);
@@ -441,7 +444,7 @@ function onCleaningMarkerClick(e) {
 };
 
 // onClick behavior for saved areas
-function onAreaClick(e) {                          
+function onAreaClick (e) {                          
     console.log("remote polygon clicked");
     console.log(e);
     console.log(e.options.latLngs)
@@ -453,16 +456,15 @@ function onAreaClick(e) {
 
     map.fitBounds(e.layer.getBounds());
     
-    var areaLatLngs = e.layer.options.LatLngs;
-    var areaId = e.layer.options.Id;
-    var areatags = e.layer.options.Tags;
-    var areacontact = e.layer.options.Contact;
-    var areanote = e.layer.options.Note;
-    var areatitle = e.layer.options.Title;
-    var areaplayers = e.layer.options.Players;
-    var areaCreatedBy = e.options.marked_by;
+    var areaLatLngs = e.layer.options.LatLngs,
+        areaId = e.layer.options.Id,
+        areatags = e.layer.options.Tags,
+        areacontact = e.layer.options.Contact,
+        areanote = e.layer.options.Note,
+        areatitle = e.layer.options.Title,
+        areaplayers = e.layer.options.Players,
+        areaCreatedBy = e.options.marked_by;
 
-    
     // TODO push the data to the bottom bar
   
     bottombar.show();
@@ -497,7 +499,7 @@ function onAreaClick(e) {
 };
 
 // onClick behavior for saved litters
-function onLitterClick(e) {                     
+function onLitterClick (e) {                     
     console.log("remote polyline clicked");
     console.log(e);
     console.log(e.options.latLngs)
@@ -509,27 +511,27 @@ function onLitterClick(e) {
 
     map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
     
-    var litterType = e.layer.options.Type;
-    var litterAmount = e.layer.options.Amount;
-    var litterRawImage = e.layer.options.ImageUrl;
-    var litterLatLngs =e.layer.options.LatLngs;
-    var litterId = e.layer.options.Id;
-    var litterTags = e.layer.options.Tags;
-    var litterNote = e.layer.options.Note;
-    var litterLength = e.layer.options.Length;
-    var litterId = e.layer.options.Id;
-    var litterConfirm = e.layer.options.Confirm;
-    var litterCreatedBy = e.options.marked_by;
-
+    var litterType = e.layer.options.Type,
+        litterAmount = e.layer.options.Amount,
+        litterRawImage = e.layer.options.ImageUrl,
+        litterLatLngs =e.layer.options.LatLngs,
+        litterId = e.layer.options.Id,
+        litterTags = e.layer.options.Tags,
+        litterNote = e.layer.options.Note,
+        litterLength = e.layer.options.Length,
+        litterId = e.layer.options.Id,
+        litterConfirm = e.layer.options.Confirm,
+        litterCreatedBy = e.options.marked_by;
+  
     // TODO push data to the bottom bar
 
     // Put a placeholder if the media is empty
-    if (! shapeRawImage ) {
+    if (!litterRawImage ) {
       $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
       $('#feature-info').find('.feature-image-link').attr('href', '');
     };
 
-    if ( shapeRawImage ) {
+    if (litterRawImage) {
       
       // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
       String.prototype.insert = function (index, string) {
@@ -540,12 +542,12 @@ function onLitterClick(e) {
           return string + this;
           };
       
-      litterImage = shapeImage.insert(26, "t");
+      litterImage = litterRawImage.insert(26, "t");
       
       $('#feature-info').find('.feature-image').attr('src', litterImage);
       $('#feature-info').find('.feature-image-link').attr('href', litterRawImage);
       
-    };
+    }
   
     bottombar.show();
     $('#feature-info').fadeIn();
@@ -580,7 +582,7 @@ function onLitterClick(e) {
     });
 
     // amount mapping
-    switch(shapeAmount) {
+    switch (litterAmount) {
         case 0:
             $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
             break;
@@ -617,4 +619,5 @@ function onLitterClick(e) {
         default:
             $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
             break;
-    };};
+    }
+};

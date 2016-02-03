@@ -33,9 +33,10 @@ if (L.Browser.mobile) {
 
 // Swtch session function
 // TODO add hooks for the mobile menu
+// TODO destroy element instead of hiding them in the DOM
 function switchSession(sessionStatus) {
   
-  var classicSessionType = localStorage.getItem('classic')
+  var classicSessionType = localStorage.getItem('classic');
   
     if (sessionStatus === "logout") {
       
@@ -151,7 +152,6 @@ $(document).ready(function() {
   
   // Show nearby trashbins
   $('#btn-trashbins').on('click', function(){
-    debugger;
     osmTrashbinLayer = new L.OverPassLayer({
        query: '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;'
     });
@@ -204,7 +204,7 @@ $(".btn-cancel").on('click', function (){
 sidebar.on('hide', function () {
         $('.sidebar-content').hide();
         $('#sidebar').scrollTop = 0;
-        $('form').each(function() { this.reset() });
+        $('form').each(function() { this.reset(); });
         $('input').val('');
         $('.selectpicker').selectpicker('render');
         $('.leaflet-draw-edit-edit').removeClass('visible');
@@ -254,7 +254,7 @@ function confirmGarbage(obj){
           error: function (err) {
               console.log('err', err);                  
           }
-      })
+      });
     }, 100);
 };
 

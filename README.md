@@ -12,7 +12,7 @@ Just open /html/index.html in your browser.
 
 We don't have a build process yet, so for the moment, if you add a new feature/function, you need to manually check that it doesn't break the user interface's main functions (check the console). When adding a new js function to the code, add a comment about what it does.
 
-If you want to cnotribute to a specific todo below, the first thing you should do is open an issue and repo owners will add you as collaborator and assign you to the issue.
+If you want to cnotribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### TODO
 

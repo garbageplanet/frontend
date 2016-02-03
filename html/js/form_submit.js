@@ -2,33 +2,33 @@ window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJ
 
 // Save garbage marker
 $(function () {
-	$('.form-garbage').on( 'submit', function (event) {
-		var that = this;
-		event.preventDefault();
-		var garbageType = [];
-        var tags = [];
-        var garbageSize = [];
-        var garbageEmbed = [];
-        var garbageTodo = [];
-		var garbageAmount, 
-            lat, 
-            lng, 
-            image_url, 
+	$('.form-garbage').on('submit', function (event) {
+        event.preventDefault();
+		var that = this,
+		    garbageType = [],
+            tags = [],
+            garbageSize = [],
+            garbageEmbed = [],
+            garbageTodo = [],
+		    garbageAmount,
+            lat,
+            lng,
+            image_url,
             note;
 
-        $(this).find('.selectpicker.garbage-type-select option:selected').each(function(index, value) {
+        $(this).find('.selectpicker.garbage-type-select option:selected').each(function (index, value) {
 			garbageType.push($(value).val());
 		});
       
-        $(this).find('.selectpicker.garbage-size-select option:selected').each(function(index, value) {
+        $(this).find('.selectpicker.garbage-size-select option:selected').each(function (index, value) {
 			garbageSize.push($(value).val());
 		});
       
-        $(this).find('.selectpicker.garbage-embed-select option:selected').each(function(index, value) {
+        $(this).find('.selectpicker.garbage-embed-select option:selected').each(function (index, value) {
 			garbageEmbed.push($(value).val());
 		});
       
-        $(this).find('.selectpicker.garbage-todo-select option:selected').each(function(index, value) {
+        $(this).find('.selectpicker.garbage-todo-select option:selected').each(function (index, value) {
 			garbageTodo.push($(value).val());
 		});
 
@@ -54,19 +54,22 @@ $(function () {
                   'lng': lng,
                   'amount': garbageAmount,
                   'types': garbageType.join(),
-                  'size':garbageSize,
-                  'embed':garbageEmbed,
-                  'todo':garbageTodo,
+                  'size': garbageSize,
+                  'embed': garbageEmbed,
+                  'todo': garbageTodo,
                   'image_url': image_url,
-                  'tag':tags.join(),
-                  'note': note
+                  'tag': tags.join(),
+                  'note': note,
+                  'featuretype': "marker_garbage"
               },
               success: function (data) {
                   console.log('success data', data);
                   showAlert("Marker saved successfully!", "success", 1500);
+                
                   if (garbageAmount > 8) {
                       showAlert("That's a lot of trash, we opened a 311 ticket!", "warning", 3000);
-                  };
+                  }
+                
                   sidebar.hide('slow');
                   map.removeLayer(marker);
                   loadGarbageMarkers();
@@ -80,19 +83,19 @@ $(function () {
               }
           })
 		}, 100);
-	})
+	});
 });
 
 // Save cleaning event marker
 $(function () {
 	$('.form-cleaning').on( 'submit', function (event) {
-		var that = this;
-		event.preventDefault();
-        var tags = [];
-        var eventRecurrence = [];
-        var dateTime,
-            lat, 
-            lng;
+      event.preventDefault();
+	  var that = this,
+          tags = [],
+          eventRecurrence = [],
+          dateTime,
+          lat, 
+          lng;
 
         dateTime = $('.date-time-value').val();
         tags = $(this).find('.cleaning-tags').tagsinput('items');
@@ -116,7 +119,8 @@ $(function () {
                   'lng': lng,
                   'date': dateTime,
                   'recurrence': eventRecurrence,
-                  'tag':tags.join()
+                  'tag':tags.join(),
+                  'featuretype': "marker_cleaning"
               },
               success: function (data) {
                   $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
@@ -133,19 +137,19 @@ $(function () {
                   sidebar.hide();
                   map.removeLayer(marker);
               }
-          })
+          });
 		}, 100);
-	})
+	});
 });
 
 // Save polyline / litter
 $(function () {
   $('.form-litter').on( 'submit', function (event) {
-    var that = this;
     event.preventDefault();
-    var litterType = [];
-    var tags = [];
-    var litterAmount, 
+    var that = this,
+        litterType = [],
+        tags = [],
+        litterAmount, 
         latlngs, 
         image_url, 
         length,
@@ -155,7 +159,7 @@ $(function () {
 
     latlngs = $(this).find('.litter-latlngs').val();
 
-    $(this).find('.selectpicker.litter-type-select option:selected').each(function(index, value) {
+    $(this).find('.selectpicker.litter-type-select option:selected').each(function (index, value) {
         litterType.push($(value).val());
     });
         
@@ -190,7 +194,8 @@ $(function () {
               'length': length,
               'wms_url': wms_url,
               'geojson_data': geojson_data,
-              'tag': tags.join()
+              'tag': tags.join(),
+              'featuretype': "polyline_litter"
               // TODO add quantitative amountfields
           },
           success: function (data) {
@@ -206,7 +211,7 @@ $(function () {
               // FIXME remove the feature on error?
               map.removeLayer(polylineLayer);    
           }
-      })
+      });
     }, 200);
   });
 });
@@ -214,10 +219,10 @@ $(function () {
 // Save polygon / area
 $(function () {
   $('.form-area').on( 'submit', function (event) {
-    var that = this;
     event.preventDefault();
-    var tags = [];
-    var latlngs,
+    var that = this,
+        tags = [],
+        latlngs,
         note,
         secret,
         players,
@@ -251,7 +256,8 @@ $(function () {
               'contact': contact,
               'secret': secret,
               'title': title,
-              'tag': tags.join()
+              'tag': tags.join(),
+              'featuretype': "polygon_area"
           },
           success: function (data) {
               console.log('success data', data);
@@ -266,7 +272,7 @@ $(function () {
               // FIXME remove the feature on error?
               map.removeLayer(polygonLayer);
           }
-      })
+      });
     }, 200);
   });
 });
