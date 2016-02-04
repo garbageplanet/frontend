@@ -32,13 +32,17 @@
   <![endif]-->
   
   <!-- Leaflet -->
+  <link rel="stylesheet" href="css/libs/leaflet.css"/>
+  <link rel="stylesheet" href="css/libs/l.geosearch.css"/>
+  
   <script src="js/libs/leaflet_077.js"></script>
   <script src="js/libs/L.hash.js"></script>
-  <link rel="stylesheet" href="css/libs/leaflet.css"/>
   <script src="js/libs/L.zoomCSS.js"></script>
   <script src="js/libs/L.Control.Sidebar-019a.js"></script>
   <script src="js/libs/L.Overpass.Layer.js" defer></script>
   <script src="js/libs/L.Draw.js" defer></script>
+  <script src="js/libs/L.control.geosearch.js"></script>
+  <script src="js/libs/L.geosearch.provider.openstreetmap.js"></script>
   <!-- <script src="js/libs/L.Editable.js" defer></script>  -->   
   <!-- <script src="js/L.ajax.js" defer></script> -->
 
@@ -83,17 +87,27 @@
       <div class="pull-right hidden-xs">
 
         <ul class="nav navbar-nav navbar-right">
-
-          <li class="hidden-xs hidden-sm">
-            <form class="navbar-form" role="search">
-              <div class="input-group">
-                <input class="form-control" placeholder="Search" id="search-term" type="text">
-                <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-fw fa-search"></i></button>
+          
+        <li class="hidden-xs hidden-sm hidden">
+          <form class="navbar-form" role="search">
+            <div class="input-group">
+              <div class="input-group-btn search-filter">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    	<span>Filter</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Address</a></li>
+                      <li class="disabled"><a href="#">Cleaning event</a></li>
+                      <li class="disabled"><a href="#">Tags</a></li>
+                    </ul>
                 </div>
+              <input class="form-control search-query" placeholder="Search" type="text">
+              <div class="input-group-btn">
+                  <button class="btn btn-default btn-search" type="submit"><i class="fa fa-fw fa-search"></i></button>
               </div>
-            </form>
-          </li>
+            </div>
+          </form>
+        </li>
             
         <li class="glome-lnk"><a class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-sign-in"></i></a></li>
 
@@ -244,7 +258,7 @@
                                   placeholder="Add a note about this event"
                                   data-maxlength="140"
                                   data-minlength="10"
-                                  data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"></textarea>
+                                  data-pattern="^[a-zA-Z\d\-_.,?!\|\/:@\s]+$"></textarea>
                           <div class="help-block with-errors"></div>
                       </div>
 
@@ -338,7 +352,11 @@
                         data-width="100%"
                         required
                         multiple >
-                    <option value="" disabled="disabled"></option>
+                    <option value="" disabled="disabled">Size</option>
+                    <option value="large">Too big to carry alone</option>
+                    <option value="medium">Can be picked by hand</option>
+                    <option value="small">Too small to pick by hand</option>
+                    <option value="" disabled="disabled">Type</option>
                     <option value="glass">Glass</option>
                     <option value="bottles">Glass bottles</option>
                     <option value="metal">Metal</option>
@@ -1225,55 +1243,59 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
         <div>
           <div class="btn-group btn-group-justified" role="group">
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Share to Facebook" class="btn btn-facebook btn-round">
-                <span class="fa fa-facebook"></span><span class="hidden">Facebook</span>
-              </button>
+              <a href="#" type="button" title="Share to Facebook" class="btn btn-facebook btn-round btn-share">
+                <span class="fa fa-facebook"></span>
+              </a>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Share to Google+" class="btn btn-google-plus btn-round">
-                <span class="fa fa-google-plus"></span><span class="hidden">Google+</span>
-              </button>
+              <a href="#" type="button" title="Share to Google+" class="btn btn-google-plus btn-round btn-share">
+                <span class="fa fa-google-plus"></span>
+              </a>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Share to Instagram" class="btn btn-round btn-instagram">
-                <span class="fa fa-instagram"></span><span class="hidden">Instagram</span>
-              </button>
+              <a href="#" type="button" title="Share to Instagram" class="btn btn-round btn-instagram btn-share">
+                <span class="fa fa-instagram"></span>
+              </a>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Share to Twitter" class="btn btn-round btn-twitter">
-                <span class="fa fa-twitter"></span><span class="hidden">Twitter</span>
-              </button>
+              <a href="#" type="button" title="Share to Twitter" class="btn btn-round btn-twitter btn-share">
+                <span class="fa fa-twitter"></span>
+              </a>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Share to reddit" class="btn btn-round btn-default">
-                <span class="fa fa-reddit-alien"></span><span class="hidden">Reddit</span>
-              </button>
+              <a href="#" type="button" title="Share to reddit" class="btn btn-round btn-reddit btn-share">
+                <span class="fa fa-reddit-alien"></span>
+              </a>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card card-data col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="card card-scroll card-data col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div><h3>Data</h3></div>
         <div class="feature-data-card">
           <h4>Type of trash</h4>
           <p class="feature-info feature-info-garbage-type"></p>
           <h4>Amount of trash</h4>
           <p class="feature-info feature-info-garbage-amount"></p>
+          <h4>Note</h4>
+          <p class="feature-info feature-info-note"></p>
+          <h4>Todo</h4>
+          <p class="feature-info feature-info-todo"></p>
           <hr>
           <p class="feature-info-confirmed"><strong>0</strong> users have confirmed this report</p>
           <p class="feature-info feature-info-tags">tags</p>
         </div>
       </div>
 
-      <div class="card card-media col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="card card-scroll card-media col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div><h3>Media</h3></div>
 
           <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
 
       </div>
 
-      <div class="card card-track col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="card card-scroll card-track col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div><h3>Track changes</h3></div>
         <div class="feature-track-card">
           <h4>Creation date</h4>
@@ -1428,5 +1450,6 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 <script src="js/uploader.js" defer></script>
 <script src="js/form_submit.js" defer></script>
 <script src="js/draw.js" defer></script>
+<script src="js/search.js" defer></script>
 </body>
 </html>

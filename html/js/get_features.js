@@ -281,8 +281,6 @@ function onGarbageMarkerClick (e) {
             markerRawImage = e.options.ImageUrl,
             markerId = e.options.Id,
             markerCreatedBy = e.options.marked_by,
-            markerSize = e.options.size,
-            markerEmbed = e.options.embed,
             markerNote = e.options.note,
             markerTags = e.options.tag,
             markerTodo = e.options.todo,

@@ -73,32 +73,73 @@ body {
 }
 
 .fa-icon-centered {
-  vertical-align: middle;
   margin-left: -2px;
   margin-top: -2px;
 }
 
-.btn-facebook, .btn-facebook:hover, .btn-facebook:active, .btn-facebook:visited {
-  background-color: rgba( 59, 89, 152, 0.8) !important;
+.btn-facebook {
+  background-color: rgba( 59, 89, 152, 1) !important;
   border-color: rgba( 59, 89, 152, 1) !important;
   color: #FFF;
 }
 
-.btn-google-plus, .btn-google-plus:hover, .btn-google-plus:active, .btn-google-plus:visited {
-  background-color: rgba(221, 75, 57, 0.8) !important;
+.btn-google-plus {
+  background-color: rgba(221, 75, 57, 1) !important;
   border-color: rgba(221, 75, 57, 1) !important;
   color: #FFF;
 }
 
-.btn-twitter, .btn-twitter:hover, .btn-twitter:active, .btn-twitter:visited {
-  background-color: rgba(0, 172, 237, 0.8) !important;
+.btn-twitter {
+  background-color: rgba(0, 172, 237, 1) !important;
   border-color: rgba(0, 172, 237, 1) !important;
   color: #FFF;
 }
 
-.btn-instagram, .btn-instagram:hover, .btn-instagram:active, .btn-instagram:visited {
-  background-color: rgba(18, 86, 136, 0.8) !important;
+.btn-instagram {
+  background-color: rgba(18, 86, 136, 1) !important;
   border-color: rgba(18, 86, 136, 1) !important;
+  color: #FFF;
+}
+
+.btn-reddit {
+  background-color: rgba(128, 128, 128, 1) !important;
+  border-color: rgba(128, 128, 128, 1) !important;
+  color: #FFF;
+}
+
+.btn-facebook span, .btn-twitter span, .btn-instagram span, .btn-reddit span .btn-google-plus span {
+  vertical-align: bottom;
+  color: #FFF;
+}
+
+.btn-facebook:hover, .btn-facebook:active, .btn-facebook:visited {
+  background-color: rgba( 59, 89, 152, 0.8) !important;
+  color: #FFF;
+}
+
+.btn-google-plus:hover, .btn-google-plus:active, .btn-google-plus:visited {
+  background-color: rgba(221, 75, 57, 0.8) !important;
+  color: #FFF;
+} 
+
+.btn-twitter:hover, .btn-twitter:active, .btn-twitter:visited {
+  background-color: rgba(0, 172, 237, 0.8) !important;
+  color: #FFF;
+}
+
+.btn-instagram:hover, .btn-instagram:active, .btn-instagram:visited {
+  background-color: rgba(18, 86, 136, 0.8) !important;
+  color: #FFF;
+}
+
+.btn-instagram:hover, .btn-instagram:active, .btn-instagram:visited {
+  background-color: rgba(18, 86, 136, 0.8) !important;
+  color: #FFF;
+}
+
+.btn-reddit:hover, .btn-reddit:active, .btn-reddit:visited  {
+  background-color: rgba(128, 128, 128, 0.8) !important;
+  border-color: rgba(128, 128, 128, 1) !important;
   color: #FFF;
 }
 
@@ -125,8 +166,14 @@ a.menu-backlink:hover {
   margin: 10px;
 }
 
-.bottombar-content .card-data, .bottombar-content .card-media  {
-  overflow-y: auto;
+.bottombar-content  {
+  overflow: hidden;
+  height: 100%;
+}
+
+.card-scroll {
+    height: auto;
+    overflow-y: scroll;
 }
 
 /* Own modifications to leaflet.css*/

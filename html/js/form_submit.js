@@ -7,8 +7,6 @@ $(function () {
 		var that = this,
 		    garbageType = [],
             tags = [],
-            garbageSize = [],
-            garbageEmbed = [],
             garbageTodo = [],
 		    garbageAmount,
             lat,
@@ -18,14 +16,6 @@ $(function () {
 
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function (index, value) {
 			garbageType.push($(value).val());
-		});
-      
-        $(this).find('.selectpicker.garbage-size-select option:selected').each(function (index, value) {
-			garbageSize.push($(value).val());
-		});
-      
-        $(this).find('.selectpicker.garbage-embed-select option:selected').each(function (index, value) {
-			garbageEmbed.push($(value).val());
 		});
       
         $(this).find('.selectpicker.garbage-todo-select option:selected').each(function (index, value) {
@@ -54,8 +44,6 @@ $(function () {
                   'lng': lng,
                   'amount': garbageAmount,
                   'types': garbageType.join(),
-                  'size': garbageSize,
-                  'embed': garbageEmbed,
                   'todo': garbageTodo,
                   'image_url': image_url,
                   'tag': tags.join(),
@@ -79,7 +67,6 @@ $(function () {
                   console.log(response.status)
                   sidebar.hide();
                   map.removeLayer(marker);
-                  
               }
           })
 		}, 100);
@@ -189,7 +176,7 @@ $(function () {
           data: {
               'latlngs': latlngs.join(),
               'amount': litterAmount,
-              'type': litterType.join(),
+              'types': litterType.join(),
               'image_url': image_url,
               'length': length,
               'wms_url': wms_url,

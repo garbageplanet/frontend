@@ -29,7 +29,7 @@ $('document').ready(function () {
 // Alert mobile phone user (check if this appears on tablets)
 if (L.Browser.mobile) {
     showAlert("Drawing tools are not available on mobile.", "info", 4000);
-};
+}
 
 // Swtch session function
 // TODO add hooks for the mobile menu
@@ -102,7 +102,7 @@ function switchSession(sessionStatus) {
       
     } 
   
-};
+}
 
 // Alerts by lgal http://stackoverflow.com/a/33662720/2842348
 function showAlert(errorMessage, errorType, closeDelay) {
@@ -162,7 +162,7 @@ $(document).ready(function() {
 
 // Display all the select pickers
 $(document).ready(function() {
-  $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 5});
+  $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 6});
 });
 
 // Display the date and time picker and get the data in the cleaning form on change
@@ -218,7 +218,7 @@ function clearBottomPanelContent(){
   $(".feature-info-confirmed strong").text('0');
   $("#feature-info-image").attr("src", "");
   $("#feature-info").find('.feature-image-link').attr("href", "");
-};
+}
 
 // Confirm garbage function
 // TODO bind this to the db
@@ -227,7 +227,7 @@ $('.btn-confirm').on('click', confirmGarbage );
 // Confirmation for garage abd polylines
 function confirmGarbage(obj){
   // TODO make session-dependant and allow once per user per marker
-  if (! localStorage.getItem('token') || ! sessionStorage.getItem('token')){ 
+  if (!localStorage.getItem('token')){ 
     showAlert("You need to login to do that.", "info", 2000);
   }
   
@@ -245,7 +245,7 @@ function confirmGarbage(obj){
           url: api.confirmTrash.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
-              'confirm': counts // ow how to do this?
+              'confirm': counts // TODO how to do this?
           },
           success: function (data) {
               console.log('success data', data);
@@ -256,22 +256,55 @@ function confirmGarbage(obj){
           }
       });
     }, 100);
-};
+}
 
-function editFeature(obj, featureType) {
-    // TODO handle edit shapes with L.Editable (https://github.com/Leaflet/Leaflet.Editable)
-    if(featureType === "garbage"){
-        // load data into the form
-    }
-    if(featureType === "cleaning"){
-        // load data into the form
-    }
-    
-    if(featureType === "litter" || eatureType === "area" ){
-        // do stuff related to both types of shape then do shape-specific actions
-        // NOTE make sure to fix the draw:events in draw.js
-            if(featureType === "litter"){}
-            if(featureType === "area" ){}
-    }
+function shareThisFeature(e, obj) {
+  
+  console.log("object options", obj.options)
+  
+  // we can also directly feed once the marker is clicked in get_features.js, so we have accurate latlng
+  
+  var feature_image_url = $('feature-info').find('feature-image-link').val(),
+      feature_note = $('feature-info').find('feature-info-note').val(),
+      // this doesn't get the actual marker latlngs but should be enough to find the marker
+      // FIXME add hidden latlng field to feature-info
+      feature_link = e.target.baseURI + "?show"; 
+      
+      console.log('marker link', feature_link)
+  
+  if ( $(e.target).hasClass('fa-facebook')) {
+    console.log('fb button click')
+    // <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A//www.garbagepla.net">Share on Facebook</a>
+  }
+  
+  if ($(e.target).hasClass('fa-twitter')) {
+        console.log('fb button click')
 
-};
+  }
+  
+  if ($(e.target).hasClass('fa-instagram')) {
+        console.log('fb button click')
+
+  }
+  
+  if ($(e.target).hasClass('fa-reddit-alien')) {
+        console.log('fb button click')
+
+  }
+  
+  if ($(e.target).hasClass('fa-google-plus')) {
+        console.log('fb button click')
+
+  }
+
+  
+  
+}
+
+$('.btn-share').on('click', function (e, obj) {
+    e.preventDefault;
+    debugger;
+    // console.log("this value: ", e)
+    shareThisFeature(e, obj);
+    console.log("obj content from btn-share click listener", obj);
+});

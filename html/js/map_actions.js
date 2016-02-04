@@ -157,6 +157,7 @@ function onLocalMarkerClick (e) {
 function editFeature (obj) {
   bottombar.hide();
   // TODO preset the values of the clicked marker
+  // TODO handle edit shapes with L.Editable (https://github.com/Leaflet/Leaflet.Editable)
 
   if (obj.options.type === 'marker_garbage'){
     sidebar.show($('#create-garbage-dialog').show().siblings().hide());
