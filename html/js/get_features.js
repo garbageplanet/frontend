@@ -6,17 +6,17 @@ map.on('moveend', function (e) {
     currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
     // console.log("currentViewBounds:", currentViewBounds);
   
-    if (mapZoom >= 10){
+    if (mapZoom >= 10) {
       console.log("mapZoom value from get_feature.js", mapZoom)
       loadGarbageMarkers();
       loadCleaningMarkers();
     }
     
-    if (mapZoom >= 8 && mapZoom <= 17){
+    if (mapZoom >= 8 && mapZoom <= 17) {
         loadLitters();
     }
     
-    if ( mapZoom >= 7 && mapZoom <=15){
+    if (mapZoom >= 7 && mapZoom <=15) {
         loadAreas();  
     }
 });
@@ -30,12 +30,12 @@ function loadGarbageMarkers () {
         type: api.readTrashWithinBounds.method,
         url: api.readTrashWithinBounds.url(currentViewBounds),
         success: function (data) {
-            $(data).each(function(index, obj) {
-                console.log(obj);
+            $(data).each(function (index, obj) {
+                // console.log(obj);
               
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
-                        icon:garbageMarker,
+                        icon: garbageMarker,
                         Id: obj.id,
                         Amount: obj.amount,
                         Types: obj.types,
@@ -50,9 +50,10 @@ function loadGarbageMarkers () {
                         Note: obj.note,
                         FeatureType: obj.featuretype
                     });
-                // TODO add hasLayer() logic here to only add absent markers?
+              
                 garbageLayerGroup.addLayer(marker);
                 map.addLayer(garbageLayerGroup);
+              
                 marker.on('click', function() {
                     onGarbageMarkerClick(marker);
                 });
@@ -285,9 +286,11 @@ function onGarbageMarkerClick (e) {
             markerTags = e.options.tag,
             markerTodo = e.options.todo,
             markerConfirm = e.options.confirm;
+  
+        var markertarget = "https://garbagepla.net#15/"+e.options.Lat+"/"+e.options.Lng+"?show"; //create a url to the marker
       
-        // TODO push the rest of the data to the bottombar
-    
+        // TODO push the data to the bottombar
+        
         // Put a placeholder if the media is empty
         if (! markerRawImage ) {
           $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
@@ -308,9 +311,13 @@ function onGarbageMarkerClick (e) {
           $('#feature-info').find('.feature-image').attr('src', markerImage);
           $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
         };
-
+        
         $('#feature-info').find('.feature-info-garbage-type').html(markerTypes.join(", "));
         $("#feature-info-created-by").html(markerCreatedBy);
+        // push the url to the href of share buttons
+        $('#feature-info').find('.btn-share').each(function() {
+          $(this).attr("data-url", markertarget);
+        });
         // $('#feature-info').find('.feature-info-confirmed p strong').html(markerConfirmed);
       
         // Show the bottombar with content
@@ -341,10 +348,10 @@ function onGarbageMarkerClick (e) {
             });
         });
         // TODO move this logic outside this function and call it with a function and the marker obj as param
-        $('#feature-info').find('.btn-edit').click(function (e, obj) {
-            console.log('edit data on id', markerId);
-            editFeature(obj);
+        $('#feature-info').find('.btn-edit').click(function (e) {
             e.preventDefault();
+            console.log('edit data on id', markerId);
+            editFeature(e);
         });
       
         // amount mapping

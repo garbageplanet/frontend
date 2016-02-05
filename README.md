@@ -18,7 +18,7 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 
 ### Mobile
 - [ ] layers control fix
-- [ ] map control placement on mobile
+- [ ] map controls placement on mobile
 - [ ] mobile menu session hooks
 - [ ] shift layout up when keyboard is shown
 - [ ] panToOffset() behavior for landscape vs portrait orientation
@@ -50,8 +50,7 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 - [ ] allow users to upload geotagged images, bypassing marker creation form
 - [ ] implement bootstrap v4
 - [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
-- [ ] localized calendat, tag cloud and gallery in the bottom bar
-- [ ] upload images to the garbageplanet [imgur.com](https://api.imgur.com/oauth2) account 
+- [ ] localized calendar, tag cloud and gallery in the bottom bar
 
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 

@@ -35,7 +35,7 @@ function onMapClick(e) {
   $('.marker-lat').val(marker._latlng.lat);
   $('.marker-lng').val(marker._latlng.lng);
 
-  if ($(window).height() >= 768) {
+  if ($(window).height() >= 500) {
     map.panToOffset(marker._latlng, _getHorizontalOffset());
   }  
       

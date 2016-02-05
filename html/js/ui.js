@@ -218,6 +218,9 @@ function clearBottomPanelContent(){
   $(".feature-info-confirmed strong").text('0');
   $("#feature-info-image").attr("src", "");
   $("#feature-info").find('.feature-image-link').attr("href", "");
+  $('#feature-info').find('.btn-share').each(function() {
+    $(this).attr("data-url", "");
+  });
 }
 
 // Confirm garbage function
@@ -226,6 +229,7 @@ $('.btn-confirm').on('click', confirmGarbage );
 
 // Confirmation for garage abd polylines
 function confirmGarbage(obj){
+  // TODO Finish this
   // TODO make session-dependant and allow once per user per marker
   if (!localStorage.getItem('token')){ 
     showAlert("You need to login to do that.", "info", 2000);
@@ -258,53 +262,68 @@ function confirmGarbage(obj){
     }, 100);
 }
 
-function shareThisFeature(e, obj) {
+function shareThisFeature(e) {
   
-  console.log("object options", obj.options)
+  console.log("object e", e);
+    
+  var feature_image_url = $('feature-info').find('feature-image-link').val();
+  var feature_note = $('feature-info').find('feature-info-note').val();
   
-  // we can also directly feed once the marker is clicked in get_features.js, so we have accurate latlng
   
-  var feature_image_url = $('feature-info').find('feature-image-link').val(),
-      feature_note = $('feature-info').find('feature-info-note').val(),
-      // this doesn't get the actual marker latlngs but should be enough to find the marker
-      // FIXME add hidden latlng field to feature-info
-      feature_link = e.target.baseURI + "?show"; 
+  if ($(e.target).hasClass('fa-facebook')) {
+    console.log('fb button clicked');
+    
+    if (typeof feature_note !== 'undefined') {
+      var feature_note_fb = feature_note.replace(/ /g, "%20");
+    }
       
-      console.log('marker link', feature_link)
-  
-  if ( $(e.target).hasClass('fa-facebook')) {
-    console.log('fb button click')
-    // <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A//www.garbagepla.net">Share on Facebook</a>
+    var parsedurl = $(e.target).parent().attr("data-url").replace(/\//g, "%2F").replace(/:/g, "%3A");
+    console.log("value of the parsed url", parsedurl);
+    
+    
+    if (feature_note_fb) {
+      var  share_link_fb = "https://www.facebook.com/dialog/feed?app_id=109950712685962&amp;display=page&amp;description=" + feature_note_fb + "&amp;link=" + parsedurl + "&amp;picture=" + feature_image_url + "&amp;name=Garbagepla.net&amp;redirect_uri=http://www.garbagepla.net";
+    }
+    
+    if (!feature_note_fb || typeof feature_note_fb == 'undefined') {
+      var  share_link_fb = "https://www.facebook.com/dialog/feed?app_id=109950712685962&amp;display=page&amp;link=" + parsedurl + "&amp;picture=" + feature_image_url + "&amp;name=Garbagepla.net&amp;redirect_uri=http://www.garbagepla.net";
+    }
+
+    $(e.target).parent().attr('href', share_link_fb).trigger('click');
+    
   }
   
   if ($(e.target).hasClass('fa-twitter')) {
-        console.log('fb button click')
+    console.log('tw button click');
+    // https://twitter.com/home?status=http%3A//www.garbagepla.net/%23/12/60.1885/25.1616
+    // also see https://developers.facebook.com/docs/sharing/reference/feed-dialog/v2.5
+    // add note
 
+
+    
+    
+    
+    
   }
   
   if ($(e.target).hasClass('fa-instagram')) {
-        console.log('fb button click')
-
+        console.log('fb button click');
   }
   
   if ($(e.target).hasClass('fa-reddit-alien')) {
-        console.log('fb button click')
-
+        console.log('fb button click');
   }
   
   if ($(e.target).hasClass('fa-google-plus')) {
-        console.log('fb button click')
-
+    // https://plus.google.com/share?url=http%3A//www.garbagepla.net/%23/12/60.1885/25.1616
+        console.log('fb button click');
   }
-
-  
   
 }
 
-$('.btn-share').on('click', function (e, obj) {
+$('.btn-share').on('click', function (e) {
     e.preventDefault;
-    debugger;
     // console.log("this value: ", e)
-    shareThisFeature(e, obj);
-    console.log("obj content from btn-share click listener", obj);
+    shareThisFeature(e);
+    // console.log("obj content from btn-share click listener", e);
 });
