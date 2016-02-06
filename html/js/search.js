@@ -15,7 +15,7 @@ $(document).ready(function() {
   var searchBar = new L.GeoSearch.Provider.OpenStreetMap(),
       query = $('input .search-query').val();
 
-  $(',btn-search').on('click', function () {
+  $('.btn-search').on('click', function () {
 
     searchBar.GetLocations( query, function ( data ) {
       // in data are your results with x, y, label and bounds (currently availabel for google maps provider only)

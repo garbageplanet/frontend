@@ -287,18 +287,17 @@ function onGarbageMarkerClick (e) {
             markerTodo = e.options.todo,
             markerConfirm = e.options.confirm;
   
-        var markertarget = "https://garbagepla.net#15/"+e.options.Lat+"/"+e.options.Lng+"?show"; //create a url to the marker
+        var markertarget = "http://garbagepla.net/#15/"+e.options.Lat+"/"+e.options.Lng+""; //create a url to the marker add a parameter at the end to open the bottombar
       
-        // TODO push the data to the bottombar
+        // TODO push all the data to the bottombar
         
         // Put a placeholder if the media is empty
-        if (! markerRawImage ) {
+        if (!markerRawImage) {
           $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
           $('#feature-info').find('.feature-image-link').attr('href', '');
         };
-        console.log("value of rawimage", markerRawImage);
         
-        if ( markerRawImage ) {
+        if (markerRawImage) {
           // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
           String.prototype.insert = function (index, string) {
               if (index > 0)
@@ -307,7 +306,6 @@ function onGarbageMarkerClick (e) {
               return string + this;
               };
           markerImage = markerRawImage.insert(26, "t");
-          console.log("value of parsed image", markerImage);
           $('#feature-info').find('.feature-image').attr('src', markerImage);
           $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
         };
@@ -347,7 +345,7 @@ function onGarbageMarkerClick (e) {
                 }
             });
         });
-        // TODO move this logic outside this function and call it with a function and the marker obj as param
+        // TODO pass the object to editFeature()
         $('#feature-info').find('.btn-edit').click(function (e) {
             e.preventDefault();
             console.log('edit data on id', markerId);

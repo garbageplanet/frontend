@@ -33,7 +33,6 @@
   
   <!-- Leaflet -->
   <link rel="stylesheet" href="css/libs/leaflet.css"/>
-  <link rel="stylesheet" href="css/libs/l.geosearch.css"/>
   
   <script src="js/libs/leaflet_077.js"></script>
   <script src="js/libs/L.hash.js"></script>
@@ -109,7 +108,7 @@
           </form>
         </li>
             
-        <li class="glome-lnk"><a class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-sign-in"></i></a></li>
+        <li class="glome-lnk"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-pulse fa-sign-in"></i></a></li>
 
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -1253,8 +1252,8 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
               </a>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" type="button" title="Share to Instagram" class="btn btn-round btn-instagram btn-share">
-                <span class="fa fa-instagram"></span>
+              <a data-url="" href="#" target="_blank" type="button" title="Share to Tumblr" class="btn btn-round btn-tumblr btn-share">
+                <span class="fa fa-tumblr"></span>
               </a>
             </div>
             <div class="btn-group btn-group-lg" role="group">
@@ -1269,43 +1268,78 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
             </div>
           </div>
         </div>
-      </div>
+      </div> <!-- Actions -->
 
       <div class="card card-scroll card-data col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-12">
         <div><h3>Data</h3></div>
         <div class="feature-data-card">
-          <h4>Type of trash</h4>
-          <p class="feature-info feature-info-garbage-type"></p>
-          <h4>Amount of trash</h4>
-          <p class="feature-info feature-info-garbage-amount"></p>
-          <h4>Note</h4>
-          <p class="feature-info feature-info-note"></p>
-          <h4>Todo</h4>
-          <p class="feature-info feature-info-todo"></p>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <span class="pull-left">type: </span>
+              <span class="feature-info feature-info-garbage-type pull-left"></span>
+            </div>
+          </div>
+          
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">amount: </span>
+            <span class="feature-info feature-info-garbage-amount pull-left"></span>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">todo:</span>
+            <span class="feature-info feature-info-todo pull-left"></span>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">note: <span class="feature-info feature-info-note pull-left"></span></span>
+            </div>
+          </div>
+
           <hr>
           <p class="feature-info-confirmed"><strong>0</strong> users have confirmed this report</p>
           <p class="feature-info feature-info-tags">tags</p>
         </div>
-      </div>
+      </div> <!-- Data -->
 
       <div class="card card-scroll card-media col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-12">
         <div><h3>Media</h3></div>
 
           <a class="feature-image-link" href="" target="_blank"><img src="" class="feature-image img-responsive"></a>
 
-      </div>
+      </div> <!-- Media -->
 
       <div class="card card-scroll card-track col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-12">
         <div><h3>Track changes</h3></div>
-        <div class="feature-track-card">
-          <h4>Creation date</h4>
-          <p class="feature-info-creation-time"></p>
-          <h4>Created by</h4>
-          <p class="feature-info-created-by"></p>
-          <h4>Modified by</h4>
-          <p class="feature-info-modified-by"></p>
-        </div>
-      </div>
+        
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <span class="pull-left">creation date: </span>
+              <span class="feature-info feature-info-gcreation-time pull-left"></span>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">created by: </span>
+            <span class="feature-info feature-info-create-by pull-left"></span>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">modified by:</span>
+            <span class="feature-info feature-info-modified-by pull-left"></span>
+            </div>
+          </div>       
+        
+      </div> <!-- Track -->
 
     </div><!-- Feature info -->
       
@@ -1429,7 +1463,6 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
   
 </div><!-- Alerts -->
 
-
 <script type="text/javascript" src="js/libs/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/libs/moment.js"></script>
 <script src="js/libs/bootstrap-tagsinput.js"></script>
@@ -1447,6 +1480,7 @@ Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> and contrib
 <script src="js/ui.js"></script>
 <script src="js/authenticate.js"></script>
 <script src="js/map_actions.js"></script>
+<script src="js/share.js" defer></script>
 <script src="js/uploader.js" defer></script>
 <script src="js/form_submit.js" defer></script>
 <script src="js/draw.js" defer></script>

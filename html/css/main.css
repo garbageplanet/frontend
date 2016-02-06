@@ -95,7 +95,7 @@ body {
   color: #FFF;
 }
 
-.btn-instagram {
+.btn-tumblr {
   background-color: rgba(18, 86, 136, 1) !important;
   border-color: rgba(18, 86, 136, 1) !important;
   color: #FFF;
@@ -107,7 +107,7 @@ body {
   color: #FFF;
 }
 
-.btn-facebook span, .btn-twitter span, .btn-instagram span, .btn-reddit span, .btn-google-plus span {
+.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span {
   vertical-align: bottom;
   color: #FFF;
 }
@@ -120,19 +120,14 @@ body {
 .btn-google-plus:hover, .btn-google-plus:active, .btn-google-plus:visited {
   background-color: rgba(221, 75, 57, 0.8) !important;
   color: #FFF;
-} 
+}
 
 .btn-twitter:hover, .btn-twitter:active, .btn-twitter:visited {
   background-color: rgba(0, 172, 237, 0.8) !important;
   color: #FFF;
 }
 
-.btn-instagram:hover, .btn-instagram:active, .btn-instagram:visited {
-  background-color: rgba(18, 86, 136, 0.8) !important;
-  color: #FFF;
-}
-
-.btn-instagram:hover, .btn-instagram:active, .btn-instagram:visited {
+.btn-tumblr:hover, .btn-tumblr:active, .btn-tumblr:visited {
   background-color: rgba(18, 86, 136, 0.8) !important;
   color: #FFF;
 }
@@ -147,6 +142,20 @@ body {
 .sidebar-content, .bottombar-content {
   display: none;
 }
+
+.card div.panel.panel-default {
+  
+  margin-bottom: 2px !important;
+  margin-top: 2px !important;
+  border: 0 !important;
+  box-shadow: 0 1px 1px rgba(0,0,0,0);
+}
+.card .panel .panel-body {
+  
+  padding: 2px !important;
+
+}
+
 
 /* Style the menu link in the sidebar */
 a.menu-backlink {
@@ -302,7 +311,7 @@ textarea {
  border-radius: 0 !important;
 }
 
-h1,h2,h3,h4, .lead, p, input, textarea, select, button, .page-name, .navbar .nav-pills > li > a {
+h1, h2, h3, h4, span, .lead, p, input, textarea, select, button, .page-name, .navbar .nav-pills > li > a {
   font-family: 'Work Sans', sans-serif;
   font-weight: 200
 }
@@ -413,4 +422,49 @@ textarea {
 .leaflet-draw-edit-edit.visible, .leaflet-draw-edit-remove.visible  {
   display:inherit !important;
   margin-right: 0px;
+}
+
+/* Pulsing icon by Louis Lin https://github.com/l-lin/font-awesome-animation MIT */
+
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+
+  50% {
+    -webkit-transform: scale(0.75);
+    transform: scale(0.75);
+  }
+
+  100% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+
+  50% {
+    -webkit-transform: scale(0.75);
+    -ms-transform: scale(0.75);
+    transform: scale(0.75);
+  }
+
+  100% {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+
+.fa-pulse {
+  -webkit-animation: pulse 1.2s linear infinite;
+  animation: pulse 1.2s linear infinite;
 }

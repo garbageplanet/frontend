@@ -46,7 +46,7 @@ function switchSession(sessionStatus) {
       $('#user-info-lnk').remove();
       $('#user-tools').dropdown();
       $('.user-email, .user-glome-key').removeClass('hidden');
-      $('.glome-lnk', '.btn-glome-mobile').removeClass('hidden');
+      $(".glome-lnk, .btn-glome-mobile").removeClass('hidden');
     }
   
     if (sessionStatus == "login") {
@@ -54,29 +54,29 @@ function switchSession(sessionStatus) {
       $("#session-status a").text("Logout").attr("href","#");
       $("#session-status a").attr("id","btn-logout");
       $("#session-status a").removeClass('dropdown-link');
-      $("#session-status").on('click', '#btn-logout', function(){ switchSession("logout"); logout(); });
+      $("#session-status").on('click', '#btn-logout', function() { switchSession("logout"); logout(); });
       $("#user-tools").prepend('<li id="user-info-lnk"><a class="dropdown-link" href="#account-info">User info</a></li>');
       $("#user-info-lnk a").on("click", function(e) {
                                       e.preventDefault();
                                       $('#sidebar').scrollTop = 0;
                                       $(this.hash).fadeIn().siblings().hide();
-                                      sidebar.show();                          
+                                      sidebar.show();                         
                                     });
       $("#user-tools").dropdown();
-      $('.glome-lnk', '.btn-glome-mobile').addClass('hidden');
+      $(".glome-lnk, .btn-glome-mobile").addClass('hidden');
       
       // get the data from localStorage or sessionStorage and clear the other
       
-      if ( classicSessionType === "true" ) {
+      if (classicSessionType === "true") {
         
         $('#account-info').find('.user-email').removeClass('hidden');
-        $('#account-info').find('.user-name').text( localStorage.getItem('username') );
-        $('#account-info').find('.user-email p').html( localStorage.getItem('useremail') );
+        $('#account-info').find('.user-name').text(localStorage.getItem('username'));
+        $('#account-info').find('.user-email p').html(localStorage.getItem('useremail'));
         $('#account-info').find('.user-glome-key').addClass('hidden');
-        $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
+        $('#account-info').find('.user-id').html(localStorage.getItem('userid'));
         $('.sidebar-content').hide();
         
-        if ( !sidebar.isVisible() ) {
+        if (!sidebar.isVisible()) {
             sidebar.show();
         }
           
@@ -84,7 +84,7 @@ function switchSession(sessionStatus) {
         
       }
       
-      if  ( classicSessionType === "false" ) {
+      if  (classicSessionType === "false") {
         
         $('#account-info').find('.user-name').text('anon (⌐■_■)');
         $('#account-info').find('.user-email').addClass('hidden');
@@ -92,7 +92,7 @@ function switchSession(sessionStatus) {
         $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
         $('.sidebar-content').hide();
           
-        if ( !sidebar.isVisible() ) {
+        if (!sidebar.isVisible()) {
             sidebar.show();
         }
           
@@ -212,7 +212,7 @@ sidebar.on('hide', function () {
 });
 
 // Empty the bottom panel on call of this function
-function clearBottomPanelContent(){
+function clearBottomPanelContent() {
   //TODO ad methods depending on the type of object clicked
   $(".feature-info").empty();
   $(".feature-info-confirmed strong").text('0');
@@ -261,69 +261,3 @@ function confirmGarbage(obj){
       });
     }, 100);
 }
-
-function shareThisFeature(e) {
-  
-  console.log("object e", e);
-    
-  var feature_image_url = $('feature-info').find('feature-image-link').val();
-  var feature_note = $('feature-info').find('feature-info-note').val();
-  
-  
-  if ($(e.target).hasClass('fa-facebook')) {
-    console.log('fb button clicked');
-    
-    if (typeof feature_note !== 'undefined') {
-      var feature_note_fb = feature_note.replace(/ /g, "%20");
-    }
-      
-    var parsedurl = $(e.target).parent().attr("data-url").replace(/\//g, "%2F").replace(/:/g, "%3A");
-    console.log("value of the parsed url", parsedurl);
-    
-    
-    if (feature_note_fb) {
-      var  share_link_fb = "https://www.facebook.com/dialog/feed?app_id=109950712685962&amp;display=page&amp;description=" + feature_note_fb + "&amp;link=" + parsedurl + "&amp;picture=" + feature_image_url + "&amp;name=Garbagepla.net&amp;redirect_uri=http://www.garbagepla.net";
-    }
-    
-    if (!feature_note_fb || typeof feature_note_fb == 'undefined') {
-      var  share_link_fb = "https://www.facebook.com/dialog/feed?app_id=109950712685962&amp;display=page&amp;link=" + parsedurl + "&amp;picture=" + feature_image_url + "&amp;name=Garbagepla.net&amp;redirect_uri=http://www.garbagepla.net";
-    }
-
-    $(e.target).parent().attr('href', share_link_fb).trigger('click');
-    
-  }
-  
-  if ($(e.target).hasClass('fa-twitter')) {
-    console.log('tw button click');
-    // https://twitter.com/home?status=http%3A//www.garbagepla.net/%23/12/60.1885/25.1616
-    // also see https://developers.facebook.com/docs/sharing/reference/feed-dialog/v2.5
-    // add note
-
-
-    
-    
-    
-    
-  }
-  
-  if ($(e.target).hasClass('fa-instagram')) {
-        console.log('fb button click');
-  }
-  
-  if ($(e.target).hasClass('fa-reddit-alien')) {
-        console.log('fb button click');
-  }
-  
-  if ($(e.target).hasClass('fa-google-plus')) {
-    // https://plus.google.com/share?url=http%3A//www.garbagepla.net/%23/12/60.1885/25.1616
-        console.log('fb button click');
-  }
-  
-}
-
-$('.btn-share').on('click', function (e) {
-    e.preventDefault;
-    // console.log("this value: ", e)
-    shareThisFeature(e);
-    // console.log("obj content from btn-share click listener", e);
-});
