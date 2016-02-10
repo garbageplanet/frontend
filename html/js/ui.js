@@ -1,3 +1,4 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // TODO check if the localStorage has token, if yes log the user in with data
 /*
 $('document').ready(function () {
@@ -49,7 +50,7 @@ function switchSession(sessionStatus) {
       $(".glome-lnk, .btn-glome-mobile").removeClass('hidden');
     }
   
-    if (sessionStatus == "login") {
+    if (sessionStatus === "login") {
       
       $("#session-status a").text("Logout").attr("href","#");
       $("#session-status a").attr("id","btn-logout");
@@ -107,18 +108,18 @@ function switchSession(sessionStatus) {
 // Alerts by lgal http://stackoverflow.com/a/33662720/2842348
 function showAlert(errorMessage, errorType, closeDelay) {
 
-    // default to alert-info; other options include success, warning, danger
-    var errorType = errorType || "info";
-
-    // create the alert div
-       var alert = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
+    // default to alert-info; other options include success, warning, danger        
+    if (!errorType || typeof errorType === 'undefined' ) {  var errorType = "info"; }
+        
+    var alert = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
     // add the alert div to top of alerts-container, use append() to add to bottom
     $(".alert-container").prepend(alert);
 
     // if closeDelay was passed - set a timeout to close the alert
-    if (closeDelay)
-        window.setTimeout(function() { alert.alert("close") }, closeDelay);     
-};
+    if (closeDelay) {
+        window.setTimeout(function() { alert.alert("close"); }, closeDelay);   
+    }
+}
 
 // Activate dropdown menu links
 $(document).ready(function() {
@@ -221,14 +222,14 @@ function clearBottomPanelContent() {
   $('#feature-info').find('.btn-share').each(function() {
     $(this).attr("data-url", "");
   });
-}
+};
 
 // Confirm garbage function
 // TODO bind this to the db
-$('.btn-confirm').on('click', confirmGarbage );
+/*$('.btn-confirm').on('click', confirmGarbage );*/
 
 // Confirmation for garage abd polylines
-function confirmGarbage(obj){
+/*function confirmGarbage(obj){
   // TODO Finish this
   // TODO make session-dependant and allow once per user per marker
   if (!localStorage.getItem('token')){ 
@@ -260,4 +261,4 @@ function confirmGarbage(obj){
           }
       });
     }, 100);
-}
+};*/

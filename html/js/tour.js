@@ -1,3 +1,4 @@
+/*jshint maxerr: 1000*/
 // Instance the tour
 var tour = new Tour({
   name: "intro-tour",
@@ -119,4 +120,4 @@ $(document).ready(function() {
 
 $('.start-tour').on('click', function() {
     setTimeout(startTour, 2000)
-    });
+});

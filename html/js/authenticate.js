@@ -2,24 +2,7 @@
 // author: villeglad 6.11.2015
 // modified by adriennn
 // modified by feri
-
-// Why do these calls sit inside an anon function?
-$(function () {
-    // logout, there are two places where user can click to logout ('button' and 'a')
-    $(".btn-logout").on('click', logout);
-  
-    // login
-    $(".btn-login").click(login);
-
-    // register
-    $("#registration-form").submit(registerUser);
-
-    // glome go
-    $(".btn-glome-go").click(glomego);
-
-    // TODO send glome key
-    $(".btn-glome-key-send").click(sendGlomeKey);
-});
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 
 //login function
 function login(e) {
@@ -230,3 +213,20 @@ function sendGlomeKey(e) {
         }
     });
 }
+
+$(function () {
+    // logout, there are two places where user can click to logout ('button' and 'a')
+    $(".btn-logout").on('click', logout);
+  
+    // login
+    $(".btn-login").click(login);
+
+    // register
+    $("#registration-form").submit(registerUser);
+
+    // glome go
+    $(".btn-glome-go").click(glomego);
+
+    // TODO send glome key
+    $(".btn-glome-key-send").click(sendGlomeKey);
+});

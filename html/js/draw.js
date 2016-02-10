@@ -1,3 +1,4 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // All code related to drawing shapes
 editableLayerGroup = new L.FeatureGroup();
 
@@ -24,7 +25,7 @@ map.on('draw:drawstart', function (e) {
 });
 
 // Stop click listeners when editing and deleting features
-map.on('draw:editstart', function (e) { 
+map.on('draw:editstart', function (e) {
   map.off('click', onMapClick);
   $('.btn-draw').addClass('disabled');
   // pathLayerGroup.off('click', onPathClick);
@@ -61,18 +62,16 @@ map.on('draw:deletestop', function (e) {
 // This needs to be called in this fashion else it messes up onMapClick's behavior
 map.on('draw:drawstop', function () {
   map.off('click', onMapClick);
-  map.on('click', onMapClick)
+  map.on('click', onMapClick);
   $('.btn-draw').removeClass('disabled');
 });
 
 // What to do once a shape is created
 map.on('draw:created', function (e) {
-    // var distanceStr, areaStr;
-    var type = e.layerType;
   
-    if (type === 'polyline') {
-      var polylineLayer = e.layer,
-          latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
+    var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
+  
+    if (e.layerType === 'polyline') {
 
       map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
       //FIXME get the length inside $('.polyline-length')
@@ -89,7 +88,6 @@ map.on('draw:created', function (e) {
       $('.form-litter .litter-latlngs').val(latlngs);
       console.log("layer's latlngs", latlngs);
   
-      
       // Range slider for amount of garbage on polyline
       $('.litter-range-input').on('change', function () {
           $('.litter-range-value').html(this.value);
@@ -97,68 +95,66 @@ map.on('draw:created', function (e) {
           var selectedValue = parseInt($(this).val(), 10);
             switch (selectedValue) {
               case 1:
-                  polylineLayer.setStyle({color: "green"});
+                  e.layer.setStyle({color: "green"});
                   break;
               case 2:
-                  polylineLayer.setStyle({color: "limegreen"});
+                  e.layer.setStyle({color: "limegreen"});
                   break;
               case 3:
-                  polylineLayer.setStyle({color: "yellow"});
+                  e.layer.setStyle({color: "yellow"});
                   break;
               case 4:
-                  polylineLayer.setStyle({color: "gold"});
+                  e.layer.setStyle({color: "gold"});
                   break;
               case 5:
-                  polylineLayer.setStyle({color: "orange"});
+                  e.layer.setStyle({color: "orange"});
                   break;
               case 6:
-                  polylineLayer.setStyle({color: "orangered"});
+                  e.layer.setStyle({color: "orangered"});
                   break;
               case 7:
-                  polylineLayer.setStyle({color: "red"});
+                  e.layer.setStyle({color: "red"});
                   break;
               case 8:
-                  polylineLayer.setStyle({color: "darkred"});
+                  e.layer.setStyle({color: "darkred"});
                   break;
               case 9:
-                  polylineLayer.setStyle({color: "purple"});
+                  e.layer.setStyle({color: "purple"});
                   break;
               case 10:
-                  polylineLayer.setStyle({color: "black"});
+                  e.layer.setStyle({color: "black"});
                   break;
               default:
-                  polylineLayer.resetStyle();
+                  e.layer.resetStyle();
                   break;
               }
       });
 
-      editableLayerGroup.addLayer(polylineLayer)
+      editableLayerGroup.addLayer(e.layer);
       map.addLayer(editableLayerGroup);
       
       $('.btn-cancel').on('click', function () {
         $('.leaflet-draw-edit-edit').removeClass('visible');
         $('.leaflet-draw-edit-remove').removeClass('visible');
 
-        map.removeLayer(polylineLayer);
+        map.removeLayer(e.layer);
       });
       
     }
   
-    if( type === 'polygon') {
-      var polygonLayer = e.layer;
+    if( e.layerType === 'polygon') {
       map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
       // push the latlngs to the form
-      var latlngs = polygonLayer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
-      $('.form-area .area-latlngs').val( latlngs );
+      $('.form-area .area-latlngs').val(latlngs);
       
-      editableLayerGroup.addLayer(polygonLayer);
+      editableLayerGroup.addLayer(e.layer);
       map.addLayer(editableLayerGroup);
       
       $('.btn-cancel').on('click', function () {
         $('.leaflet-draw-edit-edit').removeClass('visible');
         $('.leaflet-draw-edit-remove').removeClass('visible');
 
-        map.removeLayer(polygonLayer);
+        map.removeLayer(e.layer);
       });
     }
     
@@ -176,11 +172,11 @@ map.on('draw:edited', function (e) {
     layers.eachLayer(function (layer) {
       
       var type = e.layerType,
-      layer = e.layer;
+          currentlayer = e.layer;
       
-      if( type === 'polyline') { /*save to backend*/ }
+      if ( type === 'polyline') { return "polyline";/*save to backend*/ }
       
-      if( type === 'polygon') { /*save to backend*/ }
+      if ( type === 'polygon') { return "polygon";/*save to backend*/ }
       
     });
   

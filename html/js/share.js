@@ -1,3 +1,4 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // FUTURE ADAPT https://github.com/bradvin/social-share-urls
 // TODO catch the obj from the marker instead of getting the data from the bottom panel
 function shareThisFeature(e) {

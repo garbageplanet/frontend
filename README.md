@@ -6,7 +6,7 @@ Repository for the [garbagepla.net](http://www.garbagepla.net) frontend. This re
 
 ### How to get started? ###
 
-Just open /html/index.html in your browser.
+Just open /html/index.html in your browser. If you want to build for distribution install gulp with the dependancies (sorry, no package.json yet) cd to to the root dir and type `gulp`.
 
 ### Contributing
 
@@ -29,27 +29,24 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 - [ ] image upload restriction if user is not logged in
 
 #### Bottom panel
-- [ ] implement templates for the contents of the bottom panel
+- [ ] add *-ms-* column sizes
+- [ ] implement templating
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
-- [ ] editing system for map features with [L.Editable](https://github.com/Leaflet/Leaflet.Editable)
+- [ ] editing system for shapes with [L.Editable](https://github.com/Leaflet/Leaflet.Editable)
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 
 ### General coding, coding style, code review
+- [ ] fix dev/production paths to match package.json info
+- [ ] fix css issue when building with gulp
 - [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates);
 - [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
 - [ ] make the code overall less redundant (loading forms elements and building lists for `<select>` )
-- [ ] implement .getScript() for lazy loading scripts that are not required globally
-
-#### Making the code more maintainable
-- [ ] create build script with minification (closure compiler) for deployment
-- [ ] cycle current public keys and add new one during build process
 
 #### Future prospects
 - [ ] allow users to upload geotagged images, bypassing marker creation form
-- [ ] implement bootstrap v4
-- [ ] implement [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
+- [ ] move to bootstrap v4 with [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
 - [ ] localized calendar, tag cloud and gallery in the bottom bar
 
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).

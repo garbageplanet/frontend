@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'trashbag';
-	src:url('fonts/trashbag.eot?jvr8q7');
-	src:url('fonts/trashbag.eot?#iefixjvr8q7') format('embedded-opentype'),
-		url('fonts/trashbag.ttf?jvr8q7') format('truetype'),
-		url('fonts/trashbag.woff?jvr8q7') format('woff'),
-		url('fonts/trashbag.svg?jvr8q7#trashbag') format('svg');
+	src:url('fonts/Trashbag/trashbag.eot?jvr8q7');
+	src:url('fonts/Trashbag/trashbag.eot?#iefixjvr8q7') format('embedded-opentype'),
+		url('fonts/Trashbag/trashbag.ttf?jvr8q7') format('truetype'),
+		url('fonts/Trashbag/trashbag.woff?jvr8q7') format('woff'),
+		url('fonts/Trashbag/trashbag.svg?jvr8q7#trashbag') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

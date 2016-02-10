@@ -5,6 +5,7 @@
 var api = {
   // Backend
   server: 'http://dev.garbagepla.net:8080/api',
+  // server: 'http://gp.local:8080/api',
 
   // API entry points
   /* User */
@@ -167,5 +168,5 @@ var api = {
     url: function (id) {
       return api.readArea.url() + '/' + id;
     }
-  },
+  }
 };

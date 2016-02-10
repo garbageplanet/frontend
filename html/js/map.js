@@ -1,50 +1,18 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Set the map
 var map = L.map('map', { zoomControl: false, attributionControl: false });
 
 var hash = new L.Hash(map);
 
-// Creating attributions dynamically (GPLv2 author: humitos@github https://github.com/humitos/osm-pois)
-var attribution = 'Data &#169; <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> and Contributors';
-
-var tileLayerData = {
-    std: {
-        name: 'Basic',
-        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    },
-    mapbox_od: {
-        name: 'Outdoors',
-        url: 'https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
-        attribution: 'Tiles <a href="http://mapbox.com/" target="_blank">MapBox</a>'
-    },
-    mapbox_sat: {
-        name: 'Satellite',
-        url: 'https://api.tiles.mapbox.com/v4/adriennn.nej0l93m/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
-        attribution: 'Tiles <a href="http://mapbox.com/" target="_blank">MapBox</a>'
-    }
-};
-
-
-var tileLayers = {};
-for (tile in tileLayerData) {
-    var tileAttribution;
-    var subdomains = tileLayerData[tile].subdomains ? tileLayerData[tile].subdomains : 'abc';
-        if (tileLayerData[tile].attribution) {
-            tileAttribution = tileLayerData[tile].attribution + ' &mdash; ' + attribution;
-        }
-        else tileAttribution = attribution;
-            tileLayers[tileLayerData[tile].name] = L.tileLayer(
-            tileLayerData[tile].url,
-            {attribution: tileAttribution, subdomains: subdomains}
-        )
-}
-
-tileLayers['Outdoors'].addTo(map);
-// end of GPLv2 by humitos@github
+// Setup simple tilelayer
+L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ', 
+    {maxZoom: 20}
+           ).addTo(map);
 
 // Locate the user
 map.locate({setView: true, maxZoom: 15});
 
-function onLocationError(e) { 
+function onLocationError(e) {
   showAlert("Couldn't find your position.", "warning", 4000);
 }
 
@@ -59,10 +27,10 @@ var bottombar = L.control.sidebar('bottombar', { position: 'bottom', closebutton
 map.addControl(bottombar);
 
 // Make the layer groups and add them to the map
-garbageLayerGroup = new L.LayerGroup();
-areaLayerGroup = new L.FeatureGroup();
-pathLayerGroup = new L.FeatureGroup();
-cleaningLayerGroup = new L.LayerGroup();
+var garbageLayerGroup = new L.LayerGroup(),
+    areaLayerGroup = new L.FeatureGroup(),
+    pathLayerGroup = new L.FeatureGroup(),
+    cleaningLayerGroup = new L.LayerGroup();
 
 map.addLayer(garbageLayerGroup, cleaningLayerGroup, pathLayerGroup, areaLayerGroup);
 
@@ -78,7 +46,7 @@ map.addControl(L.control.zoom({position: 'topleft'}));
 
 // Add the layer control
 // FIXME Layer control toggle bugs on mobile
-L.control.layers(tileLayers, overlayGroups).setPosition('topleft').addTo(map);
+L.control.layers(overlayGroups).setPosition('topleft').addTo(map);
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-centered'></span>");
@@ -90,32 +58,32 @@ new L.control.scale({metric: true, imperial: false}).addTo(map);
 map.doubleClickZoom.disable();
 
 // Store zoom
-map.on('zoomend', function (e){
+map.on('zoomend', function (e) {
   mapZoom = e.target.getZoom();
   
-  if (mapZoom < 10) { 
+  if (mapZoom < 10) {
     showAlert("Zoom in closer to create markers", "info", 1200);
-    }
+  }
   
 });
 
 // Default marker types and set the marker classes
 var genericMarker = L.divIcon({
     className: 'map-marker marker-color-gray marker-generic',
-    iconSize: [30,30],
-    html:'<i class="fa fa-fw"></i>'
+    iconSize: [30, 30],
+    html: '<i class="fa fa-fw"></i>'
 });
 
 var garbageMarker = L.divIcon({
     className: 'map-marker marker-garbage',
-    iconSize: [30,30],
-    html:'<i class="fa fa-fw"></i>'
+    iconSize: [30, 30],
+    html: '<i class="fa fa-fw"></i>'
 });
 
 var cleaningMarker = L.divIcon({
     className: 'map-marker marker-cleaning',
-    iconSize: [30,30],
-    html:'<i class="fa fa-fw"></i>'
+    iconSize: [30, 30],
+    html: '<i class="fa fa-fw"></i>'
 });
 
 ///////////////////////////////

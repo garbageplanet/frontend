@@ -1,10 +1,10 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Custom L.geosearch control in the top panel
 // FIXME the a elements cannot catch the clicks in the navbar
 
-$(document).ready(function() {
+$(document).ready(function () {
   
   $('.search-filter').find('a').on('click', function (e) {
-        debugger;
 
     e.preventDefault();
     var filter = $(this).text();
@@ -13,17 +13,16 @@ $(document).ready(function() {
   });
   
   var searchBar = new L.GeoSearch.Provider.OpenStreetMap(),
-      query = $('input .search-query').val();
+    query = $('input .search-query').val();
 
   $('.btn-search').on('click', function () {
 
-    searchBar.GetLocations( query, function ( data ) {
+    searchBar.GetLocations( query, function (data) {
       // in data are your results with x, y, label and bounds (currently availabel for google maps provider only)
       
       //TOOD add results to <ul><li> and add onclick events
       // if (filter === 'value') {}
-      
-    });    
+    });
     
   });
   

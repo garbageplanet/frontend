@@ -1,3 +1,4 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 //MapToOffset//////////////////////////////////////////////////////////
 //See license.md in this repo Copyright 2013 Code for America//////////
 L.Map.prototype.panToOffset = function (latlng, offset, options) {
@@ -5,7 +6,7 @@ L.Map.prototype.panToOffset = function (latlng, offset, options) {
         y = this.latLngToContainerPoint(latlng).y - offset[1],
         point = this.containerPointToLatLng([x, y]);
   return this.setView(point, this._zoom, { pan: options });
-}
+};
 
 // Adapted functions
 function _getVerticalOffset() {
@@ -28,7 +29,7 @@ function _getHorizontalOffset() {
 function onMapClick(e) {
   if (!sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open')  && !$('.leaflet-control-layers').hasClass('.leaflet-control-layers-expanded')) {
     marker = L.marker(e.latlng, {
-      icon:genericMarker,
+      icon: genericMarker,
       draggable: true
       }).on('click', onLocalMarkerClick).addTo(map);
     
@@ -37,7 +38,7 @@ function onMapClick(e) {
 
   if ($(window).height() >= 500) {
     map.panToOffset(marker._latlng, _getHorizontalOffset());
-  }  
+  } 
       
   $('.sidebar-content').hide();
   $('#sidebar').scrollTop = 0;

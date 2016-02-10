@@ -1,3 +1,4 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Image upload to Imgur
 // author: xr@github
 
