@@ -4,6 +4,7 @@
  */
 var api = {
   // Backend
+  // TODO the server urls should sit in .env
   server: 'http://dev.garbagepla.net:8080/api',
   // server: 'http://gp.local:8080/api',
 
@@ -129,7 +130,7 @@ var api = {
   readLitter: {
     method: 'GET',
     url: function () {
-      return api.server + '/litter';
+      return api.server + '/litters';
     }
   },
   deleteLitter: {
@@ -160,7 +161,7 @@ var api = {
   readArea: {
     method: 'GET',
     url: function () {
-      return api.server + '/area';
+      return api.server + '/areas';
     }
   },
   deleteArea: {

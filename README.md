@@ -18,10 +18,9 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 
 ### Mobile
 - [ ] layers control fix
-- [ ] map controls placement on mobile
 - [ ] mobile menu session hooks
 - [ ] shift layout up when keyboard is shown
-- [ ] panToOffset() behavior for landscape vs portrait orientation
+- [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
 
 ### Side panel
 - [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)
@@ -29,8 +28,6 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 - [ ] image upload restriction if user is not logged in
 
 #### Bottom panel
-- [ ] add *-ms-* column sizes
-- [ ] implement templating
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
@@ -38,14 +35,10 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 
 ### General coding, coding style, code review
-- [ ] fix dev/production paths to match package.json info
-- [ ] fix css issue when building with gulp
 - [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates);
-- [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
 - [ ] make the code overall less redundant (loading forms elements and building lists for `<select>` )
 
 #### Future prospects
-- [ ] allow users to upload geotagged images, bypassing marker creation form
 - [ ] move to bootstrap v4 with [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel
 - [ ] localized calendar, tag cloud and gallery in the bottom bar
 

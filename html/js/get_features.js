@@ -3,10 +3,8 @@
 map.on('moveend', function (e) {
   console.log("map was moved");
   var bounds = map.getBounds();
-  // console.log("leaflet map bounds object:", bounds);
-  //  renamed bounds to currentViewBounds
-  currentViewBounds = bounds._northEast.lat + ', ' + bounds._northEast.lng + ', ' + bounds._southWest.lat + ', ' + bounds._southWest.lng;
-  // console.log("currentViewBounds:", currentViewBounds);
+  currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
+  console.log("currentViewBounds:", currentViewBounds);
 
   if (mapZoom >= 8) {
     console.log("mapZoom value from get_feature.js", mapZoom);
@@ -596,41 +594,40 @@ function onLitterClick (e) {
 
     // amount mapping
     switch (litterAmount) {
-        case 0:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
-            break;
-        case 1:
-            $('#feature-info').find('.feature-info-garbage-amount').html('You are seeing ghosts');
-            break;
-        case 2:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Here and there');
-            break;
-        case 3:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Quite some');
-            break;
-        case 4:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Already too much');
-            break;
-        case 5:
-            $('#feature-info').find('.feature-info-garbage-amount').html('What happened here?');
-            break;
-        case 6:
-            $('#feature-info').find('.feature-info-garbage-amount').html('This is getting out of hand');
-            break;
-        case 7:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Dude...');
-            break;
-        case 8:
-            $('#feature-info').find('.feature-info-garbage-amount').html('What the what?');
-            break;
-        case 9:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
-            break;
-        case 10:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky, lok at...');
-            break;
-        default:
-            $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
-            break;
+      case 0:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
+        break;
+      case 1:
+        $('#feature-info').find('.feature-info-garbage-amount').html('You are seeing ghosts');
+        break;
+      case 2:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Here and there');
+        break;
+      case 3:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Quite some');
+        break;
+      case 4:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Already too much');
+        break;
+      case 5:
+        $('#feature-info').find('.feature-info-garbage-amount').html('What happened here?');
+        break;
+      case 6:
+        $('#feature-info').find('.feature-info-garbage-amount').html('This is getting out of hand');
+        break;
+      case 7:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Dude...');
+        break;
+      case 8:
+        $('#feature-info').find('.feature-info-garbage-amount').html('What the what?');
+        break;
+      case 9:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
+        break;
+      case 10:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky');
+        break;
+      default:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
     }
 };

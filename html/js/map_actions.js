@@ -11,15 +11,19 @@ L.Map.prototype.panToOffset = function (latlng, offset, options) {
 // Adapted functions
 function _getVerticalOffset() {
   var vOffset = [0, 0];
+  
   vOffset[1] = - $(window).height() / 4;
   vOffset[0] = 0;
+  
   return vOffset;
 }
 
 function _getHorizontalOffset() {
   var hOffset = [0, 0];
-  hOffset[0] = - $(window).height() / 4;
+  
+  hOffset[0] = - $(window).width() / 5;
   hOffset[1] = 0;
+  
   return hOffset;
 }
 //////////////////////////////////////////////////////////////////////
@@ -36,7 +40,7 @@ function onMapClick(e) {
   $('.marker-lat').val(marker._latlng.lat);
   $('.marker-lng').val(marker._latlng.lng);
 
-  if ($(window).height() >= 500) {
+  if ($(window).width() >= 567) {
     map.panToOffset(marker._latlng, _getHorizontalOffset());
   } 
       

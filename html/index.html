@@ -18,13 +18,15 @@
   <meta property="og:image" content="http://dev.garbagepla.net/images/og_image.png"/>
   <meta property="og:description" content="Garbagepla.net is an online platform that aims at putting garbage back on the map."/>
 
-  <!-- Stylesheets -->
   <!-- inject:head:css:fonts -->
   <!-- endinject -->
+  
   <!-- inject:head:css:leaflet -->
   <!-- endinject -->
+  
   <!-- inject:head:css:bootstrap -->
   <!-- endinject -->
+  
   <!-- inject:head:css:app -->
   <!-- endinject -->
   <link rel="stylesheet" type="text/css" href="css/font-awesome-4.5.0.css" >
@@ -40,9 +42,8 @@
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/map.css">
   <link rel="stylesheet" type="text/css" href="css/markers.css">
-  <!-- Jquery and bootstrap -->
-  <!-- inject:head:jquery -->
-  <!-- endinject -->
+
+
   <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
   <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
@@ -52,9 +53,8 @@
   <script type="text/javascript" src="js/libs/bootstrap-validator-0.9.0.js"></script>
   <script type="text/javascript" src="js/libs/jquery.ui.widget.js"></script>
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
-  <!-- Leaflet -->
-  <!-- inject:head:leaflet -->
-  <!-- endinject -->
+
+>
   <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
   <script type="text/javascript" src="js/libs/L.hash.js"></script>
   <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
@@ -119,7 +119,6 @@
               <li class="disabled"><a class="" href="#">Garbage hotspots</a></li>
               <li class="divider"></li>
               <li><a class="btn-locate" href="#">Locate me</a></li>
-              <li class="disabled"><a class="" href="#">Add geotagged image</a></li>
             </ul>
           </li>
 
@@ -172,7 +171,7 @@
     </div>
   </div>
     <div class="sidebar-content" id="create-marker-dialog">
-        <h2 class="actions-panel">Action for this location
+        <h2 class="actions-panel hidden-sm hidden-xs">Action for this location
         </h2>
 
       <ul class="nav nav-pills nav-stacked">
@@ -886,10 +885,10 @@
                     Create a new account.
                 </h2>
                 <p class="lead">
-                    Registering with an email allows you to create cleaning events.
+                    Registering with an email allows you to create game tiles.
                  </p>
                  <p>By creating an account, you agree to our <a class="sidebar-link" href="#user-agreement">Terms of service</a> and
-                    <a class="sidebar-link" href="#privacy-policy">Privacy Policy</a>. Using an email to register can help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a> if you forget them.
+                    <a class="sidebar-link" href="#privacy-policy">Privacy Policy</a>. Using an email to register can help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a>.
                 </p>
             </div>
             <!-- Registration form -->
@@ -902,7 +901,6 @@
                            id="register-name"
                            class="form-control"
                            placeholder="Username (min 4 characters)"
-                           data-error="Pick another username"
                            data-minlength="4"
                            required>
                     <div class="help-block with-errors"></div>
@@ -912,12 +910,10 @@
                            class="form-control"
                            placeholder="Email address"
                            id="register-email"
-                           data-minlength="6"
-                           data-error="Email invalid">
+                           data-minlength="6">
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group form-group-lg">
-
                         <input id="register-password"
                                type="password"
                                class="form-control"
@@ -926,7 +922,17 @@
                                required>
                         <div class="help-block with-errors"></div>
                 </div>
-
+                <div class="form-group form-group-lg">
+                        <input id="register-password-confirm"
+                               type="password"
+                               data-match="#register-password"
+                               class="form-control"
+                               placeholder="Repeat password"
+                               data-minlength="6"
+                               data-match-error="Don't match"
+                               required>
+                        <div class="help-block with-errors"></div>
+                </div>
                 <div class="btn-group btn-group-justified"
                      role="group" >
                     <div class="btn-group btn-group-lg" role="group">
@@ -1170,7 +1176,7 @@
 
       <div class="bottombar-content" id="feature-info">
 
-      <div class="card card-actions col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-12">
+      <div class="card card-actions col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
         <div><h3>Actions</h3></div>
         <br>
         <div>
@@ -1234,7 +1240,7 @@
         </div>
       </div> <!-- Actions -->
 
-      <div class="card card-scroll card-data col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-12">
+      <div class="card card-scroll card-data col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
         <div><h3>Data</h3></div>
         <div class="feature-data-card">
 
@@ -1272,14 +1278,14 @@
         </div>
       </div> <!-- Data -->
 
-      <div class="card card-scroll card-media col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-12">
+      <div class="card card-scroll card-media col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
         <div><h3>Media</h3></div>
 
           <a class="feature-image-link" href="" target="_blank"><img src="" alt="feature image" class="feature-image img-responsive"></a>
 
       </div> <!-- Media -->
 
-      <div class="card card-scroll card-track col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-12">
+      <div class="card card-scroll card-track col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
         <div><h3>Track changes</h3></div>
 
           <div class="panel panel-default">
@@ -1426,6 +1432,11 @@
   </div>
 
 </div><!-- Alerts -->
+<!-- inject:body:jquery -->
+<!-- endinject -->
+  
+<!-- inject:body:leaflet -->
+<!-- endinject -->
 
 <!-- inject:body:app -->
 <!-- endinject -->
