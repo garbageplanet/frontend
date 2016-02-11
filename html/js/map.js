@@ -4,10 +4,15 @@ var map = L.map('map', { zoomControl: false, attributionControl: false });
 
 var hash = new L.Hash(map);
 
-// Setup simple tilelayer
-L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ', 
-    {maxZoom: 20}
-           ).addTo(map);
+// Base layer
+var baselayer = {
+    "Mapbox Outdoors": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ', 
+    {maxZoom: 20}),
+    "Mapbox Satellite": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.nej0l93m/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ', 
+    {maxZoom: 20})
+};
+
+baselayer['Mapbox Outdoors'].addTo(map);
 
 // Locate the user
 map.locate({setView: true, maxZoom: 15});
@@ -46,7 +51,7 @@ map.addControl(L.control.zoom({position: 'topleft'}));
 
 // Add the layer control
 // FIXME Layer control toggle bugs on mobile
-L.control.layers(overlayGroups).setPosition('topleft').addTo(map);
+L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-centered'></span>");

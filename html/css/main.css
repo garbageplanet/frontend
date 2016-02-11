@@ -134,7 +134,7 @@ body {
   color: #FFF;
 }
 
-/* hide all the panel content by default */
+/* hide all the bottom panel content by default */
 .sidebar-content, .bottombar-content {
   display: none;
 }
@@ -150,6 +150,15 @@ body {
   
   padding: 2px !important;
 
+}
+
+/* Add badges */
+.badge-notify{
+  color: #FFF;
+   background: #000;
+   position:absolute;
+   top: -5px;
+   right: 5px;
 }
 
 
@@ -176,10 +185,10 @@ a.menu-backlink:hover {
   height: 100%;
 }
 
-.card-scroll {
+/*.card-scroll {
     height: auto;
     overflow-y: scroll;
-}
+}*/
 
 /* Own modifications to leaflet.css*/
 .leaflet-control-zoom-in,
@@ -187,6 +196,12 @@ a.menu-backlink:hover {
 .lealfet-bar,
 .lealfet-control {
 	border: 0px;
+}
+
+.leaflet-control-layers-close .close {
+  position: absolute;
+  top: -5px;
+  right: -10px;
 }
 
 .leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {

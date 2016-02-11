@@ -18,9 +18,8 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 
 ### Mobile
 - [ ] layers control fix
-- [ ] mobile menu session hooks
 - [ ] shift layout up when keyboard is shown
-- [ ] [fullscreen](http://www.html5rocks.com/en/mobile/fullscreen/) mobile view
+- [ ] select element with bootstrap-mobileSelect
 
 ### Side panel
 - [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)

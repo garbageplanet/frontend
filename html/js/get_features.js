@@ -266,7 +266,6 @@ function loadLitters () {
   });
 }
 
-
 // onClick behavior for saved garbage markers
 function onGarbageMarkerClick (e) {
     console.log("Garbage marker clicked");
@@ -357,40 +356,40 @@ function onGarbageMarkerClick (e) {
         // amount mapping
         switch (markerAmount) {
             case 0:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Are you sure about that?');
                 break;
             case 1:
-                $('#feature-info').find('.feature-info-garbage-amount').html('You are seeing ghosts');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' You are seeing ghosts');
                 break;
             case 2:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Here and there');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Here and there');
                 break;
             case 3:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Quite some');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Quite some');
                 break;
             case 4:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Already too much');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Already too much');
                 break;
             case 5:
-                $('#feature-info').find('.feature-info-garbage-amount').html('What happened here?');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' What happened here?');
                 break;
             case 6:
-                $('#feature-info').find('.feature-info-garbage-amount').html('This is getting out of hand');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' This is getting out of hand');
                 break;
             case 7:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Dude...');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Dude...');
                 break;
             case 8:
-                $('#feature-info').find('.feature-info-garbage-amount').html('What the what?');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' What the what?');
                 break;
             case 9:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Cant touch this');
                 break;
             case 10:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky, look at...');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Oh my God Becky, look at...');
                 break;
             default:
-                $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
+                $('#feature-info').find('.feature-info-garbage-amount').html(' Undefined');
                 break;
         }
 }

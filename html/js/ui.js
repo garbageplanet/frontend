@@ -27,10 +27,36 @@ $('document').ready(function () {
   }
 });
 */
-// Alert mobile phone user (check if this appears on tablets)
-if (L.Browser.mobile) {
+
+// Go fullscreen on mobile and add warnings
+$(document).ready(function() {
+
+  if (L.Browser.mobile)  {
+     
     showAlert("Drawing tools are not available on mobile.", "info", 4000);
-}
+    $('.draw-link').addClass('disabled');
+    
+    var html = document.documentElement;
+
+    map.on('drag', fullScreen(html));
+
+    function fullScreen(element) {
+      
+      if(element.requestFullScreen) {
+        
+        element.requestFullScreen();
+        
+      } else if(element.webkitRequestFullScreen ) {
+        
+        element.webkitRequestFullScreen();
+        
+      } else if(element.mozRequestFullScreen) {
+        
+        element.mozRequestFullScreen();
+      }
+    }
+  }
+});
 
 // Swtch session function
 // TODO add hooks for the mobile menu
@@ -44,10 +70,10 @@ function switchSession(sessionStatus) {
       $('#session-status a').text('Login').attr("href","#user-login-dialog");
       $('#session-status a').attr("id","");
       $('#session-status a').addClass('dropdown-link');
-      $('#user-info-lnk').remove();
+      $('#user-info-link').remove();
       $('#user-tools').dropdown();
       $('.user-email, .user-glome-key').removeClass('hidden');
-      $(".glome-lnk, .btn-glome-mobile").removeClass('hidden');
+      $(".glome-link").removeClass('hidden');
     }
   
     if (sessionStatus === "login") {
@@ -56,15 +82,15 @@ function switchSession(sessionStatus) {
       $("#session-status a").attr("id","btn-logout");
       $("#session-status a").removeClass('dropdown-link');
       $("#session-status").on('click', '#btn-logout', function() { switchSession("logout"); logout(); });
-      $("#user-tools").prepend('<li id="user-info-lnk"><a class="dropdown-link" href="#account-info">User info</a></li>');
-      $("#user-info-lnk a").on("click", function(e) {
+      $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="#account-info">User info</a></li>');
+      $("#user-info-link a").on("click", function(e) {
                                       e.preventDefault();
                                       $('#sidebar').scrollTop = 0;
                                       $(this.hash).fadeIn().siblings().hide();
                                       sidebar.show();                         
                                     });
       $("#user-tools").dropdown();
-      $(".glome-lnk, .btn-glome-mobile").addClass('hidden');
+      $(".glome-link").addClass('hidden');
       
       // get the data from localStorage or sessionStorage and clear the other
       
@@ -199,6 +225,12 @@ $('.menu-backlink').click(function(e) {
 $(".btn-cancel").on('click', function (){
     sidebar.hide();
     map.removeLayer(marker);
+});
+
+// Close the layers control menu n mobile
+$('.leaflet-control-layers-close').on('click', function(e){
+  e.preventDefault;
+  $('.leaflet-control-layers').removeClass('lealfet-control-layers-expanded');
 });
 
 // Empty the sidebar on hide, reset accordion and reset scroll

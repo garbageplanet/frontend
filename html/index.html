@@ -104,7 +104,7 @@
           </form>
         </li>
 
-        <li class="glome-lnk"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
+        <li class="glome-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
 
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -158,7 +158,7 @@
 
   <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-key"></span> Login</a>
 
-  <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go btn-glome-mobile"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
+  <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go glome-link"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
 
   <a href="#search-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-search"></span> Search</a>
 
@@ -177,8 +177,8 @@
       <ul class="nav nav-pills nav-stacked">
         <li role="presentation"><a class="sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
         <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
-        <li role="presentation"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
-        <li role="presentation"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
+        <li role="presentation draw-link"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
+        <li role="presentation draw-link"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
         <li class="disabled hidden" role="presentation"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
 
       </ul>
@@ -1200,11 +1200,13 @@
               <button type="button" title="Confirm there is garbage here." class="btn btn-round btn-info btn-confirm">
                 <span class="fa fa-check-square"></span><span class="hidden">Confirm</span>
               </button>
+              <span class="badge badge-notify badge-notify-confirm">0</span>
             </div>
             <div class="btn-group btn-group-lg" role="group">
               <button type="button" title="Watch this marker." class="btn btn-round btn-default">
                 <span class="fa fa-heart"></span><span class="hidden">Favorite</span>
               </button>
+              <span class="badge badge-notify badge-notify-watch">0</span>
             </div>
           </div>
         </div>
@@ -1271,10 +1273,6 @@
             <span class="pull-left">note: <span class="feature-info feature-info-note pull-left"></span></span>
             </div>
           </div>
-
-          <hr>
-          <p class="feature-info-confirmed"><strong>0</strong> users have confirmed this report</p>
-          <p class="feature-info feature-info-tags">tags</p>
         </div>
       </div> <!-- Data -->
 
@@ -1315,7 +1313,7 @@
 
       <div class="bottombar-content" id="cleaning-info">
 
-      <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div><h3>Actions</h3></div>
         <br>
         <div>
@@ -1353,7 +1351,7 @@
             <div class="btn-group btn-group-lg" role="group">
               <button type="button" title="Say you will join." class="btn btn-round btn-success">
                 <span class="fa fa-check-square"></span><span class="hidden">Join</span>
-              </button>
+              </button><span class="badge badge-notify badge-notify-join">0</span>
             </div>
             <div class="btn-group btn-group-lg" role="group">
               <button type="button" title="Watch this event." class="btn btn-round btn-default">
@@ -1364,7 +1362,7 @@
         </div>
       </div>
 
-      <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div> <h3>Info</h3></div>
         <div class="cleaning-info-card">
           <h4>Location</h4>
@@ -1377,24 +1375,22 @@
 
       </div>
 
-      <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div><h3>Details</h3></div>
         <div class="cleaning-details-card">
           <h4>Created by</h4>
           <p class="cleaning-info cleaning-info-created-by"></p>
-          <h4>Participants</h4>
-          <p class="cleaning-info cleaning-info-participant"><strong>0</strong> users have said they would attend</p>
           <h4>Note</h4>
           <p class="cleaning-info cleaning-info-note"></p>
         </div>
       </div>
 
-      <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="card col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div><h3>Access minimap</h3></div>
         <div class="cleaning-minimap-card"></div>
       </div>
 
-    </div><!-- Cleaning event info -->
+      </div><!-- Cleaning event info -->
 
       <div class="bottombar-content" id="calendar" ></div><!-- Calendar -->
 

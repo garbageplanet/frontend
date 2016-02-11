@@ -8412,6 +8412,8 @@ L.Control.Layers = L.Control.extend({
 			link.title = 'Layers';
 
 			if (L.Browser.touch) {
+              
+            
 				L.DomEvent
 				    .on(link, 'click', L.DomEvent.stop)
 				    .on(link, 'click', this._expand, this);
@@ -8429,7 +8431,10 @@ L.Control.Layers = L.Control.extend({
 		} else {
 			this._expand();
 		}
-
+         
+        this._closeButton = L.DomUtil.create('div', className +'-close', form);
+        this._closeButton.innerHTML = '<a class="hidden-xl hidden-lg"><i class="fa fa-fw fa-close close"></i></a>';            
+      
 		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
 		this._separator = L.DomUtil.create('div', className + '-separator', form);
 		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
