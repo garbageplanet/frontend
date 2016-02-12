@@ -10,15 +10,14 @@ Just open /html/index.html in your browser. If you want to build for distributio
 
 ### Contributing
 
-We don't have a build process yet, so for the moment, if you add a new feature/function, you need to manually check that it doesn't break the user interface's main functions (check the console). When adding a new js function to the code, add a comment about what it does.
+When adding a new js function to the code, add a comment about what it does. Build with gulp to test.
 
 If you want to cnotribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### TODO
 
 ### Mobile
-- [ ] shift layout up when keyboard is shown
-- [ ] `select` elements with bootstrap-mobileSelect
+- [ ] fix the close layers control button reloads page bug
 
 ### Side panel
 - [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)
@@ -29,7 +28,6 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 - [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
-- [ ] editing system for shapes with [L.Editable](https://github.com/Leaflet/Leaflet.Editable)
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 
 ### General coding, coding style, code review

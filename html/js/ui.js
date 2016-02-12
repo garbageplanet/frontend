@@ -30,21 +30,21 @@ $('document').ready(function () {
 // Hack the address bar away on mobile
 function hideAddressBar() {
   
-  if (L.Browser.mobile || L.Browser.touch)  {
+  if (L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android)  {
 
-    if(!window.location.hash) {
+/*    if(!window.location.hash) {
       
       if(document.height <= window.outerHeight + 10) {
         
         document.body.style.height = (window.outerHeight + 50) +'px';
         setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
         
-      } else {
+      } else {*/
         
-      setTimeout( function(){ window.scrollTo(0, 1); }, 0 ); 
+      setTimeout( function(){ window.scrollTo(0, 1); }, 100 ); 
         
-      }
-    }
+  /*    }
+    }*/
   }
 } 
  

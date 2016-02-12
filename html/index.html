@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" manifest="garbageplanet.appcache">
+<html lang="en" manifest="./garbageplanet.appcache">
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
   <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, maptile, map marker, environmental monitoring, environment, trash, reporting">
-  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="copyright" content="&copy; Garbagepla.net"/>
   <meta property="og:site_name" content="Garbagepla.net platform"/>
@@ -56,7 +54,6 @@
   <script type="text/javascript" src="js/libs/jquery.ui.widget.js"></script>
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
 
->
   <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
   <script type="text/javascript" src="js/libs/L.hash.js"></script>
   <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
@@ -71,13 +68,11 @@
 </head>
 <body>
 
-<div id="map" class="map-container"></div>
-
 <div id="topbar" class="topbar-container container">
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#"><span class="icon-trashbag"></span><strong class="page-name">Garbagepla.net </strong><kbd class="text-uppercase">0.0.1</kbd></a>
+        <a class="navbar-brand" href="#"><span class="icon-trashbag"></span><strong class="page-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.0.1</kbd></a>
         <a type="button" class="btn btn-default navbar-toggle sidebar-link" href="#menu-dialog" id="btn-mobile-menu"><span class="fa fa-fw fa-bars"></span></a>
       </div> <!-- Title and mobile menu button -->
 
@@ -142,6 +137,8 @@
     </div>
   </nav>
 </div><!-- Contents of the top bar -->
+  
+<div id="map" class="map-container"></div>
 
 <div id="sidebar" class="sidebar-container">
 

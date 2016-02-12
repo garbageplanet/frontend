@@ -17,12 +17,55 @@ body {
 }
 
 @media (max-width: 767px) {
+  
   .alert-container .alert {
     position: relative;
     z-index: 5000;
     top: 0px;
     width: 100%;
   }
+  
+  .map-container { 
+    top:30px;
+  }
+  
+  /* From 30px navbar bootstrap build */
+  .navbar-fixed-bottom .dropdown .dropdown-menu {
+    top: auto;
+    margin-bottom: 2px;
+  }
+
+  .navbar {
+    position: relative;
+    min-height: 30px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+  }
+
+  .navbar-brand {
+    float: left;
+    padding: 5px 5px;
+    font-size: 18px;
+    line-height: 20px;
+    height: 20px;
+  }
+
+  .navbar-nav {
+    margin: 5px -10px;
+  }
+  .navbar-nav > li > a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 20px;
+  }
+
+  .navbar-toggle {
+    margin-right: 15px;
+    padding: 5px 5px;
+    margin-top: -2px;
+    margin-bottom: -2px;
+  }
+  
 }
 
 @media (min-width: 768px) {
@@ -198,6 +241,7 @@ a.menu-backlink:hover {
 	border: 0px;
 }
 
+/* Place the close button in the layers-control div on mobile */
 .btn-close-layers-control {
   position: absolute;
   top: -25px;
@@ -205,7 +249,10 @@ a.menu-backlink:hover {
   border: 0;
 }
 
-
+/* Remove borders from the collapsed menu button on mobile */
+.navbar-toggle {
+  border: 0 !important;
+}
 
 
 .leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {
