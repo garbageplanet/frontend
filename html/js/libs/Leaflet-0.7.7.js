@@ -8432,13 +8432,19 @@ L.Control.Layers = L.Control.extend({
 			this._expand();
 		}
          
-        this._closeButton = L.DomUtil.create('div', className +'-close', form);
-        this._closeButton.innerHTML = '<a class="hidden-xl hidden-lg"><i class="fa fa-fw fa-close close"></i></a>';            
+        if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina) {
+            var ownCloseButton = this.ownCloseButton = L.DomUtil.create('div', className + '-close');
+            this.ownCloseButton = L.DomUtil.create('div', className + '-close', form);
+            this.ownCloseButton.innerHTML = '<button class="btn btn-default btn-round btn-close-layers-control hidden-lg hidden-xl"><span class="fa fa-fw fa-close close"></span></button>';    
+        
+            L.DomEvent.on(this.ownCloseButton, 'click', this._collapse, this);
+        
+        } 
       
 		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
 		this._separator = L.DomUtil.create('div', className + '-separator', form);
 		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
-
+        
 		container.appendChild(form);
 	},
 

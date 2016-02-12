@@ -17,9 +17,8 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 ### TODO
 
 ### Mobile
-- [ ] layers control fix
 - [ ] shift layout up when keyboard is shown
-- [ ] select element with bootstrap-mobileSelect
+- [ ] `select` elements with bootstrap-mobileSelect
 
 ### Side panel
 - [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)

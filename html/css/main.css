@@ -198,11 +198,15 @@ a.menu-backlink:hover {
 	border: 0px;
 }
 
-.leaflet-control-layers-close .close {
+.btn-close-layers-control {
   position: absolute;
-  top: -5px;
-  right: -10px;
+  top: -25px;
+  right: -25px;
+  border: 0;
 }
+
+
+
 
 .leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {
 	width: 40px;

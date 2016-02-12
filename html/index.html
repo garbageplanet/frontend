@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest="garbageplanet.appcache">
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
@@ -17,7 +18,8 @@
   <meta property="og:title" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment"/>
   <meta property="og:image" content="http://dev.garbagepla.net/images/og_image.png"/>
   <meta property="og:description" content="Garbagepla.net is an online platform that aims at putting garbage back on the map."/>
-
+  <!-- Mobile web app manifest -->
+  <link rel="manifest" href="manifest.json">
   <!-- inject:head:css:fonts -->
   <!-- endinject -->
   
@@ -104,13 +106,11 @@
           </form>
         </li>
 
-        <li class="glome-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
+        <li class="session-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
 
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <span class="fa fa-fw fa-cogs"></span>
-              <span class="hidden title-collapsed">Map tools</span>
-            </a>
+            <span class="fa fa-fw fa-cogs"></span><span class="hidden title-collapsed">Map tools</span></a>
             <ul class="dropdown-menu" id="map-tools">
               <li class="disabled"><a class="bottombar-link" href="#cleaning-calendar">Cleaning calendar</a></li>
               <li class="divider"></li>
@@ -124,9 +124,7 @@
 
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <span class="fa fa-fw fa-user"></span>
-              <span class="hidden title-collapsed">User tools</span>
-            </a>
+            <span class="fa fa-fw fa-user"></span><span class="hidden title-collapsed">User tools</span></a>
             <ul class="dropdown-menu" id="user-tools">
               <li id="session-status"><a class="dropdown-link" href="#user-login-dialog">Login</a></li>
               <li class="divider"></li>
@@ -154,11 +152,11 @@
             <br>
             <br>
 
-  <a href="#create-account-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-user"></span> Register</a>
+  <a href="#create-account-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-user"></span> Register</a>
 
-  <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-key"></span> Login</a>
+  <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-key"></span> Login</a>
 
-  <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go glome-link"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
+  <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go session-status"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
 
   <a href="#search-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-search"></span> Search</a>
 

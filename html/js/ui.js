@@ -27,6 +27,29 @@ $('document').ready(function () {
   }
 });
 */
+// Hack the address bar away on mobile
+function hideAddressBar() {
+  
+  if (L.Browser.mobile || L.Browser.touch)  {
+
+    if(!window.location.hash) {
+      
+      if(document.height <= window.outerHeight + 10) {
+        
+        document.body.style.height = (window.outerHeight + 50) +'px';
+        setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+        
+      } else {
+        
+      setTimeout( function(){ window.scrollTo(0, 1); }, 0 ); 
+        
+      }
+    }
+  }
+} 
+ 
+window.addEventListener("load", hideAddressBar );
+window.addEventListener("orientationchange", hideAddressBar );
 
 // Go fullscreen on mobile and add warnings
 $(document).ready(function() {
@@ -73,7 +96,7 @@ function switchSession(sessionStatus) {
       $('#user-info-link').remove();
       $('#user-tools').dropdown();
       $('.user-email, .user-glome-key').removeClass('hidden');
-      $(".glome-link").removeClass('hidden');
+      $(".session-link").removeClass('hidden');
     }
   
     if (sessionStatus === "login") {
@@ -90,7 +113,7 @@ function switchSession(sessionStatus) {
                                       sidebar.show();                         
                                     });
       $("#user-tools").dropdown();
-      $(".glome-link").addClass('hidden');
+      $(".session-link").addClass('hidden');
       
       // get the data from localStorage or sessionStorage and clear the other
       
@@ -225,12 +248,6 @@ $('.menu-backlink').click(function(e) {
 $(".btn-cancel").on('click', function (){
     sidebar.hide();
     map.removeLayer(marker);
-});
-
-// Close the layers control menu n mobile
-$('.leaflet-control-layers-close').on('click', function(e){
-  e.preventDefault;
-  $('.leaflet-control-layers').removeClass('lealfet-control-layers-expanded');
 });
 
 // Empty the sidebar on hide, reset accordion and reset scroll
