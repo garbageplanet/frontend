@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function () {
-  return gulp.src('./html/index.html')
+  return gulp.src('./src/index.html')
    .pipe(deleteLines({
       'filters': [/<script\s+type=["']text\/javascript["']\s+src=/i]
     }))
@@ -21,22 +21,22 @@ gulp.task('trimHTML', function () {
   .pipe(gulp.dest('./temp/'));
 });
 
-// Minify the styleshseets and concat them in order
+// Minify the styleshseets and concat them in orde
 gulp.task('styles', ['trimHTML'], function() {
   return gulp.src([
-                    './html/css/font-awesome-4.5.0.css',
-                    './html/css/google-work-sans.css',
-                    './html/css/trashbag.css',
-                    './html/css/bootstrap-3.3.6.css',
-                    './html/css/bootstrap-datetimepicker-4.17.37.css',
-                    './html/css/bootstrap-select-1.9.4.css',
-                    './html/css/bootstrap-tagsinput-0.4.3.css',
-                    './html/css/leaflet-0.7.7.css',
-                    './html/css/leaflet.draw.css',
-                    './html/css/L.Control.Sidebar-0.19a.css',
-                    './html/css/main.css',
-                    './html/css/map.css',
-                    './html/css/markers.css'
+                    './src/css/font-awesome-4.5.0.css',
+                    './src/css/google-work-sans.css',
+                    './src/css/trashbag.css',
+                    './src/css/bootstrap-3.3.6.css',
+                    './src/css/bootstrap-datetimepicker-4.17.37.css',
+                    './src/css/bootstrap-select-1.9.4.css',
+                    './src/css/bootstrap-tagsinput-0.4.3.css',
+                    './src/css/leaflet-0.7.7.css',
+                    './src/css/leaflet.draw.css',
+                    './src/css/L.Control.Sidebar-0.19a.css',
+                    './src/css/main.css',
+                    './src/css/map.css',
+                    './src/css/markers.css'
                   ])
       .pipe(concat('styles.min.css'))
       .pipe(minifyCSS({discardComments: {removeAll: true}}))
@@ -46,12 +46,12 @@ gulp.task('styles', ['trimHTML'], function() {
 // Minify head scripts and concat them in order
 gulp.task('scripts:leaflet', ['trimHTML'], function() {
   return gulp.src([
-                    './html/js/libs/Leaflet-0.7.7.js',
-                    './html/js/libs/L.hash.js',
-                    './html/js/libs/L.zoomCSS.js',
-                    './html/js/libs/L.Control.Sidebar-0.19a.js',
-                    './html/js/libs/L.Overpass.Layer.js',
-                    './html/js/libs/L.Draw.js'
+                    './src/js/libs/Leaflet-0.7.7.js',
+                    './src/js/libs/L.hash.js',
+                    './src/js/libs/L.zoomCSS.js',
+                    './src/js/libs/L.Control.Sidebar-0.19a.js',
+                    './src/js/libs/L.Overpass.Layer.js',
+                    './src/js/libs/L.Draw.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('leaflet.min.js'))
@@ -62,14 +62,15 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
 // Minify head scripts and concat them in order
 gulp.task('scripts:jquery', ['trimHTML'], function() {
   return gulp.src([
-                    './html/js/libs/jquery-2.2.0.js',
-                    './html/js/libs/Moment-2.10.6.js',
-                    './html/js/libs/bootstrap-tagsinput-0.4.3.js',
-                    './html/js/libs/bootstrap-datetimepicker-4.17.37.js',
-                    './html/js/libs/bootstrap-3.3.6.js',
-                    './html/js/libs/bootstrap-select-1.9.4.js',
-                    './html/js/libs/bootstrap-validator-0.9.0.js',
-                    './html/js/libs/jquery.ui.widget.js','./html/js/libs/jquery-fileupload.js'
+                    './src/js/libs/jquery-2.2.0.js',
+                    './src/js/libs/Moment-2.10.6.js',
+                    './src/js/libs/bootstrap-tagsinput-0.4.3.js',
+                    './src/js/libs/bootstrap-datetimepicker-4.17.37.js',
+                    './src/js/libs/bootstrap-3.3.6.js',
+                    './src/js/libs/bootstrap-select-1.9.4.js',
+                    './src/js/libs/bootstrap-validator-0.9.0.js',
+                    './src/js/libs/jquery.ui.widget.js',
+                    './html/js/libs/jquery-fileupload.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('jquery.min.js'))
@@ -80,15 +81,15 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
 // Minify body scripts and concat them in order
 gulp.task('scripts:app', ['trimHTML'], function() {
   return gulp.src([
-                    './html/js/config.js',
-                    './html/js/map.js',
-                    './html/js/get_features.js',
-                    './html/js/ui.js',
-                    './html/js/authenticate.js',
-                    './html/js/map_actions.js',
-                    './html/js/uploader.js',
-                    './html/js/form_submit.js',
-                    './html/js/draw.js'
+                    './src/js/config.js',
+                    './src/js/map.js',
+                    './src/js/get_features.js',
+                    './src/js/ui.js',
+                    './src/js/authenticate.js',
+                    './src/js/map_actions.js',
+                    './src/js/uploader.js',
+                    './src/js/form_submit.js',
+                    './src/js/draw.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('app.min.js'))
@@ -97,7 +98,7 @@ gulp.task('scripts:app', ['trimHTML'], function() {
 });
 
 // Inject minifed files path in head and body
-gulp.task('injectFiles', ['scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles'/*, 'styles:bootstrap', 'styles:leaflet', 'styles:app'*/], function() {
+gulp.task('injectFiles', ['scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles'], function() {
   return gulp.src('./temp/index.html')
   // inject styles
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
@@ -106,7 +107,7 @@ gulp.task('injectFiles', ['scripts:leaflet', 'scripts:jquery', 'scripts:app', 's
     .pipe(inject(gulp.src('./dist/jquery.min.js', {read: false}), {starttag: '<!-- inject:body:jquery -->', ignorePath: 'dist', addRootSlash: false}))
     .pipe(inject(gulp.src('./dist/app.min.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
     .pipe(gulp.dest('temp1/'));
-});        
+});
 
 // Minify the html, clean comments and spaces
 gulp.task('minifyHTML', ['injectFiles'], function() {
@@ -117,29 +118,33 @@ gulp.task('minifyHTML', ['injectFiles'], function() {
 
 gulp.task('clean:start', function() {
     return del([
-                'dist/', 
+                'dist/',
                 'temp',
                 'temp1'
                ]);
 });
 
 gulp.task('clean:end', ['injectFiles'], function() {
-    return del([ 
+    return del([
                 'temp',
                 'temp1'
                ]);
 });
 
 gulp.task('copy:fonts', ['clean:end'], function() {
-    return gulp.src('html/css/fonts/**/*', {base: 'html/css/fonts'})
+    return gulp.src('src/css/fonts/**/*', {base: 'src/css/fonts'})
       .pipe(gulp.dest('dist/fonts'));
 });
 
 gulp.task('copy:media', ['clean:end'], function() {
-    return gulp.src('html/images/*', {base: 'html/images'})
+    return gulp.src(['src/images/*/**','src/images/*'], {base: 'src/images'})
       .pipe(gulp.dest('dist/images'));
 });
 
+gulp.task('copy:favicon', ['clean:end'], function() {
+    return gulp.src('./src/favicon.ico', {base: 'src/'})
+      .pipe(gulp.dest('./dist'));
+})
 gulp.task('default', ['clean:start'], function() {
-    gulp.start('trimHTML', 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media');
+    gulp.start('trimHTML', 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
 });

@@ -1,11 +1,11 @@
 html {height: 100%}
 
-body { 
+body {
   overflow: hidden;
   height: 100%;
 }
 
-.map-container { 
+.map-container {
   bottom:0;
   position:absolute;
   top:50px;
@@ -16,56 +16,28 @@ body {
   width: auto
 }
 
-@media (max-width: 767px) {
-  
+@media (max-width: 567px) {
+
   .alert-container .alert {
-    position: relative;
     z-index: 5000;
     top: 0px;
     width: 100%;
   }
-  
-  .map-container { 
-    top:30px;
-  }
-  
-  /* From 30px navbar bootstrap build */
-  .navbar-fixed-bottom .dropdown .dropdown-menu {
-    top: auto;
-    margin-bottom: 2px;
+
+  .map-container {
+    top:0px;
   }
 
-  .navbar {
-    position: relative;
-    min-height: 30px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
+  .swipe-area-right {
+    position: absolute;
+    width: 30px;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: rgba(255,255,255,0.5);
+    z-index: 1;
   }
 
-  .navbar-brand {
-    float: left;
-    padding: 5px 5px;
-    font-size: 18px;
-    line-height: 20px;
-    height: 20px;
-  }
-
-  .navbar-nav {
-    margin: 5px -10px;
-  }
-  .navbar-nav > li > a {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    line-height: 20px;
-  }
-
-  .navbar-toggle {
-    margin-right: 15px;
-    padding: 5px 5px;
-    margin-top: -2px;
-    margin-bottom: -2px;
-  }
-  
 }
 
 @media (min-width: 768px) {
@@ -183,14 +155,14 @@ body {
 }
 
 .card div.panel.panel-default {
-  
+
   margin-bottom: 2px !important;
   margin-top: 2px !important;
   border: 0 !important;
   box-shadow: 0 1px 1px rgba(0,0,0,0);
 }
 .card .panel .panel-body {
-  
+
   padding: 2px !important;
 
 }
@@ -248,12 +220,6 @@ a.menu-backlink:hover {
   right: -25px;
   border: 0;
 }
-
-/* Remove borders from the collapsed menu button on mobile */
-.navbar-toggle {
-  border: 0 !important;
-}
-
 
 .leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {
 	width: 40px;
@@ -355,7 +321,11 @@ a.menu-backlink:hover {
   margin-right: 5%;
 }
 
-.nav .active { background:blue !important}
+.navbar-nav>li, .navbar-nav {
+  float: left !important;
+}
+
+
 
 input {
  border-radius: 0 !important;
@@ -382,23 +352,29 @@ h1, h2, h3, h4, span, .lead, p, input, textarea, select, button, .page-name, .na
   color: dimgray;
 }
 
+/* Prevent topbar from resizing on tablets */
+.navbar-header > .pull-right {
+  max-height: 50px;
+}
+
 @media (max-width: 768px) {
+
   .nav-justified > li {
     display: table-cell;
     width: 1%;
   }
- 
+
   .nav-justified > li > a  {
     border-bottom: 1px solid #ddd !important;
     margin-bottom: 0 !important;
   }
-  
+
   .nav-tabs.nav-justified > .active > a,
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs.nav-justified > .active > a:focus {
     border-bottom-color: #fff !important;
   }
-  
+
 }
 
 textarea {
@@ -474,7 +450,7 @@ textarea {
          -o-transition: margin-right 0.5s;
 }
 
-.leaflet-draw-draw-polyline, 
+.leaflet-draw-draw-polyline,
 .leaflet-draw-draw-polygon,
 .leaflet-draw-edit-edit,
 .leaflet-draw-edit-remove {

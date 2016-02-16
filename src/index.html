@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" manifest="./garbageplanet.appcache">
+<html lang="en">
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
+  <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta name="mobile-web-app-capable" content="yes">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
   <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, maptile, map marker, environmental monitoring, environment, trash, reporting">
@@ -16,18 +16,12 @@
   <meta property="og:title" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment"/>
   <meta property="og:image" content="http://dev.garbagepla.net/images/og_image.png"/>
   <meta property="og:description" content="Garbagepla.net is an online platform that aims at putting garbage back on the map."/>
-  <!-- Mobile web app manifest -->
-  <link rel="manifest" href="manifest.json">
-  <!-- inject:head:css:fonts -->
-  <!-- endinject -->
-  
-  <!-- inject:head:css:leaflet -->
-  <!-- endinject -->
-  
-  <!-- inject:head:css:bootstrap -->
-  <!-- endinject -->
-  
-  <!-- inject:head:css:app -->
+  <!-- Mobile stuff -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#00cc44">
+  <meta name="msapplication-navbutton-color" content="#00cc44">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#00cc44">
+  <!-- inject:head:css:styles -->
   <!-- endinject -->
   <link rel="stylesheet" type="text/css" href="css/font-awesome-4.5.0.css" >
   <link rel="stylesheet" type="text/css" href="css/google-work-sans.css" >
@@ -43,7 +37,6 @@
   <link rel="stylesheet" type="text/css" href="css/map.css">
   <link rel="stylesheet" type="text/css" href="css/markers.css">
 
-
   <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
   <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
@@ -53,6 +46,7 @@
   <script type="text/javascript" src="js/libs/bootstrap-validator-0.9.0.js"></script>
   <script type="text/javascript" src="js/libs/jquery.ui.widget.js"></script>
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
 
   <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
   <script type="text/javascript" src="js/libs/L.hash.js"></script>
@@ -71,73 +65,70 @@
 <div id="topbar" class="topbar-container container">
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#"><span class="icon-trashbag"></span><strong class="page-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.0.1</kbd></a>
-        <a type="button" class="btn btn-default navbar-toggle sidebar-link" href="#menu-dialog" id="btn-mobile-menu"><span class="fa fa-fw fa-bars"></span></a>
-      </div> <!-- Title and mobile menu button -->
+      <div class="navbar-header col-lg-12 col-xl-12 col-sm-12 col-xs-12">
+        <a class="navbar-brand pull-left" href="#"><span class="icon-trashbag"></span><strong class="page-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.0.1</kbd></a>
 
-      <div class="pull-right hidden-xs">
+        <div class="pull-right">
+          <ul class="nav navbar-nav">
 
-        <ul class="nav navbar-nav navbar-right">
-
-        <li class="hidden-xs hidden-sm hidden">
-          <form class="navbar-form">
-            <div class="input-group">
-              <div class="input-group-btn search-filter">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    	<span>Filter</span> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">Address</a></li>
-                      <li class="disabled"><a href="#">Cleaning event</a></li>
-                      <li class="disabled"><a href="#">Tags</a></li>
-                    </ul>
+          <li class="hidden">
+            <form class="navbar-form">
+              <div class="input-group">
+                <div class="input-group-btn search-filter">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span>Filter</span> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Address</a></li>
+                        <li class="disabled"><a href="#">Cleaning event</a></li>
+                        <li class="disabled"><a href="#">Tags</a></li>
+                      </ul>
+                  </div>
+                <input class="form-control search-query" placeholder="Search" type="text">
+                <div class="input-group-btn">
+                    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-fw fa-search"></i></button>
                 </div>
-              <input class="form-control search-query" placeholder="Search" type="text">
-              <div class="input-group-btn">
-                  <button class="btn btn-default btn-search" type="submit"><i class="fa fa-fw fa-search"></i></button>
               </div>
-            </div>
-          </form>
-        </li>
-
-        <li class="session-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
-
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <span class="fa fa-fw fa-cogs"></span><span class="hidden title-collapsed">Map tools</span></a>
-            <ul class="dropdown-menu" id="map-tools">
-              <li class="disabled"><a class="bottombar-link" href="#cleaning-calendar">Cleaning calendar</a></li>
-              <li class="divider"></li>
-              <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
-              <li class="disabled"><a class="" href="#">Garbage forecast</a></li>
-              <li class="disabled"><a class="" href="#">Garbage hotspots</a></li>
-              <li class="divider"></li>
-              <li><a class="btn-locate" href="#">Locate me</a></li>
-            </ul>
+            </form>
           </li>
 
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <span class="fa fa-fw fa-user"></span><span class="hidden title-collapsed">User tools</span></a>
-            <ul class="dropdown-menu" id="user-tools">
-              <li id="session-status"><a class="dropdown-link" href="#user-login-dialog">Login</a></li>
-              <li class="divider"></li>
-              <li><a class="dropdown-link" href="#user-agreement">Terms of use</a></li>
-              <li><a class="dropdown-link" href="#credits-dialog">About</a></li>
-              <li class="disabled"><a class="start-tour" href="#">Tour</a></li>
+          <li class="session-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
 
-            </ul>
-          </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <span class="fa fa-fw fa-cogs"></span><span class="hidden title-collapsed">Map tools</span></a>
+              <ul class="dropdown-menu" id="map-tools">
+                <li class="disabled"><a class="bottombar-link" href="#cleaning-calendar">Cleaning calendar</a></li>
+                <li class="divider"></li>
+                <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
+                <li class="disabled"><a class="" href="#">Local forecast</a></li>
+                <li class="disabled"><a class="" href="#">Hotspots</a></li>
+                <li class="divider"></li>
+                <li><a class="btn-locate" href="#">Locate me</a></li>
+              </ul>
+            </li>
 
-        </ul>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <span class="fa fa-fw fa-user"></span><span class="hidden title-collapsed">User tools</span></a>
+              <ul class="dropdown-menu" id="user-tools">
+                <li id="session-status"><a class="dropdown-link" href="#user-login-dialog">Login</a></li>
+                <li class="divider"></li>
+                <li><a class="dropdown-link" href="#user-agreement">Terms of use</a></li>
+                <li><a class="dropdown-link" href="#credits-dialog">About</a></li>
+                <li class="disabled"><a class="start-tour" href="#">Tour</a></li>
+              </ul>
+            </li>
 
-      </div> <!-- Dropdown menus -->
+          </ul>
+        </div>
+
+      </div>
 
     </div>
   </nav>
 </div><!-- Contents of the top bar -->
-  
+
 <div id="map" class="map-container"></div>
 
 <div id="sidebar" class="sidebar-container">
@@ -153,30 +144,26 @@
 
   <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-key"></span> Login</a>
 
-  <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go session-status"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
+  <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go session-link"><span class="fa fa-fw fa-google"></span> Glome Go!</a>
 
   <a href="#search-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-search"></span> Search</a>
 
   <a href="#" class="sidebar-link btn btn-default btn-lg btn-block btn-locate"><span class="fa fa-fw fa-compass"></span> Locate me</a>
 
-  <a href="#" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-calendar-o"></span> Calendar</a>
-
-
+  <a href="#" class="sidebar-link btn btn-default btn-lg btn-block disabled"><span class="fa fa-fw fa-calendar-o"></span> Calendar</a>
 
     </div>
   </div>
     <div class="sidebar-content" id="create-marker-dialog">
-        <h2 class="actions-panel hidden-sm hidden-xs">Action for this location
-        </h2>
+        <h2 class="actions-panel hidden-sm hidden-xs">Action for this location</h2>
 
-      <ul class="nav nav-pills nav-stacked">
-        <li role="presentation"><a class="sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
-        <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
-        <li role="presentation draw-link"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
-        <li role="presentation draw-link"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
-        <li class="disabled hidden" role="presentation"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
-
-      </ul>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation"><a class="sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
+          <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
+          <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
+          <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
+          <li class="disabled hidden" role="presentation"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
+        </ul>
 
     </div>
 
@@ -1069,7 +1056,7 @@
         <h2>Privacy policy</h2>
             <p class="lead">As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collectthat could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
 
-            <p>Note that as of January 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
+            <p>Note that as of February 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
 
     </div>
     <div class="sidebar-content" id="user-agreement">
@@ -1132,7 +1119,7 @@
           <div class="tab-content">
 
             <div class="tab-pane active form-group form-group-lg" id="credits-maps" role="tabpanel">
-              Map data &copy; 
+              Map data &copy;
               <a href="http://openstreetmap.org">OpenStreetMap</a> and contributors <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.
               <br> Imagery © <a href="http://mapbox.com">Mapbox</a>.
               <br> Localities and features via <a href="http://www.overpass-api.de/">Overpass API</a>.
@@ -1172,7 +1159,7 @@
       <div class="bottombar-content" id="feature-info">
 
       <div class="card card-actions col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
-        <div><h3>Actions</h3></div>
+        <div class="hidden-xs hidden-sm"><h3>Actions</h3></div>
         <br>
         <div>
           <div class="btn-group btn-group-justified" role="group">
@@ -1205,7 +1192,7 @@
             </div>
           </div>
         </div>
-        <hr>
+        <hr class="hidden-xs hidden-sm">
         <div>
           <div class="btn-group btn-group-justified" role="group">
             <div class="btn-group btn-group-lg" role="group">
@@ -1258,7 +1245,7 @@
 
           <div class="panel panel-default">
             <div class="panel-body">
-            <span class="pull-left">todo:</span>
+            <span class="pull-left">todo: </span>
             <span class="feature-info feature-info-todo pull-left"></span>
             </div>
           </div>
@@ -1284,14 +1271,14 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <span class="pull-left">creation date: </span>
-              <span class="feature-info feature-info-gcreation-time pull-left"></span>
+              <span class="feature-info feature-info-creation-time pull-left"></span>
             </div>
           </div>
 
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">created by: </span>
-            <span class="feature-info feature-info-create-by pull-left"></span>
+            <span class="feature-info feature-info-created-by pull-left"></span>
             </div>
           </div>
 
@@ -1423,9 +1410,10 @@
   </div>
 
 </div><!-- Alerts -->
+
 <!-- inject:body:jquery -->
 <!-- endinject -->
-  
+
 <!-- inject:body:leaflet -->
 <!-- endinject -->
 

@@ -1,95 +1,60 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// TODO check if the localStorage has token, if yes log the user in with data
-/*
-$('document').ready(function () {
-  var classicSessionType = localStorage.getItem('classic')
-
-  if ( classicSessionType ) {
-    
-    if ( classicSessionType === "true" ) {
-        sessionStorage.clear();
-        $('#account-info').find('.user-email').removeClass('hidden');
-        $('#account-info').find('.user-name').text( localStorage.getItem('username') );
-        $('#account-info').find('.user-email p').html( localStorage.getItem('useremail') );
-        $('#account-info').find('.user-glome-key').addClass('hidden');
-        $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
-        $('#account-info').show(); 
-      }
-      
-      if ( classicSessionType === "false" ) {
-        localStorage.clear();
-        $('#account-info').find('.user-name').text('anon (⌐■_■)');
-        $('#account-info').find('.user-email').addClass('hidden');
-        $('#account-info').find('.user-glome-key p').html( sessionStorage.getItem('username') );
-        $('#account-info').find('.user-id').html( sessionStorage.getItem('userid') );
-        $('#account-info').show();
-      }
+// Check if the localStorage has token, if yes log the user in with data
+$(document).ready(function() {
+  var test1 = localStorage.getItem('token');
+  console.log('token value', test1);
+  if (test1 !== null ) {
+      switchSession('login');
   }
+  else {return;}
 });
-*/
-// Hack the address bar away on mobile
-function hideAddressBar() {
-  
+
+// Mobile display
+// TODO only add swipe menu and remove navigation bar for very small screens
+$(document).ready(function() {
   if (L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android)  {
 
-/*    if(!window.location.hash) {
-      
-      if(document.height <= window.outerHeight + 10) {
-        
-        document.body.style.height = (window.outerHeight + 50) +'px';
-        setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
-        
-      } else {*/
-        
-      setTimeout( function(){ window.scrollTo(0, 1); }, 100 ); 
-        
-  /*    }
-    }*/
-  }
-} 
- 
-window.addEventListener("load", hideAddressBar );
-window.addEventListener("orientationchange", hideAddressBar );
+    $('#topbar').remove();
+    $('body').append('<div class="swipe-area-right"></div>');
 
-// Go fullscreen on mobile and add warnings
-$(document).ready(function() {
-
-  if (L.Browser.mobile)  {
-     
     showAlert("Drawing tools are not available on mobile.", "info", 4000);
     $('.draw-link').addClass('disabled');
-    
-    var html = document.documentElement;
 
-    map.on('drag', fullScreen(html));
+    if(!window.location.hash) {
 
-    function fullScreen(element) {
-      
-      if(element.requestFullScreen) {
-        
-        element.requestFullScreen();
-        
-      } else if(element.webkitRequestFullScreen ) {
-        
-        element.webkitRequestFullScreen();
-        
-      } else if(element.mozRequestFullScreen) {
-        
-        element.mozRequestFullScreen();
+      if(document.height <= window.outerHeight + 10) {
+
+        document.body.style.height = (window.outerHeight + 50) +'px';
+
+        setTimeout( function(){ window.scrollTo(0, 1); }, 100 );
+
+      } else {
+
+        setTimeout( function(){ window.scrollTo(0, 1); }, 100 );
+
       }
+
     }
+
+    // Activate swipe on the right border to show the mobile menu
+    $(".swipe-area-right").touchwipe({
+     wipeLeft: function() { sidebar.show(); },
+     min_move_x: 15,
+     preventDefaultEvents: true
+    });
+
   }
+
 });
 
 // Swtch session function
-// TODO add hooks for the mobile menu
-// TODO destroy element instead of hiding them in the DOM
+// TODO destroy element instead of hiding them
 function switchSession(sessionStatus) {
-  
+
   var classicSessionType = localStorage.getItem('classic');
-  
+
     if (sessionStatus === "logout") {
-      
+
       $('#session-status a').text('Login').attr("href","#user-login-dialog");
       $('#session-status a').attr("id","");
       $('#session-status a').addClass('dropdown-link');
@@ -98,81 +63,81 @@ function switchSession(sessionStatus) {
       $('.user-email, .user-glome-key').removeClass('hidden');
       $(".session-link").removeClass('hidden');
     }
-  
+
     if (sessionStatus === "login") {
-      
+
       $("#session-status a").text("Logout").attr("href","#");
       $("#session-status a").attr("id","btn-logout");
       $("#session-status a").removeClass('dropdown-link');
-      $("#session-status").on('click', '#btn-logout', function() { switchSession("logout"); logout(); });
+      $("#session-status").on('click', '#btn-logout', function() {switchSession("logout"); logout();});
       $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="#account-info">User info</a></li>');
       $("#user-info-link a").on("click", function(e) {
                                       e.preventDefault();
                                       $('#sidebar').scrollTop = 0;
                                       $(this.hash).fadeIn().siblings().hide();
-                                      sidebar.show();                         
+                                      sidebar.show();
                                     });
       $("#user-tools").dropdown();
       $(".session-link").addClass('hidden');
-      
+
       // get the data from localStorage or sessionStorage and clear the other
-      
+
       if (classicSessionType === "true") {
-        
+
         $('#account-info').find('.user-email').removeClass('hidden');
         $('#account-info').find('.user-name').text(localStorage.getItem('username'));
         $('#account-info').find('.user-email p').html(localStorage.getItem('useremail'));
         $('#account-info').find('.user-glome-key').addClass('hidden');
         $('#account-info').find('.user-id').html(localStorage.getItem('userid'));
         $('.sidebar-content').hide();
-        
+
         if (!sidebar.isVisible()) {
             sidebar.show();
         }
-          
+
         $('#account-info').show();
-        
+
       }
-      
+
       if  (classicSessionType === "false") {
-        
+
         $('#account-info').find('.user-name').text('anon (⌐■_■)');
         $('#account-info').find('.user-email').addClass('hidden');
         $('#account-info').find('.user-glome-key p').html( localStorage.getItem('glomekey') );
         $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
         $('.sidebar-content').hide();
-          
+
         if (!sidebar.isVisible()) {
-            sidebar.show();
+            sidebar.show(('#mobile-menu-dialog').fadeIn().siblings().hide());
         }
-          
+
         $('#account-info').show();
-        
+
       }
-      
-    } 
-  
+
+    }
+
 }
 
 // Alerts by lgal http://stackoverflow.com/a/33662720/2842348
 function showAlert(errorMessage, errorType, closeDelay) {
 
-    // default to alert-info; other options include success, warning, danger        
+    // default to alert-info; other options include success, warning, danger
     if (!errorType || typeof errorType === 'undefined' ) {  var errorType = "info"; }
-        
+
     var alert = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
     // add the alert div to top of alerts-container, use append() to add to bottom
     $(".alert-container").prepend(alert);
 
     // if closeDelay was passed - set a timeout to close the alert
     if (closeDelay) {
-        window.setTimeout(function() { alert.alert("close"); }, closeDelay);   
+        window.setTimeout(function() { alert.alert("close"); }, closeDelay);
     }
 }
 
 // Activate dropdown menu links
 $(document).ready(function() {
-  
+
   $('#user-tools').on('click', 'a', function(e) {
     if ($(this).hasClass('dropdown-link')) {
           e.preventDefault();
@@ -181,25 +146,19 @@ $(document).ready(function() {
           $(this.hash).fadeIn().siblings().hide();
     }
   });
-  
-  $('#btn-mobile-menu').click( function(e) {
-        e.preventDefault();
-        bottombar.hide();
-        sidebar.toggle($('#mobile-menu-dialog').fadeIn().siblings().hide());
-  });
-  
+
 });
 
 // Actions for map-tools dropdown
 $(document).ready(function() {
-  
+
   // Locate the user
   $('.btn-locate').on('click', function(){
     sidebar.hide();
     bottombar.hide();
     map.locate({setView: true, maxZoom: 20});
   });
-  
+
   // Show nearby trashbins
   $('#btn-trashbins').on('click', function(){
     osmTrashbinLayer = new L.OverPassLayer({
@@ -207,20 +166,17 @@ $(document).ready(function() {
     });
     map.addLayer(osmTrashbinLayer);
   });
-  
-});
 
-// Display all the select pickers
-$(document).ready(function() {
-  $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 6});
 });
 
 // Display the date and time picker and get the data in the cleaning form on change
 $(document).ready(function() {
-  
+
+  $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 6});
+
   $(function () { $('#event-date-time-picker')
     .datetimepicker( {minDate: new Date(2015, 11, 31)});
-  }); 
+  });
 
   $('#event-date-time-picker').on('dp.change', function(e) {
      var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
@@ -281,15 +237,15 @@ function clearBottomPanelContent() {
 /*function confirmGarbage(obj){
   // TODO Finish this
   // TODO make session-dependant and allow once per user per marker
-  if (!localStorage.getItem('token')){ 
+  if (!localStorage.getItem('token')){
     showAlert("You need to login to do that.", "info", 2000);
   }
-  
+
   var counts = parseInt($(".feature-info-confirmed strong").val, 10);
   counts = isNaN(counts) ? 0 : value;
   counts++;
   $(".feature-info-confirmed strong").val = counts;
-    
+
     setTimeout(function () {
       // var useToken = localStorage["token"] || window.token;
       var useToken = localStorage.getItem('token') || window.token;
@@ -306,7 +262,7 @@ function clearBottomPanelContent() {
               // todo change the value in the UI
           },
           error: function (err) {
-              console.log('err', err);                  
+              console.log('err', err);
           }
       });
     }, 100);

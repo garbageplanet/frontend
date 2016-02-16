@@ -17,7 +17,7 @@ map.on('moveend', function (e) {
   }
 
   if (mapZoom >= 7 && mapZoom <=15) {
-    loadAreas(); 
+    loadAreas();
   }
 });
 
@@ -33,7 +33,7 @@ function loadGarbageMarkers () {
         success: function (data) {
             $(data).each(function (index, obj) {
                 // console.log(obj);
-              
+
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon: garbageMarker,
@@ -49,10 +49,10 @@ function loadGarbageMarkers () {
                         Note: obj.note,
                         FeatureType: obj.featuretype
                     });
-              
+
                 garbageLayerGroup.addLayer(marker);
                 map.addLayer(garbageLayerGroup);
-              
+
                 marker.on('click', function() {
                     onGarbageMarkerClick(marker);
                 });
@@ -99,7 +99,7 @@ function loadGarbageMarkers () {
             });
         },
         error: function(data) {
-            console.log('Something went wrong while fetching the data', data);
+            console.log('Something went wrong while fetching the garbage markers', data);
         }
     });
     var useToken = localStorage.getItem('token') || window.token;
@@ -116,7 +116,7 @@ function loadCleaningMarkers () {
         success: function(data) {
             $(data).each(function(index, obj) {
                 console.log(obj);
-              
+
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon:cleaningMarker,
@@ -134,11 +134,11 @@ function loadCleaningMarkers () {
                 map.addLayer(cleaningLayerGroup);
                 marker.on('click', function() {
                     onCleaningMarkerClick(marker);
-                });          
+                });
             });
         },
         error: function(data) {
-            console.log('Something went wrong while fetching the data', data);
+            console.log('Something went wrong while fetching the cleaning events', data);
         }
     });
     var useToken = localStorage.getItem('token') || window.token;
@@ -147,8 +147,8 @@ function loadCleaningMarkers () {
 // Get areas (polygons)
 function loadAreas () {
   console.log('loading remote area polygons');
-  
-  areaLayerGroup.clearLayers(); 
+
+  areaLayerGroup.clearLayers();
 
   var useToken = localStorage.getItem('token') || window.token;
   $.ajax({
@@ -179,7 +179,7 @@ function loadAreas () {
           });
 
         }
-      );        
+      );
     },
     error: function (data) {
       console.log('Error getting area data', data);
@@ -190,8 +190,8 @@ function loadAreas () {
 // Get litters (polylines)
 function loadLitters () {
   console.log('loading remote litter polylines');
-  
-  pathLayerGroup.clearLayers(); 
+
+  pathLayerGroup.clearLayers();
 
   var useToken = localStorage.getItem('token') || window.token;
   $.ajax({
@@ -211,26 +211,26 @@ function loadLitters () {
               Types: obj.types,
               ImageUrl: obj.image_url,
               Tags: obj.tag,
-              FeatureType: obj.featuretype              
+              FeatureType: obj.featuretype
               // TODO add the rest of the options
             })
           ;
 
           switch(obj.amount){
             case 1:
-                polylineLayer.setStyle({color:"green"}); 
+                polylineLayer.setStyle({color:"green"});
                 break;
             case 2:
-                polylineLayer.setStyle({color:"limegreen"}); 
+                polylineLayer.setStyle({color:"limegreen"});
                 break;
             case 3:
-                polylineLayer.setStyle({color:"yellow"}); 
+                polylineLayer.setStyle({color:"yellow"});
                 break;
             case 4:
-                polylineLayer.setStyle({color:"gold"}); 
+                polylineLayer.setStyle({color:"gold"});
                 break;
             case 5:
-                polylineLayer.setStyle({color:"orange"}); 
+                polylineLayer.setStyle({color:"orange"});
                 break;
             case 6:
                 polylineLayer.setStyle({color:"orangered"});
@@ -239,13 +239,13 @@ function loadLitters () {
                 polylineLayer.setStyle({color:"red"});
                 break;
             case 8:
-                polylineLayer.setStyle({color:"darkred"}); 
+                polylineLayer.setStyle({color:"darkred"});
                 break;
             case 9:
-                polylineLayer.setStyle({color:"purple"}); 
+                polylineLayer.setStyle({color:"purple"});
                 break;
             case 10:
-                polylineLayer.setStyle({color:"black"}); 
+                polylineLayer.setStyle({color:"black"});
                 break;
             default:
                 polylineLayer.resetStyle();
@@ -258,7 +258,7 @@ function loadLitters () {
               onLitterClick(polylineLayer);
           });
         }
-      );        
+      );
     },
     error: function (data) {
       console.log('Error getting shape data', data);
@@ -270,7 +270,7 @@ function loadLitters () {
 function onGarbageMarkerClick (e) {
     console.log("Garbage marker clicked");
     console.log(e);
-  
+
     var that = this,
         markerTypes = e.options.Types,
         markerAmount = e.options.Amount,
@@ -282,20 +282,20 @@ function onGarbageMarkerClick (e) {
         markerTodo = e.options.todo,
         markerConfirm = e.options.confirm,
         markertarget = "http://garbagepla.net/#15/"+e.options.Lat+"/"+e.options.Lng+"string"; //create a url to the marker add a parameter at the end to open the bottombar
-      
+
     map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
 
     sidebar.hide();
     clearBottomPanelContent();
 
         // TODO push all the data to the bottombar
-        
+
         // Put a placeholder if the media is empty
         if (!markerRawImage) {
           $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
           $('#feature-info').find('.feature-image-link').attr('href', '');
         }
-        
+
         if (markerRawImage) {
           // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
           String.prototype.insert = function (index, string) {
@@ -305,12 +305,12 @@ function onGarbageMarkerClick (e) {
                 return string + this;
               }
           };
-        
+
           markerImage = markerRawImage.insert(26, "t");
           $('#feature-info').find('.feature-image').attr('src', markerImage);
           $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
         }
-        
+
         $('#feature-info').find('.feature-info-garbage-type').html(markerTypes.join(", "));
         $("#feature-info-created-by").html(markerCreatedBy);
         // push the url to the href of share buttons
@@ -318,11 +318,11 @@ function onGarbageMarkerClick (e) {
           $(this).attr("data-url", markertarget);
         });
         // $('#feature-info').find('.feature-info-confirmed p strong').html(markerConfirmed);
-      
+
         // Show the bottombar with content
         bottombar.show();
         $('#feature-info').fadeIn();
-        
+
         // TODO move this logic outside this function and call it with a function and the marker obj as param
         $('#feature-info').find('.btn-delete').click(function (e) {
             // FIXME this send one request the first time deletion is requested (delete button)
@@ -352,7 +352,7 @@ function onGarbageMarkerClick (e) {
             console.log('edit data on id', markerId);
             editFeature(e);
         });
-      
+
         // amount mapping
         switch (markerAmount) {
             case 0:
@@ -398,7 +398,7 @@ function onGarbageMarkerClick (e) {
 function onCleaningMarkerClick (e) {
     console.log("Garbage marker clicked");
     console.log(e);
-  
+
     var that = this,
     markerTypes = e.options.Types,
     markerDate = e.options.Date,
@@ -406,20 +406,20 @@ function onCleaningMarkerClick (e) {
     markerCreatedBy = e.options.marked_by;
 
     // TODO add the rest of the option once the api route is ready
-  
+
     map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
 
         sidebar.hide();
         clearBottomPanelContent();
-            
+
 
 
         $("#cleaning-info-created-by").html(markerCreatedBy);
-      
+
         // Show the bottombar with content
         bottombar.show();
         $('#cleaning-info').fadeIn();
-        
+
         // TODO move this logic outside this function and call it with a function and the marker obj as param
         $('#cleaning-info').find('.btn-delete').click(function (e) {
             // FIXME this send one request the first time deletion is requested (delete button)
@@ -452,11 +452,11 @@ function onCleaningMarkerClick (e) {
 }
 
 // onClick behavior for saved areas
-function onAreaClick (e) {                          
+function onAreaClick (e) {
     console.log("remote polygon clicked");
     console.log(e);
     console.log(e.options.latLngs);
-  
+
     var that = this,
       areaLatLngs = e.layer.options.LatLngs,
       areaId = e.layer.options.Id,
@@ -466,22 +466,22 @@ function onAreaClick (e) {
       areatitle = e.layer.options.Title,
       areaplayers = e.layer.options.Players,
       areaCreatedBy = e.options.marked_by;
-  
+
     sidebar.hide();
     map.panToOffset(e.getCenter(), _getVerticalOffset());
     map.fitBounds(e.layer.getBounds());
     clearBottomPanelContent();
 
     // TODO push the data to the bottom bar
-  
+
     bottombar.show();
     $('#feature-info').fadeIn();
-  
+
     $('#feature-info').find('.btn-delete').click(function (e) {
-        
+
         e.preventDefault();
         var useToken = localStorage.getItem('token') || window.token;
-      
+
         $.ajax({
             type: api.deleteArea.method,
             url: api.deleteArea.url(areaId),
@@ -506,11 +506,11 @@ function onAreaClick (e) {
 }
 
 // onClick behavior for saved litters
-function onLitterClick (e) {                     
+function onLitterClick (e) {
     console.log("remote polyline clicked");
     console.log(e);
     console.log(e.options.latLngs);
-  
+
     var that = this,
       litterType = e.layer.options.Type,
       litterAmount = e.layer.options.Amount,
@@ -524,14 +524,14 @@ function onLitterClick (e) {
       litterCreatedBy = e.options.marked_by;
 
     // TODO push data to the bottom bar
-  
+
     sidebar.hide();
     map.panToOffset(e.getCenter(), _getVerticalOffset());
 
     clearBottomPanelContent();
 
     map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
-    
+
 
 
     // Put a placeholder if the media is empty
@@ -541,32 +541,32 @@ function onLitterClick (e) {
     }
 
     if (litterRawImage) {
-      
+
       // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
       String.prototype.insert = function (index, string) {
-        
+
         if (index > 0) {
             return this.substring(0, index) + string + this.substring(index, this.length);
         } else {
           return string + this;
         }
       };
-      
+
       litterImage = litterRawImage.insert(26, "t");
-      
+
       $('#feature-info').find('.feature-image').attr('src', litterImage);
       $('#feature-info').find('.feature-image-link').attr('href', litterRawImage);
-      
+
     }
-  
+
     bottombar.show();
     $('#feature-info').fadeIn();
-  
+
     $('#feature-info').find('.btn-delete').click(function (e) {
-        
+
         e.preventDefault();
         var useToken = localStorage.getItem('token') || window.token;
-      
+
         $.ajax({
             type: api.deleteShape.method,
             url: api.deleteShape.url(litterId),

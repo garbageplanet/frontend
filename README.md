@@ -6,7 +6,7 @@ Repository for the [garbagepla.net](http://www.garbagepla.net) frontend. This re
 
 ### How to get started? ###
 
-Just open /html/index.html in your browser. If you want to build for distribution install gulp with the dependancies (sorry, no package.json yet) cd to to the root dir and type `gulp`.
+Just open /html/index.html in your browser. If you want to build for distribution install gulp with the dependencies (sorry, no package.json yet) cd to to the root dir and type `gulp`.
 
 ### Contributing
 
@@ -15,24 +15,22 @@ When adding a new js function to the code, add a comment about what it does. Bui
 If you want to cnotribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### TODO
+- [ ] add error div dynamically
 
 ### Mobile
-- [ ] fix the close layers control button reloads page bug
+- [ ] fix close layers control button reloads page bug
 
 ### Side panel
-- [ ] fix differing line height between form elements (`<input>`, `<textarea>`, `.tagsinput`, etc)
+- [ ] fix differing line height between form elements
 - [ ] fix the tagsinput input resizing
+- [ ] prevent form submit on `tabsinput` addition
 - [ ] image upload restriction if user is not logged in
-
-#### Bottom panel
-- [ ] vertical scroll inside each column that is independant of other columns scroll
 
 #### Map actions
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 
 ### General coding, coding style, code review
 - [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates);
-- [ ] make the code overall less redundant (loading forms elements and building lists for `<select>` )
 
 #### Future prospects
 - [ ] move to bootstrap v4 with [cards](http://v4-alpha.getbootstrap.com/components/card/) in the bottom panel

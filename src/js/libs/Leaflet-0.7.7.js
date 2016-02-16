@@ -8435,7 +8435,7 @@ L.Control.Layers = L.Control.extend({
         if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina) {
             var ownCloseButton = this.ownCloseButton = L.DomUtil.create('div', className + '-close');
             this.ownCloseButton = L.DomUtil.create('div', className + '-close', form);
-            this.ownCloseButton.innerHTML = '<button class="btn btn-default btn-round btn-close-layers-control hidden-lg hidden-xl"><span class="fa fa-fw fa-close close"></span></button>';    
+            this.ownCloseButton.innerHTML = '<button class="btn btn-default btn-round btn-close-layers-control hidden-lg hidden-xl"><span class="fa fa-fw fa-times close"></span></button>';    
         
             L.DomEvent.on(this.ownCloseButton, 'click', this._collapse, this);
         

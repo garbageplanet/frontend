@@ -3,7 +3,6 @@ CACHE MANIFEST
 
 CACHE:
 # Resources that will be cached
-
 FALLBACK:
 # An optional section specifying fallback pages if a resource is inaccessible. 
 # The first URI is the resource, the second is the fallback. Both URIs must be 
