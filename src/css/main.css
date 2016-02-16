@@ -16,6 +16,7 @@ body {
   width: auto
 }
 
+/* 567px or 768px */
 @media (max-width: 567px) {
 
   .alert-container .alert {

@@ -15,10 +15,10 @@ When adding a new js function to the code, add a comment about what it does. Bui
 If you want to cnotribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### TODO
-- [ ] add error div dynamically
 
 ### Mobile
 - [ ] fix close layers control button reloads page bug
+- [ ] detecting mobile browsers/devices needs some thinking)
 
 ### Side panel
 - [ ] fix differing line height between form elements
