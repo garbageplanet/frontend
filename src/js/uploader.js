@@ -15,7 +15,6 @@ $(function () {
         },
         done: function (e, data) {
             $(e.target).parent().next().val(data.result.data.link);
-            //$('.progress').hide().delay(500);
             $('.progress').addClass('hidden').delay(200);
         }
     });

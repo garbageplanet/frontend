@@ -324,11 +324,7 @@
                         data-width="100%"
                         required
                         multiple >
-                    <option value="" disabled="disabled">Size</option>
-                    <option value="large">Too big to carry alone</option>
-                    <option value="medium">Can be picked by hand</option>
-                    <option value="small">Too small to pick by hand</option>
-                    <option value="" disabled="disabled">Type</option>
+                    <option value="" disabled="disabled"></option>
                     <option value="glass">Glass</option>
                     <option value="bottles">Glass bottles</option>
                     <option value="metal">Metal</option>
@@ -758,18 +754,6 @@
 
             <br>
 
-            <div class="input-group input-group-lg">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                  <span class="fa fa-fw fa-globe"></span><span class="hidden-xs">Add link</span></button>
-              </span>
-              <input type="url"
-                     class="form-control litter-wms-url"
-                     placeholder="WMS server url">
-            </div>
-
-            <br>
-
             <div class="row">
               <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
               <input class="form-control litter-tags"
@@ -785,17 +769,17 @@
 
           <div class="tab-pane form-group form-group-lg" id="litter-info" role="tabpanel">
 
-        <br>
+          <br>
 
-        <p class="lead"> Paths identify long stretches of land that accumulate garbage, such as shorelines and  road shoulders. Click the <em>Start drawing</em> button in the first tab of this form to start drawing. You can cancel drawing at any time by pressing <kbd>Esc</kbd>. Alternatively, you can upload a GeoJSON <a href="http://geojson.org/geojson-spec.html#multilinestring" target="_blank">polyline</a> or link to a <a href="http://mapserver.org/ogc/wms_server.html" target="_blank">WMS resource</a> in order to display the path.</p>
+            <p class="lead"> Paths identify long stretches of land that accumulate garbage, such as shorelines and  road shoulders. Click the <em>Start drawing</em> button in the first tab of this form to start drawing. You can cancel drawing at any time by pressing <kbd>Esc</kbd>. Alternatively, you can upload a GeoJSON <a href="http://geojson.org/geojson-spec.html#multilinestring" target="_blank">polyline</a> in order to create the path.</p>
 
-        <br>
-
-        </div>
-
-          </div>
+            <br>
 
         </div>
+
+      </div>
+
+    </div>
 
          <!-- Create the polyline -->
         <div>

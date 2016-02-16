@@ -18,7 +18,7 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 
 ### Mobile
 - [ ] fix close layers control button reloads page bug
-- [ ] detecting mobile browsers/devices needs some thinking)
+- [ ] detecting mobile browsers/devices needs some more thinking
 
 ### Side panel
 - [ ] fix differing line height between form elements

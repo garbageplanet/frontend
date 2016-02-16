@@ -46,7 +46,10 @@ function loadGarbageMarkers () {
                         Todo: obj.todo,
                         Tags: obj.tag,
                         Note: obj.note,
-                        FeatureType: obj.featuretype
+                        FeatureType: obj.featuretype,
+                        Size: obj.size,
+                        Embed: obj.embed,
+                        Marked_by: obj.marked_by
                     });
 
                 garbageLayerGroup.addLayer(marker);
@@ -119,13 +122,14 @@ function loadCleaningMarkers () {
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon:cleaningMarker,
-                        Id: obj.id,
-                        Date: obj.date,
-                        Lat: obj.lat,
-                        Lng: obj.lng,
-                        FeatureType: obj.featuretype,
-                        Paticipants: obj.participants,
-                        Recurrence: obj.recurrence
+                        Id: obj.Id,
+                        Date: obj.Date,
+                        Lat: obj.Lat,
+                        Lng: obj.Lng,
+                        FeatureType: obj.featureType,
+                        Paticipants: obj.Participants,
+                        Recurrence: obj.Recurrence,
+                        Marked_by: obj.marked_by
 
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
@@ -168,7 +172,8 @@ function loadAreas () {
               Note: obj.note,
               Tags: obj.tag,
               Contact: obj.contact,
-              FeatureType: obj.featuretype
+              FeatureType: obj.featuretype,
+              Marked_by: obj.marked_by
             });
 
           areaLayerGroup.addLayer(polygonLayer);
@@ -210,7 +215,8 @@ function loadLitters () {
               Types: obj.types,
               ImageUrl: obj.image_url,
               Tags: obj.tag,
-              FeatureType: obj.featuretype
+              FeatureType: obj.featuretype,
+              Marked_by: obj.marked_by
               // TODO add the rest of the options
             })
           ;
@@ -275,11 +281,13 @@ function onGarbageMarkerClick (e) {
         markerAmount = e.options.Amount,
         markerRawImage = e.options.ImageUrl,
         markerId = e.options.Id,
-        markerCreatedBy = e.options.marked_by,
-        markerNote = e.options.note,
-        markerTags = e.options.tag,
-        markerTodo = e.options.todo,
-        markerConfirm = e.options.confirm,
+        markerCreatedBy = e.options.Marked_by,
+        markerNote = e.options.Note,
+        markerTags = e.options.Tags,
+        markerTodo = e.options.Todo,
+        markerConfirm = e.options.Confirm,
+        markerSize = e.options.Size,
+        markerEmbed = e.options.Embed,
         markertarget = "http://garbagepla.net/#15/"+e.options.Lat+"/"+e.options.Lng+"string"; //create a url to the marker add a parameter at the end to open the bottombar
 
     map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
@@ -288,6 +296,8 @@ function onGarbageMarkerClick (e) {
     clearBottomPanelContent();
 
         // TODO push all the data to the bottombar
+        // TODO move this logic to the ui.js getData();
+        // getData(e.options.feature_type.toString);
 
         // Put a placeholder if the media is empty
         if (!markerRawImage) {
@@ -402,17 +412,18 @@ function onCleaningMarkerClick (e) {
     markerTypes = e.options.Types,
     markerDate = e.options.Date,
     markerId = e.options.Id,
-    markerCreatedBy = e.options.marked_by;
-
-    // TODO add the rest of the option once the api route is ready
+    markerId = e.options.Id,
+    markerParticipants = e.options.Participants,
+    markerCreatedBy = e.options.Marked_by;
 
     map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
 
         sidebar.hide();
         clearBottomPanelContent();
 
-
-
+        // TODO push all the data to the bottombar
+        // getData(e.options.feature_type);
+  
         $("#cleaning-info-created-by").html(markerCreatedBy);
 
         // Show the bottombar with content
@@ -464,7 +475,7 @@ function onAreaClick (e) {
       areanote = e.layer.options.Note,
       areatitle = e.layer.options.Title,
       areaplayers = e.layer.options.Players,
-      areaCreatedBy = e.options.marked_by;
+      areaCreatedBy = e.options.Marked_by;
 
     sidebar.hide();
     map.panToOffset(e.getCenter(), _getVerticalOffset());
@@ -520,7 +531,7 @@ function onLitterClick (e) {
       litterNote = e.layer.options.Note,
       litterLength = e.layer.options.Length,
       litterConfirm = e.layer.options.Confirm,
-      litterCreatedBy = e.options.marked_by;
+      litterCreatedBy = e.options.Marked_by;
 
     // TODO push data to the bottom bar
 

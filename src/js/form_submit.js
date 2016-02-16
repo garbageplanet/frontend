@@ -94,11 +94,13 @@ $(function () {
           tags = [],
           eventRecurrence = [],
           dateTime,
+          note,
           lat,
           lng;
 
         dateTime = $('.date-time-value').val();
         tags = $(this).find('.cleaning-tags').tagsinput('items');
+        note = $(this).find('.cleaning-note').val();
         lat = $(this).find('.cleaning-lat').val();
 		lng = $(this).find('.cleaning-lng').val();
 
@@ -118,6 +120,7 @@ $(function () {
                   'lat': lat,
                   'lng': lng,
                   'date': dateTime,
+                  'note': note,
                   'recurrence': eventRecurrence,
                   'tag':tags.join(),
                   'featuretype': "marker_cleaning"
@@ -154,7 +157,6 @@ $(function () {
         image_url,
         length,
         geojson_data,
-        wms_url,
         note;
 
     latlngs = $(this).find('.litter-latlngs').val();
@@ -169,7 +171,6 @@ $(function () {
     length = $(this).find('.litter-path-length').val();
     image_url = $(this).find('.litter-image-hidden-value').val();
     note = $('input[class=litter-note]').val();
-    wms_url = $('input[class=litter-wms-url]').val();
     geojson_data =  $('input[class=litter-geojson-data]').val();
 
     console.log('coordinates', latlngs);
@@ -196,7 +197,7 @@ $(function () {
               'geojson_data': geojson_data,
               'tag': tags.join(),
               'featuretype': "polyline_litter"
-              // TODO add quantitative amountfields
+              // TODO add quantitative amount fields ?
           },
           success: function (data) {
               console.log('success data', data);
@@ -228,7 +229,7 @@ $(function () {
         players,
         title,
         contact;
-
+    
     latlngs = $(this).find('.area-latlngs').val();
     title = $(this).find('.area-title').val();
     note = $(this).find('.area-note').val();
@@ -236,13 +237,29 @@ $(function () {
     contact = $(this).find('.area-contact').val();
     players = $(this).find('.area-players').val();
     tags = $(this).find('.area-tags').tagsinput('items');
-
+    
+    // Generate a random id if the user didn't set a title
+    if (!title) {
+      
+      function randomString(len)
+        {
+            var text = " ";
+            var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            for( var i=0; i < len; i++ )
+                randomStringValue += charset.charAt(Math.floor(Math.random() * charset.length));
+          
+            return randomStringValue; 
+        }
+      
+      title = randomString(12);
+      console.log("randomly generated area title ", title);
+    }
+    
     console.log('coordinates', latlngs);
     console.log('tags', tags);
     console.log('title', title);
 
     setTimeout(function () {
-      // var useToken = localStorage["token"] || window.token;
       var useToken = localStorage.getItem('token') || window.token;
       $.ajax({
           method: api.createShape.method,

@@ -7,8 +7,8 @@ $(document).ready(function() {
     $('#topbar').remove();
     $('body').append('<div class="swipe-area-right"></div>');
 
-    showAlert("Drawing tools are not available on mobile.", "info", 4000);
-    showAlert("Swipe from the right border of your screen to show the mnu.", "info", 4000);
+    showAlert("Drawing tools are not available on mobile.", "info", 6000);
+    showAlert("Swipe from the right border of your screen to show the mnu.", "info", 7000);
 
     $('.draw-link').addClass('disabled');
 
@@ -30,8 +30,14 @@ $(document).ready(function() {
 
     // Activate swipe on the right border to show the mobile menu
     $(".swipe-area-right").touchwipe({
-     wipeLeft: function() {sidebar.show($('#account-info').show())},
+     wipeLeft: function() {sidebar.show($('#mobile-menu-dialog').show())},
      min_move_x: 15,
+     preventDefaultEvents: true
+    });
+    
+    $(".sidebar-container").touchwipe({
+     wipeRight: function() {sidebar.hide()},
+     min_move_x: 100,
      preventDefaultEvents: true
     });
 
@@ -230,6 +236,16 @@ function clearBottomPanelContent() {
     $(this).attr("data-url", "");
   });
 };
+
+// Get data from the features into the bottom bar
+function getData(sourceFeature) {
+  
+  if (sourceFeature === "garbage") {console.log("getting data from feature");}
+  if (sourceFeature === "cleaning") {console.log("getting data from feature");}
+  if (sourceFeature === "litter") {console.log("getting data from feature");}
+  if (sourceFeature === "area") {console.log("getting data from feature");}
+  
+}
 
 // Confirm garbage function
 // TODO bind this to the db
