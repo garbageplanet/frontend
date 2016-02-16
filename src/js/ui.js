@@ -1,18 +1,8 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// Check if the localStorage has token, if yes log the user in with data
-$(document).ready(function() {
-  var test1 = localStorage.getItem('token');
-  console.log('token value', test1);
-  if (test1 !== null ) {
-      switchSession('login');
-  }
-  else {return;}
-});
-
 // Mobile display, detecting userAgent is not an option and L.Browser also fails here for mobile.
 $(document).ready(function() {
 
-  if ((window.innerHeight || window.innerWidth) < 768px) {
+  if ((window.innerHeight < 768px) || (window.innerWidth < 768px)) {
     $('#topbar').remove();
     $('body').append('<div class="swipe-area-right"></div>');
 
@@ -117,6 +107,16 @@ function switchSession(sessionStatus) {
     }
 
 }
+
+// Check if the localStorage has token, if yes log the user in with data
+$(document).ready(function() {
+  var test1 = localStorage.getItem('token');
+  console.log('token value', test1);
+  if (test1 !== null ) {
+      switchSession('login');
+  }
+  else {return;}
+});
 
 // Alerts by lgal http://stackoverflow.com/a/33662720/2842348
 function showAlert(errorMessage, errorType, closeDelay) {
