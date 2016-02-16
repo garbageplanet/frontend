@@ -8,6 +8,8 @@ $(document).ready(function() {
     $('body').append('<div class="swipe-area-right"></div>');
 
     showAlert("Drawing tools are not available on mobile.", "info", 4000);
+    showAlert("Swipe from the right border of your screen to show the mnu.", "info", 4000);
+
     $('.draw-link').addClass('disabled');
 
     if(!window.location.hash) {
@@ -28,7 +30,7 @@ $(document).ready(function() {
 
     // Activate swipe on the right border to show the mobile menu
     $(".swipe-area-right").touchwipe({
-     wipeLeft: function() { sidebar.show(); },
+     wipeLeft: function() {sidebar.show($('#account-info').show(););},
      min_move_x: 15,
      preventDefaultEvents: true
     });
