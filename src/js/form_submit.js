@@ -13,21 +13,31 @@ $(function () {
             lat,
             lng,
             image_url,
+		    garbageSize,
+		    garbageEmbed,
             note;
 
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function (index, value) {
 			garbageType.push($(value).val());
 		});
-      
+
         $(this).find('.selectpicker.garbage-todo-select option:selected').each(function (index, value) {
 			garbageTodo.push($(value).val());
 		});
+
+        $(this).find('.selectpicker.garbage-size-select option:selected').each(function (index, value) {
+			garbageSize.push($(value).val());
+		});
+
+        $(this).find('.selectpicker.garbage-embed-select option:selected').each(function (index, value) {
+            garbageEmbed.push($(value).val());
+        });
 
 		garbageAmout = $('input[class=garbage-range-input]').val();
         note = $(this).find('.garbage-note').val();
 		image_url = $(this).find('.garbage-image-hidden-value').val();
         tags = $(this).find('.garbage-tags').tagsinput('items');
-      
+
         // Coordinates
 		lat = $(this).find('.marker-lat').val();
 		lng = $(this).find('.marker-lng').val();
@@ -48,17 +58,19 @@ $(function () {
                   'todo': garbageTodo,
                   'image_url': image_url,
                   'tag': tags.join(),
+                  'size': garbageSize,
+                  'embed': garbageEmbed,
                   'note': note,
                   'featuretype': "marker_garbage"
               },
               success: function (data) {
                   console.log('success data', data);
                   showAlert("Marker saved successfully!", "success", 1500);
-                
+
                   if (garbageAmount > 8) {
                       showAlert("That's a lot of trash, we opened a 311 ticket!", "warning", 3000);
                   }
-                
+
                   sidebar.hide('slow');
                   map.removeLayer(marker);
                   loadGarbageMarkers();
@@ -82,17 +94,17 @@ $(function () {
           tags = [],
           eventRecurrence = [],
           dateTime,
-          lat, 
+          lat,
           lng;
 
         dateTime = $('.date-time-value').val();
         tags = $(this).find('.cleaning-tags').tagsinput('items');
         lat = $(this).find('.cleaning-lat').val();
 		lng = $(this).find('.cleaning-lng').val();
-      
+
         $(this).find('.selectpicker.cleaning-recurrent-select option:selected').each(function(index, value) {
 			eventRecurrence.push($(value).val());
-		});      
+		});
 
 		setTimeout(function () {
           // var useToken = localStorage["token"] || window.token;
@@ -137,9 +149,9 @@ $(function () {
     var that = this,
         litterType = [],
         tags = [],
-        litterAmount, 
-        latlngs, 
-        image_url, 
+        litterAmount,
+        latlngs,
+        image_url,
         length,
         geojson_data,
         wms_url,
@@ -150,7 +162,7 @@ $(function () {
     $(this).find('.selectpicker.litter-type-select option:selected').each(function (index, value) {
         litterType.push($(value).val());
     });
-        
+
     tags = $(this).find('.litter-tags').tagsinput('items');
 
     litterAmount = $('input[class=litter-range-input]').val();
@@ -190,14 +202,14 @@ $(function () {
               console.log('success data', data);
               showAlert("Litter saved successfully!", "success", 1500);
               sidebar.hide('slow');
-              // loadRemoteShapes(); 
+              // loadRemoteShapes();
           },
           error: function (err) {
               console.log('err', err);
               showAlert("Sorry, failed to save the litter.", "danger", 2000);
               sidebar.hide();
               // FIXME remove the feature on error?
-              map.removeLayer(polylineLayer);    
+              map.removeLayer(polylineLayer);
           }
       });
     }, 200);
@@ -228,7 +240,7 @@ $(function () {
     console.log('coordinates', latlngs);
     console.log('tags', tags);
     console.log('title', title);
-    
+
     setTimeout(function () {
       // var useToken = localStorage["token"] || window.token;
       var useToken = localStorage.getItem('token') || window.token;
@@ -251,7 +263,7 @@ $(function () {
               console.log('success data', data);
               showAlert("Area saved successfully!", "success", 1500);
               sidebar.hide('slow');
-              // loadRemoteShapes(); 
+              // loadRemoteShapes();
           },
           error: function (err) {
               console.log('err', err);

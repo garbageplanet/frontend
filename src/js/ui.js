@@ -30,7 +30,7 @@ $(document).ready(function() {
 
     // Activate swipe on the right border to show the mobile menu
     $(".swipe-area-right").touchwipe({
-     wipeLeft: function() {sidebar.show($('#account-info').show(););},
+     wipeLeft: function() {sidebar.show($('#account-info').show())},
      min_move_x: 15,
      preventDefaultEvents: true
     });
