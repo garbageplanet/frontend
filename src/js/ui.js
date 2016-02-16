@@ -12,7 +12,7 @@ $(document).ready(function() {
 // Mobile display
 // TODO only add swipe menu and remove navigation bar for very small screens
 $(document).ready(function() {
-  if (L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android)  {
+  if (L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android || L.Browser.android23 || L.Browser.mobileOpera)  {
 
     $('#topbar').remove();
     $('body').append('<div class="swipe-area-right"></div>');
@@ -26,11 +26,11 @@ $(document).ready(function() {
 
         document.body.style.height = (window.outerHeight + 50) +'px';
 
-        setTimeout( function(){ window.scrollTo(0, 1); }, 100 );
+        setTimeout( function() { window.scrollTo(0, 1); }, 100 );
 
       } else {
 
-        setTimeout( function(){ window.scrollTo(0, 1); }, 100 );
+        setTimeout( function() { window.scrollTo(0, 1); }, 100 );
 
       }
 

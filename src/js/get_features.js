@@ -1,5 +1,5 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// Get new markers if the map moves
+// TODO Get new markers if the map moves
 map.on('moveend', function (e) {
   console.log("map was moved");
   var bounds = map.getBounds();
@@ -20,7 +20,6 @@ map.on('moveend', function (e) {
     loadAreas();
   }
 });
-
 
 // Get garbage
 function loadGarbageMarkers () {
