@@ -3,7 +3,7 @@
 // Mobile display, detecting userAgent is not an option and L.Browser also fails here for mobile.
 $(document).ready(function() {
 
-  if ((window.innerHeight < 768) || (window.innerWidth < 768)) {
+  if ( window.innerWidth < 768) {
     $('#topbar').remove();
     $('body').append('<div class="swipe-area-right"></div>');
 
