@@ -70,8 +70,8 @@ function switchSession(sessionStatus) {
       $("#session-status a").removeClass('dropdown-link');
       $("#session-status").on('click', '#btn-logout', function() {switchSession("logout"); logout();});
       $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="#account-info">User info</a></li>');
-      $(".btn-menu").append('<a id="user-info-mobile-link" class="btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-user"></span> User info</a>');
-      $("#user-info-link a, user-info-mobile-link").on("click", function(e) {
+      $(".btn-menu").append('<a href="#user-info" class="btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-user"></span> User info</a>');
+      $("#user-info-link a").on("click", function(e) {
                                       e.preventDefault();
                                       $('#sidebar').scrollTop = 0;
                                       $(this.hash).fadeIn().siblings().hide();
