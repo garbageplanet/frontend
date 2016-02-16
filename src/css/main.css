@@ -156,16 +156,13 @@ body {
 }
 
 .card div.panel.panel-default {
-
   margin-bottom: 2px !important;
   margin-top: 2px !important;
   border: 0 !important;
   box-shadow: 0 1px 1px rgba(0,0,0,0);
 }
 .card .panel .panel-body {
-
   padding: 2px !important;
-
 }
 
 /* Add badges */
@@ -178,7 +175,7 @@ body {
 }
 
 
-/* Style the menu link in the sidebar */
+/* Style the sidebar */
 a.menu-backlink {
   color: lightgray;
   vertical-align: middle;
@@ -190,7 +187,7 @@ a.menu-backlink:hover {
   text-decoration: none;
 }
 
-.sidebar-content  {
+.sidebar-container  {
   overflow-y: auto;
   overflow-x: hidden;
 }
