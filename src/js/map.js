@@ -1,30 +1,30 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Set the map
 var map = L.map('map', { zoomControl: false, attributionControl: false });
-
+// Add location hash
 var hash = new L.Hash(map);
 
 // Base layer
 var baselayer = {
     "Mapbox Outdoors": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
-    {maxZoom: 20}),
+    {maxZoom: 20, reuseTiles: true}),
     "Mapbox Satellite": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.nej0l93m/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
-    {maxZoom: 20})
+    {maxZoom: 20, reuseTiles: true})
 };
 
 baselayer['Mapbox Outdoors'].addTo(map);
+
+function onLocationError(e) {
+
+  showAlert("Couldn't find your position.", "warning", 2000);
+  map.setZoom(2);
+
+}
 
 // Locate the user if the url doesn't contains lat lngs regex by Iain Fraser http://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
 if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
 
   map.locate({setView: true, maxZoom: 16});
-
-  function onLocationError(e) {
-
-    showAlert("Couldn't find your position.", "warning", 2000);
-    map.setZoom(2);
-
-  }
 
   map.on('locationerror', onLocationError);
 
@@ -74,7 +74,7 @@ map.on('zoomend', function (e) {
   mapZoom = e.target.getZoom();
 
   if (mapZoom < 10) {
-    showAlert("Zoom in closer to create markers", "info", 1200);
+    showAlert("Zoom in closer to create features", "info", 1200);
   }
 
 });
@@ -97,28 +97,3 @@ var cleaningMarker = L.divIcon({
     iconSize: [30, 30],
     html: '<i class="fa fa-fw"></i>'
 });
-
-///////////////////////////////
-// http://jquery-howto.blogspot.fi/2009/09/get-url-parameters-values-with-jquery.html
-/*
-$.extend({
-  getUrlVars: function(){
-    var vars = [], hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for(var i = 0; i < hashes.length; i++)
-    {
-      hash = hashes[i].split('=');
-      vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
-    }
-    return vars;
-  },
-  getUrlVar: function(name){
-    return $.getUrlVars()[name];
-  }
-});
-*/
-
-// Emulate clicks : map.FireEvent() see http://stackoverflow.com/a/34669697/2842348
-
-// Filter markers http://stackoverflow.com/a/19118143/2842348

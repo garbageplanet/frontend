@@ -190,6 +190,11 @@ a.menu-backlink:hover {
   text-decoration: none;
 }
 
+.sidebar-content  {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 /* Style the bottom bar */
 .bottombar-container .container {
   width: auto;

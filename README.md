@@ -16,6 +16,8 @@ If you want to cnotribute to a specific todo below, the first thing you should d
 
 ### TODO
 
+- [ ] push data to the bottom bar dynamically with `getData()`, in `ui.js`
+
 ### Mobile
 - [ ] fix close layers control button reloads page bug
 - [ ] detecting mobile browsers/devices needs some more thinking
