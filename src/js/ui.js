@@ -98,7 +98,7 @@ function switchSession(sessionStatus) {
         $('.sidebar-content').hide();
 
         if (!sidebar.isVisible()) {
-            sidebar.show(('#mobile-menu-dialog').fadeIn().siblings().hide());
+            sidebar.show();
         }
 
         $('#account-info').show();
