@@ -30,7 +30,8 @@ When adding a new js function to the code, add a comment about what it does. Bui
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
 
 ### General coding
-- [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates);
+- [ ] replace all instances of `find()` with direct css selectors
+- [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates)
 - [ ] move to Leaflet 1.0, make custom build and upgrade plugins (almost everything works out of the box)
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
 

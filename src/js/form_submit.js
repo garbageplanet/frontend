@@ -158,7 +158,8 @@ $(function () {
         image_url,
         length,
         geojson_data,
-        note;
+        note,
+        amount_quantitative;
 
     latlngs = $(this).find('.litter-latlngs').val();
 
@@ -167,7 +168,7 @@ $(function () {
     });
 
     tags = $(this).find('.litter-tags').tagsinput('items');
-
+    amount_quantitative = $(this).find('.litter-amount-quantitative').val();
     litterAmount = $('input[class=litter-range-input]').val();
     length = $(this).find('.litter-path-length').val();
     image_url = $(this).find('.litter-image-hidden-value').val();
@@ -193,12 +194,12 @@ $(function () {
               'amount': litterAmount,
               'types': litterType.join(),
               'image_url': image_url,
-              'length': length,
+              'physical_length': length,
               'wms_url': wms_url,
               'geojson_data': geojson_data,
               'tag': tags.join(),
+              'amount_quantitative': amount_quantitative,
               'featuretype': "polyline_litter"
-              // TODO add quantitative amount fields ?
           },
           success: function (data) {
               console.log('success data', data);
@@ -229,8 +230,10 @@ $(function () {
         secret,
         players,
         title,
-        contact;
+        contact,
+        game;
     
+    game = $( ".tile-game-check input:checked" ).length || 0;
     latlngs = $(this).find('.area-latlngs').val();
     title = $(this).find('.area-title').val();
     note = $(this).find('.area-note').val();
@@ -275,6 +278,7 @@ $(function () {
               'secret': secret,
               'title': title,
               'tag': tags.join(),
+              'game' : game,
               'featuretype': "polygon_area"
           },
           success: function (data) {

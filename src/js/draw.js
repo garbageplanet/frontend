@@ -9,7 +9,7 @@ var drawControl = new L.Control.Draw({
             marker: false },
     edit: {
         featureGroup: editableLayerGroup,
-        remove: true
+        remove: false
     }
 });
 

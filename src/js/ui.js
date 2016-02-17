@@ -234,12 +234,209 @@ function clearBottomPanelContent() {
 }
 
 // Get data from the features into the bottom bar
-function getData(sourceFeature) {
+
+
+function pushDataToBottomPanel(e) {
   
-  if (sourceFeature === "garbage") {console.log("getting data from feature");}
-  if (sourceFeature === "cleaning") {console.log("getting data from feature");}
-  if (sourceFeature === "litter") {console.log("getting data from feature");}
-  if (sourceFeature === "area") {console.log("getting data from feature");}
+  console.log('value of e: ', e)
+  console.log('value of e.options: ', e.options.featuretype)
+  
+  if (typeof e.options.featuretype === 'undefined') {
+    console.log('getting data from garbage marker');
+    
+    var markerTypes = e.options.types,
+        markerAmount = e.options.amount,
+        markerRawImage = e.options.imageUrl,
+        markerId = e.options.id,
+        markerCreatedBy = e.options.marked_by,
+        markerNote = e.options.note,
+        markerTags = e.options.tags,
+        markerTodo = e.options.todo,
+        markerConfirm = e.options.confirm,
+        markerSize = e.options.size,
+        markerEmbed = e.options.embed,
+        markertarget = "http://garbagepla.net/#15/"+e.options.Lat+"/"+e.options.Lng+"string";
+
+    // Put a placeholder if the media is empty
+    if (!markerRawImage) {
+      $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
+      $('#feature-info').find('.feature-image-link').attr('href', '');
+    }
+
+    if (markerRawImage) {
+      // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
+      String.prototype.insert = function (index, string) {
+          if (index > 0) {
+              return this.substring(0, index) + string + this.substring(index, this.length);
+          } else {
+            return string + this;
+          }
+      };
+
+      markerImage = markerRawImage.insert(26, "t");
+      $('#feature-info').find('.feature-image').attr('src', markerImage);
+      $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
+    }
+
+    $('#feature-info').find('.feature-info-garbage-type').html(markerTypes.join(", "));
+    $("#feature-info-created-by").html(markerCreatedBy);
+    
+    // push the url to the href of share buttons
+    $('#feature-info').find('.btn-share').each(function() {
+      $(this).attr("data-url", markertarget);
+    });
+    
+    $('#feature-info').find('.feature-info-confirmed p strong').html(markerConfirm);
+
+    // amount mapping
+    switch (markerAmount) {
+        case 0:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Are you sure about that?');
+            break;
+        case 1:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' You are seeing ghosts');
+            break;
+        case 2:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Here and there');
+            break;
+        case 3:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Quite some');
+            break;
+        case 4:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Already too much');
+            break;
+        case 5:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' What happened here?');
+            break;
+        case 6:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' This is getting out of hand');
+            break;
+        case 7:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Dude...');
+            break;
+        case 8:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' What the what?');
+            break;
+        case 9:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Cant touch this');
+            break;
+        case 10:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Oh my God Becky, look at...');
+            break;
+        default:
+            $('#feature-info').find('.feature-info-garbage-amount').html(' Undefined');
+            break;
+    }
+    
+  }
+  
+  if (e.options.featuretype === 'marker_cleaning') {
+    console.log('getting data from cleaning marker');
+    
+    var markerDate = e.options.date,
+        markerId = e.options.id,
+        markerRecurrence = e.options.Rrcurrence,
+        markerParticipants = e.options.participants,
+        markerCreatedBy = e.options.marked_by
+    }
+  
+  if (e.options.featuretype === 'polyline_litter') {
+    console.log('getting data from litter');
+    
+    var tlitterType = e.layer.options.type,
+        litterAmount = e.layer.options.amount,
+        litterRawImage = e.layer.options.imageUrl,
+        litterLatLngs =e.layer.options.latlngs,
+        litterId = e.layer.options.id,
+        litterTags = e.layer.options.tags,
+        litterNote = e.layer.options.note,
+        litterLength = e.layer.options.length,
+        litterConfirm = e.layer.options.confirm,
+        litterCreatedBy = e.options.marked_by;
+    
+    // Put a placeholder if the media is empty
+    if (!litterRawImage ) {
+      $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
+      $('#feature-info').find('.feature-image-link').attr('href', '');
+    }
+
+    if (litterRawImage) {
+
+      // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
+      String.prototype.insert = function (index, string) {
+
+        if (index > 0) {
+            return this.substring(0, index) + string + this.substring(index, this.length);
+        } else {
+          return string + this;
+        }
+      };
+
+      litterImage = litterRawImage.insert(26, "t");
+
+      $('#feature-info').find('.feature-image').attr('src', litterImage);
+      $('#feature-info').find('.feature-image-link').attr('href', litterRawImage);
+
+    }
+    
+    // amount mapping
+    switch (litterAmount) {
+      case 0:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
+        break;
+      case 1:
+        $('#feature-info').find('.feature-info-garbage-amount').html('You are seeing ghosts');
+        break;
+      case 2:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Here and there');
+        break;
+      case 3:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Quite some');
+        break;
+      case 4:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Already too much');
+        break;
+      case 5:
+        $('#feature-info').find('.feature-info-garbage-amount').html('What happened here?');
+        break;
+      case 6:
+        $('#feature-info').find('.feature-info-garbage-amount').html('This is getting out of hand');
+        break;
+      case 7:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Dude...');
+        break;
+      case 8:
+        $('#feature-info').find('.feature-info-garbage-amount').html('What the what?');
+        break;
+      case 9:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
+        break;
+      case 10:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky');
+        break;
+      default:
+        $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
+    } 
+    
+  }
+  
+  if (e.options.featuretype === 'polygon_area') {
+    console.log('getting data from area');
+    
+    var areaLatLngs = e.layer.options.latlngs,
+    areaId = e.layer.options.id,
+    areatags = e.layer.options.tags,
+    areacontact = e.layer.options.contact,
+    areanote = e.layer.options.note,
+    areatitle = e.layer.options.title,
+    areaplayers = e.layer.options.players,
+    areaCreatedBy = e.options.marked_by;
+    
+    if (e.options.game) {
+      // TODO add button to join game
+      // TODO body.append('modal') with secret input to join game area
+    }
+  }
   
 }
 
@@ -267,6 +464,41 @@ function getData(sourceFeature) {
       $.ajax({
           method: api.confirmTrash.method,
           url: api.confirmTrash.url(),
+          headers: {"Authorization": "Bearer" + useToken},
+          data: {
+              'confirm': counts // TODO how to do this?
+          },
+          success: function (data) {
+              console.log('success data', data);
+              // todo change the value in the UI
+          },
+          error: function (err) {
+              console.log('err', err);
+          }
+      });
+    }, 100);
+};*/
+
+// TODO Join cleaning event function
+/*function joinCleaning(obj){
+  // TODO Finish this
+  // TODO make session-dependant and allow once per user per marker
+  if (!localStorage.getItem('token')){
+    showAlert("You need to login to do that.", "info", 2000);
+  }
+
+  var counts = parseInt($(".feature-info-confirmed strong").val, 10);
+  counts = isNaN(counts) ? 0 : value;
+  counts++;
+  $(".cleaning-info-confirmed strong").val = counts;
+
+    setTimeout(function () {
+      // var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage.getItem('token') || window.token;
+
+      $.ajax({
+          method: api.joinCleaning.method,
+          url: api.readCleaning.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
               'confirm': counts // TODO how to do this?

@@ -25,6 +25,7 @@ map.on('moveend', function (e) {
 function loadGarbageMarkers () {
     console.log('loading garbage markers from db');
     garbageLayerGroup.clearLayers();
+    var useToken = localStorage.getItem('token') || window.token;
     // ajax request
     $.ajax({
         type: api.readTrashWithinBounds.method,
@@ -36,20 +37,20 @@ function loadGarbageMarkers () {
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon: garbageMarker,
-                        Id: obj.id,
-                        Amount: obj.amount,
-                        Types: obj.types,
-                        ImageUrl: obj.image_url,
-                        Lat: obj.lat,
-                        Lng: obj.lng,
-                        Confirm: obj.confirm,
-                        Todo: obj.todo,
-                        Tags: obj.tag,
-                        Note: obj.note,
-                        FeatureType: obj.featuretype,
-                        Size: obj.size,
-                        Embed: obj.embed,
-                        Marked_by: obj.marked_by
+                        id: obj.id,
+                        amount: obj.amount,
+                        types: obj.types,
+                        imageUrl: obj.image_url,
+                        lat: obj.lat,
+                        lng: obj.lng,
+                        confirm: obj.confirm,
+                        todo: obj.todo,
+                        tags: obj.tag,
+                        note: obj.note,
+                        feature_type: obj.featuretype,
+                        size: obj.size,
+                        embed: obj.embed,
+                        marked_by: obj.marked_by
                     });
 
                 garbageLayerGroup.addLayer(marker);
@@ -104,7 +105,6 @@ function loadGarbageMarkers () {
             console.log('Something went wrong while fetching the garbage markers', data);
         }
     });
-    var useToken = localStorage.getItem('token') || window.token;
 }
 
 // Get cleanings
@@ -122,14 +122,14 @@ function loadCleaningMarkers () {
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon:cleaningMarker,
-                        Id: obj.Id,
-                        Date: obj.Date,
-                        Lat: obj.Lat,
-                        Lng: obj.Lng,
-                        FeatureType: obj.featureType,
-                        Paticipants: obj.Participants,
-                        Recurrence: obj.Recurrence,
-                        Marked_by: obj.marked_by
+                        id: obj.Id,
+                        date: obj.Date,
+                        lat: obj.Lat,
+                        lng: obj.Lng,
+                        feature_type: obj.featuretype,
+                        participants: obj.participants,
+                        recurrence: obj.Recurrence,
+                        marked_by: obj.marked_by
 
                     });
                 // TODO add hasLayer() logic here to only add absent markers?
@@ -166,14 +166,14 @@ function loadAreas () {
 
           var polygonLayer = new L.Polygon(obj.latlngs,
             {
-              Id: obj.id,
-              Title: obj.title,
-              Players: obj.players,
-              Note: obj.note,
-              Tags: obj.tag,
-              Contact: obj.contact,
-              FeatureType: obj.featuretype,
-              Marked_by: obj.marked_by
+              isPrototypeOfd: obj.id,
+              title: obj.title,
+              players: obj.players,
+              note: obj.note,
+              tags: obj.tag,
+              contact: obj.contact,
+              feature_type: obj.featuretype,
+              marked_by: obj.marked_by
             });
 
           areaLayerGroup.addLayer(polygonLayer);
@@ -210,16 +210,15 @@ function loadLitters () {
 
           var polylineLayer = new L.Polyline(obj.latlngs,
             {
-              Id: obj.id,
-              Amount: obj.amount,
-              Types: obj.types,
-              ImageUrl: obj.image_url,
-              Tags: obj.tag,
-              FeatureType: obj.featuretype,
-              Marked_by: obj.marked_by
-              // TODO add the rest of the options
-            })
-          ;
+              id: obj.id,
+              amount: obj.amount,
+              types: obj.types,
+              imageUrl: obj.image_url,
+              tags: obj.tag,
+              feature_type: obj.featuretype,
+              marked_by: obj.marked_by,
+              physical_length: obj.physical_length
+            });
 
           switch(obj.amount){
             case 1:
@@ -274,174 +273,77 @@ function loadLitters () {
 // onClick behavior for saved garbage markers
 function onGarbageMarkerClick (e) {
     console.log("Garbage marker clicked");
-    console.log(e);
-
-    var that = this,
-        markerTypes = e.options.Types,
-        markerAmount = e.options.Amount,
-        markerRawImage = e.options.ImageUrl,
-        markerId = e.options.Id,
-        markerCreatedBy = e.options.Marked_by,
-        markerNote = e.options.Note,
-        markerTags = e.options.Tags,
-        markerTodo = e.options.Todo,
-        markerConfirm = e.options.Confirm,
-        markerSize = e.options.Size,
-        markerEmbed = e.options.Embed,
-        markertarget = "http://garbagepla.net/#15/"+e.options.Lat+"/"+e.options.Lng+"string"; //create a url to the marker add a parameter at the end to open the bottombar
-
-    map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
-
+  
+    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
     sidebar.hide();
+    // Clear the current data
     clearBottomPanelContent();
+    // Push data
+    pushDataToBottomPanel(e);
+    
+    // Show the bottombar with content
+    bottombar.show($('#feature-info').fadeIn());
 
-        // TODO push all the data to the bottombar
-        // TODO move this logic to the ui.js getData();
-        // getData(e.options.feature_type.toString);
-
-        // Put a placeholder if the media is empty
-        if (!markerRawImage) {
-          $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
-          $('#feature-info').find('.feature-image-link').attr('href', '');
-        }
-
-        if (markerRawImage) {
-          // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
-          String.prototype.insert = function (index, string) {
-              if (index > 0) {
-                  return this.substring(0, index) + string + this.substring(index, this.length);
-              } else {
-                return string + this;
-              }
-          };
-
-          markerImage = markerRawImage.insert(26, "t");
-          $('#feature-info').find('.feature-image').attr('src', markerImage);
-          $('#feature-info').find('.feature-image-link').attr('href', markerRawImage);
-        }
-
-        $('#feature-info').find('.feature-info-garbage-type').html(markerTypes.join(", "));
-        $("#feature-info-created-by").html(markerCreatedBy);
-        // push the url to the href of share buttons
-        $('#feature-info').find('.btn-share').each(function() {
-          $(this).attr("data-url", markertarget);
+    // TODO move this logic outside this function and call it with a function and the marker obj as param
+    $('#feature-info').find('.btn-delete').one('click', function (e) {
+        // FIXME this send one request the first time deletion is requested (delete button)
+        // two requests the second time the deletion is requested
+        // three requests ...
+        // TODO only allow if session is valid and userid matches
+        console.log('trigger delete on id', e.options.id);
+        e.preventDefault();
+        var useToken = localStorage.getItem('token') || window.token;
+        $.ajax({
+            type: api.deleteTrash.method,
+            url: api.deleteTrash.url(markerId),
+            headers: {"Authorization": "Bearer " + useToken},
+            success: function(response) {
+                bottombar.hide();
+                loadGarbageMarkers();
+                showAlert("Marker deleted successfully!", "success", 1500);
+            },
+            error: function(response) {
+                showAlert("Failed to remove this marker.", "warning", 2000);
+            }
         });
-        // $('#feature-info').find('.feature-info-confirmed p strong').html(markerConfirmed);
+    });
+    // TODO pass the object to editFeature()
+    $('#feature-info').find('.btn-edit').on('click', function (e) {
+        e.preventDefault();
+        console.log('edit data on id', e.options.id);
+        // TODO pass the feature data
+        // editFeature(e); 
+        bottombar.hide();
+        sidebar.show($('#create-garbage-dialog').fadeIn());
+    });
 
-        // Show the bottombar with content
-        bottombar.show();
-        $('#feature-info').fadeIn();
-
-        // TODO move this logic outside this function and call it with a function and the marker obj as param
-        $('#feature-info').find('.btn-delete').click(function (e) {
-            // FIXME this send one request the first time deletion is requested (delete button)
-            // two requests the second time the deletion is requested
-            // three requests ...
-            // TODO only allow if session is valid and userid matches
-            console.log('trigger delete on id', markerId);
-            e.preventDefault();
-            var useToken = localStorage.getItem('token') || window.token;
-            $.ajax({
-                type: api.deleteTrash.method,
-                url: api.deleteTrash.url(markerId),
-                headers: {"Authorization": "Bearer " + useToken},
-                success: function(response) {
-                    bottombar.hide();
-                    loadGarbageMarkers();
-                    showAlert("Marker deleted successfully!", "success", 1500);
-                },
-                error: function(response) {
-                    showAlert("Failed to remove this marker.", "warning", 2000);
-                }
-            });
-        });
-        // TODO pass the object to editFeature()
-        $('#feature-info').find('.btn-edit').click(function (e) {
-            e.preventDefault();
-            console.log('edit data on id', markerId);
-            editFeature(e);
-        });
-
-        // amount mapping
-        switch (markerAmount) {
-            case 0:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Are you sure about that?');
-                break;
-            case 1:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' You are seeing ghosts');
-                break;
-            case 2:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Here and there');
-                break;
-            case 3:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Quite some');
-                break;
-            case 4:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Already too much');
-                break;
-            case 5:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' What happened here?');
-                break;
-            case 6:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' This is getting out of hand');
-                break;
-            case 7:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Dude...');
-                break;
-            case 8:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' What the what?');
-                break;
-            case 9:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Cant touch this');
-                break;
-            case 10:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Oh my God Becky, look at...');
-                break;
-            default:
-                $('#feature-info').find('.feature-info-garbage-amount').html(' Undefined');
-                break;
-        }
 }
 
 // onClick behavior for saved cleaning markers
 function onCleaningMarkerClick (e) {
-    console.log("Garbage marker clicked");
-    console.log(e);
+    console.log("Cleaning marker clicked");
 
-    var that = this,
-    markerTypes = e.options.Types,
-    markerDate = e.options.Date,
-    markerId = e.options.Id,
-    markerId = e.options.Id,
-    markerParticipants = e.options.Participants,
-    markerCreatedBy = e.options.Marked_by;
-
-    map.panToOffset([e.options.Lat, e.options.Lng], _getVerticalOffset());
+    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
 
         sidebar.hide();
         clearBottomPanelContent();
-
-        // TODO push all the data to the bottombar
-        // getData(e.options.feature_type);
-  
-        $("#cleaning-info-created-by").html(markerCreatedBy);
+        pushDataToBottomPanel(e);
 
         // Show the bottombar with content
-        bottombar.show();
-        $('#cleaning-info').fadeIn();
+        bottombar.show($('#cleaning-info').fadeIn());
 
-        // TODO move this logic outside this function and call it with a function and the marker obj as param
+        // TODO move this logic somewhere else
         $('#cleaning-info').find('.btn-delete').click(function (e) {
             // FIXME this send one request the first time deletion is requested (delete button)
             // two requests the second time the deletion is requested
             // three requests ...
             // TODO only allow if session is valid and userid matches
-            console.log('trigger delete on id', markerId);
+            console.log('trigger delete on id', e.options.id);
             e.preventDefault();
             var useToken = localStorage.getItem('token') || window.token;
             $.ajax({
                 type: api.deleteCleaning.method,
-                url: api.deleteCleaning.url(markerId),
+                url: api.deleteCleaning.url(e.options.id),
                 headers: {"Authorization": "Bearer " + useToken},
                 success: function(response) {
                     bottombar.hide();
@@ -454,10 +356,13 @@ function onCleaningMarkerClick (e) {
             });
         });
         // TODO move this logic outside this function and call it with a function and the marker obj as param
-        $('#feature-info').find('.btn-edit').click(function (e, obj) {
-            console.log('edit data on id', markerId);
-            editFeature(obj);
+        $('#feature-info').find('.btn-edit').on('click', function (e, obj) {
+            console.log('edit data on id', e.options.id);
             e.preventDefault();
+            // TODO pass the feature data  
+            // editFeature(e); 
+            bottombar.hide();
+            sidebar.show($('#create-cleaning-dialog').fadeIn());
         });
 }
 
@@ -465,53 +370,44 @@ function onCleaningMarkerClick (e) {
 function onAreaClick (e) {
     console.log("remote polygon clicked");
     console.log(e);
-    console.log(e.options.latLngs);
-
-    var that = this,
-      areaLatLngs = e.layer.options.LatLngs,
-      areaId = e.layer.options.Id,
-      areatags = e.layer.options.Tags,
-      areacontact = e.layer.options.Contact,
-      areanote = e.layer.options.Note,
-      areatitle = e.layer.options.Title,
-      areaplayers = e.layer.options.Players,
-      areaCreatedBy = e.options.Marked_by;
+    console.log(e.options.latlngs);
 
     sidebar.hide();
     map.panToOffset(e.getCenter(), _getVerticalOffset());
     map.fitBounds(e.layer.getBounds());
     clearBottomPanelContent();
-
-    // TODO push the data to the bottom bar
+    pushDataToBottomPanel(e);
 
     bottombar.show();
     $('#feature-info').fadeIn();
 
     $('#feature-info').find('.btn-delete').click(function (e) {
 
-        e.preventDefault();
-        var useToken = localStorage.getItem('token') || window.token;
+      e.preventDefault();
+      var useToken = localStorage.getItem('token') || window.token;
 
-        $.ajax({
-            type: api.deleteArea.method,
-            url: api.deleteArea.url(areaId),
-            headers: {"Authorization": "Bearer " + useToken},
-            success: function(response) {
-                bottombar.hide();
-                loadAreas();
-                showAlert("Area deleted successfully.", "success", 1500);
-            },
-            error: function(response) {
-                showAlert("Failed to delete this area.", "warning", 2000);
-            }
-        });
+      $.ajax({
+          type: api.deleteArea.method,
+          url: api.deleteArea.url(e.options.id),
+          headers: {"Authorization": "Bearer " + useToken},
+          success: function(response) {
+              bottombar.hide();
+              loadAreas();
+              showAlert("Area deleted successfully.", "success", 1500);
+          },
+          error: function(response) {
+              showAlert("Failed to delete this area.", "warning", 2000);
+          }
+      });
     });
 
     $('#feature-info').find('.btn-edit').click(function (e) {
-        console.log('show data on id', areaId);
+        console.log('show data on id', e.options.id);
         e.preventDefault();
-        editFeature(e.obj, "polygon");
-
+        // TODO pass the feature data  
+        // editFeature(e); 
+        bottombar.hide();
+        sidebar.show($('#create-area-dialog').fadeIn());
     });
 }
 
@@ -519,58 +415,17 @@ function onAreaClick (e) {
 function onLitterClick (e) {
     console.log("remote polyline clicked");
     console.log(e);
-    console.log(e.options.latLngs);
-
-    var that = this,
-      litterType = e.layer.options.Type,
-      litterAmount = e.layer.options.Amount,
-      litterRawImage = e.layer.options.ImageUrl,
-      litterLatLngs =e.layer.options.LatLngs,
-      litterId = e.layer.options.Id,
-      litterTags = e.layer.options.Tags,
-      litterNote = e.layer.options.Note,
-      litterLength = e.layer.options.Length,
-      litterConfirm = e.layer.options.Confirm,
-      litterCreatedBy = e.options.Marked_by;
-
-    // TODO push data to the bottom bar
+    console.log(e.options.latlngs);
 
     sidebar.hide();
     map.panToOffset(e.getCenter(), _getVerticalOffset());
 
     clearBottomPanelContent();
+    pushDataToBottomPanel(e);
 
     map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
 
-
-
-    // Put a placeholder if the media is empty
-    if (!litterRawImage ) {
-      $('#feature-info').find('.feature-image').attr('src', 'http://placehold.it/160x120');
-      $('#feature-info').find('.feature-image-link').attr('href', '');
-    }
-
-    if (litterRawImage) {
-
-      // Add an IMGUR api character to the url to fetch thumbnails to save bandwith
-      String.prototype.insert = function (index, string) {
-
-        if (index > 0) {
-            return this.substring(0, index) + string + this.substring(index, this.length);
-        } else {
-          return string + this;
-        }
-      };
-
-      litterImage = litterRawImage.insert(26, "t");
-
-      $('#feature-info').find('.feature-image').attr('src', litterImage);
-      $('#feature-info').find('.feature-image-link').attr('href', litterRawImage);
-
-    }
-
-    bottombar.show();
-    $('#feature-info').fadeIn();
+    bottombar.show($('#feature-info').fadeIn());
 
     $('#feature-info').find('.btn-delete').click(function (e) {
 
@@ -579,7 +434,7 @@ function onLitterClick (e) {
 
         $.ajax({
             type: api.deleteShape.method,
-            url: api.deleteShape.url(litterId),
+            url: api.deleteShape.url(e.options.id),
             headers: {"Authorization": "Bearer " + useToken},
             success: function(response) {
                 bottombar.hide();
@@ -594,49 +449,13 @@ function onLitterClick (e) {
 
     $('#feature-info').find('.btn-edit').click(function (e) {
         //debugger;
-        console.log('show data on id', litterId);
+        console.log('show data on id', e.options.id);
         e.preventDefault();
-        editFeature(e.obj, "litter");
-        // TODO load the marker data into the form
+        // TODO pass the feature data  
+        // editFeature(e); 
+        bottombar.hide();
+        sidebar.show($('#create-area-dialog').fadeIn());
 
     });
 
-    // amount mapping
-    switch (litterAmount) {
-      case 0:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
-        break;
-      case 1:
-        $('#feature-info').find('.feature-info-garbage-amount').html('You are seeing ghosts');
-        break;
-      case 2:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Here and there');
-        break;
-      case 3:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Quite some');
-        break;
-      case 4:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Already too much');
-        break;
-      case 5:
-        $('#feature-info').find('.feature-info-garbage-amount').html('What happened here?');
-        break;
-      case 6:
-        $('#feature-info').find('.feature-info-garbage-amount').html('This is getting out of hand');
-        break;
-      case 7:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Dude...');
-        break;
-      case 8:
-        $('#feature-info').find('.feature-info-garbage-amount').html('What the what?');
-        break;
-      case 9:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Cant touch this');
-        break;
-      case 10:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Oh my God Becky');
-        break;
-      default:
-        $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
-    }
 };
