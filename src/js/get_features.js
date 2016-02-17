@@ -1,6 +1,7 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // TODO Get new markers if the map moves
-map.on('moveend', function (e) {
+// FIXME changed .on() to .addOneTimeEventListener() for now
+map.addOneTimeEventListener('moveend', function (e) {
   console.log("map was moved");
   var bounds = map.getBounds();
   currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
@@ -8,6 +9,7 @@ map.on('moveend', function (e) {
 
   if (mapZoom >= 8) {
     console.log("mapZoom value from get_feature.js", mapZoom);
+    // TODO another way to get the markers this makes too many html requests
     loadGarbageMarkers();
     loadCleaningMarkers();
   }

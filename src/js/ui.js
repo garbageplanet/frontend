@@ -9,7 +9,7 @@ $(document).ready(function() {
     $('body').append('<div class="swipe-area-right"></div>');
 
     showAlert("Drawing tools are not available on mobile.", "info", 6000);
-    showAlert("Swipe from the right border of your screen to show the mnu.", "info", 7000);
+    showAlert("Swipe from the right border of your screen to show the menu.", "info", 7000);
 
     $('.draw-link').addClass('disabled');
     
