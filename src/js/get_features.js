@@ -309,16 +309,7 @@ function onGarbageMarkerClick (e) {
             }
         });
     });
-    // TODO pass the object to editFeature()
-    $('#feature-info').find('.btn-edit').on('click', function (e) {
-        e.preventDefault();
-        console.log('edit data on id', e.options.id);
-        // TODO pass the feature data
-        // editFeature(e); 
-        bottombar.hide();
-        sidebar.show($('#create-garbage-dialog').fadeIn());
-    });
-
+  
 }
 
 // onClick behavior for saved cleaning markers

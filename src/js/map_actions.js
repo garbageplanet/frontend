@@ -157,29 +157,6 @@ function onLocalMarkerClick (e) {
     sidebar.show($("#create-marker-dialog").fadeIn());
 }
 
-// TODO edit marker by pushing the values of the currently viewed feature in the form fields upon edit
-function editFeature (obj) {
-  bottombar.hide();
-  // TODO preset the values of the clicked marker
-  // TODO handle edit shapes with L.Editable (https://github.com/Leaflet/Leaflet.Editable)
-
-  if (obj.options.type === 'marker_garbage'){
-    sidebar.show($('#create-garbage-dialog').show().siblings().hide());
-
-  }
-  if (obj.options.type === 'marker_cleaning'){
-    sidebar.show($('#create-cleaning-dialog').show().siblings().hide());
-
-  }
-  if (obj.options.type === 'polyline_litter'){
-    sidebar.show($('#create-litter-dialog').show().siblings().hide());
-
-  }
-  if (obj.options.type === 'polygon_area'){
-    sidebar.show($('#create-area-dialog').show().siblings().hide());
-  }
-}
-
 //Remove unsaved markers with class 'marker-generic' after a timeout
 // Move this logic to onMapClick and onLocalMarkerClick ?
 setTimeout(function() {
