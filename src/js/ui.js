@@ -1,6 +1,7 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 
-// Mobile display, detecting userAgent is not an option and L.Browser also fails here for mobile.
+// Mobile display
+// TODO use L.Browser once Leaflet 1.0 is in use
 $(document).ready(function() {
 
   if ( window.innerWidth < 768) {
@@ -11,33 +12,25 @@ $(document).ready(function() {
     showAlert("Swipe from the right border of your screen to show the mnu.", "info", 7000);
 
     $('.draw-link').addClass('disabled');
-
-    if(!window.location.hash) {
-
-      if(document.height <= window.outerHeight + 10) {
-
-        document.body.style.height = (window.outerHeight + 50) +'px';
-
-        setTimeout( function() { window.scrollTo(0, 1); }, 100 );
-
-      } else {
-
-        setTimeout( function() { window.scrollTo(0, 1); }, 100 );
-
-      }
-
-    }
+    
+    // TODO remove navigation on mobile
 
     // Activate swipe on the right border to show the mobile menu
     $(".swipe-area-right").touchwipe({
-     wipeLeft: function() {sidebar.show($('#mobile-menu-dialog').show())},
+     wipeLeft: function() {sidebar.show($('#mobile-menu-dialog').show());},
      min_move_x: 15,
      preventDefaultEvents: true
     });
-    
+    // Hide the sidebar on right swipe
     $(".sidebar-container").touchwipe({
-     wipeRight: function() {sidebar.hide()},
+     wipeRight: function() {sidebar.hide();},
      min_move_x: 100,
+     preventDefaultEvents: true
+    });
+    // Hide the bottombar on down swipe
+    $(".bottombar-container").touchwipe({
+     wipeDown: function() {bottombar.hide();},
+     min_move_y: 50,
      preventDefaultEvents: true
     });
 
@@ -46,7 +39,7 @@ $(document).ready(function() {
 });
 
 // Swtch session function
-// TODO destroy element instead of hiding them
+// TODO destroy/replace/append elements instead of hiding them
 function switchSession(sessionStatus) {
 
   var classicSessionType = localStorage.getItem('classic');
@@ -121,9 +114,9 @@ function switchSession(sessionStatus) {
 
 // Check if the localStorage has token, if yes log the user in with data
 $(document).ready(function() {
-  var test1 = localStorage.getItem('token');
-  console.log('token value', test1);
-  if (test1 !== null ) {
+  var tokenTest = localStorage.getItem('token');
+  console.log('token value', tokenTest);
+  if (tokenTest !== null ) {
       switchSession('login');
   }
   else {return;}
@@ -238,7 +231,7 @@ function clearBottomPanelContent() {
   $('#feature-info').find('.btn-share').each(function() {
     $(this).attr("data-url", "");
   });
-};
+}
 
 // Get data from the features into the bottom bar
 function getData(sourceFeature) {

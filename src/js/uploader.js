@@ -5,7 +5,7 @@
 // TODO make this available only to logged in users.
 $(function () {
 	$('.image-uploader').fileupload({
-        headers: {"Authorization": "Client-ID " + "Imgur Client ID"},
+        headers: {"Authorization": "Client-ID " + "@@imgurToken"},
         url: "https://api.imgur.com/3/image",
         dataType: 'json',
         progressall: function (e, data) {

@@ -12,6 +12,15 @@ var baselayer = {
     {maxZoom: 20, reuseTiles: true})
 };
 
+/* For production build purpose
+var baselayer = {
+    "Mapbox Outdoors": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxToken',
+    {maxZoom: 20, reuseTiles: true}),
+    "Mapbox Satellite": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.nej0l93m/{z}/{x}/{y}.png?access_token=@@mapboxToken',
+    {maxZoom: 20, reuseTiles: true})
+};
+*/
+
 baselayer['Mapbox Outdoors'].addTo(map);
 
 function onLocationError(e) {

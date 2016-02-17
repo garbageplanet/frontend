@@ -1,6 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // FUTURE ADAPT https://github.com/bradvin/social-share-urls
-// TODO catch the obj from the marker instead of getting the data from the bottom panel
+// TODO catch the obj.options from the marker instead of getting the data from the bottom panel
 function shareThisFeature(e) {
   // TODO enable sharing for other features in get_features.js      
   var feature_image_url = $('#feature-info').find('.feature-image-link').attr('href') || "";
@@ -15,6 +15,7 @@ function shareThisFeature(e) {
     // var encoded_url_fb = $(e.target).parent().attr("data-url").replace(/\//g, "%2F").replace(/:/g, "%3A");
     var feature_image_url_fb = feature_image_url.replace(/\//g, "%2F").replace(/:/g, "%3A");           
     var share_link_fb = "https://www.facebook.com/dialog/feed?app_id=109950712685962&amp;display=page&amp;description=" + sharedText + feature_note_encoded + "&amp;link=" + encoded_url + "&amp;picture=" + feature_image_url_fb + "&amp;name=Garbagepla.net&amp;redirect_uri=http://www.garbagepla.net/#15";
+    // For production build purpose var share_link_fb = "https://www.facebook.com/dialog/feed?app_id=" + "@@facebookToken" + "&amp;display=page&amp;description=" + sharedText + feature_note_encoded + "&amp;link=" + encoded_url + "&amp;picture=" + feature_image_url_fb + "&amp;name=Garbagepla.net&amp;redirect_uri=http://www.garbagepla.net/#15";
     $(e.target).parent().attr('href', share_link_fb).trigger('click');
   }
   

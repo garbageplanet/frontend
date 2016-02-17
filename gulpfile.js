@@ -7,7 +7,9 @@ var gulp = require('gulp'),
     minifyCSS = require('gulp-cssnano'),
     uglify = require('gulp-uglify'),
     htmlmin = require('gulp-htmlmin'),
-    del = require('del');
+    del = require('del'),
+    replace = require('gulp-replace-task'),
+    env = require('./env.json');
 
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function () {
@@ -21,8 +23,34 @@ gulp.task('trimHTML', function () {
   .pipe(gulp.dest('./temp/'));
 });
 
+// Replace hardcoded tokens and keys for build
+gulp.task('replaceTokens', function () {
+  gulp.src(['./src/js/map.js', './src/js/uploader.js', './src/js/form-submit.js', './src/js/share.js'])
+    .pipe(replace({
+      patterns: [
+        {
+          match: 'mapboxToken',
+          replacement: env.mapbox.token
+        },
+        {
+          match: 'imgurToken',
+          replacement: env.imgur.token
+        },
+        {
+          match: 'windowToken',
+          replacement: env.window.token
+        },
+        {
+          match: 'facebookToken',
+          replacement: env.facebook.token
+        }
+      ]
+    }))
+    .pipe(gulp.dest('./temp/'));
+});
+
 // Minify the styleshseets and concat them in orde
-gulp.task('styles', ['trimHTML'], function() {
+gulp.task('styles', ['replaceTokens'], function() {
   return gulp.src([
                     './src/css/font-awesome-4.5.0.css',
                     './src/css/google-work-sans.css',
@@ -44,7 +72,7 @@ gulp.task('styles', ['trimHTML'], function() {
 });
 
 // Minify head scripts and concat them in order
-gulp.task('scripts:leaflet', ['trimHTML'], function() {
+gulp.task('scripts:leaflet', ['replaceTokens'], function() {
   return gulp.src([
                     './src/js/libs/Leaflet-0.7.7.js',
                     './src/js/libs/L.hash.js',
@@ -60,7 +88,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
 });
 
 // Minify head scripts and concat them in order
-gulp.task('scripts:jquery', ['trimHTML'], function() {
+gulp.task('scripts:jquery', ['replaceTokens'], function() {
   return gulp.src([
                     './src/js/libs/jquery-2.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
@@ -79,17 +107,18 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
 });
 
 // Minify body scripts and concat them in order
-gulp.task('scripts:app', ['trimHTML'], function() {
+gulp.task('scripts:app', ['replaceTokens'], function() {
   return gulp.src([
                     './src/js/config.js',
-                    './src/js/map.js',
+                    './temp/map.js',
                     './src/js/get_features.js',
                     './src/js/ui.js',
                     './src/js/authenticate.js',
                     './src/js/map_actions.js',
-                    './src/js/uploader.js',
-                    './src/js/form_submit.js',
-                    './src/js/draw.js'
+                    './temp/uploader.js',
+                    './temp/form_submit.js',
+                    './src/js/draw.js',
+                    './temp/share.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('app.min.js'))
@@ -146,5 +175,5 @@ gulp.task('copy:favicon', ['clean:end'], function() {
       .pipe(gulp.dest('./dist'));
 })
 gulp.task('default', ['clean:start'], function() {
-    gulp.start('trimHTML', 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
+    gulp.start('trimHTML', 'replaceTokens', 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
 });
