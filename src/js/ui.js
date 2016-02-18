@@ -110,19 +110,17 @@ $(document).ready(function() {
      preventDefaultEvents: true
     });
     // Hide the bottombar on down swipe
+    // FIXME to swipe down on Android you need wipeUp() (the controls are inverted)
+    // if (L.Browser.retina) {wipeDown:}
+    // if (L.Browser.android || L...) {wipeUp:}
+    
     $(".bottombar-container").touchwipe({
      wipeUp: function() {bottombar.hide();},
      min_move_y: 50,
      preventDefaultEvents: true
     });
     
-    // Warn the user once they moved the map else the alerts flash away
-    map.addOneTimeEventListener('moveend', function() {
-      
-      showAlert("Drawing tools are not available on mobile.", "info", 6000);
-      // showAlert("Swipe from the right border of your screen to show the menu.", "info", 1000);
-
-    });
+    // TODO swipe events to navigate cards / data in bottom panel
 
   }
 
@@ -203,16 +201,17 @@ $(".btn-cancel").on('click', function (){
 // Empty the sidebar on hide, reset accordion and reset scroll
 sidebar.on('hide', function () {
         $('.sidebar-content').hide();
-        $('#sidebar').scrollTop = 0;
+        $('.sidebar-container', '.sidebar-content').scrollTop = 0;
         $('form').each(function() { this.reset(); });
         $('input').val('');
         $('.selectpicker').selectpicker('render');
+        $('.tab-default').tab('show');
         $('.leaflet-draw-edit-edit').removeClass('visible');
         $('.leaflet-draw-edit-remove').removeClass('visible');
 });
 
 // Empty the bottom panel on call of this function
-function clearBottomPanelContent() {
+function resetBottomPanel() {
   //TODO ad methods depending on the type of object clicked
   $(".feature-info").empty();
   $(".feature-info-confirmed strong").text('0');
@@ -222,21 +221,27 @@ function clearBottomPanelContent() {
     $(this).attr("data-url", "");
   });
 }
+// Reset the bottom paenl each time it's being hidden
+bottombar.on('hide', resetBottomPanel);
 
 // Push the data to the form on .btn-edit click
+// TODO Finish this
 function editFeature(e) {
     bottombar.hide();
-    console.log('value of object from editFeature()', e.options.amount)
+    console.log('value of object from editFeature()', e);
+    showAlert("The editing system isn't currently functional.", "warning", 3000);
 
-  
   // if (e.options.featuretype === 'marker_garbage') {
   if (typeof e.options.featuretype === 'undefined') {
     sidebar.show($('#create-garbage-dialog').fadeIn());
+    e.dragging.enable();
   }
   
   
   if (e.options.featuretype === 'marker_cleaning') {
     sidebar.show($('#create-cleaning-dialog').fadeIn());
+    e.dragging.enable();
+
   }
   
   if (e.options.featuretype === 'polyline_litter') {
@@ -253,18 +258,23 @@ function editFeature(e) {
 
 // Get data from the feature object into the bottom panel
 function pushDataToBottomPanel(e) {
-  
-  console.log('value of e.options: ', e.options)
-  
-  var _types = e.options.types,
-      _id = e.options.id,
+  console.log('value of e.options: ', e.options);
+  // Start by emptying and resetting the panel
+  resetBottomPanel();
+
+  // Common vars
+  var _id = e.options.id,
       _createdby = e.options.marked_by,
       _note = e.options.note,
-      _tags = e.options.tags,
-      _todo = e.options.todo,
-      _confirm = e.options.confirm,
-      _size = e.options.size,
-      _embed = e.options.embed;
+      _tags = e.options.tags;
+  
+  if (e.options.types) {
+    var _types = e.options.types,
+        _todo = e.options.todo,
+        _confirm = e.options.confirm,
+        _size = e.options.size,
+        _embed = e.options.embed;
+    }
 
   if (e.options.date) {
     var _date = e.options.date,
@@ -319,6 +329,7 @@ function pushDataToBottomPanel(e) {
         break;
       default:
         $('#feature-info').find('.feature-info-garbage-amount').html('Undefined');
+        break;
     }
   }
           
@@ -347,11 +358,55 @@ function pushDataToBottomPanel(e) {
   // Event listener for edit button
   $('#feature-info').find('.btn-edit').on('click', function() {editFeature(e);});
 
+  // Event listener for delete button
+  $('#feature-info').find('.btn-delete').one('click', function (e) {
+    // TODO only allow if session is valid and userid matches
+    console.log('trigger delete on id', e.options.id);
+    e.preventDefault();
+    
+    // Set the ajax type and url for deletion given the type of feature
+    switch (e.options.featuretype) {
+      case 'marker_cleaning':
+        var deleteurl = api.deleteCleaning.method;
+        var deletemethod = api.deleteCleaning.url(e.options.id);
+        break;
+      case 'polyline_littr':
+        var deleteurl = api.deleteLitter.method;
+        var deletemethod = api.deleteLitter.url(e.options.id);
+        break;
+      case 'polygon_area':
+        var deleteurl = api.deleteArea.method;
+        var deletemethod = api.deleteArea.url(e.options.id);
+        break;
+      default:
+        var deleteurl = api.deleteTrash.method;
+        var deletemethod = api.deleteTrash.url(e.options.id);
+        break;
+    }
+
+    var useToken = localStorage.getItem('token') || window.token;
+    $.ajax({
+        type: deletemethod,
+        url: deleteurl,
+        headers: {"Authorization": "Bearer " + useToken},
+        success: function(response) {
+            bottombar.hide();
+            loadGarbageMarkers();
+            loadCleaningMarkers();
+            loadLitterss();
+            loadAreas();
+            showAlert("Feature deleted successfully!", "success", 1500);
+        },
+        error: function(response) {
+            showAlert("Failed to remove this feature.", "warning", 2000);
+        }
+    });
+  });
+  
   // Push the common data
   $('#feature-info').find('.feature-info-garbage-type').html(_types.join(", "));
   $("#feature-info-created-by").html(_createdby);
   $('#feature-info').find('.feature-info-confirmed p strong').html(_confirm);
-  
   
   // push the url to the href of share buttons
   $('#feature-info').find('.btn-share').each(function() {
@@ -359,6 +414,7 @@ function pushDataToBottomPanel(e) {
   });
   
   // If there's only a lat or long it's a garbage or cleaning marker
+  // TODO Finish this
   if (e.options.lat) {
     
     var _sharetargetlink = "http://garbagepla.net/#15/"+e.options.lat+"/"+e.options.lng+"string";
@@ -377,6 +433,7 @@ function pushDataToBottomPanel(e) {
   }
   
   // If there are latlngs then it's either polyline or polygon
+  // TODO Finish this
   if (e.options.latlngs) {
     
     var _sharetargetlink = "http://garbagepla.net/#15/"+e.options.lat[0]+"/"+e.options.lng[0]+"string";

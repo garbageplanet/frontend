@@ -60,6 +60,8 @@ function loadGarbageMarkers () {
 
                 marker.on('click', function() {
                     onGarbageMarkerClick(marker);
+                    // Push data
+                    pushDataToBottomPanel(marker);
                 });
 
                 switch(obj.amount){
@@ -139,6 +141,8 @@ function loadCleaningMarkers () {
                 map.addLayer(cleaningLayerGroup);
                 marker.on('click', function() {
                     onCleaningMarkerClick(marker);
+                    // Push data
+                    pushDataToBottomPanel(marker);
                 });
             });
         },
@@ -182,6 +186,8 @@ function loadAreas () {
           map.addLayer(areaLayerGroup);
           polygonLayer.on('click', function() {
               onAreaClick(polygonLayer);
+              // Push data
+              pushDataToBottomPanel(polygonLayer);
           });
 
         }
@@ -262,6 +268,8 @@ function loadLitters () {
           map.addLayer(pathLayerGroup);
           polylineLayer.on('click', function() {
               onLitterClick(polylineLayer);
+              // Push data
+              pushDataToBottomPanel(polylineLayer);
           });
         }
       );
@@ -274,181 +282,36 @@ function loadLitters () {
 
 // onClick behavior for saved garbage markers
 function onGarbageMarkerClick (e) {
-    console.log("Garbage marker clicked");
-  
-    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
-    sidebar.hide();
-    // Clear the current data
-    clearBottomPanelContent();
-    // Push data
-    pushDataToBottomPanel(e);
-    
-    // Show the bottombar with content
-    bottombar.show($('#feature-info').fadeIn());
-
-    // TODO move this logic outside this function and call it with a function and the marker obj as param
-    $('#feature-info').find('.btn-delete').one('click', function (e) {
-        // FIXME this send one request the first time deletion is requested (delete button)
-        // two requests the second time the deletion is requested
-        // three requests ...
-        // TODO only allow if session is valid and userid matches
-        console.log('trigger delete on id', e.options.id);
-        e.preventDefault();
-        var useToken = localStorage.getItem('token') || window.token;
-        $.ajax({
-            type: api.deleteTrash.method,
-            url: api.deleteTrash.url(markerId),
-            headers: {"Authorization": "Bearer " + useToken},
-            success: function(response) {
-                bottombar.hide();
-                loadGarbageMarkers();
-                showAlert("Marker deleted successfully!", "success", 1500);
-            },
-            error: function(response) {
-                showAlert("Failed to remove this marker.", "warning", 2000);
-            }
-        });
-    });
-  
+  console.log("Garbage marker clicked");
+  map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
+  sidebar.hide();
+  // Show the bottombar with content
+  bottombar.show($('#feature-info').fadeIn());
 }
 
 // onClick behavior for saved cleaning markers
 function onCleaningMarkerClick (e) {
-    console.log("Cleaning marker clicked");
-
-    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
-
-        sidebar.hide();
-        clearBottomPanelContent();
-        pushDataToBottomPanel(e);
-
-        // Show the bottombar with content
-        bottombar.show($('#cleaning-info').fadeIn());
-
-        // TODO move this logic somewhere else
-        $('#cleaning-info').find('.btn-delete').click(function (e) {
-            // FIXME this send one request the first time deletion is requested (delete button)
-            // two requests the second time the deletion is requested
-            // three requests ...
-            // TODO only allow if session is valid and userid matches
-            console.log('trigger delete on id', e.options.id);
-            e.preventDefault();
-            var useToken = localStorage.getItem('token') || window.token;
-            $.ajax({
-                type: api.deleteCleaning.method,
-                url: api.deleteCleaning.url(e.options.id),
-                headers: {"Authorization": "Bearer " + useToken},
-                success: function(response) {
-                    bottombar.hide();
-                    loadCleaningMarkers();
-                    showAlert("Marker deleted successfully!", "success", 1500);
-                },
-                error: function(response) {
-                    showAlert("Failed to remove this marker.", "warning", 2000);
-                }
-            });
-        });
-        // TODO move this logic outside this function and call it with a function and the marker obj as param
-        $('#feature-info').find('.btn-edit').on('click', function (e, obj) {
-            console.log('edit data on id', e.options.id);
-            e.preventDefault();
-            // TODO pass the feature data  
-            // editFeature(e); 
-            bottombar.hide();
-            sidebar.show($('#create-cleaning-dialog').fadeIn());
-        });
+  console.log("Cleaning marker clicked");
+  map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
+  sidebar.hide();
+  // Show the bottombar with content
+  bottombar.show($('#feature-info').fadeIn());
 }
 
 // onClick behavior for saved areas
 function onAreaClick (e) {
-    console.log("remote polygon clicked");
-    console.log(e);
-    console.log(e.options.latlngs);
-
-    sidebar.hide();
-    map.panToOffset(e.getCenter(), _getVerticalOffset());
-    map.fitBounds(e.layer.getBounds());
-    clearBottomPanelContent();
-    pushDataToBottomPanel(e);
-
-    bottombar.show();
-    $('#feature-info').fadeIn();
-
-    $('#feature-info').find('.btn-delete').click(function (e) {
-
-      e.preventDefault();
-      var useToken = localStorage.getItem('token') || window.token;
-
-      $.ajax({
-          type: api.deleteArea.method,
-          url: api.deleteArea.url(e.options.id),
-          headers: {"Authorization": "Bearer " + useToken},
-          success: function(response) {
-              bottombar.hide();
-              loadAreas();
-              showAlert("Area deleted successfully.", "success", 1500);
-          },
-          error: function(response) {
-              showAlert("Failed to delete this area.", "warning", 2000);
-          }
-      });
-    });
-
-    $('#feature-info').find('.btn-edit').click(function (e) {
-        console.log('show data on id', e.options.id);
-        e.preventDefault();
-        // TODO pass the feature data  
-        // editFeature(e); 
-        bottombar.hide();
-        sidebar.show($('#create-area-dialog').fadeIn());
-    });
+  console.log("remote polygon clicked");
+  sidebar.hide();
+  map.panToOffset(e.getCenter(), _getVerticalOffset());
+  map.fitBounds(e.layer.getBounds());
+  bottombar.show($('#feature-info').fadeIn());
 }
 
 // onClick behavior for saved litters
 function onLitterClick (e) {
     console.log("remote polyline clicked");
-    console.log(e);
-    console.log(e.options.latlngs);
-
     sidebar.hide();
     map.panToOffset(e.getCenter(), _getVerticalOffset());
-
-    clearBottomPanelContent();
-    pushDataToBottomPanel(e);
-
     map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
-
     bottombar.show($('#feature-info').fadeIn());
-
-    $('#feature-info').find('.btn-delete').click(function (e) {
-
-        e.preventDefault();
-        var useToken = localStorage.getItem('token') || window.token;
-
-        $.ajax({
-            type: api.deleteShape.method,
-            url: api.deleteShape.url(e.options.id),
-            headers: {"Authorization": "Bearer " + useToken},
-            success: function(response) {
-                bottombar.hide();
-                loadRemoteLitter();
-                showAlert("Litter line deleted successfully.", "success", 1500);
-            },
-            error: function(response) {
-                showAlert("Failed to delete this litter line.", "warning", 2000);
-            }
-        });
-    });
-
-    $('#feature-info').find('.btn-edit').click(function (e) {
-        //debugger;
-        console.log('show data on id', e.options.id);
-        e.preventDefault();
-        // TODO pass the feature data  
-        // editFeature(e); 
-        bottombar.hide();
-        sidebar.show($('#create-area-dialog').fadeIn());
-
-    });
-
 };

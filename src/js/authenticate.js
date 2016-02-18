@@ -214,6 +214,39 @@ function sendGlomeKey(e) {
     });
 }
 
+// Remove user account
+function deleteUser(e) {
+  var classicSessionType = localStorage.getItem('classic');
+  // TODO push user id / session auth
+  
+  if (classicSessionType === 'true' ) {
+  
+  e.preventDefault();
+
+  $.ajax({
+      method: api.removeUser.method,
+      url: api.readUser.url(),
+      headers: {"Authorization": "Bearer " + response.token},
+      success: function (data) {
+
+          switchSession("logout");
+          showAlert("Farewell, old friend.", "success", 1500);
+
+      },
+      error: function (response) {
+      sidebar.hide();
+      }
+  });
+
+  } else {
+
+    showAlert("You cannot delete soft accounts.", "warning", 2000);
+
+  }
+  
+  
+}
+
 $(function () {
     // logout, there are two places where user can click to logout ('button' and 'a')
     $(".btn-logout").on('click', logout);
@@ -229,4 +262,7 @@ $(function () {
 
     // TODO send glome key
     $(".btn-glome-key-send").click(sendGlomeKey);
+  
+    // delete account
+    $(".btn-delete-account").one('click', deleteUser);
 });

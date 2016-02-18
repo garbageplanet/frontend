@@ -16,6 +16,7 @@ When adding a new js function to the code, add a comment about what it does. Bui
 - [ ] only allow horizontal scroll in bottom bar
 
 ### Mobile
+- [ ] swipe events for navigating bottom panel
 - [ ] fix close layers control button reloads page bug
 - [ ] hide navigation bar
 - [ ] bug detecting mobile browsers (bug fixed in Leaflet 1.0)
@@ -41,4 +42,4 @@ When adding a new js function to the code, add a comment about what it does. Bui
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 
 #### Licence
-This code is available under the MIT licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).
+This code is available under a slightly modified ISC licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).

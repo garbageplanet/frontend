@@ -22,6 +22,12 @@ var api = {
       return api.createLogin.url() + '/user';
     }
   },
+  removeUser: {
+    method: 'DELETE',
+    url: function () {
+      return api.createLogin.url() + '/user';
+    }
+  },
   createLogin: {
     method: 'POST',
     url: function () {
