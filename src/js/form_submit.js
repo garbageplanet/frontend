@@ -228,7 +228,7 @@ $(function () {
         latlngs,
         note,
         secret,
-        players,
+        max_players,
         title,
         contact,
         game;

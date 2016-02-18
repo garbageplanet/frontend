@@ -3,7 +3,7 @@
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
   <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, maptile, map marker, environmental monitoring, environment, trash, reporting">
@@ -18,9 +18,9 @@
   <meta property="og:description" content="Garbagepla.net is an online platform that aims at putting garbage back on the map."/>
   <!-- Mobile stuff -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#00cc44">
-  <meta name="msapplication-navbutton-color" content="#00cc44">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#00cc44">
+  <meta name="theme-color" content="#00000">
+  <meta name="msapplication-navbutton-color" content="#00000">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#00000">
   <!-- inject:head:css:styles -->
   <!-- endinject -->
   
@@ -201,7 +201,7 @@
                     <div class="row">
                         <div class="form-group">
                                 <div class="input-group date" id="event-date-time-picker">
-                                    <input type="datetime" class="form-control">
+                                    <input type="datetime" class="form-control" readonly>
                                     <input type="hidden" class="date-time-value">
                                     <span class="input-group-addon">
                                     <span class="fa fa-fw fa-clock-o"></span>
@@ -1167,7 +1167,7 @@
               </button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="The garbage has been cleaned!" class="btn btn-round btn-success">
+              <button type="button" title="The garbage has been cleaned!" class="btn btn-round btn-success btn-cleaned">
                 <span class="fa fa-thumbs-up"></span><span class="hidden">Cleaned</span>
               </button>
             </div>
@@ -1178,10 +1178,14 @@
               <span class="badge badge-notify badge-notify-confirm">0</span>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Watch this marker." class="btn btn-round btn-default">
-                <span class="fa fa-heart"></span><span class="hidden">Favorite</span>
-              </button>
-              <span class="badge badge-notify badge-notify-watch">0</span>
+              <button type="button" title="Say you will join." class="btn btn-round btn-success btn-join-event">
+                <span class="fa fa-check-square"></span><span class="hidden">Join</span>
+              </button><span class="badge badge-notify badge-notify-join">0</span>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" title="Join game." class="btn btn-round btn-success btn-participate-game">
+                <span class="fa fa-game"></span><span class="hidden">Join</span>
+              </button><span class="badge badge-notify badge-notify-participants">0</span>
             </div>
           </div>
         </div>
@@ -1228,7 +1232,6 @@
             </div>
           </div>
 
-
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">amount: </span>
@@ -1248,6 +1251,38 @@
             <span class="pull-left">note: <span class="feature-info feature-info-note pull-left"></span></span>
             </div>
           </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">time: <span class="feature-info feature-info-time pull-left"></span></span>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">location: <span class="feature-info feature-info-location pull-left"></span></span>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">length: <span class="feature-info feature-info-length pull-left"></span></span>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">location: <span class="feature-info feature-info-location pull-left"></span></span>
+            </div>
+          </div>
+          
+                    
+          
+          
+          
+          
+          
+          
         </div>
       </div> <!-- Data -->
 
@@ -1283,6 +1318,13 @@
           </div>
 
       </div> <!-- Track -->
+        
+      <div class="card card-minimap col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
+        <div><h3>Access minimap</h3></div>
+        <div class="cleaning-minimap-card"></div>
+      </div> <!-- Minimap -->
+        
+        
 
     </div><!-- Feature info -->
 

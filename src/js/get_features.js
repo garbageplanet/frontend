@@ -174,7 +174,8 @@ function loadAreas () {
             {
               isPrototypeOfd: obj.id,
               title: obj.title,
-              players: obj.players,
+              max_players: obj.max_players,
+              curr_players: obj.curr_players, // how many user have already confirmed participation
               note: obj.note,
               tags: obj.tag,
               contact: obj.contact,

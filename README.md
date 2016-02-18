@@ -16,6 +16,7 @@ When adding a new js function to the code, add a comment about what it does. Bui
 - [ ] only allow horizontal scroll in bottom bar
 
 ### Mobile
+- [ ] fix datetime picker display (better mobile UI support is coming in [V5](https://github.com/Eonasdan/bootstrap-datetimepicker/issues/841))
 - [ ] swipe events for navigating bottom panel
 - [ ] fix close layers control button reloads page bug
 - [ ] hide navigation bar
