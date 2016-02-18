@@ -143,13 +143,13 @@ $(document).ready(function() {
       
       wipeDown: function() {
         
-       $(this).scrollTop;
+       $('#sidebar').scrollTop;
       
       },
       
       wipeUp: function() {
         
-       $(this).scrollBottom();
+       $('#sidebar').scrollTo(0, -100);
       
       },
       
@@ -170,6 +170,12 @@ $(document).ready(function() {
       wipeUp: function() {
         
         bottombar.hide();
+      
+      },
+      
+      wipeDown: function() {
+        
+        $('#bottombar').scrollTo(0, -50);
       
       },
       
