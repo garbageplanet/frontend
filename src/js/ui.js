@@ -1,7 +1,5 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 
-// Mobile display
-// TODO use L.Browser once Leaflet 1.0 is in use
 // Swtch session function
 // TODO destroy/replace/append elements instead of hiding them
 function switchSession(sessionStatus) {
@@ -78,36 +76,66 @@ function switchSession(sessionStatus) {
 
 // Check if the localStorage has token, if yes log the user in with data
 $(document).ready(function() {
+  
   var tokenTest = localStorage.getItem('token');
+  
   console.log('token value', tokenTest);
+  
   if (tokenTest !== null ) {
+    
       switchSession('login');
+    
   }
-  else {return;}
+  
+  else {
+    
+    return;
+  
+  }
+  
 });
 
-
+// Mobile display
+// TODO use L.Browser once Leaflet 1.0 is in use
 $(document).ready(function() {
 
-  if ( window.innerWidth < 768) {
+  if (window.innerWidth < 768) {
     
     $('#topbar').remove();
+    
     $('body').append('<div class="swipe-area-right"></div>');
+    
     $('.draw-link').addClass('disabled');
     
     // TODO remove navigation on mobile
 
     // Activate swipe on the right border to show the mobile menu
     $(".swipe-area-right").touchwipe({
-     wipeLeft: function() {sidebar.show($('#mobile-menu-dialog').show());},
-     min_move_x: 15,
-     preventDefaultEvents: true
+      
+      wipeLeft: function() {
+        
+        sidebar.show($('#mobile-menu-dialog').show());
+      
+      },
+      
+      min_move_x: 15,
+      
+      preventDefaultEvents: true
+      
     });
     // Hide the sidebar on right swipe
     $(".sidebar-container").touchwipe({
-     wipeRight: function() {sidebar.hide();},
-     min_move_x: 100,
-     preventDefaultEvents: true
+      
+      wipeRight: function() {
+        
+        sidebar.hide();
+      
+      },
+      
+      min_move_x: 100,
+      
+      preventDefaultEvents: true
+      
     });
     // Hide the bottombar on down swipe
     // FIXME to swipe down on Android you need wipeUp() (the controls are inverted)
@@ -115,12 +143,20 @@ $(document).ready(function() {
     // if (L.Browser.android || L...) {wipeUp:}
     
     $(".bottombar-container").touchwipe({
-     wipeUp: function() {bottombar.hide();},
-     min_move_y: 50,
-     preventDefaultEvents: true
+      
+      wipeUp: function() {
+        
+        bottombar.hide();
+      
+      },
+      
+      min_move_y: 50,
+      
+      preventDefaultEvents: true
+      
     });
     
-    // TODO swipe events to navigate cards / data in bottom panel
+    // TODO swipe events to navigate in panels
 
   }
 
@@ -174,7 +210,8 @@ $(document).ready(function() {
         minDate: new Date(2015, 11, 31),
         showClose: true,
         ignoreReadonly: true,
-        focusOnShow: false
+        focusOnShow: false,
+        toolbarPlacement: 'top'
     });
   });
 
@@ -220,7 +257,7 @@ sidebar.on('hide', function () {
 
 // Empty the bottom panel on call of this function
 function resetBottomPanel() {
-  //TODO ad methods depending on the type of object clicked
+  //TODO add methods depending on the type of object clicked
   $(".feature-info").empty();
   $(".feature-info-confirmed strong").text('0');
   $("#feature-info-image").attr("src", "");
@@ -300,7 +337,6 @@ function pushDataToBottomPanel(e) {
   
   if (e.options.amount) {
     // Amount mapping
-    // TODO ternary operators
     switch (e.options.amount) {
       case 0:
         $('#feature-info').find('.feature-info-garbage-amount').html('Are you sure about that?');
@@ -401,7 +437,7 @@ function pushDataToBottomPanel(e) {
             bottombar.hide();
             loadGarbageMarkers();
             loadCleaningMarkers();
-            loadLitterss();
+            loadLitters();
             loadAreas();
             showAlert("Feature deleted successfully!", "success", 1500);
         },
@@ -464,7 +500,6 @@ function pushDataToBottomPanel(e) {
 
 // Confirm garbage function
 // TODO bind this to the db
-/*$('.btn-confirm').on('click', confirmGarbage );*/
 
 // Confirmation for garage abd polylines
 /*function confirmGarbage(obj){
@@ -535,3 +570,10 @@ function pushDataToBottomPanel(e) {
       });
     }, 100);
 };*/
+
+// TODO Take part in game function
+// function joinGame(e){}
+
+// $('btn-participate-game').on('click', joinGame)
+//$('.btn-confirm-garbage').on('click', confirmGarbage );
+//$('.btn-join-cleaning').on('click', joinCleaning );
