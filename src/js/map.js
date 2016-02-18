@@ -1,4 +1,21 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+
+// Alerts by lgal http://stackoverflow.com/a/33662720/2842348
+function showAlert(errorMessage, errorType, closeDelay) {
+
+    // default to alert-info; other options include success, warning, danger
+    if (!errorType || typeof errorType === 'undefined') {var errorType = "info";}
+
+    var alert = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
+    // add the alert div to top of alerts-container, use append() to add to bottom
+    $(".alert-container").prepend(alert);
+
+    // if closeDelay was passed - set a timeout to close the alert
+    if (closeDelay) {
+      window.setTimeout(function() {alert.alert("close");}, closeDelay);
+    }
+};
+
 // Set the map
 var map = L.map('map', { zoomControl: false, attributionControl: false });
 // Add location hash
@@ -30,19 +47,19 @@ function onLocationError(e) {
 
 }
 
-function onLocationFound(e) {
-  
-  map.locate({setView: true, maxZoom: 16});
-
-}
-
+/*function onLocationFound(e) {*/
 // Locate the user if the url doesn't contains lat lngs regex by Iain Fraser http://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
-if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
+  if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
 
-  map.on('locationfound', onLocationFound);
-  map.on('locationerror', onLocationError);
+    map.locate({setView: true, maxZoom: 16});
 
-};
+  };
+/*}*/
+
+map.on('locationerror', onLocationError);
+/*
+map.on('locationfound', onLocationFound);
+*/
 
 // Sidebar creation and placement
 var sidebar = L.control.sidebar('sidebar', { position: 'right', closebutton: 'true' });
