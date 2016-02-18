@@ -111,8 +111,8 @@ $(document).ready(function() {
     });
     // Hide the bottombar on down swipe
     $(".bottombar-container").touchwipe({
-     wipeDown: function() {bottombar.hide();},
-     min_move_y: -50,
+     wipeUp: function() {bottombar.hide();},
+     min_move_y: 50,
      preventDefaultEvents: true
     });
     
