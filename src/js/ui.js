@@ -1,4 +1,13 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+//scrollBottom() function by Zephyr http://stackoverflow.com/a/30127031/2842348
+$.fn.scrollBottom = function(scroll){
+  if(typeof scroll === 'number'){
+    window.scrollTo(0,$(document).height() - $(window).height() - scroll);
+    return $(document).height() - $(window).height() - scroll;
+  } else {
+    return $(document).height() - $(window).height() - $(window).scrollTop();
+  }
+}
 
 // Swtch session function
 // TODO destroy/replace/append elements instead of hiding them
@@ -132,7 +141,21 @@ $(document).ready(function() {
       
       },
       
+      wipeDown: function() {
+        
+       $(this).scrollTop;
+      
+      },
+      
+      wipeUp: function() {
+        
+       $(this).scrollBottom();
+      
+      },
+      
       min_move_x: 100,
+      
+      min_move_y: 50,
       
       preventDefaultEvents: true
       

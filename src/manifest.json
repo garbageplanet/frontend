@@ -40,7 +40,7 @@
     }
   ],
   "start_url": "./index.html",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "any",
   "lang": "en-US"
 }

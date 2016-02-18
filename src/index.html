@@ -4,19 +4,20 @@
   <title>Garbagepla.net - Earth, spotless.</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta http-equiv="X-UA-Compatible">
   <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
   <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, maptile, map marker, environmental monitoring, environment, trash, reporting">
   <meta name="copyright" content="&copy; Garbagepla.net"/>
   <meta property="og:site_name" content="Garbagepla.net platform"/>
   <meta property="fb:app_id" content="302184056577324"/>
+  <!-- <meta property="fb:app_id" content="@@facebookToken"/> -->
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="http://dev.garbagepla.net"/>
   <meta property="og:title" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment"/>
   <meta property="og:image" content="http://dev.garbagepla.net/images/og_image.png"/>
   <meta property="og:description" content="Garbagepla.net is an online platform that aims at putting garbage back on the map."/>
   <!-- Mobile stuff -->
-  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="manifest" href="manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#00000">
   <meta name="msapplication-navbutton-color" content="#00000">
@@ -38,6 +39,7 @@
   <link rel="stylesheet" type="text/css" href="css/map.css">
   <link rel="stylesheet" type="text/css" href="css/markers.css">
 
+  <script type="text/javascript" src="js/fullscreen.js"></script>
   <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
   <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
@@ -941,7 +943,7 @@
             
             <div class="tab-pane active form-group form-group-lg" id="user-info-main" role="tabpanel">
               <h2>Welcome, <span class="user-name"></span></h2>
-              <h4>User Id</h4><p class="user-id"></p>
+              <h4>User id</h4><p class="user-id"></p>
 
               <div class="user-glome-key"><h4>Glome key value</h4><p></p></div>
 
@@ -1228,66 +1230,66 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <span class="pull-left">type: </span>
-              <span class="feature-info feature-info-garbage-type pull-left"></span>
+              <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-type pull-left"></span>
             </div>
           </div>
 
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">amount: </span>
-            <span class="feature-info feature-info-garbage-amount pull-left"></span>
+            <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-amount pull-left"></span>
             </div>
           </div>
 
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">todo: </span>
-            <span class="feature-info feature-info-todo pull-left"></span>
+            <span class="feature-info-garbage feature-info feature-info-todo pull-left"></span>
             </div>
           </div>
 
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">note: </span>
-              <span class="feature-info feature-info-note pull-left"></span>
+              <span class="feature-info feature-info-common feature-info-note pull-left"></span>
             </div>
           </div>
           
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">time: </span>
-              <span class="feature-info feature-info-time pull-left"></span>
+              <span class="feature-info feature-info-cleaning feature-info-time pull-left"></span>
             </div>
           </div>
           
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">location: </span>
-              <span class="feature-info feature-info-location pull-left"></span>
+              <span class="feature-info feature-info-cleaning feature-info-location pull-left"></span>
             </div>
           </div>
           
           <div class="panel panel-default">
             <div class="panel-body">
             <span class="pull-left">length: </span>
-              <span class="feature-info feature-info-length pull-left"></span>
+              <span class="feature-info feature-info-litter feature-info-length pull-left"></span>
             </div>
           </div>
           
           <div class="panel panel-default">
             <div class="panel-body">
-            <span class="pull-left">location: </span>
-              <span class="feature-info feature-info-location pull-left"></span>
+            <span class="pull-left">name: </span>
+              <span class="feature-info feature-info-area feature-info-name pull-left"></span>
             </div>
           </div>
           
+          <div class="panel panel-default">
+            <div class="panel-body">
+            <span class="pull-left">contact: </span>
+              <span class="feature-info feature-info-area feature-info-contact pull-left"></span>
+            </div>
+          </div>
                     
-          
-          
-          
-          
-          
-          
         </div>
       </div> <!-- Data -->
 
