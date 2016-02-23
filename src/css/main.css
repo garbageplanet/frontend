@@ -223,7 +223,7 @@ a.menu-backlink:hover {
   border: 0;
 }
 
-.leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {
+.leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(.leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {
 	width: 40px;
 	height: 40px;
 	line-height: 40px;

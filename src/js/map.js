@@ -46,7 +46,7 @@ function onLocationError(e) {
   map.setZoom(2);
 
 }
-
+// FIXME geolocation fails on mobile
 /*function onLocationFound(e) {*/
 // Locate the user if the url doesn't contains lat lngs regex by Iain Fraser http://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
   if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
@@ -85,10 +85,11 @@ var overlayGroups = {
 };
 
 // Add zoom controls above scale
+// TODO No zoom controls on mobile
+// if (L.Browser.android || L.Browser.android23 || L.Browser.retina || L.Browser.mstouch ) {}
 map.addControl(L.control.zoom({position: 'topleft'}));
 
 // Add the layer control
-// FIXME Layer control toggle bugs on mobile
 L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
 
 // Set an icon on the layer select button
