@@ -216,7 +216,7 @@
 
                   <div class="dropdown">
                           <select class="selectpicker cleaning-recurrent-select"
-                                  title="Make this event recurrent"
+                                  title="Set event recurrence"
                                   data-width="100%"
                                   required>
                               <option value=""></option>
@@ -795,15 +795,17 @@
     <div class="sidebar-content" id="user-login-dialog">
       <div>
         <div>
-            <h2>Login anonymously</h2>
+            <h3>Login anonymously</h3>
         </div>
-        <form id="login-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
+        <form class="form-group">
           <div class="form-group form-group-lg">
             <div>
-                <button type="submit" id="glome-go-btn" class="btn btn-info btn-lg btn-block btn-glome-go">Glome Go &raquo;</button>
+                <button class="btn btn-info btn-lg btn-block btn-glome-go">Glome Go &raquo;</button>
             </div>
+        </form>
+        <form id="login-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
 
-            <h2>Login with an account</h2>
+            <h3>Login with an account</h3>
             <div>
               <input type="email" class="form-control" placeholder="Email" id="login-email" required>
             </div>
@@ -834,17 +836,14 @@
     <div class="sidebar-content" id="create-account-dialog">
         <div id="regisration-div">
              <div>
-                <h2>
+                <h3>
                 <span class="logged-out">
                   <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#user-login-dialog"></a>
                 </span>
                     Create a new account.
-                </h2>
-                <p class="lead">
-                    Registering with an email allows you to create game tiles.
-                 </p>
+                </h3>
                  <p>By creating an account, you agree to our <a class="sidebar-link" href="#user-agreement">Terms of service</a> and
-                    <a class="sidebar-link" href="#privacy-policy">Privacy Policy</a>. Using an email to register can help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a>.
+                    <a class="sidebar-link" href="#privacy-policy">Privacy Policy</a>. Using an email to register can help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a> but will also allow you to create game tiles.
                 </p>
             </div>
             <!-- Registration form -->
@@ -907,7 +906,7 @@
     </div>
     <div class="sidebar-content" id="delete-account-dialog">
   
-      <div><h2>Delete your account</h2></div>
+      <div><h3>Delete your account</h3></div>
       <p class="lead">All user data and references are removed but the features you have created are kept in the database.</p>
         <form id="delete-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
           <div class="form-group form-group-lg">
@@ -939,7 +938,7 @@
             <br>
             
             <div class="tab-pane active form-group form-group-lg" id="user-info-main" role="tabpanel">
-              <h2>Welcome, <span class="user-name"></span></h2>
+              <h3>Welcome, <span class="user-name"></span></h3>
               <h4>User id</h4><p class="user-id"></p>
 
               <div class="user-glome-key"><h4>Glome key value</h4><p></p></div>
@@ -958,14 +957,14 @@
             </div>
 
             <div class="tab-pane form-group form-group-lg" id="user-info-terms" role="tabpanel">
-              <h2>Terms of service</h2>
+              <h3>Terms of service</h3>
               <p class="lead">As a user (anybody who has registered an account or is creating markers anonymously) of the grabagepla.net platform, you agree to use this platform for the sole purpose that it was designed for and no other ends including but not limited to the promotion of hate speech, third-party material advertisement or any other illegal activity.</p>
               <p>This software is distributed under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT Licence</a>. The data gathered by this platform is available upon request under the ODC Open Database License (<a href="http://opendatacommons.org/licenses/odbl/" target="_blank">ODbL v1.0</a>). The garbagepla.net logo is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0</a> International License.</p>
               <p>Content in preparation - this platform is not meant to be used for production yet.</p>
             </div>
 
             <div class="tab-pane form-group form-group-lg" id="user-info-privacy" role="tabpanel">
-              <h2>Privacy policy</h2>
+              <h3>Privacy policy</h3>
                 <p class="lead">As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collectthat could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
                 <p>Note that as of February 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
             </div>
@@ -976,22 +975,23 @@
     <div class="sidebar-content" id="glome-dialog">
 
       <div>
-          <h2>
+          <h3>
             <span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#user-login-dialog"></a>
             </span>
               Pair with your Glome account.
-          </h2>
+          </h3>
       </div>
 
       <div>
       <h3>Scan the QR code</h3>
 
+        <img src="http://placehold.it/160x120" alt="qr code" class="qrcode-image center-block">
 
       </div>
 
       <div>
 
-        <h3>Type in your key</h3>
+        <h3>or type in your key</h3>
 
         <form id="glome-withkey-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
           <div class="form-group form-group-lg">
@@ -1001,13 +1001,14 @@
                   <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                     <input type="text"
                            class="form-control"
-                           maxlength="12"
+                           maxlength="14"
                            size="14"
-                           pattern="[0-9][a-f]{4}-[0-9][a-f]{4}-[0-9][a-f]{4}"
-                           data-error="Invalid input"
+                           pattern="[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}"
+                           data-error="Wrong key format"
+                           placeholder="XXXX-XXXX-XXXX"
                            required>
+                      <div class="help-block with-errors"></div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -1016,7 +1017,7 @@
               <div>
                 <button type="submit" class="btn btn-info btn-lg btn-block btn-glome-key-send">Submit &raquo;</button>
               </div>
-              <div class="help-block with-errors"></div>
+              
             </div>
           </div>
         </form>
@@ -1293,7 +1294,7 @@
       <div class="card card-scroll card-media col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
         <div><h3>Media</h3></div>
 
-          <a class="feature-image-link" href="" target="_blank"><img src="" alt="feature image" class="feature-image img-responsive"></a>
+          <a class="feature-image-link" href="" target="_blank"><img src="" alt="feature image" class="feature-image center-block"></a>
 
       </div> <!-- Media -->
 
@@ -1353,6 +1354,7 @@
 <script type="text/javascript" src="js/config.js"></script>
 
 <!-- Map display and actions scripts -->
+<script type="text/javascript" src="js/ui/alerts.js"></script>
 <script type="text/javascript" src="js/map/map.js"></script>
 <script type="text/javascript" src="js/map/get_features.js"></script>
 <script type="text/javascript" src="js/map/map_actions.js"></script>
@@ -1360,7 +1362,8 @@
 <script type="text/javascript" src="js/map/draw.js"></script>
 
 <!-- Session and user auth scripts -->  
-<script type="text/javascript" src="js/authenticate.js"></script>
+<script type="text/javascript" src="js/session/authenticate.js"></script>
+<script type="text/javascript" src="js/session/session.js"></script>
 
 <!-- non-map user interface scripts -->
 <script type="text/javascript" src="js/ui/bottombar.js"></script>

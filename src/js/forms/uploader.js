@@ -1,7 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // author: xr@github
 // TODO make this more secure.
-// TODO make non-anonymous
 $(function () {
   
 	$('.image-uploader').fileupload({

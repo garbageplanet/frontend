@@ -29,7 +29,6 @@ function _getHorizontalOffset() {
 //////////////////////////////////////////////////////////////////////
 
 // Default behavior for map clicks
-// FIXME layers control toggle behaviour on mobile
 function onMapClick(e) {
   if (!sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open')) {
     marker = L.marker(e.latlng, {
@@ -118,13 +117,26 @@ function onMapClick(e) {
     var newPos = event.target.getLatLng();
 
     console.log("dragged marker id:", event.target._leaflet_id );
-    // TODO move this logic somehwere else
     $('.marker-lat').val(newPos.lat);
     $('.marker-lng').val(newPos.lng);
   });
     
   map.on('draw:drawstart', function (e) {
     map.removeLayer(marker);
+  });
+  
+  // Reset unsaved marker styles if sidebar is closed after marker creation
+  sidebar.on ('hide', function () {
+    
+    $(marker._icon).removeClass('marker-garbage');
+    $(marker._icon).removeClass('marker-cleaning');
+    
+    $(marker._icon).removeClass(function (index, css) {
+      return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+    }).addClass('marker-generic');
+    
+    $(marker._icon).addClass('marker-color-gray');
+
   });
     
 }
@@ -134,6 +146,13 @@ function onMapClick(e) {
         sidebar.hide();
         $('.dropdown').removeClass('open');
        }
+  
+  // Remove unsaved markers with class 'marker-generic' after a timeout
+  setTimeout(function() {
+    $('div.marker-generic').remove();
+    sidebar.hide();
+  }, 400000);
+  
 }
 
 // Default behaviour for creating a marker
@@ -141,6 +160,7 @@ map.on('click', onMapClick);
 
 // onClick behavior for non-saved markers
 function onLocalMarkerClick (e) {
+    // TODO reset marker style if sidebar is closed
     // console.log("local marker clicked");
     bottombar.hide();
     marker = this;
@@ -155,11 +175,4 @@ function onLocalMarkerClick (e) {
     $('#sidebar').scrollTop =0;
     $('.sidebar-content').hide();
     sidebar.show($("#create-marker-dialog").fadeIn());
-}
-
-//Remove unsaved markers with class 'marker-generic' after a timeout
-// Move this logic to onMapClick and onLocalMarkerClick ?
-setTimeout(function() {
-  $('div.marker-generic').remove();
-  sidebar.hide();
-}, 400000);
+};

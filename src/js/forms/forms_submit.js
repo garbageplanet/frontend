@@ -127,7 +127,6 @@ $(function () {
                   'featuretype': "marker_cleaning"
               },
               success: function (data) {
-                  $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
                   console.log('success data', data);
                   showAlert("Cleaning event saved successfully!", "success", 2000);
                   sidebar.hide('slow');

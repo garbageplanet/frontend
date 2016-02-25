@@ -2,8 +2,6 @@
 $(document).ready(function() {
 
   $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 6});
-
-  // TODO start mobile and non-mobile instance to be able to customize the display
   
   $(function () { $('#event-date-time-picker')
     .datetimepicker( {
@@ -18,6 +16,9 @@ $(document).ready(function() {
   $('#event-date-time-picker').on('dp.change', function(e) {
      var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
     $('.date-time-value').val(eventDateTime);
+    // Change the icon of the marker if a time is set
+    $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
+
   });
   
   // Separate tags by hitting space bar or right key

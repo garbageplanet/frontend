@@ -7,7 +7,7 @@ Repository for the [garbagepla.net](http://www.garbagepla.net) frontend. This re
 Just open /html/index.html in your browser. If you want to build for distribution install gulp with the dependencies (sorry, no package.json yet) go to the root dir and type `gulp`.
 
 ### Contributing
-When adding a new js function to the code, add a comment about what it does. Build with gulp to test. If you want to cnotribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
+When adding a new js function to the code, add a comment about what it does. Build with gulp and open `index.html` from the `/dist` folder to check if there's any error. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### TODO
 

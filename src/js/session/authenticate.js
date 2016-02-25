@@ -258,7 +258,7 @@ $(function () {
     $("#registration-form").submit(registerUser);
 
     // glome go
-    $(".btn-glome-go").click(glomego);
+    $(".btn-glome-go").on('click', glomego);
 
     // TODO send glome key
     $(".btn-glome-key-send").click(sendGlomeKey);

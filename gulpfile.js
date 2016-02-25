@@ -110,6 +110,7 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
 gulp.task('scripts:app', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/config.js',
+                    './src/js/ui/alerts.js',
                     './src/js/map/map.js',
                     './src/js/map/get_features.js',
                     './src/js/session/authenticate.js',
