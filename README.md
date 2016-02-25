@@ -22,8 +22,6 @@ When adding a new js function to the code, add a comment about what it does. Bui
 ### Side panel
 - [ ] fix differing line height between form elements
 - [ ] fix the tagsinput field resizing
-- [ ] prevent form submit on `tagsinput` addition with enter key
-- [ ] image upload restriction if user is not logged in
 
 #### Map actions
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves
@@ -35,7 +33,7 @@ When adding a new js function to the code, add a comment about what it does. Bui
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
 
 #### Future prospects
-- [ ] localized calendar, tag cloud and gallery in the bottom bar
+- [ ] localized calendar, tag cloud and gallery in the bottom bar, L.PruneCluster
 
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 

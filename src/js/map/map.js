@@ -40,6 +40,11 @@ var baselayer = {
 
 baselayer['Mapbox Outdoors'].addTo(map);
 
+// Set the minimap
+/*var minimap = L.map('minimap', { zoomControl: false, attributionControl: false });
+baselayer['Mapbox Outdoors'].addTo(minimap);
+minimap.sync(map);*/
+
 function onLocationError(e) {
 
   showAlert("Couldn't find your position.", "warning", 2000);

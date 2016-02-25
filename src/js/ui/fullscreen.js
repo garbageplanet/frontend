@@ -8,7 +8,7 @@
 		//scroll to 1
 		win.scrollTo( 0, 1 );
 		var scrollTop = 1,
-			getScrollTop = function(){
+		    getScrollTop = function(){
 				return win.pageYOffset || doc.compatMode === "CSS1Compat" && doc.documentElement.scrollTop || doc.body.scrollTop || 0;
 			},
 		

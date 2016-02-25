@@ -57,6 +57,7 @@
   <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
   <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
   <script type="text/javascript" src="js/libs/L.Draw.js"></script>
+  <script type="text/javascript" src="js/libs/L.Sync.js"></script>
   <!-- <script type="text/javascript" src="js/libs/L.control.geosearch.js"></script> -->
   <!-- <script type="text/javascript" src="js/libs/L.geosearch.provider.openstreetmap.js"></script> -->
   <!-- <script src="js/libs/L.Editable.js" defer></script>  -->
@@ -241,10 +242,9 @@
 
                   <div class="row">
                       <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                      <input class="form-control cleaning-tags"
+                      <input class="form-control feature-tags cleaning-tags"
                              type="text"
-                             data-role="tagsinput"
-                             placeholder="Add tags"/>
+                             placeholder="Add tags (max 3)"/>
                       </div>
                   </div>
 
@@ -456,10 +456,9 @@
 
             <div class="row">
                 <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                <input class="form-control garbage-tags"
+                <input class="form-control feature-tags garbage-tags"
                        type="text"
-                       data-role="tagsinput"
-                       placeholder="Add tags"/>
+                       placeholder="Add tags (max 3)"/>
                 </div>
             </div>
 
@@ -542,10 +541,9 @@
 
                 <div class="row">
                     <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                    <input class="form-control area-tags"
+                    <input class="form-control feature-tags area-tags"
                            type="text"
-                           data-role="tagsinput"
-                           placeholder="Add tags"/>
+                           placeholder="Add tags (max 3)"/>
                     </div>
                 </div>
 
@@ -749,10 +747,9 @@
 
             <div class="row">
               <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
-              <input class="form-control litter-tags"
+              <input class="form-control feature-tags litter-tags"
                      type="text"
-                     data-role="tagsinput"
-                     placeholder="Add tags">
+                     placeholder="Add tags (max 3)">
               </div>
             </div>
 
@@ -1328,7 +1325,7 @@
         
       <div class="card card-minimap col-xl-3 col-lg-3 col-md-3 col-ms-6 col-sm-6 col-xs-12">
         <div><h3>Access minimap</h3></div>
-        <div class="cleaning-minimap-card"></div>
+        <div id ="minimap" class="cleaning-minimap-card"></div>
       </div> <!-- Minimap -->
         
         
@@ -1352,16 +1349,35 @@
 <!-- inject:body:app -->
 <!-- endinject -->
 
+<!-- api config -->
 <script type="text/javascript" src="js/config.js"></script>
-<script type="text/javascript" src="js/map.js"></script>
-<script type="text/javascript" src="js/get_features.js"></script>
-<script type="text/javascript" src="js/ui.js"></script>
+
+<!-- Map display and actions scripts -->
+<script type="text/javascript" src="js/map/map.js"></script>
+<script type="text/javascript" src="js/map/get_features.js"></script>
+<script type="text/javascript" src="js/map/map_actions.js"></script>
+<script type="text/javascript" src="js/map/features_actions.js"></script>
+<script type="text/javascript" src="js/map/draw.js"></script>
+
+<!-- Session and user auth scripts -->  
 <script type="text/javascript" src="js/authenticate.js"></script>
-<script type="text/javascript" src="js/map_actions.js"></script>
+
+<!-- non-map user interface scripts -->
+<script type="text/javascript" src="js/ui/bottombar.js"></script>
+<script type="text/javascript" src="js/ui/topbar.js"></script>
+<script type="text/javascript" src="js/ui/sidebar.js"></script>
+<script type="text/javascript" src="js/ui/fullscreen.js"></script>
+<script type="text/javascript" src="js/ui/mobile.js"></script>
+
+<!-- Form scripts -->
+<script type="text/javascript" src="js/forms/uploader.js"></script>
+<script type="text/javascript" src="js/forms/forms_elements.js"></script>
+<script type="text/javascript" src="js/forms/forms_submit.js"></script>
+<!-- <script type="text/javascript" src="js/forms/search.js"></script> -->
+
+<!-- Others -->
+<script type="text/javascript" src="js/social/share.js"></script>
+<!-- <script type="text/javascript" src="js/tour/tour.js"></script> -->
 <script type="text/javascript" src="js/share.js"></script>
-<script type="text/javascript" src="js/uploader.js"></script>
-<script type="text/javascript" src="js/form_submit.js"></script>
-<script type="text/javascript" src="js/draw.js"></script>
-<!-- <script type="text/javascript" src="js/search.js"></script> -->
 </body>
 </html>

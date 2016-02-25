@@ -1,9 +1,9 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// Image upload to Imgur
 // author: xr@github
-
-// TODO make this available only to logged in users.
+// TODO make this more secure.
+// TODO make non-anonymous
 $(function () {
+  
 	$('.image-uploader').fileupload({
         headers: {"Authorization": "Client-ID " + "@@imgurToken"},
         url: "https://api.imgur.com/3/image",
@@ -19,7 +19,21 @@ $(function () {
         }
     });
 
-	$('.btn-image-uploader').click(function () {
+	$('.btn-image-uploader').on('click', function () {
+      
+        if (!localStorage.getItem['token'] || localStorage.getItem['token'] === 'undefined') {
+
+          showAlert("You need to be be authenticated to do that.", "warning", 2000);
+          return;
+
+        }
+      
+      else {
+        
 		$(this).next().trigger('click');
+        
+      }
+      
 	});
+  
 });

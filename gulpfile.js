@@ -24,8 +24,8 @@ gulp.task('trimHTML', function () {
 });
 
 // Replace hardcoded tokens and keys for build
-gulp.task('replaceTokens', function () {
-  gulp.src(['./src/js/map.js', './src/js/uploader.js', './src/js/form-submit.js', './src/js/share.js'])
+/*gulp.task('replaceTokens', ['trimHTML'], function () {
+  gulp.src(['./src/js/map/map.js', './src/js/forms/uploader.js', './src/js/forms/form-submit.js', './src/js/social/share.js'])
     .pipe(replace({
       patterns: [
         {
@@ -47,10 +47,10 @@ gulp.task('replaceTokens', function () {
       ]
     }))
     .pipe(gulp.dest('./temp/'));
-});
+});*/
 
 // Minify the styleshseets and concat them in orde
-gulp.task('styles', ['replaceTokens'], function() {
+gulp.task('styles', ['trimHTML'], function() {
   return gulp.src([
                     './src/css/font-awesome-4.5.0.css',
                     './src/css/google-work-sans.css',
@@ -72,7 +72,7 @@ gulp.task('styles', ['replaceTokens'], function() {
 });
 
 // Minify head scripts and concat them in order
-gulp.task('scripts:leaflet', ['replaceTokens'], function() {
+gulp.task('scripts:leaflet', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/libs/Leaflet-0.7.7.js',
                     './src/js/libs/L.hash.js',
@@ -88,7 +88,7 @@ gulp.task('scripts:leaflet', ['replaceTokens'], function() {
 });
 
 // Minify head scripts and concat them in order
-gulp.task('scripts:jquery', ['replaceTokens'], function() {
+gulp.task('scripts:jquery', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/libs/jquery-2.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
@@ -98,7 +98,7 @@ gulp.task('scripts:jquery', ['replaceTokens'], function() {
                     './src/js/libs/bootstrap-select-1.9.4.js',
                     './src/js/libs/bootstrap-validator-0.9.0.js',
                     './src/js/libs/jquery.ui.widget.js',
-                    './html/js/libs/jquery-fileupload.js'
+                    './src/js/libs/jquery-fileupload.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('jquery.min.js'))
@@ -107,18 +107,25 @@ gulp.task('scripts:jquery', ['replaceTokens'], function() {
 });
 
 // Minify body scripts and concat them in order
-gulp.task('scripts:app', ['replaceTokens'], function() {
+gulp.task('scripts:app', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/config.js',
-                    './temp/map.js',
-                    './src/js/get_features.js',
-                    './src/js/ui.js',
-                    './src/js/authenticate.js',
-                    './src/js/map_actions.js',
-                    './temp/uploader.js',
-                    './temp/form_submit.js',
+                    './src/js/map/map.js',
+                    './src/js/map/get_features.js',
+                    './src/js/session/authenticate.js',
+                    './src/js/session/session.js',
+                    './src/js/ui/mobile.js',
+                    './src/js/ui/topbar.js',
+                    './src/js/ui/sidebar.js',
+                    './src/js/ui/bottombar.js',
+                    './src/js/ui/fullscreen.js',
+                    './src/js/map/map_actions.js',
+                    './src/js/map/features_actions.js',
+                    './src/js/forms/uploader.js',
+                    './src/js/forms/forms_submit.js',
+                    './src/js/forms/forms_elements.js',
                     './src/js/draw.js',
-                    './temp/share.js'
+                    './src/js/social/share.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('app.min.js'))
@@ -131,7 +138,7 @@ gulp.task('injectFiles', ['scripts:leaflet', 'scripts:jquery', 'scripts:app', 's
   return gulp.src('./temp/index.html')
   // inject styles
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
-  // Inject scriptd
+  // Inject scripts
     .pipe(inject(gulp.src('./dist/leaflet.min.js', {read: false}), {starttag: '<!-- inject:body:leaflet -->', ignorePath: 'dist', addRootSlash: false}))
     .pipe(inject(gulp.src('./dist/jquery.min.js', {read: false}), {starttag: '<!-- inject:body:jquery -->', ignorePath: 'dist', addRootSlash: false}))
     .pipe(inject(gulp.src('./dist/app.min.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
@@ -175,5 +182,5 @@ gulp.task('copy:favicon', ['clean:end'], function() {
       .pipe(gulp.dest('./dist'));
 })
 gulp.task('default', ['clean:start'], function() {
-    gulp.start('trimHTML', 'replaceTokens', 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
+    gulp.start('trimHTML', /*'replaceTokens',*/ 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
 });
