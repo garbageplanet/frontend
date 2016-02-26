@@ -159,7 +159,7 @@
 .leaflet-sidebar .close {
   position: absolute;
   right: 10px;
-  top: 0px;
+  top: 10px;
   width: 32px;
   height: 32px;
   color: #333;
