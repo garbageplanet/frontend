@@ -192,7 +192,7 @@ a.menu-backlink:hover {
 }
 
 /* Style the bottom bar */
-.bottombar-container .container {
+/*.bottombar-container .container {
   width: auto;
   margin: 10px;
 }
@@ -200,7 +200,7 @@ a.menu-backlink:hover {
 .bottombar-content  {
   overflow: hidden;
   height: 100%;
-}
+}*/
 
 /*.card-scroll {
     height: auto;
@@ -309,16 +309,15 @@ a.menu-backlink:hover {
 /* Custom bootstrap styles */
 
 /* Style the tour popovers */
-
 .popover {
-  border-radius: 0;
-  border: 0px;
+  border-radius: 0 !important;
+  border: 0px !important;
 }
 
 .popover-navigation > a {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 5px !important;
+  right: 5px !important;
 }
 
 /* Style default buttons and link colors */

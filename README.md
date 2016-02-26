@@ -12,7 +12,7 @@ When adding a new js function to the code, add a comment about what it does. Bui
 ### TODO
 
 #### Bottom panel
-- [ ] only allow horizontal scroll
+- [ ] single share button with popup options
 
 ### Mobile
 - [ ] fix alerts formatting and timing (bug?)

@@ -69,9 +69,15 @@ $(document).ready(function() {
       
       },
       
-      wipeDown: function() {
+      wipeRight: function() {
         
-        $('#bottombar').scrollTo(100);
+        $('#bottombar').scrollLeft(200);
+      
+      },
+      
+      wipeLeft: function() {
+        
+        $('#bottombar').scrollLeft(0);
       
       },
       

@@ -33,7 +33,6 @@
   .leaflet-sidebar > .leaflet-control {
     height: 100%;
     width: 100%;
-    overflow: scroll;
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
          -o-box-sizing: border-box;
@@ -93,7 +92,7 @@
     
     .leaflet-sidebar > .leaflet-control {
       /* needed to scroll in chrome with hidden scrollbars */
-      overflow-y: auto; 
+      /*overflow-y: auto; */
       padding: 4px 5px;
       font-size: 1em;
     }

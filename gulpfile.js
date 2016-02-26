@@ -59,6 +59,7 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/bootstrap-datetimepicker-4.17.37.css',
                     './src/css/bootstrap-select-1.9.4.css',
                     './src/css/bootstrap-tagsinput-0.4.3.css',
+                    './src/css/bootstrap-horizon.css',
                     './src/css/bootstrap-tour-0.10.1.css',
                     './src/css/leaflet-0.7.7.css',
                     './src/css/leaflet.draw.css',

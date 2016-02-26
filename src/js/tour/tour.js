@@ -101,20 +101,20 @@ var infoTour = new Tour({
 });
 
 var devTour = new Tour({
-  name: "intro-tour",
+  name: "dev-tour",
   template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
   steps: [
       
       {
         content: 'Note that this platform is currently under development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
         duration: 44000,
-        orphan: true,
+        orphan: true
       }
   ]
 });
 
 var mobileTour = new Tour({
-  name: "intro-tour",
+  name: "mobile-tour",
   template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
   steps: [
       
@@ -128,7 +128,7 @@ var mobileTour = new Tour({
       {
         content: "All the other actions happen by tapping the map at close zoom.",
         duration: 6000,
-        orphan: true,
+        orphan: true
       }
     
   ]
@@ -136,7 +136,9 @@ var mobileTour = new Tour({
 
 // Start the tour if the screen is large enough
 window.startTour = function() {
+  
   if($(window).width() >= 768){
+    
     /*  $('.sidebar-content').hide();
       sidebar.hide();
       $('#sidebar').scrollTop = 0;*/
@@ -145,6 +147,7 @@ window.startTour = function() {
   }
   
   if($(window).width() < 768){
+    
       sidebar.hide();
       mobileTour.init();
       mobileTour.start(true);
@@ -153,7 +156,9 @@ window.startTour = function() {
 };
 
 $(document).ready(function() {
+  
     setTimeout(startTour, 4000)
+    
 });
 
 // Start the actual tour from the tour link
