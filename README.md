@@ -12,22 +12,22 @@ When adding a new js function to the code, add a comment about what it does. Bui
 ### TODO
 
 #### Bottom panel
-- [ ] push data to the bottom bar dynamically with `getData()`, in `ui.js`
-- [ ] only allow horizontal scroll in bottom bar
+- [ ] only allow horizontal scroll
 
 ### Mobile
+- [ ] fix alerts formatting and timing (bug?)
 - [ ] fix datetime picker display (better mobile UI support is coming in [V5](https://github.com/Eonasdan/bootstrap-datetimepicker/issues/841))
-- [ ] swipe events for navigating bottom panel
+- [ ] swipe events for navigating bottom and side panels
 
 ### Side panel
 - [ ] fix differing line height between form elements
 - [ ] fix the tagsinput field resizing
 
 #### Map actions
-- [ ] make the map add new markers instead of reloading everything in the current view when map moves
+- [ ] make the map add new markers instead of reloading everything in the current view when map moves (check if any new db element was added to a nearby location after the last load)
 
 ### General coding
-- [ ] replace all instances of `find()` with direct css selectors
+- [ ] replace all instances of `find()` with direct selectors
 - [ ] templating with [JavaScript Templates](https://github.com/blueimp/JavaScript-Templates)
 - [ ] move to Leaflet 1.0, make custom build and upgrade plugins (almost everything works out of the box)
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)

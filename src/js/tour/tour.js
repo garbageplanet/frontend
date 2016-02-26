@@ -1,16 +1,16 @@
 /*jshint maxerr: 1000*/
 // Instance the tour
-var tour = new Tour({
+var infoTour = new Tour({
   name: "intro-tour",
-  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times-circle'></i></a></div></div>",
+  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
   steps: [
-      {
-        element: ".btn-glome-shortcut",
-        content: "One-click anonymous login right here!",
-        duration: 15000,
-        placement: 'bottom'
-      }
       
+      {
+        content: 'Note that this platform is currently under development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
+        duration: 44000,
+        orphan: true,
+      },
+    
       /*{
         content: "Discover the platform by following this quick introductory tour.",
         duration: 4000,
@@ -100,24 +100,35 @@ var tour = new Tour({
   ]
 });
 
+var devTour = new Tour({
+  name: "intro-tour",
+  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
+  steps: [
+      
+      {
+        content: 'Note that this platform is currently under development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
+        duration: 44000,
+        orphan: true,
+      }
+  ]
+});
 
 // Start the tour if the screen is large enough
-
 window.startTour = function() {
-        if($(window).width() >= 768){
-            $('.sidebar-content').hide();
-            sidebar.hide();
-            $('#sidebar').scrollTop = 0;
-            tour.init();
-            tour.start( true );
-            }
-
-        };
+  if($(window).width() >= 768){
+    /*  $('.sidebar-content').hide();
+      sidebar.hide();
+      $('#sidebar').scrollTop = 0;*/
+      devTour.init();
+      devTour.start(true);
+  }
+};
 
 $(document).ready(function() {
-    setTimeout(startTour, 500)
-    });
-
-$('.start-tour').on('click', function() {
-    setTimeout(startTour, 2000)
+    setTimeout(startTour, 4000)
 });
+
+// Start the actual tour from the tour link
+/*$('.start-tour').on('click', function() {
+    setTimeout(startTour, 2000)
+});*/

@@ -33,6 +33,7 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker-4.17.37.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-select-1.9.4.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-tagsinput-0.4.3.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-tour-0.10.1.css">
   <link rel="stylesheet" type="text/css" href="css/trashbag.css">
   <link rel="stylesheet" type="text/css" href="css/leaflet.draw.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -47,6 +48,7 @@
   <script type="text/javascript" src="js/libs/bootstrap-3.3.6.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-select-1.9.4.js"> </script>
   <script type="text/javascript" src="js/libs/bootstrap-validator-0.9.0.js"></script>
+  <script type="text/javascript" src="js/libs/bootstrap-tour-0.10.1.js"></script>
   <script type="text/javascript" src="js/libs/jquery.ui.widget.js"></script>
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
   <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
@@ -802,9 +804,10 @@
             <div>
                 <button class="btn btn-info btn-lg btn-block btn-glome-go">Glome Go &raquo;</button>
             </div>
+          </div>
         </form>
         <form id="login-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
-
+          <div class="form-group form-group-lg">
             <h3>Login with an account</h3>
             <div>
               <input type="email" class="form-control" placeholder="Email" id="login-email" required>
@@ -833,6 +836,7 @@
         <br>
         </div>
   </div>
+      
     <div class="sidebar-content" id="create-account-dialog">
         <div id="regisration-div">
              <div>
@@ -958,14 +962,14 @@
 
             <div class="tab-pane form-group form-group-lg" id="user-info-terms" role="tabpanel">
               <h3>Terms of service</h3>
-              <p class="lead">As a user (anybody who has registered an account or is creating markers anonymously) of the grabagepla.net platform, you agree to use this platform for the sole purpose that it was designed for and no other ends including but not limited to the promotion of hate speech, third-party material advertisement or any other illegal activity.</p>
+              <p>As a user (anybody who has registered an account or is creating markers anonymously) of the grabagepla.net platform, you agree to use this platform for the sole purpose that it was designed for and no other ends including but not limited to the promotion of hate speech, third-party material advertisement or any other illegal activity.</p>
               <p>This software is distributed under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT Licence</a>. The data gathered by this platform is available upon request under the ODC Open Database License (<a href="http://opendatacommons.org/licenses/odbl/" target="_blank">ODbL v1.0</a>). The garbagepla.net logo is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0</a> International License.</p>
               <p>Content in preparation - this platform is not meant to be used for production yet.</p>
             </div>
 
             <div class="tab-pane form-group form-group-lg" id="user-info-privacy" role="tabpanel">
               <h3>Privacy policy</h3>
-                <p class="lead">As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collectthat could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
+                <p>As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collectthat could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
                 <p>Note that as of February 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
             </div>
           </div>
@@ -983,7 +987,7 @@
       </div>
 
       <div>
-      <h3>Scan the QR code</h3>
+      <h4>Scan the QR code</h4>
 
         <img src="http://placehold.it/160x120" alt="qr code" class="qrcode-image center-block">
 
@@ -991,7 +995,7 @@
 
       <div>
 
-        <h3>or type in your key</h3>
+        <h4>or type in your key</h4>
 
         <form id="glome-withkey-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
           <div class="form-group form-group-lg">
@@ -1380,7 +1384,7 @@
 
 <!-- Others -->
 <script type="text/javascript" src="js/social/share.js"></script>
-<!-- <script type="text/javascript" src="js/tour/tour.js"></script> -->
+<script type="text/javascript" src="js/tour/tour.js"></script>
 <script type="text/javascript" src="js/share.js"></script>
 </body>
 </html>

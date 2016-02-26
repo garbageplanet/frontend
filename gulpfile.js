@@ -59,6 +59,7 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/bootstrap-datetimepicker-4.17.37.css',
                     './src/css/bootstrap-select-1.9.4.css',
                     './src/css/bootstrap-tagsinput-0.4.3.css',
+                    './src/css/bootstrap-tour-0.10.1.css',
                     './src/css/leaflet-0.7.7.css',
                     './src/css/leaflet.draw.css',
                     './src/css/L.Control.Sidebar-0.19a.css',
@@ -97,6 +98,7 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
                     './src/js/libs/bootstrap-3.3.6.js',
                     './src/js/libs/bootstrap-select-1.9.4.js',
                     './src/js/libs/bootstrap-validator-0.9.0.js',
+                    './src/js/libs/bootstrap-tour-0.10.1.js',
                     './src/js/libs/jquery.ui.widget.js',
                     './src/js/libs/jquery-fileupload.js'
                   ])

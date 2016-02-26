@@ -1,6 +1,5 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // author: xr@github
-// TODO make this more secure.
 $(function () {
   
 	$('.image-uploader').fileupload({
@@ -19,17 +18,19 @@ $(function () {
     });
 
 	$('.btn-image-uploader').on('click', function () {
+      // FIXME, this doesn't work
+      var checkToken = localStorage.getItem['token'];
       
-        if (!localStorage.getItem['token'] || localStorage.getItem['token'] === 'undefined') {
+      if (checkToken || typeof checkToken !== 'undefined') {
+		
+          $(this).next().trigger('click');
 
-          showAlert("You need to be be authenticated to do that.", "warning", 2000);
-          return;
-
-        }
+      }
       
       else {
         
-		$(this).next().trigger('click');
+        showAlert("You need to be be authenticated to do that.", "warning", 2000);
+        return;
         
       }
       

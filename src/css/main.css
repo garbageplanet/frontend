@@ -308,6 +308,19 @@ a.menu-backlink:hover {
 
 /* Custom bootstrap styles */
 
+/* Style the tour popovers */
+
+.popover {
+  border-radius: 0;
+  border: 0px;
+}
+
+.popover-navigation > a {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
 /* Style default buttons and link colors */
 .btn-menu a, .btn-search, .nav-pills li a {
   color: #464646 !important;
