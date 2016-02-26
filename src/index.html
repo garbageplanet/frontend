@@ -40,6 +40,7 @@
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/map.css">
   <link rel="stylesheet" type="text/css" href="css/markers.css">
+  <link rel="stylesheet" type="text/css" href="css/share-button.css">
 
   <script type="text/javascript" src="js/fullscreen.js"></script>
   <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
@@ -53,6 +54,7 @@
   <script type="text/javascript" src="js/libs/jquery.ui.widget.js"></script>
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
   <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
+  <script type="text/javascript" src="js/libs/share-button.js"></script>
 
   <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
   <script type="text/javascript" src="js/libs/L.hash.js"></script>
@@ -64,7 +66,6 @@
   <!-- <script type="text/javascript" src="js/libs/L.control.geosearch.js"></script> -->
   <!-- <script type="text/javascript" src="js/libs/L.geosearch.provider.openstreetmap.js"></script> -->
   <!-- <script src="js/libs/L.Editable.js" defer></script>  -->
-  <!-- <script src="js/L.ajax.js" defer></script> -->
 
 </head>
 <body>
@@ -217,7 +218,7 @@
                     </div>
                   </div>
 
-                  <div class="dropdown">
+                  <div class="dropdown form-group">
                           <select class="selectpicker cleaning-recurrent-select"
                                   title="Set event recurrence"
                                   data-width="100%"
@@ -231,9 +232,7 @@
                           </select>
                   </div>
 
-                  <br>
-
-                  <div class="form-group-lg" style="width:100%">
+                  <div class="form-group form-group-lg" style="width:100%">
                     <textarea class="cleaning-note form-control"
                               rows="3"
                               placeholder="Add a note about this event"
@@ -250,8 +249,6 @@
                              placeholder="Add tags (max 3)"/>
                       </div>
                   </div>
-
-                  <br>
 
                 </div>
 
@@ -364,8 +361,6 @@
             <div class="help-block with-errors"></div>
             </div>
 
-            <br>
-
             <div class="dropdown">
                 <select class="selectpicker form-control garbage-todo-select"
                         title="What to do here?"
@@ -380,30 +375,28 @@
                     <option value="need_help">I need help</option>
                     <option value="inform">Tell local authorities</option>
                 </select>
-            <div class="help-block with-errors"></div>
+              <div class="help-block with-errors"></div>
             </div>
-
-            <br>
-
-            <div class="form-group-lg form-group" style="width:100%">
-                <textarea class="form-control garbage-note"
-                          rows="3"
-                          name="garbage-note-name"
-                          placeholder="Add a note about this marker"
-                          data-maxlength="140"
-                          data-minlength="10"
-                          data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"></textarea>
-            <div class="help-block with-errors"></div>
+              
+            <div class="form-group form-group-lg">
+              
+              <div class="row">
+                  <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                  <input class="form-control feature-tags garbage-tags"
+                         type="text"
+                         placeholder="Add tags (max 3)"/>
+                  </div>
+              </div>
+              
             </div>
-
-
+                              
             </div><!-- main garbage pane -->
 
             <div class="tab-pane form-group form-group-lg" id="garbage-quantitative" role="tabpanel">
 
             <br>
 
-              <div class="dropdown">
+              <div class="dropdown form-group">
                   <select class="selectpicker form-control garbage-size-select"
                           title="What size?"
                           data-selected-text-format="count"
@@ -418,9 +411,8 @@
                   </select>
               </div>
 
-              <br>
 
-              <div class="dropdown">
+              <div class="dropdown form-group">
                   <select class="selectpicker form-control garbage-embed-select"
                           title="Where is it?"
                           data-selected-text-format="count"
@@ -436,36 +428,37 @@
               </div>
 
 
-            <br>
-
-            <div class="input-group input-group-lg">
-              <!-- Uploader part need to follow the following strict format -->
-                  <span class="input-group-btn">
-                      <button class="btn btn-default btn-image-uploader"
-                              type="button">
-                      <span class="fa fa-fw fa-file-image-o"></span></button>
-                      <input class="image-uploader" type="file" style="display:none;">
-                  </span>
-
-                  <input type="text"
-                         class="form-control garbage-image-hidden-value"
-                         placeholder="Upload an image">
+            <div class="form-group-lg form-group" style="width:100%">
+                <textarea class="form-control garbage-note"
+                          rows="3"
+                          name="garbage-note-name"
+                          placeholder="Add a note about this marker"
+                          data-maxlength="140"
+                          data-minlength="10"
+                          data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"></textarea>
+              <div class="help-block with-errors"></div>
             </div>
-              <br>
-            <div class="progress hidden">
+              
+            <div class="form-group">
+              <div class="input-group input-group-lg">
+                <!-- Uploader part need to follow the following strict format -->
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-image-uploader"
+                                type="button">
+                        <span class="fa fa-fw fa-file-image-o"></span></button>
+                        <input class="image-uploader" type="file" style="display:none;">
+                    </span>
 
-              <div class="progress-bar progress-bar-success" role="progressbar" style="width:%"></div>
+                    <input type="text"
+                           class="form-control garbage-image-hidden-value"
+                           placeholder="Upload an image">
+              </div>
+              
+              <div class="progress hidden">
+                <div class="progress-bar progress-bar-success" role="progressbar" style="width:%"></div>
+              </div>
+              
             </div>
-
-            <div class="row">
-                <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                <input class="form-control feature-tags garbage-tags"
-                       type="text"
-                       placeholder="Add tags (max 3)"/>
-                </div>
-            </div>
-
-            <br>
 
             </div>
 
@@ -497,8 +490,7 @@
 
     </div>
     <div class="sidebar-content" id="create-area-dialog">
-        <h2><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#create-marker-dialog"></a></span>Create an area
-        </h2>
+        <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#create-marker-dialog"></a></span>Create an area</h3>
 
         <form class="form-area" data-toggle="validator">
 
@@ -515,22 +507,19 @@
 
               <div class="tab-pane active form-group form-group-lg" id="area-main" role="tabpanel">
 
-                <div>
+                <div class="form-group">
                   <button type="button" class="btn btn-lg btn-block btn-default btn-draw btn-draw-polygon">
                     <span class="fa fa-fw fa-pencil"></span> Start drawing
                   </button>
                 </div>
 
-                <br>
-
-                 <input type="hidden" class="area-latlngs">
-
+                <input type="hidden" class="area-latlngs">
 
                 <div class="form-group form-group-lg" style="width:100%">
                   <input class="form-control area-title" placeholder="Use a custom area name">
                   <div class="help-block with-errors"></div>
                 </div>
-                <br>
+                
                 <div class="form-group form-group-lg" style="width:100%">
                   <textarea class="form-control area-note"
                             rows="3"
@@ -559,9 +548,10 @@
                       This tool is not yet available.
                 </div>
 
-                <div class="checkbox form-group-lg tile-game-check">
-                  <label><input type="checkbox">Enable game mode for this area.</label>
-                <br>
+                <div class="form-group">
+                  <div class="checkbox form-group-lg tile-game-check">
+                    <label><input type="checkbox">Enable game mode for this area.</label>
+                  </div>
                 </div>
 
                 <div class="form-group form-group-lg" style="width:100%">
@@ -575,19 +565,19 @@
                   <div class="help-block with-errors"></div>
                 </div>
 
-                <br>
-
-                <div class="tile-game-secret">
+                <div class=" form-group tile-game-secret">
 
                     <div class="form-group form-group-lg" style="width:100%">
                         <input class="form-control disabled area-secret"
                                placeholder="Set the secret to access this game"
                                required>
-                        <br>
+                    </div>
+                    <div class="form-group form-group-lg" style="width:100%">
                         <input class="form-control disabled area-contact"
                                placeholder="Set a contact info for this game"
                                required>
-                    <div class="help-block with-errors"></div>
+                      
+                      <div class="help-block with-errors"></div>
                     </div>
 
                 </div>
@@ -600,7 +590,6 @@
 
               </div>
 
-              <br>
             </div>
           </div>
 
@@ -622,13 +611,7 @@
         </form>
     </div>
     <div class="sidebar-content" id="create-litter-dialog">
-      <h2>
-        <span>
-           <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
-              href="#create-marker-dialog"></a>
-        </span>
-          Mark a stretch of land
-      </h2>
+      <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#create-marker-dialog"></a></span>Mark a stretch of land</h3>
       <form class="form-litter" data-toggle="validator">
 
         <div class="tab-view">
@@ -703,8 +686,6 @@
             <div class="help-block with-errors"></div>
             </div><!-- Select the type of trash -->
 
-            <br>
-
             <div class="form-group form-group-lg" style="width:100%">
               <textarea class="form-control litter-note"
                         rows="3"
@@ -714,13 +695,12 @@
                         data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"></textarea>
             </div>
             <div class="help-block with-errors"></div>
-            <br>
 
           </div>
 
           <div class="tab-pane form-group form-group-lg" id="litter-quantitative" role="tabpanel">
 
-            <div class="form-group-lg" style="width:100%">
+            <div class="form-group form-group-lg" style="width:100%">
                 <input class="form-control litter-amount-quantitative"
                           type="number"
                           min="1"
@@ -728,25 +708,10 @@
                           placeholder="Garbage pieces per unit length">
             </div>
 
-            <br>
-
-            <div class="form-group-lg" style="width:100%">
+            <div class="form-group form-group-lg" style="width:100%">
                 <input class="form-control litter-path-length"
                        placeholder="Length of the path">
             </div>
-
-          <br>
-
-            <div class="input-group input-group-lg">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><span class="fa fa-fw fa-file-o"></span></button>
-              </span>
-              <input type="text"
-                     class="form-control litter-geojson-data"
-                     placeholder="Upload geoJSON file">
-            </div>
-
-            <br>
 
             <div class="row">
               <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
@@ -756,17 +721,11 @@
               </div>
             </div>
 
-            <br>
-
           </div>
 
           <div class="tab-pane form-group form-group-lg" id="litter-info" role="tabpanel">
 
-          <br>
-
-            <p class="lead"> Paths identify long stretches of land that accumulate garbage, such as shorelines, river banks and road shoulders. Click the <em>Start drawing</em> button in the first tab of this form to start drawing. You can cancel drawing at any time by pressing <kbd>Esc</kbd>. Alternatively, you can upload a GeoJSON <a href="http://geojson.org/geojson-spec.html#multilinestring" target="_blank">polyline</a> in order to create the path.</p>
-
-            <br>
+            <p class="lead">Paths identify long stretches of land that accumulate garbage, such as shorelines, river banks and road shoulders. Click the <em>Start drawing</em> button in the first tab of this form to start drawing. You can cancel drawing at any time by pressing <kbd>Esc</kbd>.</p>
 
         </div>
 
@@ -1152,7 +1111,7 @@
 
     <div class="row row-horizon bottombar-content" id="feature-info">
 
-      <div class="card card-actions col-xl-3 col-lg-2 col-md-3 col-ms-4 col-sm-6 col-xs-12">
+      <div class="card card-actions col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
         <div class="hidden-xs hidden-sm"><h3>Actions</h3></div>
         <br>
         <div>
@@ -1188,41 +1147,38 @@
                 <span class="fa fa-play"></span><span class="hidden">Take part</span>
               </button><span class="badge badge-notify badge-notify-participants">0</span>
             </div>
-          </div>
-        </div>
-        <hr class="hidden-xs hidden-sm">
-        <div>
-          <div class="btn-group btn-group-justified" role="group">
             <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Facebook" class="btn btn-facebook btn-round btn-share">
-                <span class="fa fa-facebook"></span>
-              </a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Google+" class="btn btn-google-plus btn-round btn-share">
-                <span class="fa fa-google-plus"></span>
-              </a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Tumblr" class="btn btn-round btn-tumblr btn-share">
-                <span class="fa fa-tumblr"></span>
-              </a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Twitter" class="btn btn-round btn-twitter btn-share">
-                <span class="fa fa-twitter"></span>
-              </a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to reddit" class="btn btn-round btn-reddit btn-share">
-                <span class="fa fa-reddit-alien"></span>
-              </a>
+              <button type="button" title="Share this" class="btn btn-round btn-default btn-social" data-toggle="popover" data-placement="top" data-trigger="focus">
+                <span class="fa fa-share-alt"></span><span class="hidden">Share this</span>
+              </button>
             </div>
           </div>
+          
+          <div class="hidden social-links">
+            <div class="btn-group btn-group-lg" role="group">
+              <a data-url="" href="#" target="_blank" title="Share to Facebook" class="btn btn-facebook btn-round btn-share"><span class="fa fa-facebook"></span></a>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <a data-url="" href="#" target="_blank" title="Share to Google+" class="btn btn-google-plus btn-round btn-share"><span class="fa fa-google-plus"></span></a>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <a data-url="" href="#" target="_blank" title="Share to Tumblr" class="btn btn-round btn-tumblr btn-share"><span class="fa fa-tumblr"></span></a>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <a data-url="" href="#" target="_blank" title="Share to Twitter" class="btn btn-round btn-twitter btn-share"><span class="fa fa-lg fa-twitter fa-icon-centered"></span></a>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <a data-url="" href="#" target="_blank" title="Share to reddit" class="btn btn-round btn-reddit btn-share"><span class="fa fa-lg fa-reddit-alien fa-icon-centered"></span></a>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <a data-url="" href="#" title="Share to whatsapp" class="btn btn-round btn-whatsapp btn-share"><span class="fa fa-lg fa-whatsapp fa-icon-centered"></span></a>
+            </div>
+          </div>
+          
         </div>
       </div> <!-- Actions -->
 
-      <div class="card card-scroll card-data col-xl-3 col-lg-2 col-md-3 col-ms-4 col-sm-6 col-xs-12">
+      <div class="card card-scroll card-data col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
         <div><h3>Data</h3></div>
         <div class="feature-data-card">
 
@@ -1292,14 +1248,14 @@
         </div>
       </div> <!-- Data -->
 
-      <div class="card card-scroll card-media col-xl-3 col-lg-2 col-md-3 col-ms-4 col-sm-6 col-xs-12">
+      <div class="card card-scroll card-media col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
         <div><h3>Media</h3></div>
 
           <a class="feature-image-link" href="" target="_blank"><img src="" alt="feature image" class="feature-image center-block"></a>
 
       </div> <!-- Media -->
 
-      <div class="card card-scroll card-track col-xl-3 col-lg-2 col-md-3 col-ms-4 col-sm-6 col-xs-12">
+      <div class="card card-scroll card-track col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
         <div><h3>Track changes</h3></div>
 
           <div class="panel panel-default">
@@ -1325,12 +1281,12 @@
 
       </div> <!-- Track -->
         
-      <div class="card card-minimap col-xl-3 col-lg-2 col-md-3 col-ms-4 col-sm-6 col-xs-12">
+      <div class="card card-minimap col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
         <div><h3>Access minimap</h3></div>
         <div id ="minimap" class="cleaning-minimap-card"></div>
       </div> <!-- Minimap -->
 
-    </div>    <!-- Feature info -->
+    </div><!-- Feature info -->
 
 </div><!-- Contents of the bottom bar -->
 

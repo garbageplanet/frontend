@@ -110,6 +110,10 @@ body {
   margin-top: -2px;
 }
 
+.popover-share {
+  max-width: 100%;
+}
+
 .btn-facebook {
   background-color: rgba( 59, 89, 152, 1) !important;
   border-color: rgba( 59, 89, 152, 1) !important;
@@ -140,7 +144,13 @@ body {
   color: #FFF;
 }
 
-.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span {
+.btn-whatsapp {
+  background-color: rgba(67, 216, 84, 1) !important;
+  border-color: rgba(67, 216, 84, 1) !important;
+  color: #FFF;
+}
+
+.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span, btn-whatsapp span {
   vertical-align: bottom;
   color: #FFF;
 }
@@ -168,6 +178,12 @@ body {
 .btn-reddit:hover, .btn-reddit:active, .btn-reddit:visited  {
   background-color: rgba(128, 128, 128, 0.8) !important;
   border-color: rgba(128, 128, 128, 1) !important;
+  color: #FFF;
+}
+
+.btn-whatsapp:hover, .btn-whatsapp:active, .btn-whatsapp:visited  {
+  background-color: rgba(167 ,216, 84, 0.8) !important;
+  border-color: rgba(67, 216, 84, 1) !important;
   color: #FFF;
 }
 
@@ -328,6 +344,20 @@ a.menu-backlink:hover {
 }
 
 /* Custom bootstrap styles */
+
+/* Style forms */
+
+
+
+.form-group {
+  margin-bottom: 10px !important;
+}
+
+.input-lg { 
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
 
 /* Style the tour popovers */
 .popover {

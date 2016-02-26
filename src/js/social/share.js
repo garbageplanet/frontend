@@ -33,7 +33,6 @@ function shareThisFeature(e) {
     // var encoded_url_tb = $(e.target).parent().attr("data-url").replace(/#/g, "%23").replace(/:/g, "%3A");
     var share_link_tb = "http://www.tumblr.com/share/link?url=" + encoded_url + "&amp;name=" + sharedText + "&amp;description=" + feature_note_encoded;
     $(e.target).parent().attr('href', share_link_tb).trigger('click');
-    
   }
   
   if ($(e.target).hasClass('fa-reddit-alien')) {
@@ -43,13 +42,28 @@ function shareThisFeature(e) {
   
   if ($(e.target).hasClass('fa-google-plus')) {
     var share_link_g = "https://plus.google.com/share?url=" + encoded_url;
-    console.log("googe plus share link", share_link_g);
+    console.log("google plus share link", share_link_g);
     $(e.target).parent().attr('href', share_link_g).trigger('click');
   }
   
+  if ($(e.target).hasClass('fa-whatsapp')) {
+    var share_link_w = "whatsapp://send?text=Shared from www.garbagepla.net";
+    console.log("whatsapp share link", share_link_w);
+    $(e.target).parent().attr('href', share_link_w).trigger('click');
+  }
 }
 
 $('.btn-share').on('click', function (e) {
     e.preventDefault;
     shareThisFeature(e);
 });
+
+$('.btn-social').popover({
+  html : true, 
+  container: 'body',
+  content: function() {
+    return $('.social-links').html();
+  },
+  template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
+});
+
