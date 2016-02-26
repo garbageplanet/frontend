@@ -36,7 +36,7 @@ $(document).ready(function() {
       
       },
       
-      min_move_x: 25,
+      min_move_x: 15,
       
       preventDefaultEvents: true
       

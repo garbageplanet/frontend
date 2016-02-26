@@ -6,7 +6,7 @@ var infoTour = new Tour({
   steps: [
       
       {
-        content: 'Note that this platform is currently under development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
+        content: 'Note that this platform is currently under active development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
         duration: 44000,
         orphan: true,
       },
