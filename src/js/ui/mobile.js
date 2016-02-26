@@ -6,12 +6,13 @@ $(document).ready(function() {
     
     $('#topbar').remove();
     
-    $('body').append('<div class="swipe-area-right"></div>');
-    
+    // add swipe areas
+    $('body').append('<div class="swipe-area swipe-area-right"></div>');
+    $('#sidebar').append('<div class="swipe-area swipe-area-left"></div>');
+    $('#bottombar').append('<div class="swipe-area swipe-area-top"></div>');
+
     $('.draw-link').addClass('disabled');
     
-    // TODO remove navigation on mobile
-
     // Activate swipe on the right border to show the mobile menu
     $(".swipe-area-right").touchwipe({
       
@@ -27,7 +28,7 @@ $(document).ready(function() {
       
     });
     // Hide the sidebar on right swipe
-    $(".sidebar-container").touchwipe({
+    $(".swipe-area-left").touchwipe({
       
       wipeRight: function() {
         
@@ -35,23 +36,7 @@ $(document).ready(function() {
       
       },
       
-      // FIXME this doesn't scroll
-      wipeDown: function() {
-        
-       $('#sidebar').scrollTo(200);
-      
-      },
-      
-      // FIXME this doesn't scroll
-      wipeUp: function() {
-        
-       $('#sidebar').scrollTo(200);
-      
-      },
-      
-      min_move_x: 100,
-      
-      min_move_y: 50,
+      min_move_x: 25,
       
       preventDefaultEvents: true
       
@@ -61,7 +46,7 @@ $(document).ready(function() {
     // if (L.Browser.retina) {wipeDown:}
     // if (L.Browser.android || L...) {wipeUp:}
     
-    $(".bottombar-container").touchwipe({
+    $(".swipe-area-top").touchwipe({
       
       wipeUp: function() {
         
@@ -69,26 +54,12 @@ $(document).ready(function() {
       
       },
       
-      wipeRight: function() {
-        
-        $('#bottombar').scrollLeft(200);
-      
-      },
-      
-      wipeLeft: function() {
-        
-        $('#bottombar').scrollLeft(0);
-      
-      },
-      
-      min_move_y: 50,
+      min_move_y: 20,
       
       preventDefaultEvents: true
       
     });
     
-    // TODO swipe events to navigate in panels
-
   }
 
 });
