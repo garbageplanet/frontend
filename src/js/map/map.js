@@ -1,6 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Set the map
-var map = L.map('map', { zoomControl: false, attributionControl: false });
+var map = L.map('map', {zoomControl: false, attributionControl: false});
 // Add location hash
 var hash = new L.Hash(map);
 
@@ -35,14 +35,14 @@ function onLocationError(e) {
 
 }
 
-// FIXME geolocation fails on mobile
+// FIXME geolocation fails on mobile and chrome
 /*function onLocationFound(e) {*/
 // Locate the user if the url doesn't contains lat lngs regex by Iain Fraser http://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
   if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
 
     map.locate({setView: true, maxZoom: 16});
 
-  };
+  }
 /*}*/
 
 map.on('locationerror', onLocationError);
@@ -51,11 +51,11 @@ map.on('locationfound', onLocationFound);
 */
 
 // Sidebar creation and placement
-var sidebar = L.control.sidebar('sidebar', { position: 'right', closebutton: 'true' });
+var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
 map.addControl(sidebar);
 
 // Bottombar with L.sidebar
-var bottombar = L.control.sidebar('bottombar', { position: 'bottom', closebutton: 'true' });
+var bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'});
 map.addControl(bottombar);
 
 // Make the layer groups and add them to the map
@@ -67,31 +67,27 @@ var garbageLayerGroup = new L.LayerGroup(),
 map.addLayer(garbageLayerGroup, cleaningLayerGroup, pathLayerGroup, areaLayerGroup);
 
 var overlayGroups = {
-"Garbage markers": garbageLayerGroup,
-"Cleaning events": cleaningLayerGroup,
-"Littered coasts and roads": pathLayerGroup,
-"Tiles and areas": areaLayerGroup
+  "Garbage markers": garbageLayerGroup,
+  "Cleaning events": cleaningLayerGroup,
+  "Littered coasts and roads": pathLayerGroup,
+  "Tiles and areas": areaLayerGroup
 };
 
-// Add zoom controls above scale
-// TODO No zoom controls on mobile
-// if (L.Browser.android || L.Browser.android23 || L.Browser.retina || L.Browser.mstouch ) {}
+// Add a scale, layers and zoom controls
+// TODO Remove scale and zoom controls on mobile?
 map.addControl(L.control.zoom({position: 'topleft'}));
-
-// Add the layer control
 L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
+new L.control.scale({metric: true, imperial: false}).addTo(map);
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-centered'></span>");
-
-// Add a scale
-new L.control.scale({metric: true, imperial: false}).addTo(map);
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
 
 // Store zoom
 map.on('zoomend', function (e) {
+  
   mapZoom = e.target.getZoom();
 
   if (mapZoom < 10) {

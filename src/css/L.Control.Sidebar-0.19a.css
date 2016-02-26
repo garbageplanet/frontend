@@ -33,8 +33,7 @@
   .leaflet-sidebar > .leaflet-control {
     height: 100%;
     width: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: scroll;
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
          -o-box-sizing: border-box;
@@ -165,7 +164,8 @@
   color: #333;
   text-align: center;
   cursor: pointer;
-  z-index: 10; }
+  z-index: 10; 
+}
 
 .bottom .close {
 	right: 10px;

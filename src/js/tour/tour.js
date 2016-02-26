@@ -113,6 +113,27 @@ var devTour = new Tour({
   ]
 });
 
+var mobileTour = new Tour({
+  name: "intro-tour",
+  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
+  steps: [
+      
+      {
+        element: ".swipe-area-right",
+        placement: 'left',
+        content: "Access the main menu by swiping from the right border.",
+        duration: 5000
+      },
+    
+      {
+        content: "All the other actions happen by tapping the map at close zoom.",
+        duration: 6000,
+        orphan: true,
+      }
+    
+  ]
+});
+
 // Start the tour if the screen is large enough
 window.startTour = function() {
   if($(window).width() >= 768){
@@ -122,6 +143,13 @@ window.startTour = function() {
       devTour.init();
       devTour.start(true);
   }
+  
+  if($(window).width() < 768){
+      sidebar.hide();
+      mobileTour.init();
+      mobileTour.start(true);
+  }
+  
 };
 
 $(document).ready(function() {
