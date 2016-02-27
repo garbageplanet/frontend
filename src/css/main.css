@@ -12,18 +12,8 @@ body {
   width:100%;
 }
 
-.alert-container {
-  width: auto
-}
-
-/* smallest mobile screen hiehgt is 567px default 768px */
+/* smallest mobile screen height is 567px default 768px */
 @media (max-width: 768px) {
-
-  .alert-container .alert {
-    z-index: 5000;
-    top: 0px;
-    width: 100%;
-  }
 
   .map-container {
     top:0px;
@@ -62,15 +52,13 @@ body {
 
 }
 
-@media (min-width: 768px) {
-  .alert-container .alert {
-     position: relative;
-     z-index: 5000;
-     top: 0px;
-     width: auto;
-     margin-left: 0;
-     margin-right: 0;
-  }
+.alert-container .alert {
+   position: absolute;
+   z-index: 5000;
+   top: 0px;
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
 }
 
 /* Icons color shortcuts */

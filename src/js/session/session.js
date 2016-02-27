@@ -1,5 +1,6 @@
 // Swtch session function
 // TODO destroy/replace/append elements instead of hiding them
+// TODO add direct logout button to mobile menu
 function switchSession(sessionStatus) {
 
   var classicSessionType = localStorage.getItem('classic');
