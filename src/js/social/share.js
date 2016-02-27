@@ -58,6 +58,7 @@ $('.btn-share').on('click', function (e) {
     shareThisFeature(e);
 });
 
+// FIXME the dynamics attributes are not passed to the popover content
 $('.btn-social').popover({
   html : true, 
   container: 'body',

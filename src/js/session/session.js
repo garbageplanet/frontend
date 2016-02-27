@@ -30,7 +30,7 @@ function switchSession(sessionStatus) {
                                       sidebar.show();
                                     });
       $(".mobile-menu").append('<a id="user-info-mobile-link" href="#account-info" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-user"></span> User info</a>');
-      $("#user-info-mobile-link").on("click", function(e) {
+      $("#user-info-mobile-link a").on("click", function(e) {
                                       e.preventDefault();
                                       $('#sidebar').scrollTop = 0;
                                       $(this.hash).fadeIn().siblings().hide();

@@ -27,7 +27,7 @@ $(document).ready(function() {
       preventDefaultEvents: true
       
     });
-    // Hide the sidebar on right swipe
+    // Hide the sidebar on right swipe from the left border
     $(".swipe-area-left").touchwipe({
       
       wipeRight: function() {
