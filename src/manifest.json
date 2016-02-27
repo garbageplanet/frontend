@@ -42,5 +42,7 @@
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
-  "lang": "en-US"
+  "lang": "en-US",
+  "background_color": "#4C4C4C",
+  "theme_color": "#FFFFFF"
 }
