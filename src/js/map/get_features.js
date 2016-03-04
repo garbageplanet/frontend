@@ -53,7 +53,10 @@ function loadGarbageMarkers () {
                         feature_type: obj.featuretype,
                         size: obj.size,
                         embed: obj.embed,
-                        marked_by: obj.marked_by
+                        marked_by: obj.marked_by,
+                        cleaned: obj.cleaned,
+                        cleaned_by: obj.cleaned_by,
+                        cleaned_date: obj.cleaned_date
                     });
 
                 garbageLayerGroup.addLayer(marker);
@@ -228,6 +231,8 @@ function loadLitters () {
               tags: obj.tag,
               feature_type: obj.featuretype,
               marked_by: obj.marked_by,
+              cleaned: obj.cleaned,
+              cleaned_by: obj.cleaned_by,
               physical_length: obj.physical_length
             });
 

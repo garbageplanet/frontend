@@ -33,19 +33,17 @@ function editFeature(e) {
 
 // Confirm garbage function
 // TODO bind this to the db
-
-// Confirmation for garage abd polylines
-/*function confirmGarbage(obj){
+function confirmGarbage(e){
   // TODO Finish this
   // TODO make session-dependant and allow once per user per marker
   if (!localStorage.getItem('token')){
     showAlert("You need to login to do that.", "info", 2000);
   }
 
-  var counts = parseInt($(".feature-info-confirmed strong").val, 10);
+  var counts = parseInt($(".badge-notify-confirm").val, 10);
   counts = isNaN(counts) ? 0 : value;
   counts++;
-  $(".feature-info-confirmed strong").val = counts;
+  $(".badge-notify-confirm").val = counts;
 
     setTimeout(function () {
       // var useToken = localStorage["token"] || window.token;
@@ -67,20 +65,21 @@ function editFeature(e) {
           }
       });
     }, 100);
-};*/
+};
 
 // TODO Join cleaning event function
-/*function joinCleaning(obj){
+function joinCleaning(e){
   // TODO Finish this
+  // TODO count function in the backend, not here
   // TODO make session-dependant and allow once per user per marker
   if (!localStorage.getItem('token')){
     showAlert("You need to login to do that.", "info", 2000);
   }
 
-  var counts = parseInt($(".feature-info-confirmed strong").val, 10);
+  var counts = parseInt($(".badge-notify-join").val, 10);
   counts = isNaN(counts) ? 0 : value;
   counts++;
-  $(".cleaning-info-confirmed strong").val = counts;
+  $(".badge-notify-join").val = counts;
 
     setTimeout(function () {
       // var useToken = localStorage["token"] || window.token;
@@ -91,22 +90,83 @@ function editFeature(e) {
           url: api.readCleaning.url(),
           headers: {"Authorization": "Bearer" + useToken},
           data: {
-              'confirm': counts // TODO how to do this?
+              'confirm': data // TODO how to do this?
           },
           success: function (data) {
               console.log('success data', data);
-              // todo change the value in the UI
+            // TODO reload the markers to display change and reload the template
+
           },
           error: function (err) {
               console.log('err', err);
           }
       });
     }, 100);
-};*/
+};
 
 // TODO Take part in game function
-// function joinGame(e){}
+function participateGame(e){
+  // TODO Finish this
+  // TODO count function in the backend, not here
+  // TODO make session-dependant and allow once per user per marker
+  if (!localStorage.getItem('token')){
+    showAlert("You need to login to do that.", "info", 2000);
+  }
 
-// $('btn-participate-game').on('click', joinGame)
-//$('.btn-confirm-garbage').on('click', confirmGarbage );
-//$('.btn-join-cleaning').on('click', joinCleaning );
+  var counts = parseInt($(".badge-notify-participate").val, 10);
+  counts = isNaN(counts) ? 0 : value;
+  counts++;
+  $(".badge-notify-join").val = counts;
+
+    setTimeout(function () {
+      // var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage.getItem('token') || window.token;
+
+      $.ajax({
+          method: api.joinCleaning.method,
+          url: api.readCleaning.url(),
+          headers: {"Authorization": "Bearer" + useToken},
+          data: {
+              'confirm': data // TODO how to do this?
+          },
+          success: function (data) {
+              console.log('success data', data);
+            // TODO reload the markers to display change and reload the template
+
+          },
+          error: function (err) {
+              console.log('err', err);
+          }
+      });
+    }, 100);
+};
+
+// TODO Cleaned garbage function
+function cleanedGarbage(e){
+  // TODO Finish this
+  // TODO make session-dependant and allow once per user per marker
+  if (!localStorage.getItem('token')){
+    showAlert("You need to login to do that.", "info", 2000);
+  }
+
+    setTimeout(function () {
+      // var useToken = localStorage["token"] || window.token;
+      var useToken = localStorage.getItem('token') || window.token;
+
+      $.ajax({
+          method: api.confirmTrash.method,
+          url: api.confirmTrash.url(),
+          headers: {"Authorization": "Bearer" + useToken},
+          data: {
+              'clean': 1 // TODO finish this
+          },
+          success: function (data) {
+              console.log('success data', data);
+              // TODO reload the markers to display change
+          },
+          error: function (err) {
+              console.log('err', err);
+          }
+      });
+    }, 100);
+};

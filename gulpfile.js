@@ -1,4 +1,5 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+// TODO add the templating system build
 var gulp = require('gulp'),
     inject = require('gulp-inject'),
     deleteLines = require('gulp-delete-lines'),

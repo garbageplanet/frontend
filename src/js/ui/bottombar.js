@@ -24,9 +24,13 @@ function pushDataToBottomPanel(e) {
     $('#feature-info').find('.feature-image').attr('src', image_url_insert);
   }
   
-  // Event listener for edit button
+  // Event listener for actions buttons (edit, cleaned join, confirm, play)
   $('#feature-info').find('.btn-edit').on('click', function() {editFeature(e);});
-
+  $('#feature-info').find('.btn-cleaned').on('click', function() {cleanedGarbage(e);});
+  $('#feature-info').find('.btn-confirm-garbage').on('click', function() {confirmGarbage(e);});
+  $('#feature-info').find('.btn-join-cleaning').on('click', function() {joinCleaning(e);});
+  $('#feature-info').find('.btn-participate-game').on('click', function() {participateGame(e);});
+  
   // Event listener for delete button
   $('#feature-info').find('.btn-delete').one('click', function (e) {
     e.preventDefault();

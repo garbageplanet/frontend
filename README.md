@@ -12,12 +12,17 @@ When adding a new js function to the code, add a comment about what it does. Bui
 ### Note (March 4th 2016)
 The build system doesn't currently include the new templating code so the final build won't have all html elements.
 
+### Feature actions
+
+- [ ] finalize the edit system (build the feature creation forms from templates)
+- [ ] build the cleaned, join, play and confirm function with a prototype
+
 ### TODO
 - [ ] fix scrolling in panels and scrollbars display
 - [ ] repair the sharing system
-- [ ] finalize the edit system (build the feature creation forms from templates)
 - [ ] move to Leaflet 1.0, make custom build and upgrade plugins (almost everything works out of the box)
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
+- [ ] offline mode with [simpleStorage](https://github.com/andris9/simpleStorage)
 
 #### Map actions
 - [ ] make the map add new markers instead of reloading everything in the current view when map moves. Either check if any new db element was added to a nearby location after the last load or check with `contains()` [see this link](http://leafletjs.com/reference.html#latlngbounds-contains).
@@ -28,4 +33,4 @@ The build system doesn't currently include the new templating code so the final 
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
 
 #### Licence
-This code is available under a slightly modified ISC licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).
+This code is available under the ISC licence but some parts have a different copyright information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).
