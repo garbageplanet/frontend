@@ -18,7 +18,8 @@
     -webkit-transition: bottom 0.5s, height 0.5s;
        -moz-transition: bottom 0.5s, height 0.5s;
          -o-transition: bottom 0.5s, height 0.5s;
-    padding-bottom: 0; }
+    padding-bottom: 0; 
+    overflow-x: auto}
     .leaflet-sidebar.bottom.visible {
       bottom: 0; }
   .leaflet-sidebar.right {
@@ -47,11 +48,9 @@
       border: 0px solid rgba(0, 0, 0, 0);
       background-clip: padding-box; }
 
-
   @media (max-width: 567px){
     
     .leaflet-sidebar > .leaflet-control {
-      /* needed to scroll in chrome with hidden scrollbars */
       overflow-y: auto; 
       padding: 4px 5px;
     }
@@ -91,8 +90,6 @@
   @media (min-width: 568px) and (max-width: 767px) {
     
     .leaflet-sidebar > .leaflet-control {
-      /* needed to scroll in chrome with hidden scrollbars */
-      /*overflow-y: auto; */
       padding: 4px 5px;
       font-size: 1em;
     }

@@ -1,6 +1,8 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // FUTURE ADAPT https://github.com/bradvin/social-share-urls
 // TODO catch the obj.options from the marker instead of getting the data from the bottom panel
+// TODO: fill the object values inside templateData.social.network
+// TODO use encodeURI()
 function shareThisFeature(e) {
   // TODO enable sharing for other features in get_features.js      
   var feature_image_url = $('#feature-info').find('.feature-image-link').attr('href') || "";
@@ -67,4 +69,3 @@ $('.btn-social').popover({
   },
   template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
 });
-

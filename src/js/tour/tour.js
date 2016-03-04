@@ -1,17 +1,17 @@
 /*jshint maxerr: 1000*/
 // Instance the tour
-var infoTour = new Tour({
+/*var infoTour = new Tour({
   name: "intro-tour",
-  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
+  template: '<div class="popover tour"><div class="arrow"></div><div class="popover-content"></div><div class="popover-navigation"><a class="btn-tour" data-role="end"><i class="fa fa-fw fa-times close"></i></a></div></div>',
   steps: [
       
       {
         content: 'Note that this platform is currently under active development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
         duration: 44000,
-        orphan: true,
+        orphan: true
       },
     
-      /*{
+      {
         content: "Discover the platform by following this quick introductory tour.",
         duration: 4000,
         orphan: true,
@@ -96,18 +96,24 @@ var infoTour = new Tour({
         duration: 12000,
         container: 'body',
         orphan: true
-      }*/
+      }
   ]
-});
+});*/
 
 var devTour = new Tour({
   name: "dev-tour",
   template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
+  // template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div></div>",
   steps: [
-      
+/*      {
+        content: 'One-click anonymous login',
+        duration: 5000,
+        element: '#tour-element-glome-shortcut',
+        placement: 'bottom',
+      },*/
       {
         content: 'Note that this platform is currently under development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
-        duration: 44000,
+        duration: 5000,
         orphan: true
       }
   ]
@@ -139,11 +145,13 @@ window.startTour = function() {
   
   if($(window).width() >= 768){
     
-    /*  $('.sidebar-content').hide();
-      sidebar.hide();
-      $('#sidebar').scrollTop = 0;*/
-      devTour.init();
-      devTour.start(true);
+      if (!localStorage.getItem('token')) {
+        
+          devTour.init();
+          devTour.start(true);
+        
+      }
+    
   }
   
   if($(window).width() < 768){

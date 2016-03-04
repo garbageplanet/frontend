@@ -1,15 +1,14 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // TODO Get new markers if the map moves
 // FIXME changed .on() to .addOneTimeEventListener() for now
-// map.addOneTimeEventListener('moveend', function (e) {
-map.on('moveend', function (e) {
-  console.log("map was moved");
+map.addOneTimeEventListener('moveend', function (e) {
+// map.on('moveend', function (e) {
+  // console.log("map was moved");
   var bounds = map.getBounds();
   currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
-  console.log("currentViewBounds:", currentViewBounds);
+  // console.log("currentViewBounds:", currentViewBounds);
 
   if (mapZoom >= 8) {
-    console.log("mapZoom value from get_feature.js", mapZoom);
     // TODO another way to get the markers this makes too many html requests
     loadGarbageMarkers();
     loadCleaningMarkers();
@@ -26,7 +25,8 @@ map.on('moveend', function (e) {
 
 // Get garbage
 function loadGarbageMarkers () {
-    console.log('loading garbage markers from db');
+    // console.log('loading garbage markers from db');
+  
     garbageLayerGroup.clearLayers();
     var useToken = localStorage.getItem('token') || window.token;
     // ajax request
@@ -43,7 +43,7 @@ function loadGarbageMarkers () {
                         id: obj.id,
                         amount: obj.amount,
                         types: obj.types,
-                        imageUrl: obj.image_url,
+                        image_url: obj.image_url,
                         lat: obj.lat,
                         lng: obj.lng,
                         confirm: obj.confirm,
@@ -114,7 +114,8 @@ function loadGarbageMarkers () {
 
 // Get cleanings
 function loadCleaningMarkers () {
-    console.log('loading cleaning markers from db');
+    // console.log('loading cleaning markers from db');
+  
     cleaningLayerGroup.clearLayers();
     // ajax request
     $.ajax({
@@ -127,13 +128,13 @@ function loadCleaningMarkers () {
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                     {
                         icon:cleaningMarker,
-                        id: obj.Id,
-                        date: obj.Date,
-                        lat: obj.Lat,
-                        lng: obj.Lng,
+                        id: obj.id,
+                        date: obj.date,
+                        lat: obj.lat,
+                        lng: obj.lng,
                         feature_type: obj.featuretype,
                         participants: obj.participants,
-                        recurrence: obj.Recurrence,
+                        recurrence: obj.recurrence,
                         marked_by: obj.marked_by
 
                     });
@@ -156,7 +157,7 @@ function loadCleaningMarkers () {
 
 // Get areas (polygons)
 function loadAreas () {
-  console.log('loading remote area polygons');
+  // console.log('loading remote area polygons');
 
   areaLayerGroup.clearLayers();
 
@@ -173,7 +174,7 @@ function loadAreas () {
 
           var polygonLayer = new L.Polygon(obj.latlngs,
             {
-              isPrototypeOfd: obj.id,
+              id: obj.id,
               title: obj.title,
               max_players: obj.max_players,
               curr_players: obj.curr_players, // how many user have already confirmed participation
@@ -203,7 +204,7 @@ function loadAreas () {
 
 // Get litters (polylines)
 function loadLitters () {
-  console.log('loading remote litter polylines');
+  // console.log('loading remote litter polylines');
 
   pathLayerGroup.clearLayers();
 
@@ -223,7 +224,7 @@ function loadLitters () {
               id: obj.id,
               amount: obj.amount,
               types: obj.types,
-              imageUrl: obj.image_url,
+              image_url: obj.image_url,
               tags: obj.tag,
               feature_type: obj.featuretype,
               marked_by: obj.marked_by,
@@ -288,7 +289,6 @@ function onGarbageMarkerClick (e) {
   map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
   sidebar.hide();
   // Show the bottombar with content
-  bottombar.show($('#feature-info').fadeIn());
 }
 
 // onClick behavior for saved cleaning markers
@@ -297,7 +297,6 @@ function onCleaningMarkerClick (e) {
   map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
   sidebar.hide();
   // Show the bottombar with content
-  bottombar.show($('#feature-info').fadeIn());
 }
 
 // onClick behavior for saved areas
@@ -306,7 +305,6 @@ function onAreaClick (e) {
   sidebar.hide();
   map.panToOffset(e.getCenter(), _getVerticalOffset());
   map.fitBounds(e.layer.getBounds());
-  bottombar.show($('#feature-info').fadeIn());
 }
 
 // onClick behavior for saved litters
@@ -315,5 +313,4 @@ function onLitterClick (e) {
     sidebar.hide();
     map.panToOffset(e.getCenter(), _getVerticalOffset());
     map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
-    bottombar.show($('#feature-info').fadeIn());
 };

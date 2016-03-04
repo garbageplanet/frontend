@@ -40,10 +40,9 @@
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/map.css">
   <link rel="stylesheet" type="text/css" href="css/markers.css">
-  <link rel="stylesheet" type="text/css" href="css/share-button.css">
 
-  <script type="text/javascript" src="js/fullscreen.js"></script>
-  <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
+  <script type="text/javascript" src="js/ui/fullscreen.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>  
   <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-datetimepicker-4.17.37.js"></script>
@@ -54,7 +53,6 @@
   <script type="text/javascript" src="js/libs/jquery.ui.widget.js"></script>
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
   <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
-  <script type="text/javascript" src="js/libs/share-button.js"></script>
 
   <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
   <script type="text/javascript" src="js/libs/L.hash.js"></script>
@@ -63,6 +61,9 @@
   <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
   <script type="text/javascript" src="js/libs/L.Draw.js"></script>
   <script type="text/javascript" src="js/libs/L.Sync.js"></script>
+  
+  
+  
   <!-- <script type="text/javascript" src="js/libs/L.control.geosearch.js"></script> -->
   <!-- <script type="text/javascript" src="js/libs/L.geosearch.provider.openstreetmap.js"></script> -->
   <!-- <script src="js/libs/L.Editable.js" defer></script>  -->
@@ -100,7 +101,7 @@
             </form>
           </li>
 
-          <li class="session-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
+          <li class="session-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i id="tour-element-glome-shortcut" class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
 
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -909,7 +910,7 @@
             
               <br>
             
-              <p><a href="#delete-account-dialog" class="sidebar-link account-delete-link disabled">Delete</a> your account.</p>
+              <p><a href="#delete-account-dialog" class="sidebar-link account-delete-link disabled pull-right">Delete</a> your account.</p>
             </div>
 
             <div class="tab-pane form-group form-group-lg" id="user-info-terms" role="tabpanel">
@@ -1023,7 +1024,7 @@
         </form>
     </div>
     <div class="sidebar-content" id="search-dialog">
-            <h3>Search</h3>
+        <h3>Search</h3>
         <p>Use <strong>#tags</strong> or <strong>@tilename</strong> as well as location and standard text search.</p>
 
             <form id="search-form">
@@ -1046,54 +1047,9 @@
     <div class="sidebar-content" id="credits-dialog">
       <div>
         <h2>Credits</h2>
-        <div>
-            <p class="lead">Please refer to each component source files and repositories for license information.<img src="images/logo.png" style="float: right;" alt="The garbagepla.net logo" width="100" height="100"></p>
-        </div>
-
-        <div class="tab-view">
-          <ul class="nav nav-tabs nav-justified" role="tablist">
-            <li class="active">
-              <a href="#credits-maps" data-toggle="tab">
-                <span class="fa fa-fw fa-map"></span>
-              </a>
-            </li>
-            <li>
-              <a href="#credits-components" data-toggle="tab">
-                <span class="fa fa-fw fa-bar-chart-o"></span>
-              </a>
-            </li>
-
-          </ul>
-
-          <div class="tab-content">
-
-            <div class="tab-pane active form-group form-group-lg" id="credits-maps" role="tabpanel">
-              Map data &copy;
-              <a href="http://openstreetmap.org">OpenStreetMap</a> and contributors <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.
-              <br> Imagery © <a href="http://mapbox.com">Mapbox</a>.
-              <br> Localities and features via <a href="http://www.overpass-api.de/">Overpass API</a>.
-              <br> <a href="http://leafletjs.com/" target="_blank">Leaflet.js</a> by <a href="http://agafonkin.com/en/" target="_blank">Vladimir Agafonkin</a> and <a href="https://github.com/Leaflet/Leaflet/graphs/contributors" target="_blank">contributors</a>.
-              <br> <a href="https://github.com/turbo87/leaflet-sidebar/" target="_blank">L.Control.Sidebar</a> by Turbo87.
-              <br> Drawing and editing features on the map thanks to <a href="https://github.com/Leaflet/Leaflet.draw" target="_blank">Leaflet.Draw</a> by <a href="https://github.com/jacobtoye" target="_blank">Jacob Toye</a> and contributors.
-              <br> Local historical wind data for locating coastal garbage are aggregated from <a href="http://openweathermap.org" target="_blank">OpenWeatherMap</a> and the <a href="https://en.wikipedia.org/wiki/Global_Forecast_System" target="_blank">GFS</a> and displayed using the <a href="https://github.com/buche/leaflet-openweathermap" target="_blank">leaflet-openweather-map</a> plugin.
-              <br>
-            </div>
-
-            <div class="tab-pane form-group form-group-lg" id="credits-components" role="tabpanel">
-              <a href="http://fontawesome.io/">FontAwesome</a> by <a href="https://twitter.com/davegandy" target="_blank">@davegandy</a> and contributors.
-              <br><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> v3.
-              <br><a href="http://silviomoreto.github.io/bootstrap-select/" target="_blank">bootstrap-select</a> by <a href="http://silviomoreto.github.io/" target="_blank">Silvio Moreto</a> and contributors.
-              <br><a href="http://timschlechter.github.io/bootstrap-tagsinput/examples/" target="_blank">boostrap-tagsinput</a> by  <a href="http://itimothy.nl/" target="_blank">Tim Schlechter</a> and contributors.
-              <br><a href="http://1000hz.github.io/bootstrap-validator/" target="_blank">bootstrap-validator</a> by <a href="https://twitter.com/1000hz" target="_blank">Cina Saffary</a> and contributors.
-              <br><a href="https://eonasdan.github.io/bootstrap-datetimepicker/" target="_blank">bootstrap-datetimepicker</a> by <a href="https://github.com/Eonasdan/bootstrap-datetimepicker/graphs/contributors" target="_blank">Jonathan Peterson</a> and contributors.
-              <br><a href="https://jquery.com/" target="_blank">JQuery</a>.
-              <br><a href="http://momentjs.com/" target="_blank">moment.js</a> by moment's <a href="https://github.com/moment/moment/graphs/contributors" target="_blank">contributors</a>.
-              <br><a href="https://twitter.github.io/typeahead.js/" target="_blank">typeahead.js</a> by <a href="https://github.com/twitter/typeahead.js/graphs/contributors" target="_blank">Jake Harding</a> and contributors.
-              <p></p>
-            </div>
-
-          </div>
-        </div>
+        <img src="images/logo.png" class="pull-right" alt="The garbagepla.net logo" width="100" height="100">
+        <div><p class="lead">Please refer to each component source files and repositories for license information.</p></div>
+          <div class="form-group form-group-lg" id="credits"></div>
         </div> <!-- Credits -->
     </div>
     
@@ -1101,186 +1057,6 @@
 </div><!-- Contents of the sidebar -->
 
 <div id="bottombar" class="bottombar-container">
-
-    <div class="row row-horizon bottombar-content" id="feature-info">
-
-      <div class="card card-actions col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
-        <div class="hidden-xs hidden-sm"><h3>Actions</h3></div>
-        <br>
-        <div>
-          <div class="btn-group btn-group-justified" role="group">
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Edit feature" class="btn btn-warning btn-edit btn-round sidebar-link">
-                <span class="fa fa-pencil"></span><span class="hidden">Edit</span>
-              </button>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Delete this feature" class="btn btn-danger btn-round btn-delete">
-                <span class="fa fa-times"></span><span class="hidden">Delete</span>
-              </button>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="The garbage has been cleaned!" class="btn btn-round btn-success btn-cleaned">
-                <span class="fa fa-check"></span><span class="hidden">Cleaned</span>
-              </button>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Confirm there is garbage here." class="btn btn-round btn-info btn-confirm-garbage">
-                <span class="fa fa-binoculars"></span><span class="hidden">Confirm</span>
-              </button>
-              <span class="badge badge-notify badge-notify-confirm">0</span>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Say you will join." class="btn btn-round btn-info btn-join-cleaning">
-                <span class="fa fa-group"></span><span class="hidden">Join</span>
-              </button><span class="badge badge-notify badge-notify-join">0</span>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Join game." class="btn btn-round btn-info btn-participate-game">
-                <span class="fa fa-play"></span><span class="hidden">Take part</span>
-              </button><span class="badge badge-notify badge-notify-participants">0</span>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" title="Share this" class="btn btn-round btn-default btn-social" data-toggle="popover" data-placement="top" data-trigger="focus">
-                <span class="fa fa-share-alt"></span><span class="hidden">Share this</span>
-              </button>
-            </div>
-          </div>
-          
-          <div class="hidden social-links">
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Facebook" class="btn btn-facebook btn-round btn-share"><span class="fa fa-facebook"></span></a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Google+" class="btn btn-google-plus btn-round btn-share"><span class="fa fa-google-plus"></span></a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Tumblr" class="btn btn-round btn-tumblr btn-share"><span class="fa fa-tumblr"></span></a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to Twitter" class="btn btn-round btn-twitter btn-share"><span class="fa fa-lg fa-twitter fa-icon-centered"></span></a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" target="_blank" title="Share to reddit" class="btn btn-round btn-reddit btn-share"><span class="fa fa-lg fa-reddit-alien fa-icon-centered"></span></a>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <a data-url="" href="#" title="Share to whatsapp" class="btn btn-round btn-whatsapp btn-share"><span class="fa fa-lg fa-whatsapp fa-icon-centered"></span></a>
-            </div>
-          </div>
-          
-        </div>
-      </div> <!-- Actions -->
-
-      <div class="card card-scroll card-data col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
-        <div><h3>Data</h3></div>
-        <div class="feature-data-card">
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <span class="pull-left">type: </span>
-              <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-type pull-left"></span>
-            </div>
-          </div>
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">amount: </span>
-            <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-amount pull-left"></span>
-            </div>
-          </div>
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">todo: </span>
-            <span class="feature-info-garbage feature-info feature-info-todo pull-left"></span>
-            </div>
-          </div>
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">note: </span>
-              <span class="feature-info feature-info-common feature-info-note pull-left"></span>
-            </div>
-          </div>
-          
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">time: </span>
-              <span class="feature-info feature-info-cleaning feature-info-time pull-left"></span>
-            </div>
-          </div>
-          
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">location: </span>
-              <span class="feature-info feature-info-cleaning feature-info-location pull-left"></span>
-            </div>
-          </div>
-          
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">length: </span>
-              <span class="feature-info feature-info-litter feature-info-length pull-left"></span>
-            </div>
-          </div>
-          
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">name: </span>
-              <span class="feature-info feature-info-area feature-info-name pull-left"></span>
-            </div>
-          </div>
-          
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">contact: </span>
-              <span class="feature-info feature-info-area feature-info-contact pull-left"></span>
-            </div>
-          </div>
-                    
-        </div>
-      </div> <!-- Data -->
-
-      <div class="card card-scroll card-media col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
-        <div><h3>Media</h3></div>
-
-          <a class="feature-image-link" href="" target="_blank"><img src="" alt="feature image" class="feature-image center-block"></a>
-
-      </div> <!-- Media -->
-
-      <div class="card card-scroll card-track col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
-        <div><h3>Track changes</h3></div>
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <span class="pull-left">creation date: </span>
-              <span class="feature-info feature-info-creation-time pull-left"></span>
-            </div>
-          </div>
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">created by: </span>
-            <span class="feature-info feature-info-created-by pull-left"></span>
-            </div>
-          </div>
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-            <span class="pull-left">modified by:</span>
-            <span class="feature-info feature-info-modified-by pull-left"></span>
-            </div>
-          </div>
-
-      </div> <!-- Track -->
-        
-      <div class="card card-minimap col-xl-3 col-lg-3 col-md-3 col-ms-4 col-sm-6 col-xs-12">
-        <div><h3>Access minimap</h3></div>
-        <div id ="minimap" class="cleaning-minimap-card"></div>
-      </div> <!-- Minimap -->
-
-    </div><!-- Feature info -->
-
 </div><!-- Contents of the bottom bar -->
 
 <div class="alert-container text-center"></div><!-- Alerts -->
@@ -1293,9 +1069,13 @@
 
 <!-- inject:body:app -->
 <!-- endinject -->
-
+  
 <!-- api config -->
 <script type="text/javascript" src="js/config.js"></script>
+  
+<!-- Templates -->
+<script type="text/javascript" src="js/templates/tmpl_data.js"></script>
+<script type="text/javascript" src="js/templates/tmpl.js"></script>
 
 <!-- Map display and actions scripts -->
 <script type="text/javascript" src="js/ui/alerts.js"></script>
@@ -1323,8 +1103,7 @@
 <!-- <script type="text/javascript" src="js/forms/search.js"></script> -->
 
 <!-- Others -->
-<script type="text/javascript" src="js/social/share.js"></script>
+<!-- <script type="text/javascript" src="js/social/share.js"></script> -->
 <script type="text/javascript" src="js/tour/tour.js"></script>
-<script type="text/javascript" src="js/share.js"></script>
 </body>
 </html>

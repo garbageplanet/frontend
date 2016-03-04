@@ -31,3 +31,6 @@ sidebar.on('hide', function () {
         $('.leaflet-draw-edit-edit').removeClass('visible');
         $('.leaflet-draw-edit-remove').removeClass('visible');
 });
+
+// Fill the templates
+document.getElementById('credits').innerHTML = tmpl("tmpl-credits", templatedata);

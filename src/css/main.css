@@ -351,6 +351,9 @@ a.menu-backlink:hover {
 .popover {
   border-radius: 0 !important;
   border: 0px !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .popover-navigation > a {
