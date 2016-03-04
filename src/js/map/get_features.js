@@ -1,8 +1,8 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // TODO Get new markers if the map moves
 // FIXME changed .on() to .addOneTimeEventListener() for now
-map.addOneTimeEventListener('moveend', function (e) {
-// map.on('moveend', function (e) {
+// map.addOneTimeEventListener('moveend', function (e) {
+map.on('moveend', function (e) {
   // console.log("map was moved");
   var bounds = map.getBounds();
   currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
