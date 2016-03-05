@@ -19,7 +19,7 @@
        -moz-transition: bottom 0.5s, height 0.5s;
          -o-transition: bottom 0.5s, height 0.5s;
     padding-bottom: 0; 
-    overflow-x: auto}
+    overflow: hidden }
     .leaflet-sidebar.bottom.visible {
       bottom: 0; }
   .leaflet-sidebar.right {
@@ -51,7 +51,7 @@
   @media (max-width: 567px){
     
     .leaflet-sidebar > .leaflet-control {
-      overflow-y: auto; 
+      overflow: hidden; 
       padding: 4px 5px;
     }
     

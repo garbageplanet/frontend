@@ -19,7 +19,6 @@ body {
     top:0px;
   }
 
-  
 /* Swipe area sizing and placement */
   .swipe-area {
     position: absolute;
@@ -94,8 +93,10 @@ body {
 }
 
 .fa-icon-centered {
-  margin-left: -2px;
+  margin-left: -3px;
+/*
   margin-top: -2px;
+*/
 }
 
 .popover-share {
@@ -105,6 +106,12 @@ body {
 .btn-facebook {
   background-color: rgba( 59, 89, 152, 1) !important;
   border-color: rgba( 59, 89, 152, 1) !important;
+  color: #FFF;
+}
+
+.btn-vk {
+  background-color: rgba( 69, 102, 142, 1) !important;
+  border-color: rgba( 69, 102, 142, 1) !important;
   color: #FFF;
 }
 
@@ -138,13 +145,18 @@ body {
   color: #FFF;
 }
 
-.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span, btn-whatsapp span {
+.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span, btn-whatsapp span, btn-vk span {
   vertical-align: bottom;
   color: #FFF;
 }
 
 .btn-facebook:hover, .btn-facebook:active, .btn-facebook:visited {
   background-color: rgba( 59, 89, 152, 0.8) !important;
+  color: #FFF;
+}
+
+.btn-vk:hover, .btn-vk:active, .btn-vk:visited {
+  background-color: rgba( 69, 102, 142, 0.8) !important;
   color: #FFF;
 }
 
@@ -215,22 +227,6 @@ a.menu-backlink:hover {
   overflow-y: scroll;
   overflow-x: hidden;
 }
-
-/* Style the bottom bar */
-/*.bottombar-container .container {
-  width: auto;
-  margin: 10px;
-}
-
-.bottombar-content  {
-  overflow: hidden;
-  height: 100%;
-}*/
-
-/*.card-scroll {
-    height: auto;
-    overflow-y: scroll;
-}*/
 
 /* Own modifications to leaflet.css*/
 .leaflet-control-zoom-in,

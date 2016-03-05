@@ -2,7 +2,7 @@
 function pushDataToBottomPanel(e) {
   
   var featuredata = e.options;
-  console.log("feature data content: ", featuredata);
+  // console.log("feature data content: ", featuredata);
   
  // Add character into strings
   String.prototype.insert = function (index, string) {
@@ -15,6 +15,10 @@ function pushDataToBottomPanel(e) {
   
   // Fill the template data
   document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
+  
+  // TODO create the templateData.social data dynamically before calling the template
+  shareThisFeature(featuredata);
+  
   document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", templatedata);
   bottombar.show($('#feature-info').fadeIn());
   
@@ -25,11 +29,23 @@ function pushDataToBottomPanel(e) {
   }
   
   // Event listener for actions buttons (edit, cleaned join, confirm, play)
-  $('#feature-info').find('.btn-edit').on('click', function() {editFeature(e);});
-  $('#feature-info').find('.btn-cleaned').on('click', function() {cleanedGarbage(e);});
-  $('#feature-info').find('.btn-confirm-garbage').on('click', function() {confirmGarbage(e);});
-  $('#feature-info').find('.btn-join-cleaning').on('click', function() {joinCleaning(e);});
-  $('#feature-info').find('.btn-participate-game').on('click', function() {participateGame(e);});
+  $('#feature-info').find('.btn-edit').on('click', function() {editFeature(featuredata);});
+  $('#feature-info').find('.btn-cleaned').on('click', function() {cleanedGarbage(featuredata);});
+  $('#feature-info').find('.btn-confirm-garbage').on('click', function() {confirmGarbage(featuredata);});
+  $('#feature-info').find('.btn-join-cleaning').on('click', function() {joinCleaning(featuredata);});
+  $('#feature-info').find('.btn-participate-game').on('click', function() {participateGame(featuredata);});
+  
+  // Event listener for share button and share links
+  $('.btn-social').popover({
+    html : true, 
+    container: 'body',
+    content: function() {
+      
+      return $('#social-links').html();
+      
+    },
+    template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
+  });
   
   // Event listener for delete button
   $('#feature-info').find('.btn-delete').one('click', function (e) {

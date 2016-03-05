@@ -14,50 +14,51 @@
    function in the same way as above add tmpl.min.js after 
    template.js in the body of your main html file. */
 
+
+
 var templatedata = {
   "social" : {
-      "description": "Feature shared from Garbagepla.net",
       "network": [
           {
-            "iconclass": "fa-facebook",
+            "iconclass": "fa-facebook" ,
             "btnclass": "btn-facebook",
             "title": "Share on Facebook",
-            "linkurl": "",
             "targeturl": ""
           },
           {
             "iconclass": "fa-twitter",
             "btnclass": "btn-twitter",
             "title": "Share on Twitter",
-            "linkurl": "",
             "targeturl": ""
           },
           {
             "iconclass": "fa-google-plus",
             "btnclass": "btn-google-plus",
             "title": "Share on Google+",
-            "linkurl": "",
             "targeturl": ""
           },
           {
-            "iconclass": "fa-reddit",
+            "iconclass": "fa-reddit fa-lg fa-icon-centered",
             "btnclass": "btn-reddit",
             "title": "Share on Reddit",
-            "linkurl": "",
             "targeturl": ""
           },
           {
             "iconclass": "fa-tumblr",
             "btnclass": "btn-tumblr",
             "title": "Share on Tumblr",
-            "linkurl": "",
             "targeturl": ""
           },
           {
-            "iconclass": "fa-whatsapp fa-lg",
+            "iconclass": "fa-vk fa-icon-centered",
+            "btnclass": "btn-vk",
+            "title": "Share on V-Kontakti",
+            "targeturl": ""
+          },
+          {
+            "iconclass": "fa-whatsapp fa-lg fa-icon-centered",
             "btnclass": "btn-whatsapp",
             "title": "Share on Whatsapp",
-            "linkurl": "",
             "targeturl": ""
           }
     ]

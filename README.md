@@ -18,8 +18,6 @@ The build system doesn't currently include the new templating code so the final 
 - [ ] build the cleaned, join, play and confirm function with a prototype
 
 ### TODO
-- [ ] fix scrolling in panels and scrollbars display
-- [ ] repair the sharing system
 - [ ] move to Leaflet 1.0, make custom build and upgrade plugins (almost everything works out of the box)
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
 - [ ] offline mode with [simpleStorage](https://github.com/andris9/simpleStorage)
