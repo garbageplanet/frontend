@@ -7,24 +7,24 @@ function editFeature(e) {
     showAlert("The editing system isn't currently functional.", "warning", 3000);
 
   // if (e.options.featuretype === 'marker_garbage') {
-  if (typeof e.options.featuretype === 'undefined') {
+  if (typeof e.options.feature_type === 'undefined') {
     sidebar.show($('#create-garbage-dialog').fadeIn());
     e.dragging.enable();
   }
   
   
-  if (e.options.featuretype === 'marker_cleaning') {
+  if (e.options.feature_type === 'marker_cleaning') {
     sidebar.show($('#create-cleaning-dialog').fadeIn());
     e.dragging.enable();
 
   }
   
-  if (e.options.featuretype === 'polyline_litter') {
+  if (e.options.feature_type === 'polyline_litter') {
     sidebar.show($('#create-litter-dialog').fadeIn());
 
   }
   
-  if (e.options.featuretype === 'polygon_area') {
+  if (e.options.feature_type === 'polygon_area') {
     sidebar.show($('#create-area-dialog').fadeIn());
 
   }
