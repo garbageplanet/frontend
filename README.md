@@ -4,7 +4,7 @@
 Repository for the [garbagepla.net](http://www.garbagepla.net) frontend. This responsive layout adds a top bar for navigation and a bottom bar for displaying map feature data.
 
 ### How to get started? ###
-Just open /html/index.html in your browser. If you want to build for distribution install gulp with the dependencies (sorry, no package.json yet) go to the root dir and type `gulp`.
+Just open /html/index.html in your browser. If you want to build for distribution just run `npm i` to install gulp and dependencies in the root directory and type `gulp`.
 
 ### Contributing
 When adding a new js function to the code, add a comment about what it does. Build with gulp and open `index.html` from the `/dist` folder to check if there's any error. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.

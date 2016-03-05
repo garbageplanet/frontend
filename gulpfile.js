@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     del = require('del'),
     replace = require('gulp-replace-task'),
-    env = require('./env.json');
+    env = require('./env.json'); // contains token and app ids
 
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function () {
