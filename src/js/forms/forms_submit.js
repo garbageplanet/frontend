@@ -62,7 +62,7 @@ $(function () {
                   'size': garbageSize,
                   'embed': garbageEmbed,
                   'note': note,
-                  'featuretype': "marker_garbage"
+                  'feature_type': "marker_garbage"
               },
               success: function (data) {
                   console.log('success data', data);
@@ -124,7 +124,7 @@ $(function () {
                   'note': note,
                   'recurrence': eventRecurrence,
                   'tag':tags.join(),
-                  'featuretype': "marker_cleaning"
+                  'feature_type': "marker_cleaning"
               },
               success: function (data) {
                   console.log('success data', data);
@@ -156,7 +156,6 @@ $(function () {
         latlngs,
         image_url,
         length,
-        geojson_data,
         note,
         amount_quantitative;
 
@@ -169,7 +168,7 @@ $(function () {
     tags = $(this).find('.litter-tags').tagsinput('items');
     amount_quantitative = $(this).find('.litter-amount-quantitative').val();
     litterAmount = $('input[class=litter-range-input]').val();
-    length = $(this).find('.litter-path-length').val();
+    physical_length = $(this).find('.litter-path-length').val();
     image_url = $(this).find('.litter-image-hidden-value').val();
     note = $('input[class=litter-note]').val();
     geojson_data =  $('input[class=litter-geojson-data]').val();
@@ -193,12 +192,10 @@ $(function () {
               'amount': litterAmount,
               'types': litterType.join(),
               'image_url': image_url,
-              'physical_length': length,
-              'wms_url': wms_url,
-              'geojson_data': geojson_data,
+              'physical_length': physical_length,
               'tag': tags.join(),
               'amount_quantitative': amount_quantitative,
-              'featuretype': "polyline_litter"
+              'feature_type': "polyline_litter"
           },
           success: function (data) {
               console.log('success data', data);
@@ -278,7 +275,7 @@ $(function () {
               'title': title,
               'tag': tags.join(),
               'game' : game,
-              'featuretype': "polygon_area"
+              'feature_type': "polygon_area"
           },
           success: function (data) {
               console.log('success data', data);
