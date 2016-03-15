@@ -5,8 +5,8 @@
 var api = {
   // Backend
   // TODO the server urls should sit in .env
-  // server: 'http://dev.garbagepla.net:8081/api', // the unstable api
-  server: 'http://dev.garbagepla.net:8080/api',
+  server: 'http://dev.garbagepla.net:8081/api', // the unstable api
+  // server: 'http://dev.garbagepla.net:8080/api',
 
   // API entry points
   /* User */
