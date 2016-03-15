@@ -28,8 +28,8 @@ map.on('draw:drawstart', function (e) {
 map.on('draw:editstart', function (e) {
   map.off('click', onMapClick);
   $('.btn-draw').addClass('disabled');
-  // pathLayerGroup.off('click', onPathClick);
-  // areLayerGroup.off('click', onAreaClick);
+  // litterLayerGroup.off('click', onPathClick);
+  // areaLayerGroup.off('click', onAreaClick);
 });
 
 map.on('draw:editstop', function (e) { 
@@ -37,15 +37,15 @@ map.on('draw:editstop', function (e) {
   $('.leaflet-draw-edit-edit').removeClass('visible');
   $('.leaflet-draw-edit-remove').removeClass('visible');
 
-  // pathLayerGroup.off('click', onPathClick);
-  // areLayerGroup.off('click', onAreaClick);
+  // litterLayerGroup.off('click', onPathClick);
+  // areaLayerGroup.off('click', onAreaClick);
 });
 
 map.on('draw:deletestart', function (e) { 
   map.off('click', onMapClick);
   $('.btn-draw').addClass('disabled');
-  // pathLayerGroup.off('click', onPathClick);
-  // areLayerGroup.off('click', onAreaClick);
+  // litterLayerGroup.off('click', onPathClick);
+  // areaLayerGroup.off('click', onAreaClick);
 });
 
 map.on('draw:deletestop', function (e) {
@@ -54,8 +54,8 @@ map.on('draw:deletestop', function (e) {
   $('.leaflet-draw-edit-edit').removeClass('visible');
   $('.leaflet-draw-edit-remove').removeClass('visible');
 
-  // pathLayerGroup.off('click', onPathClick);
-  // areLayerGroup.off('click', onAreaClick);
+  // litterLayerGroup.off('click', onPathClick);
+  // areaLayerGroup.off('click', onAreaClick);
 });
 
 // Need to make sure the user can click again on the map if the drawing is aborted

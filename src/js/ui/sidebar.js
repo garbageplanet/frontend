@@ -30,6 +30,8 @@ sidebar.on('hide', function () {
         $('.tab-default').tab('show');
         $('.leaflet-draw-edit-edit').removeClass('visible');
         $('.leaflet-draw-edit-remove').removeClass('visible');
+        // TODO clear the tagsinput
+        // $('.bootstrap-tagsinput').tagsinput(''); 
 });
 
 // Fill the templates

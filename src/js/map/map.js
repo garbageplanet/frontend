@@ -61,15 +61,21 @@ map.addControl(bottombar);
 // Make the layer groups and add them to the map
 var garbageLayerGroup = new L.LayerGroup(),
     areaLayerGroup = new L.FeatureGroup(),
-    pathLayerGroup = new L.FeatureGroup(),
-    cleaningLayerGroup = new L.LayerGroup();
+    litterLayerGroup = new L.FeatureGroup(),
+    cleaningLayerGroup = new L.LayerGroup(),
+    allLayers = new L.LayerGroup([
+                  garbageLayerGroup,
+                  areaLayerGroup,
+                  cleaningLayerGroup,
+                  litterLayerGroup
+                ]);
 
-map.addLayer(garbageLayerGroup, cleaningLayerGroup, pathLayerGroup, areaLayerGroup);
+map.addLayer(garbageLayerGroup, cleaningLayerGroup, litterLayerGroup, areaLayerGroup);
 
 var overlayGroups = {
   "Garbage markers": garbageLayerGroup,
   "Cleaning events": cleaningLayerGroup,
-  "Littered coasts and roads": pathLayerGroup,
+  "Littered coasts and roads": litterLayerGroup,
   "Tiles and areas": areaLayerGroup
 };
 

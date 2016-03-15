@@ -30,7 +30,7 @@ function _getHorizontalOffset() {
 
 // Default behavior for map clicks
 function onMapClick(e) {
-  if (!sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open')) {
+  if (!sidebar.isVisible() && !bottombar.isVisible() && mapZoom >= 10 && !$('.dropdown').hasClass('open') && !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && !$('.leaflet-control-search').hasClass('leaflet-control-search-expanded')) {
     marker = L.marker(e.latlng, {
       icon: genericMarker,
       draggable: true
@@ -145,6 +145,8 @@ function onMapClick(e) {
         bottombar.hide();
         sidebar.hide();
         $('.dropdown').removeClass('open');
+        $('.leaflet-control-layers').removeClass('leaflet-control-layers-expanded');
+        $('.leaflet-control-search').removeClass('leaflet-control-search-expanded');
        }
   
   // Remove unsaved markers with class 'marker-generic' after a timeout
@@ -157,6 +159,7 @@ function onMapClick(e) {
 
 // Default behaviour for creating a marker
 map.on('click', onMapClick);  
+// map.on('longclick', onMapClick);  
 
 // onClick behavior for non-saved markers
 function onLocalMarkerClick (e) {

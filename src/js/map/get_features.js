@@ -1,21 +1,17 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// TODO Get new markers if the map moves
-// FIXME changed .on() to .addOneTimeEventListener() for now
-// map.addOneTimeEventListener('moveend', function (e) {
-map.on('moveend', function (e) {
-  // console.log("map was moved");
+// Load the feature once in the currentViewon page load
+map.addOneTimeEventListener('moveend', function (e) {
   var bounds = map.getBounds();
   currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
   // console.log("currentViewBounds:", currentViewBounds);
 
-  if (mapZoom >= 8) {
-    // TODO another way to get the markers this makes too many html requests
-    loadGarbageMarkers();
-    loadCleaningMarkers();
-  }
-
   if (mapZoom >= 8 && mapZoom <= 16) {
     loadLitters();
+  }
+  
+  if (mapZoom >= 8 ) {    
+    loadGarbageMarkers();
+    loadCleaningMarkers();
   }
 
   if (mapZoom >= 7 && mapZoom <=15) {
@@ -23,6 +19,38 @@ map.on('moveend', function (e) {
   }
 });
 
+// Get the features from the backend only if the map is moved by a certain extent (here window width / 3)
+// TODO smarter way to determine smallest map move distance
+// TODO add zoom change condition
+map.on('dragend', function (e){
+
+  console.log("distance in pixels", e.distance);
+
+  if (e.distance >= window.innerWidth / 2) {    
+    
+    if (mapZoom >= 8 && mapZoom <= 16) {
+      
+      loadLitters();
+      
+    }
+
+    if (mapZoom >= 8 ) {  
+      
+      loadGarbageMarkers();
+      loadCleaningMarkers();
+      
+    }
+
+    if (mapZoom >= 7 && mapZoom <=15) {
+      
+      loadAreas();
+      
+    }
+
+  }
+
+});
+  
 // Get garbage
 function loadGarbageMarkers () {
     // console.log('loading garbage markers from db');
@@ -209,7 +237,7 @@ function loadAreas () {
 function loadLitters () {
   // console.log('loading remote litter polylines');
 
-  pathLayerGroup.clearLayers();
+  litterLayerGroup.clearLayers();
 
   var useToken = localStorage.getItem('token') || window.token;
   $.ajax({
@@ -272,8 +300,8 @@ function loadLitters () {
                 break;
           }
 
-          pathLayerGroup.addLayer(polylineLayer);
-          map.addLayer(pathLayerGroup);
+          litterLayerGroup.addLayer(polylineLayer);
+          map.addLayer(litterLayerGroup);
           polylineLayer.on('click', function() {
               onLitterClick(polylineLayer);
               // Push data

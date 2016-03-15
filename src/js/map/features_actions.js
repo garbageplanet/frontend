@@ -32,9 +32,8 @@ function editFeature(e) {
 };
 
 // Confirm garbage function
-// TODO bind this to the db
+// TODO count function in the backend, not here
 function confirmGarbage(e){
-  // TODO Finish this
   // TODO make session-dependant and allow once per user per marker
   if (!localStorage.getItem('token')){
     showAlert("You need to login to do that.", "info", 2000);

@@ -33,6 +33,7 @@
    * Constructor function
    */
   function TagsInput(element, options) {
+    
     this.itemsArray = [];
 
     this.$element = $(element);
@@ -131,7 +132,7 @@
 
       // add a tag element
 
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"><i class="fa fa-times"></i></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
@@ -206,7 +207,7 @@
 
       self.pushVal();
     },
-
+    
     /**
      * Refreshes the tags so they match the text/value of their corresponding
      * item.

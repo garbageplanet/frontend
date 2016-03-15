@@ -94,13 +94,6 @@ body {
 
 .fa-icon-centered {
   margin-left: -3px;
-/*
-  margin-top: -2px;
-*/
-}
-
-.popover-share {
-  max-width: 100%;
 }
 
 .btn-facebook {
@@ -202,6 +195,20 @@ body {
   padding: 2px !important;
 }
 
+.card-actions {
+  margin-top: 20px !important;
+}
+
+/* Media rules for cards height 
+* This is a hack, change this
+* when moving to bootstrap v4
+*/
+@media (min-width: 768px)  {
+   .card {
+      height: 270px;
+   }
+}
+
 /* Add badges */
 .badge-notify{
   color: #FFF;
@@ -234,6 +241,21 @@ a.menu-backlink:hover {
 .lealfet-bar,
 .lealfet-control {
 	border: 0px;
+}
+/* Style the search button */
+.leaflet-control-search {
+  	min-width: 40px;
+	height: 40px;
+	line-height: 40px;
+    border-radius: 20px !important;
+          box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+     -moz-box-shadow: none !important;
+}
+
+.leaflet-control-search .fa-search {
+  position: absolute;
+  left: 7px;
 }
 
 /* Place the close button in the layers-control div on mobile */
@@ -328,11 +350,7 @@ a.menu-backlink:hover {
 }
 
 /* Custom bootstrap styles */
-
 /* Style forms */
-
-
-
 .form-group {
   margin-bottom: 10px !important;
 }
@@ -343,7 +361,7 @@ a.menu-backlink:hover {
   margin-bottom: 0px;
 }
 
-/* Style the tour popovers */
+/* Style the popovers */
 .popover {
   border-radius: 0 !important;
   border: 0px !important;
@@ -356,6 +374,12 @@ a.menu-backlink:hover {
   position: absolute;
   bottom: 5px !important;
   right: 5px !important;
+}
+
+.popover-share {
+  max-width: 100%;
+  background-color: rgba(255,255,255,0);
+  max-height: 55px; /* force horizontal display on mobile */
 }
 
 /* Style default buttons and link colors */

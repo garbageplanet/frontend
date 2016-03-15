@@ -1,0 +1,97 @@
+ 
+.leaflet-container .leaflet-control-search {
+	position:relative;
+	float:left;
+	color:#1978cf;
+	background-color: #FFF;
+	z-index:200;	
+
+}
+.leaflet-control-search.leaflet-control-search-expanded {
+	background: #fff;
+    z-index: 800;
+}
+.leaflet-control-search .search-input .input-lg {
+	display:block;
+	float:left;
+	background-color: #FFF;
+    border-radius: 0px !important;
+    border: 0;
+	height:32px;
+	padding:0 18px 0 2px;
+	margin:3px 0 3px 3px;
+}
+.leaflet-control-search.search-load .search-input {
+    font-family: 'FontAwesome' !important;
+    color: #000;
+}
+
+.leaflet-control-search.search-load .search-cancel {
+	visibility:hidden;
+  z-index: 1000;
+}
+.leaflet-control-search .search-cancel {
+	display:block;
+	width:22px;
+	height:18px;
+	position:absolute;
+	right:22px;
+	margin:3px 0;
+    color: #000;
+}
+.leaflet-control-search .search-cancel span {
+	display:none;/* comment for cancel button imageless */
+	font-size:18px;
+	line-height:20px;
+    font-family: 'FontAwesome' !important;
+}
+
+.leaflet-control-search .search-button span {
+	float:right;
+    font-family: 'FontAwesome';
+    color: #000;
+    text-decoration: none;
+    z-index: 200;
+}
+
+.leaflet-control-search .search-tooltip {
+	position:absolute;
+	top:100%;
+	left:0;
+	float:left;
+	list-style: none;
+	padding-left: 0;
+	min-width:120px;
+	max-height:122px;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index:1010;
+	overflow-y:auto;
+	overflow-x:hidden;
+	cursor: pointer;
+}
+.leaflet-control-search .search-tip {
+	margin:2px;
+	padding:2px 4px;
+	display:block;
+	color:black;
+	background: #eee;
+	text-decoration:none;	
+	white-space:nowrap;
+	vertical-align:center;
+}
+.leaflet-control-search .search-tip-select,
+.leaflet-control-search .search-tip:hover,
+.leaflet-control-search .search-button:hover {
+	background-color: #fff;
+}
+.leaflet-control-search .search-alert {
+	cursor:pointer;
+	clear:both;
+	font-size:.75em;
+	margin-bottom:5px;
+	padding:0 .25em;
+	color:#e00;
+	font-weight:bold;
+}
+
+
