@@ -1,68 +1,123 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// Load the feature once in the currentViewon page load
-map.addOneTimeEventListener('moveend', function (e) {
-  var bounds = map.getBounds();
-  currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
-  // console.log("currentViewBounds:", currentViewBounds);
+// Load the feature once in the currentView on page load
+map.addOneTimeEventListener('move', function (e) {
+    
+    var bounds = map.getBounds();
+    
+    currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
 
-  if (mapZoom >= 8 && mapZoom <= 16) {
-    loadLitters();
-  }
-  
-  if (mapZoom >= 8 ) {    
-    loadGarbageMarkers();
-    loadCleaningMarkers();
-  }
+    // console.log("currentViewBounds:", currentViewBounds);
 
-  if (mapZoom >= 7 && mapZoom <=15) {
-    loadAreas();
-  }
+    if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
+        
+        loadLitters();
+        
+    }
+
+    if (e.target.getZoom() >= 8 ) {    
+        
+        loadGarbageMarkers();
+
+        loadCleaningMarkers();
+        
+    }
+
+    if (e.target.getZoom() >= 7 && e.target.getZoom() <=15) {
+    
+        loadAreas();
+        
+    }
+    
 });
 
-// Get the features from the backend only if the map is moved by a certain extent (here window width / 3)
+// After the first page load, the features from the backend only if the map is moved by a certain extent (here window width / 2)
 // TODO smarter way to determine smallest map move distance
-// TODO add zoom change condition
-map.on('dragend', function (e){
+map.on('dragend zoomend', function (e){
+  
+    if (e.type === 'zoomend') {
+          
+        if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
 
-  console.log("distance in pixels", e.distance);
+            loadLitters();
 
-  if (e.distance >= window.innerWidth / 2) {    
+        }
+
+        if (e.target.getZoom() >= 8 ) {
+
+            loadGarbageMarkers();
+            
+            loadCleaningMarkers();
+
+        }
+
+        if (e.target.getZoom() >= 7 && e.target.getZoom() <=15) {
+
+            loadAreas();
+
+        }
+        
+        if (e.target.getZoom() < 7) {
+
+            areaLayerGroup.clearLayers();
+            litterLayerGroup.clearLayers();
+
+        }
+        
+    }
+
+    if (e.type === 'dragend') {
+  
+        console.log("distance in pixels", e.distance);
+
+        if (e.distance >= window.innerWidth / 3) {
+            
+            console.log("Window width / 3: ", window.innerWidth / 3);
+
+            if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
+
+                loadLitters();
+
+            }
+
+            if (e.target.getZoom() >= 8 ) {  
+
+                loadGarbageMarkers();
+
+                loadCleaningMarkers();
+
+            }
+
+            if (e.target.getZoom() >= 7 && e.target.getZoom() <=15) {
+
+                loadAreas();
+
+            }
+
+        }
     
-    if (mapZoom >= 8 && mapZoom <= 16) {
-      
-      loadLitters();
-      
     }
-
-    if (mapZoom >= 8 ) {  
-      
-      loadGarbageMarkers();
-      loadCleaningMarkers();
-      
-    }
-
-    if (mapZoom >= 7 && mapZoom <=15) {
-      
-      loadAreas();
-      
-    }
-
-  }
 
 });
   
 // Get garbage
 function loadGarbageMarkers () {
+    
     // console.log('loading garbage markers from db');
   
     garbageLayerGroup.clearLayers();
+    
     var useToken = localStorage.getItem('token') || window.token;
-    // ajax request
+    
     $.ajax({
+        
         type: api.readTrashWithinBounds.method,
+        
         url: api.readTrashWithinBounds.url(currentViewBounds),
+        
         success: function (data) {
+            
             $(data).each(function (index, obj) {
+                
                 // console.log(obj);
 
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
@@ -88,12 +143,17 @@ function loadGarbageMarkers () {
                     });
 
                 garbageLayerGroup.addLayer(marker);
+                
                 map.addLayer(garbageLayerGroup);
 
                 marker.on('click', function() {
+                    
+                    // UI behavior
                     onGarbageMarkerClick(marker);
+                    
                     // Push data
                     pushDataToBottomPanel(marker);
+                    
                 });
 
                 switch(obj.amount){
@@ -135,25 +195,40 @@ function loadGarbageMarkers () {
                     $(marker._icon).addClass('marker-color-unknown');
                     break;
                 }
+                
             });
+            
         },
+        
         error: function(data) {
+            
             console.log('Something went wrong while fetching the garbage markers', data);
+            
         }
+        
     });
+    
 }
 
 // Get cleanings
 function loadCleaningMarkers () {
+    
     // console.log('loading cleaning markers from db');
-  
+
     cleaningLayerGroup.clearLayers();
-    // ajax request
+    
+    var useToken = localStorage.getItem('token') || window.token;
+
     $.ajax({
+        
         type: api.readCleaningWithinBounds.method,
+        
         url: api.readCleaningWithinBounds.url(currentViewBounds),
+        
         success: function(data) {
+            
             $(data).each(function(index, obj) {
+                
                 console.log(obj);
 
                 var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
@@ -169,181 +244,251 @@ function loadCleaningMarkers () {
                         marked_by: obj.marked_by
 
                     });
+                
                 // TODO add hasLayer() logic here to only add absent markers?
                 cleaningLayerGroup.addLayer(marker);
+                
                 map.addLayer(cleaningLayerGroup);
+                
                 marker.on('click', function() {
+                    
+                    // UI behavior
                     onCleaningMarkerClick(marker);
+                    
                     // Push data
                     pushDataToBottomPanel(marker);
+                    
                 });
+                
             });
+            
         },
+        
         error: function(data) {
+            
             console.log('Something went wrong while fetching the cleaning events', data);
+            
         }
     });
-    var useToken = localStorage.getItem('token') || window.token;
+    
 }
 
 // Get areas (polygons)
 function loadAreas () {
-  // console.log('loading remote area polygons');
+    
+    // console.log('loading remote area polygons');
 
-  areaLayerGroup.clearLayers();
+    areaLayerGroup.clearLayers();
 
-  var useToken = localStorage.getItem('token') || window.token;
-  $.ajax({
-    type: api.readAreaWithinBounds.method,
-    url: api.readAreaWithinBounds.url(currentViewBounds),
-    headers: {"Authorization": "Bearer " + useToken},
-    success: function (data) {
-      console.log('area data', data);
+    var useToken = localStorage.getItem('token') || window.token;
 
-      $(data).each(function(index, obj) {
-        console.log("object data", obj);
+    $.ajax({
+      
+        type: api.readAreaWithinBounds.method,
+        
+        url: api.readAreaWithinBounds.url(currentViewBounds),
+        
+        headers: {"Authorization": "Bearer " + useToken},
+        
+        success: function (data) {
+            
+            console.log('area data', data);
 
-          var polygonLayer = new L.Polygon(obj.latlngs,
-            {
-              id: obj.id,
-              title: obj.title,
-              max_players: obj.max_players,
-              curr_players: obj.curr_players, // how many user have already confirmed participation
-              note: obj.note,
-              tags: obj.tag,
-              contact: obj.contact,
-              feature_type: obj.featuretype,
-              marked_by: obj.marked_by
-            });
+            $(data).each(function(index, obj) {
 
-          areaLayerGroup.addLayer(polygonLayer);
-          map.addLayer(areaLayerGroup);
-          polygonLayer.on('click', function() {
-              onAreaClick(polygonLayer);
-              // Push data
-              pushDataToBottomPanel(polygonLayer);
-          });
+                console.log("object data", obj);
+
+                  var polygonLayer = new L.Polygon(obj.latlngs,
+                    {
+                      id: obj.id,
+                      title: obj.title,
+                      max_players: obj.max_players,
+                      curr_players: obj.curr_players, // how many user have already confirmed participation
+                      note: obj.note,
+                      tags: obj.tag,
+                      contact: obj.contact,
+                      feature_type: obj.featuretype,
+                      marked_by: obj.marked_by
+                    });
+
+                  areaLayerGroup.addLayer(polygonLayer);
+
+                  map.addLayer(areaLayerGroup);
+
+                  polygonLayer.on('click', function() {
+
+                      // Ui behavior
+                      onAreaClick(polygonLayer);
+
+                      // Push data
+                      pushDataToBottomPanel(polygonLayer);
+                  });
+
+            }
+
+          );
+
+        },
+
+        error: function (data) {
+
+            console.log('Error getting area data', data);
 
         }
-      );
-    },
-    error: function (data) {
-      console.log('Error getting area data', data);
-    }
+      
   });
+    
 }
 
 // Get litters (polylines)
 function loadLitters () {
-  // console.log('loading remote litter polylines');
+    
+    // console.log('loading remote litter polylines');
 
-  litterLayerGroup.clearLayers();
+    litterLayerGroup.clearLayers();
 
-  var useToken = localStorage.getItem('token') || window.token;
-  $.ajax({
-    type: api.readLitterWithinBounds.method,
-    url: api.readLitterWithinBounds.url(currentViewBounds),
-    headers: {"Authorization": "Bearer " + useToken},
-    success: function (data) {
-      console.log('litter data', data);
+    var useToken = localStorage.getItem('token') || window.token;
+    
+    $.ajax({
+        
+        type: api.readLitterWithinBounds.method,
+        
+        url: api.readLitterWithinBounds.url(currentViewBounds),
+        
+        headers: {"Authorization": "Bearer " + useToken},
+        
+        success: function (data) {
+            
+            console.log('litter data', data);
 
-      $(data).each(function(index, obj) {
-        console.log("object data", obj);
+            $(data).each(function(index, obj) {
+                
+                console.log("object data", obj);
 
-          var polylineLayer = new L.Polyline(obj.latlngs,
-            {
-              id: obj.id,
-              amount: obj.amount,
-              types: obj.types,
-              image_url: obj.image_url,
-              tags: obj.tag,
-              feature_type: obj.featuretype,
-              marked_by: obj.marked_by,
-              cleaned: obj.cleaned,
-              cleaned_by: obj.cleaned_by,
-              physical_length: obj.physical_length
-            });
+                var polylineLayer = new L.Polyline(obj.latlngs,
+                {
+                  id: obj.id,
+                  amount: obj.amount,
+                  types: obj.types,
+                  image_url: obj.image_url,
+                  tags: obj.tag,
+                  feature_type: obj.featuretype,
+                  marked_by: obj.marked_by,
+                  cleaned: obj.cleaned,
+                  cleaned_by: obj.cleaned_by,
+                  physical_length: obj.physical_length
+                });
 
-          switch(obj.amount){
-            case 1:
-                polylineLayer.setStyle({color:"green"});
-                break;
-            case 2:
-                polylineLayer.setStyle({color:"limegreen"});
-                break;
-            case 3:
-                polylineLayer.setStyle({color:"yellow"});
-                break;
-            case 4:
-                polylineLayer.setStyle({color:"gold"});
-                break;
-            case 5:
-                polylineLayer.setStyle({color:"orange"});
-                break;
-            case 6:
-                polylineLayer.setStyle({color:"orangered"});
-                break;
-            case 7:
-                polylineLayer.setStyle({color:"red"});
-                break;
-            case 8:
-                polylineLayer.setStyle({color:"darkred"});
-                break;
-            case 9:
-                polylineLayer.setStyle({color:"purple"});
-                break;
-            case 10:
-                polylineLayer.setStyle({color:"black"});
-                break;
-            default:
-                polylineLayer.resetStyle();
-                break;
-          }
+              switch(obj.amount){
+                      
+                case 1:
+                    polylineLayer.setStyle({color:"green"});
+                    break;
+                case 2:
+                    polylineLayer.setStyle({color:"limegreen"});
+                    break;
+                case 3:
+                    polylineLayer.setStyle({color:"yellow"});
+                    break;
+                case 4:
+                    polylineLayer.setStyle({color:"gold"});
+                    break;
+                case 5:
+                    polylineLayer.setStyle({color:"orange"});
+                    break;
+                case 6:
+                    polylineLayer.setStyle({color:"orangered"});
+                    break;
+                case 7:
+                    polylineLayer.setStyle({color:"red"});
+                    break;
+                case 8:
+                    polylineLayer.setStyle({color:"darkred"});
+                    break;
+                case 9:
+                    polylineLayer.setStyle({color:"purple"});
+                    break;
+                case 10:
+                    polylineLayer.setStyle({color:"black"});
+                    break;
+                default:
+                    polylineLayer.resetStyle();
+                    break;
+                      
+              }
 
-          litterLayerGroup.addLayer(polylineLayer);
-          map.addLayer(litterLayerGroup);
-          polylineLayer.on('click', function() {
-              onLitterClick(polylineLayer);
-              // Push data
-              pushDataToBottomPanel(polylineLayer);
-          });
+              litterLayerGroup.addLayer(polylineLayer);
+
+              map.addLayer(litterLayerGroup);
+
+              polylineLayer.on('click', function() {
+                  
+                  // UI behavior
+                  onLitterClick(polylineLayer);
+                  
+                  // Push data
+                  pushDataToBottomPanel(polylineLayer);
+                  
+              });
+            }
+                         
+        );
+            
+        },
+        
+        error: function (data) {
+
+            console.log('Error getting shape data', data);
+
         }
-      );
-    },
-    error: function (data) {
-      console.log('Error getting shape data', data);
-    }
-  });
+        
+    });
 }
 
 // onClick behavior for saved garbage markers
 function onGarbageMarkerClick (e) {
-  console.log("Garbage marker clicked");
-  map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
-  sidebar.hide();
-  // Show the bottombar with content
+    
+    console.log("Garbage marker clicked");
+    
+    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
+    
+    sidebar.hide();
+    
 }
 
 // onClick behavior for saved cleaning markers
 function onCleaningMarkerClick (e) {
-  console.log("Cleaning marker clicked");
-  map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
-  sidebar.hide();
-  // Show the bottombar with content
+    
+    console.log("Cleaning marker clicked");
+    
+    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
+    
+    sidebar.hide();
+    
 }
 
 // onClick behavior for saved areas
 function onAreaClick (e) {
-  console.log("remote polygon clicked");
-  sidebar.hide();
-  map.panToOffset(e.getCenter(), _getVerticalOffset());
-  map.fitBounds(e.layer.getBounds());
+    
+    console.log("remote polygon clicked");
+    
+    sidebar.hide();
+    
+    map.panToOffset(e.getCenter(), _getVerticalOffset());
+    
+    map.fitBounds(e.layer.getBounds());
+    
 }
 
 // onClick behavior for saved litters
 function onLitterClick (e) {
+    
     console.log("remote polyline clicked");
+    
     sidebar.hide();
+    
     map.panToOffset(e.getCenter(), _getVerticalOffset());
+    
     map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
+    
 };

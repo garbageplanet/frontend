@@ -142,24 +142,28 @@ var mobileTour = new Tour({
 
 // Start the tour if the screen is large enough
 window.startTour = function() {
-  
-  if($(window).width() >= 768){
-    
-      if (!localStorage.getItem('token')) {
-        
+
+    if($(window).width() >= 768){
+
+        if (!localStorage.getItem('token')) {
+
           devTour.init();
+
           devTour.start(true);
-        
-      }
-    
-  }
-  
-  if($(window).width() < 768){
-    
-      sidebar.hide();
-      mobileTour.init();
-      mobileTour.start(true);
-  }
+
+        }
+
+    }
+
+    if($(window).width() < 768){
+
+        sidebar.hide();
+
+        mobileTour.init();
+
+        mobileTour.start(true);
+
+    }
   
 };
 
