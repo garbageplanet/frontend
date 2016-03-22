@@ -15,8 +15,6 @@ The build system doesn't currently include the templating code so the minified b
 ### TODO
 #### Security
 - [ ] move from tokens to cookies (use Secure and HTTPOnly)
-- [ ] enable https
-- [ ] set Content-Security-Policy
 
 #### Feature actions
 - [ ] finalize the edit system (build the feature creation forms from templates)
@@ -35,10 +33,13 @@ The build system doesn't currently include the templating code so the minified b
 - [ ] offline mode with [simpleStorage](https://github.com/andris9/simpleStorage) and [L.Offline](https://github.com/allartk/leaflet.offline)
 
 ### Bugs
+
+#### Mobile
+- [ ] tags cannot be created by pressing space on soft keyboard, this is a ['feature'](https://bugs.chromium.org/p/chromium/issues/detail?id=118639) on Chrome Android, currently solved in unstable version of Chrome (March 2016). 
+
 #### Mobile: Edge on Windows Phone
 - [ ] fails to show slider input.
 - [ ] weird map panning behavior when creating markers
-
 
 ### Future prospects
 - [ ] localized calendar, tag cloud and gallery in the bottom bar, group markers with [L.PruneCluster](https://github.com/SINTEF-9012/PruneCluster)

@@ -1,4 +1,15 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+
+// Warn user if zoom is too far
+map.on('zoomend', function (e) {
+
+    if (e.target.getZoom() < 10) {
+        
+        showAlert("Zoom in closer to create features", "info", 1200);
+        
+    }
+        
+});
 //MapToOffset//////////////////////////////////////////////////////////
 //See license.md in this repo Copyright 2013 Code for America//////////
 L.Map.prototype.panToOffset = function (latlng, offset, options) {

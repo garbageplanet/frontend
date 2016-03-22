@@ -39,20 +39,20 @@ function onLocationError(e) {
 
 }
 
-// FIXME geolocation fails on mobile and chrome
-/*function onLocationFound(e) {*/
+// FIXME this doesnt work
+// function onLocationFound(e) {
 // Locate the user if the url doesn't contains lat lngs regex adatped from Iain Fraser http://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
   if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
 
     map.locate({setView: true, maxZoom: 16});
 
   }
-/*}*/
+// }
 
 map.on('locationerror', onLocationError);
-/*
-map.on('locationfound', onLocationFound);
-*/
+
+// map.on('locationfound', onLocationFound);
+
 
 // Sidebar creation and placement
 var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
@@ -112,17 +112,6 @@ $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
-
-// Store zoom
-map.on('zoomend', function (e) {
-
-    if (e.target.getZoom() < 10) {
-        
-        showAlert("Zoom in closer to create features", "info", 1200);
-        
-    }
-        
-});
 
 // Default marker types and classes
 var genericMarker = L.divIcon({

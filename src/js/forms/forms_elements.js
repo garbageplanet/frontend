@@ -3,11 +3,11 @@ $(document).ready(function() {
 
     $('.selectpicker').selectpicker({ style: 'btn-lg btn-default text-center', size: 6});
 
-    $(function () { 
+    $(function () {
         
         $('#event-date-time-picker')
         
-            .datetimepicker( {
+            .datetimepicker({
             
                 minDate: new Date(2015, 11, 31),
             
@@ -23,7 +23,7 @@ $(document).ready(function() {
         
     });
 
-    $('#event-date-time-picker').on('dp.change', function(e) {
+    $('#event-date-time-picker').on('dp.change', function (e) {
         
         var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
         
@@ -35,10 +35,11 @@ $(document).ready(function() {
     });
 
     // Separate tags by hitting space bar or right key
+    // FIXME space key doesn't work with mobile keyboard
     $('.feature-tags').tagsinput({
         
         maxTags: 3,
-
+        
         confirmKeys: [32, 39],
 
         maxChars: 16,
@@ -51,7 +52,7 @@ $(document).ready(function() {
     $("form").bind("keypress", function (e) {
         
         
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
 
             $(".btn-save").attr('type');
 
