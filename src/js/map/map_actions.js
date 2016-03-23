@@ -60,6 +60,7 @@ function _getHorizontalOffset() {
 function onMapClick(e) {
     
     if (!sidebar.isVisible() && !bottombar.isVisible() && e.target.getZoom() >= 10 && !$('.dropdown').hasClass('open') && !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && !$('.leaflet-control-search').hasClass('leaflet-control-search-expanded')) {
+        
         marker = L.marker(e.latlng, {
             
         icon: genericMarker,

@@ -404,6 +404,11 @@ a.menu-backlink:hover {
 .btn-menu a, .btn-search, .nav-pills li a {
   color: #464646 !important;
 }
+
+.mobile-menu a {
+    color: #464646 !important;
+}
+
 /*Style the navbar*/
 .navbar-default {
   background-color: #FFF;

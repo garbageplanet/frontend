@@ -16,10 +16,10 @@
 
 .leaflet-sidebar.bottom {
     bottom: -400px;
-            transition: bottom 0.5s, height 0.5s;
-    -webkit-transition: bottom 0.5s, height 0.5s;
-       -moz-transition: bottom 0.5s, height 0.5s;
-         -o-transition: bottom 0.5s, height 0.5s;
+            transition: bottom 0.8s, height 0.8s;
+    -webkit-transition: bottom 0.8s, height 0.8s;
+       -moz-transition: bottom 0.8s, height 0.8s;
+         -o-transition: bottom 0.8s, height 0.8s;
     padding-bottom: 0; 
 /*
     overflow: hidden 
@@ -32,10 +32,10 @@
 
 .leaflet-sidebar.right {
     right: -500px;
-            transition: right 0.5s, width 0.5s;
-    -webkit-transition: right 0.5s, width 0.5s;
-       -moz-transition: right 0.5s, width 0.5s;
-         -o-transition: right 0.5s, width 0.5s;
+            transition: right 0.8s, width 0.8s;
+    -webkit-transition: right 0.8s, width 0.8s;
+       -moz-transition: right 0.8s, width 0.8s;
+         -o-transition: right 0.8s, width 0.8s;
     padding-left: 0; 
 }
 
