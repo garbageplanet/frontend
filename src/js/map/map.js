@@ -100,12 +100,17 @@ var overlayGroups = {
 };
 
 // Add a scale, layers and zoom controls
-// TODO Remove scale and zoom controls on mobile?
-map.addControl(L.control.zoom({position: 'topleft'}));
+// TODO Remove scale and zoom controls on mobile with L.Browser in Lealfet 1.0
+if (window.innerWidth > 568) { 
+    
+    map.addControl(L.control.zoom({position: 'topleft'}));
+    
+    new L.control.scale({metric: true, imperial: false}).addTo(map);
+                             
+}
 
 L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
 
-new L.control.scale({metric: true, imperial: false}).addTo(map);
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");

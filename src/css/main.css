@@ -267,11 +267,11 @@ a.menu-backlink:hover {
 /* Place the close button in the layers-control div on mobile */
 .btn-close-layers-control {
     position: absolute;
-    top: 80%;
+    top: 70%;
     right: -45px;
     z-index: 1000;
     width: 35px;
-    height: 35px;
+    height: 45px;
     background-color: #ff3300;
     border-top-right-radius: 18px;
     border-bottom-right-radius: 18px; 
@@ -280,8 +280,8 @@ a.menu-backlink:hover {
 .btn-close-layers-control a {
     text-decoration: none;
     color: #FFF;
-    height:35px;
-    line-height:35px;
+    height:45px;
+    line-height:45px;
 }
 
 .leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(.leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {

@@ -204,14 +204,14 @@
     left: -30px;
     top: 35px;
     width: 30px;
-    height: 35px;
+    height: 45px;
     border-top-left-radius: 18px;
     border-bottom-left-radius: 18px;
 }
 
 .close-right > a {
-  height:35px;
-  line-height:35px;
+  height:45px;
+  line-height:45px;
 }
 
 .close-bottom {
@@ -219,7 +219,7 @@
     z-index: 10;
     right: 35px;
     top: -30px;
-    width: 35px;
+    width: 45px;
     height: 30px;
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
@@ -227,7 +227,7 @@
 
 .close-bottom > a {
     top: 10px;
-    width: 35px;
+    width: 45px;
 }
 
 @media (max-width: 568px) {
