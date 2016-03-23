@@ -108,7 +108,7 @@ L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
 new L.control.scale({metric: true, imperial: false}).addTo(map);
 
 // Set an icon on the layer select button
-$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-centered'></span>");
+$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();

@@ -19,6 +19,7 @@ The build system doesn't currently include the templating code so the minified b
 #### Feature actions
 - [ ] finalize the edit system (build the feature creation forms from templates)
 - [ ] build the cleaned, join, play and confirm functions with a prototype
+- [ ] rewrite the data loading functions with a prototype
 - [ ] modal to see/export/save area data
 - [ ] navigate between markers from bottom panel by listing markers in [current view](http://turbo87.github.io/leaflet-sidebar/examples/listing-markers.html)
 
@@ -34,7 +35,7 @@ The build system doesn't currently include the templating code so the minified b
 
 ### Bugs
 
-#### Mobile
+#### Mobile: Chrome on Android
 - [ ] tags cannot be created by pressing space on soft keyboard, this is a ['feature'](https://bugs.chromium.org/p/chromium/issues/detail?id=118639) on Chrome Android, currently solved in unstable version of Chrome (March 2016). 
 
 #### Mobile: Edge on Windows Phone

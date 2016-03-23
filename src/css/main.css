@@ -6,10 +6,11 @@ body {
 }
 
 .map-container {
-  bottom:0;
-  position:absolute;
-  top:50px;
-  width:100%;
+    bottom:0;
+    z-index: auto;
+    position:absolute;
+    top:50px;
+    width:100%;
 }
 
 /* smallest mobile screen height is 567px default 768px */
@@ -94,6 +95,11 @@ body {
 
 .fa-icon-centered {
   margin-left: -3px;
+}
+
+.fa-icon-control-centered {
+  margin-left: -2px;
+  margin-top: -2px;
 }
 
 .btn-facebook {
@@ -260,10 +266,22 @@ a.menu-backlink:hover {
 
 /* Place the close button in the layers-control div on mobile */
 .btn-close-layers-control {
-  position: absolute;
-  top: -25px;
-  right: -25px;
-  border: 0;
+    position: absolute;
+    top: 80%;
+    right: -45px;
+    z-index: 1000;
+    width: 35px;
+    height: 35px;
+    background-color: #ff3300;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px; 
+}
+
+.btn-close-layers-control a {
+    text-decoration: none;
+    color: #FFF;
+    height:35px;
+    line-height:35px;
 }
 
 .leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(.leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {

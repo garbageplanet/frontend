@@ -32,10 +32,11 @@ map.addOneTimeEventListener('move', function (e) {
 
 // After the first page load, the features from the backend only if the map is moved by a certain extent (here window width / 2)
 // TODO smarter way to determine smallest map move distance
+// FIXME the data loading functions get called but the data is not fetched?
 map.on('dragend zoomend', function (e){
   
     if (e.type === 'zoomend') {
-          
+                  
         if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
 
             loadLitters();
@@ -45,7 +46,7 @@ map.on('dragend zoomend', function (e){
         if (e.target.getZoom() >= 8 ) {
 
             loadGarbageMarkers();
-            
+                                
             loadCleaningMarkers();
 
         }
@@ -59,6 +60,7 @@ map.on('dragend zoomend', function (e){
         if (e.target.getZoom() < 7) {
 
             areaLayerGroup.clearLayers();
+            
             litterLayerGroup.clearLayers();
 
         }
@@ -66,7 +68,7 @@ map.on('dragend zoomend', function (e){
     }
 
     if (e.type === 'dragend') {
-  
+          
         console.log("distance in pixels", e.distance);
 
         if (e.distance >= window.innerWidth / 3) {
@@ -82,7 +84,7 @@ map.on('dragend zoomend', function (e){
             if (e.target.getZoom() >= 8 ) {  
 
                 loadGarbageMarkers();
-
+                
                 loadCleaningMarkers();
 
             }
@@ -99,350 +101,366 @@ map.on('dragend zoomend', function (e){
 
 });
   
+
+
 // Get garbage
 function loadGarbageMarkers () {
     
-    // console.log('loading garbage markers from db');
-  
-    garbageLayerGroup.clearLayers();
+    setTimeout(function () {
     
-    var useToken = localStorage.getItem('token') || window.token;
-    
-    $.ajax({
-        
-        type: api.readTrashWithinBounds.method,
-        
-        url: api.readTrashWithinBounds.url(currentViewBounds),
-        
-        success: function (data) {
-            
-            $(data).each(function (index, obj) {
-                
-                // console.log(obj);
+        garbageLayerGroup.clearLayers();
 
-                var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
-                    {
-                        icon: garbageMarker,
-                        id: obj.id,
-                        amount: obj.amount,
-                        types: obj.types,
-                        image_url: obj.image_url,
-                        lat: obj.lat,
-                        lng: obj.lng,
-                        confirm: obj.confirm,
-                        todo: obj.todo,
-                        tags: obj.tag,
-                        note: obj.note,
-                        feature_type: obj.featuretype,
-                        size: obj.size,
-                        embed: obj.embed,
-                        marked_by: obj.marked_by,
-                        cleaned: obj.cleaned,
-                        cleaned_by: obj.cleaned_by,
-                        cleaned_date: obj.cleaned_date
+        var useToken = localStorage.getItem('token') || window.token;
+
+        $.ajax({
+
+            type: api.readTrashWithinBounds.method,
+
+            url: api.readTrashWithinBounds.url(currentViewBounds),
+
+            success: function (data) {
+
+                console.log("Garbage markers successfully loaded.");
+
+                $(data).each(function (index, obj) {
+
+                    var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
+                        {
+                            icon: garbageMarker,
+                            id: obj.id,
+                            amount: obj.amount,
+                            types: obj.types,
+                            image_url: obj.image_url,
+                            lat: obj.lat,
+                            lng: obj.lng,
+                            confirm: obj.confirm,
+                            todo: obj.todo,
+                            tags: obj.tag,
+                            note: obj.note,
+                            feature_type: obj.featuretype,
+                            size: obj.size,
+                            embed: obj.embed,
+                            marked_by: obj.marked_by,
+                            cleaned: obj.cleaned,
+                            cleaned_by: obj.cleaned_by,
+                            cleaned_date: obj.cleaned_date
+                        });
+
+                    garbageLayerGroup.addLayer(marker);
+
+                    map.addLayer(garbageLayerGroup);
+
+                    marker.on('click', function() {
+
+                        // UI behavior
+                        onGarbageMarkerClick(marker);
+
+                        // Push data
+                        pushDataToBottomPanel(marker);
+
                     });
 
-                garbageLayerGroup.addLayer(marker);
-                
-                map.addLayer(garbageLayerGroup);
+                    switch(obj.amount){
 
-                marker.on('click', function() {
-                    
-                    // UI behavior
-                    onGarbageMarkerClick(marker);
-                    
-                    // Push data
-                    pushDataToBottomPanel(marker);
-                    
+                    case 0:
+                        $(marker._icon).addClass('marker-color-darkgreen');
+                        break;
+                    case 1:
+                        $(marker._icon).addClass('marker-color-green');
+                        break;
+                    case 2:
+                        $(marker._icon).addClass('marker-color-limegreen');
+                        break;
+                    case 3:
+                        $(marker._icon).addClass('marker-color-yellow');
+                        break;
+                    case 4:
+                        $(marker._icon).addClass('marker-color-gold');
+                        break;
+                    case 5:
+                        $(marker._icon).addClass('marker-color-orange');
+                        break;
+                    case 6:
+                        $(marker._icon).addClass('marker-color-orangered');
+                        break;
+                    case 7:
+                        $(marker._icon).addClass('marker-color-red');
+                        break;
+                    case 8:
+                        $(marker._icon).addClass('marker-color-darkred');
+                        break;
+                    case 9:
+                        $(marker._icon).addClass('marker-color-purple');
+                        break;
+                    case 10:
+                        $(marker._icon).addClass('marker-color-black');
+                        break;
+                    default:
+                        $(marker._icon).addClass('marker-color-unknown');
+                        break;
+                    }
+
                 });
 
-                switch(obj.amount){
+            },
 
-                case 0:
-                    $(marker._icon).addClass('marker-color-darkgreen');
-                    break;
-                case 1:
-                    $(marker._icon).addClass('marker-color-green');
-                    break;
-                case 2:
-                    $(marker._icon).addClass('marker-color-limegreen');
-                    break;
-                case 3:
-                    $(marker._icon).addClass('marker-color-yellow');
-                    break;
-                case 4:
-                    $(marker._icon).addClass('marker-color-gold');
-                    break;
-                case 5:
-                    $(marker._icon).addClass('marker-color-orange');
-                    break;
-                case 6:
-                    $(marker._icon).addClass('marker-color-orangered');
-                    break;
-                case 7:
-                    $(marker._icon).addClass('marker-color-red');
-                    break;
-                case 8:
-                    $(marker._icon).addClass('marker-color-darkred');
-                    break;
-                case 9:
-                    $(marker._icon).addClass('marker-color-purple');
-                    break;
-                case 10:
-                    $(marker._icon).addClass('marker-color-black');
-                    break;
-                default:
-                    $(marker._icon).addClass('marker-color-unknown');
-                    break;
-                }
-                
-            });
-            
-        },
-        
-        error: function(data) {
-            
-            console.log('Something went wrong while fetching the garbage markers', data);
-            
-        }
-        
-    });
+            error: function(data) {
+
+                console.log('Error getting garbage (marker) data', data);
+
+            }
+
+        });
+
+        }, 200);
     
 }
 
 // Get cleanings
 function loadCleaningMarkers () {
     
-    // console.log('loading cleaning markers from db');
-
-    cleaningLayerGroup.clearLayers();
+    setTimeout(function () {
     
-    var useToken = localStorage.getItem('token') || window.token;
+        // console.log('loading cleaning markers from db');
 
-    $.ajax({
-        
-        type: api.readCleaningWithinBounds.method,
-        
-        url: api.readCleaningWithinBounds.url(currentViewBounds),
-        
-        success: function(data) {
-            
-            $(data).each(function(index, obj) {
-                
-                console.log(obj);
+        cleaningLayerGroup.clearLayers();
 
-                var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
-                    {
-                        icon:cleaningMarker,
-                        id: obj.id,
-                        date: obj.date,
-                        lat: obj.lat,
-                        lng: obj.lng,
-                        feature_type: obj.featuretype,
-                        participants: obj.participants,
-                        recurrence: obj.recurrence,
-                        marked_by: obj.marked_by
+        var useToken = localStorage.getItem('token') || window.token;
+
+        $.ajax({
+
+            type: api.readCleaningWithinBounds.method,
+
+            url: api.readCleaningWithinBounds.url(currentViewBounds),
+
+            success: function(data) {
+
+                $(data).each(function(index, obj) {
+
+                    console.log(obj);
+
+                    var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
+                        {
+                            icon:cleaningMarker,
+                            id: obj.id,
+                            date: obj.date,
+                            lat: obj.lat,
+                            lng: obj.lng,
+                            feature_type: obj.featuretype,
+                            participants: obj.participants,
+                            recurrence: obj.recurrence,
+                            marked_by: obj.marked_by
+
+                        });
+
+                    // TODO add hasLayer() logic here to only add absent markers?
+                    cleaningLayerGroup.addLayer(marker);
+
+                    map.addLayer(cleaningLayerGroup);
+
+                    marker.on('click', function() {
+
+                        // UI behavior
+                        onCleaningMarkerClick(marker);
+
+                        // Push data
+                        pushDataToBottomPanel(marker);
 
                     });
-                
-                // TODO add hasLayer() logic here to only add absent markers?
-                cleaningLayerGroup.addLayer(marker);
-                
-                map.addLayer(cleaningLayerGroup);
-                
-                marker.on('click', function() {
-                    
-                    // UI behavior
-                    onCleaningMarkerClick(marker);
-                    
-                    // Push data
-                    pushDataToBottomPanel(marker);
-                    
+
                 });
-                
-            });
-            
-        },
+
+            },
+
+            error: function(data) {
+
+                console.log('Error getting cleaning event (marker) data', data);
+
+            }
+        });
         
-        error: function(data) {
-            
-            console.log('Something went wrong while fetching the cleaning events', data);
-            
-        }
-    });
+    }, 200);
     
 }
 
 // Get areas (polygons)
 function loadAreas () {
     
-    // console.log('loading remote area polygons');
+    setTimeout(function () {
+    
+        // console.log('loading remote area polygons');
 
-    areaLayerGroup.clearLayers();
+        areaLayerGroup.clearLayers();
 
-    var useToken = localStorage.getItem('token') || window.token;
+        var useToken = localStorage.getItem('token') || window.token;
 
-    $.ajax({
-      
-        type: api.readAreaWithinBounds.method,
-        
-        url: api.readAreaWithinBounds.url(currentViewBounds),
-        
-        headers: {"Authorization": "Bearer " + useToken},
-        
-        success: function (data) {
-            
-            console.log('area data', data);
+        $.ajax({
 
-            $(data).each(function(index, obj) {
+            type: api.readAreaWithinBounds.method,
 
-                console.log("object data", obj);
+            url: api.readAreaWithinBounds.url(currentViewBounds),
 
-                  var polygonLayer = new L.Polygon(obj.latlngs,
-                    {
-                      id: obj.id,
-                      title: obj.title,
-                      max_players: obj.max_players,
-                      curr_players: obj.curr_players, // how many user have already confirmed participation
-                      note: obj.note,
-                      tags: obj.tag,
-                      contact: obj.contact,
-                      feature_type: obj.featuretype,
-                      marked_by: obj.marked_by
-                    });
+            headers: {"Authorization": "Bearer " + useToken},
 
-                  areaLayerGroup.addLayer(polygonLayer);
+            success: function (data) {
 
-                  map.addLayer(areaLayerGroup);
+                console.log('area data', data);
 
-                  polygonLayer.on('click', function() {
+                $(data).each(function(index, obj) {
 
-                      // Ui behavior
-                      onAreaClick(polygonLayer);
+                    console.log("object data", obj);
 
-                      // Push data
-                      pushDataToBottomPanel(polygonLayer);
-                  });
+                      var polygonLayer = new L.Polygon(obj.latlngs,
+                        {
+                          id: obj.id,
+                          title: obj.title,
+                          max_players: obj.max_players,
+                          curr_players: obj.curr_players, // how many user have already confirmed participation
+                          note: obj.note,
+                          tags: obj.tag,
+                          contact: obj.contact,
+                          feature_type: obj.featuretype,
+                          marked_by: obj.marked_by
+                        });
+
+                      areaLayerGroup.addLayer(polygonLayer);
+
+                      map.addLayer(areaLayerGroup);
+
+                      polygonLayer.on('click', function() {
+
+                          // Ui behavior
+                          onAreaClick(polygonLayer);
+
+                          // Push data
+                          pushDataToBottomPanel(polygonLayer);
+                      });
+
+                }
+
+              );
+
+            },
+
+            error: function (data) {
+
+                console.log('Error getting area (polygon) data', data);
 
             }
 
-          );
+        });
 
-        },
-
-        error: function (data) {
-
-            console.log('Error getting area data', data);
-
-        }
-      
-  });
+    }, 200);
     
 }
 
 // Get litters (polylines)
 function loadLitters () {
     
-    // console.log('loading remote litter polylines');
-
-    litterLayerGroup.clearLayers();
-
-    var useToken = localStorage.getItem('token') || window.token;
+    setTimeout(function () {
     
-    $.ajax({
-        
-        type: api.readLitterWithinBounds.method,
-        
-        url: api.readLitterWithinBounds.url(currentViewBounds),
-        
-        headers: {"Authorization": "Bearer " + useToken},
-        
-        success: function (data) {
-            
-            console.log('litter data', data);
+        // console.log('loading remote litter polylines');
 
-            $(data).each(function(index, obj) {
-                
-                console.log("object data", obj);
+        litterLayerGroup.clearLayers();
 
-                var polylineLayer = new L.Polyline(obj.latlngs,
-                {
-                  id: obj.id,
-                  amount: obj.amount,
-                  types: obj.types,
-                  image_url: obj.image_url,
-                  tags: obj.tag,
-                  feature_type: obj.featuretype,
-                  marked_by: obj.marked_by,
-                  cleaned: obj.cleaned,
-                  cleaned_by: obj.cleaned_by,
-                  physical_length: obj.physical_length
-                });
+        var useToken = localStorage.getItem('token') || window.token;
 
-              switch(obj.amount){
-                      
-                case 1:
-                    polylineLayer.setStyle({color:"green"});
-                    break;
-                case 2:
-                    polylineLayer.setStyle({color:"limegreen"});
-                    break;
-                case 3:
-                    polylineLayer.setStyle({color:"yellow"});
-                    break;
-                case 4:
-                    polylineLayer.setStyle({color:"gold"});
-                    break;
-                case 5:
-                    polylineLayer.setStyle({color:"orange"});
-                    break;
-                case 6:
-                    polylineLayer.setStyle({color:"orangered"});
-                    break;
-                case 7:
-                    polylineLayer.setStyle({color:"red"});
-                    break;
-                case 8:
-                    polylineLayer.setStyle({color:"darkred"});
-                    break;
-                case 9:
-                    polylineLayer.setStyle({color:"purple"});
-                    break;
-                case 10:
-                    polylineLayer.setStyle({color:"black"});
-                    break;
-                default:
-                    polylineLayer.resetStyle();
-                    break;
-                      
-              }
+        $.ajax({
 
-              litterLayerGroup.addLayer(polylineLayer);
+            type: api.readLitterWithinBounds.method,
 
-              map.addLayer(litterLayerGroup);
+            url: api.readLitterWithinBounds.url(currentViewBounds),
 
-              polylineLayer.on('click', function() {
-                  
-                  // UI behavior
-                  onLitterClick(polylineLayer);
-                  
-                  // Push data
-                  pushDataToBottomPanel(polylineLayer);
-                  
-              });
+            headers: {"Authorization": "Bearer " + useToken},
+
+            success: function (data) {
+
+                console.log('litter data', data);
+
+                $(data).each(function(index, obj) {
+
+                    console.log("object data", obj);
+
+                    var polylineLayer = new L.Polyline(obj.latlngs,
+                    {
+                      id: obj.id,
+                      amount: obj.amount,
+                      types: obj.types,
+                      image_url: obj.image_url,
+                      tags: obj.tag,
+                      feature_type: obj.featuretype,
+                      marked_by: obj.marked_by,
+                      cleaned: obj.cleaned,
+                      cleaned_by: obj.cleaned_by,
+                      physical_length: obj.physical_length
+                    });
+
+                  switch(obj.amount){
+
+                    case 1:
+                        polylineLayer.setStyle({color:"green"});
+                        break;
+                    case 2:
+                        polylineLayer.setStyle({color:"limegreen"});
+                        break;
+                    case 3:
+                        polylineLayer.setStyle({color:"yellow"});
+                        break;
+                    case 4:
+                        polylineLayer.setStyle({color:"gold"});
+                        break;
+                    case 5:
+                        polylineLayer.setStyle({color:"orange"});
+                        break;
+                    case 6:
+                        polylineLayer.setStyle({color:"orangered"});
+                        break;
+                    case 7:
+                        polylineLayer.setStyle({color:"red"});
+                        break;
+                    case 8:
+                        polylineLayer.setStyle({color:"darkred"});
+                        break;
+                    case 9:
+                        polylineLayer.setStyle({color:"purple"});
+                        break;
+                    case 10:
+                        polylineLayer.setStyle({color:"black"});
+                        break;
+                    default:
+                        polylineLayer.resetStyle();
+                        break;
+
+                  }
+
+                  litterLayerGroup.addLayer(polylineLayer);
+
+                  map.addLayer(litterLayerGroup);
+
+                  polylineLayer.on('click', function() {
+
+                      // UI behavior
+                      onLitterClick(polylineLayer);
+
+                      // Push data
+                      pushDataToBottomPanel(polylineLayer);
+
+                  });
+                }
+
+            );
+
+            },
+
+            error: function (data) {
+
+                console.log('Error getting litter (polyline) data', data);
+
             }
-                         
-        );
-            
-        },
-        
-        error: function (data) {
 
-            console.log('Error getting shape data', data);
-
-        }
+        });
         
-    });
+    }, 200);
 }
 
 // onClick behavior for saved garbage markers

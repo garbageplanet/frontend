@@ -5,33 +5,45 @@
 // version 0.19a **/
 
 .leaflet-sidebar {
-  position: absolute;
-  height: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0px;
-  z-index: 500; }
-  .leaflet-sidebar.bottom {
+    position: absolute;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0px;
+    z-index: 500; 
+}
+
+.leaflet-sidebar.bottom {
     bottom: -400px;
             transition: bottom 0.5s, height 0.5s;
     -webkit-transition: bottom 0.5s, height 0.5s;
        -moz-transition: bottom 0.5s, height 0.5s;
          -o-transition: bottom 0.5s, height 0.5s;
     padding-bottom: 0; 
-    overflow: hidden }
-    .leaflet-sidebar.bottom.visible {
-      bottom: 0; }
-  .leaflet-sidebar.right {
+/*
+    overflow: hidden 
+*/
+}
+
+.leaflet-sidebar.bottom.visible {
+    bottom: 0; 
+}
+
+.leaflet-sidebar.right {
     right: -500px;
             transition: right 0.5s, width 0.5s;
     -webkit-transition: right 0.5s, width 0.5s;
        -moz-transition: right 0.5s, width 0.5s;
          -o-transition: right 0.5s, width 0.5s;
-    padding-left: 0; }
-    .leaflet-sidebar.right.visible {
-      right: 0; }
-  .leaflet-sidebar > .leaflet-control {
+    padding-left: 0; 
+}
+
+.leaflet-sidebar.right.visible {
+    right: 0; 
+}
+
+.leaflet-sidebar > .leaflet-control {
     height: 100%;
     width: 100%;
     -webkit-box-sizing: border-box;
@@ -41,51 +53,67 @@
     padding: 8px 20px;
     font-size: 1.1em;
     background: white;
-    -webkit-border-radius: 0px;
-    border-radius: 0px; }
-    .leaflet-touch .leaflet-sidebar > .leaflet-control {
-      box-shadow: none;
-      border: 0px solid rgba(0, 0, 0, 0);
-      background-clip: padding-box; }
+    -webkit-border-radius: 0;
+    border-radius: 0; 
+}
+
+.leaflet-touch .leaflet-sidebar > .leaflet-control {
+    box-shadow: none;
+    border: 0px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box; 
+}
 
   @media (max-width: 567px){
     
     .leaflet-sidebar > .leaflet-control {
-      overflow: hidden; 
-      padding: 4px 5px;
+
+        padding: 4px 5px;
+        -webkit-box-shadow: -40px 0px 40px 0px rgba(112,112,112,0.3 ) !important;
+           -moz-box-shadow: -40px 0px 40px 0px rgba(112,112,112,0.3) !important;
+                box-shadow: -40px 0px 40px 0px rgba(112,112,112,0.3) !important;  
+        
     }
     
     .leaflet-sidebar > .leaflet-control::-webkit-scrollbar {  
-      display: none; 
+        display: none; 
     }
     
     .leaflet-sidebar.right {
-      width: 100%;
-      padding: 0; }
+        width: 90%;
+        padding: 0;
+        right: -110%; 
+      }
     
     .leaflet-sidebar.bottom {
-      width: 100%;
-      height: 50%;
-      padding: 0; }
+        width: 100%;
+        height: 50%;
+        padding: 0;
+        bottom: -60%; 
+      }
     
       .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
-        bottom: 0%; }
+        bottom: 0%; 
+      }
+      
       .leaflet-sidebar.right.visible ~ .leaflet-right {
-        right: 100%; }
-      .leaflet-sidebar.bottom {
-        bottom: -50%; }
+        right: 100%; 
+      }
+      
         .leaflet-sidebar.bottom.visible {
-          bottom: 0; }
-      .leaflet-sidebar.right {
-        right: -100%; }
+          bottom: 0; 
+      }
+      
         .leaflet-sidebar.right.visible {
-          right: 0; }
+          right: 0; 
+      }
+      
       .leaflet-sidebar > .leaflet-control {
         box-shadow: none;
         -webkit-border-radius: 0;
         border-radius: 0; }
         .leaflet-touch .leaflet-sidebar > .leaflet-control {
-          border: 0; } }
+          border: 0; } 
+}
 
   @media (min-width: 568px) and (max-width: 767px) {
     
@@ -96,32 +124,38 @@
     
     
     .leaflet-sidebar {
-      width: 305px; }
+      width: 305px; 
+      }
     
     .leaflet-sidebar.bottom {
       width: 100%;
       height: 50%; 
-      bottom: -50%;
     }
     
       .leaflet-sidebar.right.visible ~ .leaflet-right {
-        right: 305px; }
+        right: 305px; 
+      }
        .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
-        bottom: 50%; } }
+        bottom: 50%; 
+      } 
+}
 
 
   @media (min-width: 768px) and (max-width: 991px) {
     .leaflet-sidebar {
-      width: 305px; }
+      width: 305px; 
+      }
     
     .leaflet-sidebar.bottom {
       width: 100%;
-      height: 300px; }
+      height: 300px; 
+      }
 
       .leaflet-sidebar.right.visible ~ .leaflet-right {
         right: 305px; }
        .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
-        bottom: 300px; } }
+        bottom: 300px; } 
+}
 
   @media (min-width: 992px) and (max-width: 1199px) {
     .leaflet-sidebar.right {
@@ -135,7 +169,8 @@
         right: 390px; }
     
       .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
-        bottom: 300px; } }
+        bottom: 300px; } 
+}
 
   @media (min-width: 1200px) {
     .leaflet-sidebar.right {
@@ -149,27 +184,58 @@
         right: 460px; }
     
       .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
-        bottom: 300px; } }
-
-.leaflet-sidebar .close {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  text-align: center;
-  cursor: pointer;
-  z-index: 10; 
+        bottom: 300px; } 
 }
 
-.bottom .close {
-	right: 10px;
-    top: 10px !important;
+/* Style the close buttons */
+.close-panel {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ff3300;
 }
 
-.leaflet-top {
-          transition: right 0.5s;
-  -webkit-transition: right 0.5s;
-     -moz-transition: right 0.5s;
-       -o-transition: right 0.5s;
+.close-panel a {
+    text-decoration: none;
+    color: #FFF;
+}
+
+.close-right {
+    z-index: 10;
+    left: -30px;
+    top: 35px;
+    width: 30px;
+    height: 35px;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+}
+
+.close-right > a {
+  height:35px;
+  line-height:35px;
+}
+
+.close-bottom {
+    position: absolute;
+    z-index: 10;
+    right: 35px;
+    top: -30px;
+    width: 35px;
+    height: 30px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+}
+
+.close-bottom > a {
+    top: 10px;
+    width: 35px;
+}
+
+@media (max-width: 568px) {
+    
+    .close-right {
+        top: 75%
+    }
+    
 }
 
 .leaflet-bottom {
