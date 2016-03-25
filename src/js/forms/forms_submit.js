@@ -76,14 +76,14 @@ $(function () {
                   'lat': lat,
                   'lng': lng,
                   'amount': garbageAmount,
-                  'types': garbageType.join()
-                /*     'todo': garbageTodo,
+                  'types': garbageType.join(),
+                  'todo': garbageTodo,
                   'image_url': image_url,
                   'tag': tags.join(),
                   'size': garbageSize,
                   'embed': garbageEmbed,
                   'note': note,
-                  'feature_type': "marker_garbage"*/
+                  'feature_type': "marker_garbage"
                 },
                 success: function (data) {
                     
@@ -167,7 +167,7 @@ $(function () {
                   
                     'lat': lat,
                     'lng': lng,
-                    'date': dateTime,
+                    'datetime': dateTime,
                     'note': note,
                     'recurrence': eventRecurrence,
                     'tag':tags.join(),
