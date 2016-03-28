@@ -165,24 +165,31 @@ function loadGarbageMarkers () {
                     case 0:
                         $(marker._icon).addClass('marker-color-darkgreen');
                         break;
+                            
                     case 1:
                         $(marker._icon).addClass('marker-color-green');
                         break;
+                            
                     case 2:
                         $(marker._icon).addClass('marker-color-limegreen');
                         break;
+                            
                     case 3:
                         $(marker._icon).addClass('marker-color-yellow');
                         break;
+                            
                     case 4:
                         $(marker._icon).addClass('marker-color-gold');
                         break;
+                            
                     case 5:
                         $(marker._icon).addClass('marker-color-orange');
                         break;
+                            
                     case 6:
                         $(marker._icon).addClass('marker-color-orangered');
                         break;
+                            
                     case 7:
                         $(marker._icon).addClass('marker-color-red');
                         break;

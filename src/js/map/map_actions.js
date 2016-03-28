@@ -11,12 +11,6 @@ map.addOneTimeEventListener('zoomend', function (e) {
         
 });
 
-map.on('zoomend', function (e) {
-
-
-        
-});
-
 //MapToOffset//////////////////////////////////////////////////////////
 //See license.md in this repo Copyright 2013 Code for America//////////
 L.Map.prototype.panToOffset = function (latlng, offset, options) {
@@ -93,7 +87,7 @@ function onMapClick(e) {
         
         $('.garbage-range-value').html(this.value);
         
-        // Get the color value from the select options
+        // Get the color value from the select options and add corresponding class to the icon
         var selectedValue = parseInt($(this).val(), 10);
         
         switch (selectedValue) {
@@ -103,60 +97,84 @@ function onMapClick(e) {
                   return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-green');
                 break;
+                
             case 2:
                 $(marker._icon).removeClass(function (index, css) {
                   return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-limegreen');
                 break;
+                
             case 3:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-yellow');
                 break;
+                
             case 4:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-gold');
                 break;
+                
             case 5:
                 $(marker._icon).removeClass(function (index, css) {
                   return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-orange');
                 break;
+                
             case 6:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-orangered');
                 break;
+                
             case 7:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-red');
                 break;
+                
             case 8:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-darkred');
                 break;
+                
             case 9:
                 $(marker._icon).removeClass(function (index, css) {
                   return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-purple');
                 break;
+                
             case 10:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-black');
                 break;
+                
             default:
                 $(marker._icon).removeClass(function (index, css) {
                   return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-color-unknown');
                 break;
+                
           }
         
     });
+        
+    // Change the cleaning event icon if a time is set
+    $('#event-date-time-picker').on('dp.change', function (e) {
+        
+        var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
+        
+        $('.date-time-value').val(eventDateTime);
+        
+        // Change the icon of the marker if a time is set
+        $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
+
+    });
     
+    // Allow unsaved markers to be dragged and get new coordinates after drag
     marker.on("dragend", function (event){
         
         var newPos = event.target.getLatLng();
@@ -169,6 +187,7 @@ function onMapClick(e) {
         
     });
 
+    // Remove the point marker if the user wants to draw
     map.on('draw:drawstart', function (e) {
         
         map.removeLayer(marker);
@@ -255,3 +274,5 @@ function onLocalMarkerClick (e) {
     sidebar.show($("#create-marker-dialog").fadeIn());
     
 };
+
+// FIXME Reload the features from the backend when a layer is re-added from leaflet-layers-control menu 

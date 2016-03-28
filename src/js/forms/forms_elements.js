@@ -23,17 +23,6 @@ $(document).ready(function() {
         
     });
 
-    $('#event-date-time-picker').on('dp.change', function (e) {
-        
-        var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
-        
-        $('.date-time-value').val(eventDateTime);
-        
-        // Change the icon of the marker if a time is set
-        $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
-
-    });
-
     // Separate tags by hitting space bar or right key
     // FIXME space key doesn't work with mobile keyboard
     $('.feature-tags').tagsinput({

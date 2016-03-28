@@ -2,10 +2,10 @@
 function shareThisFeature(obj) {
     
     var featuredata = obj,
-      encoded_url = encodeURIComponent(window.location),
-      feature_image_url,
-      feature_note,
-      feature_tags;
+        encoded_url = encodeURIComponent(window.location),
+        feature_image_url,
+        feature_note,
+        feature_tags;
 
     featuredata.image_url ? feature_image_url = featuredata.image_url : feature_image_url =  "";
 
@@ -19,7 +19,7 @@ function shareThisFeature(obj) {
 
     feature_tags_encoded = encodeURIComponent(feature_tags);
 
-    console.log("value of feature data: ", featuredata);
+    /*    console.log("value of feature data: ", featuredata);
 
     console.log("encoded URL", encoded_url);
 
@@ -27,7 +27,7 @@ function shareThisFeature(obj) {
 
     console.log("encoded note", feature_note_encoded);
 
-    console.log("encoded tags", feature_tags_encoded);
+    console.log("encoded tags", feature_tags_encoded);*/
 
     // Create the links dynamically in the templatedata objects
     templatedata.social.network[0].targeturl = "https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=" + encoded_url + "&description=" + feature_note_encoded + "&link=" + encoded_url + "&picture=" + feature_image_url_encoded + "&name=Garbagepla.net&redirect_uri=http://garbagepla.net";

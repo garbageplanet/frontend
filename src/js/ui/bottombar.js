@@ -29,11 +29,12 @@ function pushDataToBottomPanel(e) {
 
     document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", templatedata);
     
+    // TODO use bottombar.getContent() in conjunction with template creation above
     bottombar.show($('#feature-info').fadeIn());
 
+    // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
     if (featuredata.image_url) {
         
-    // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
         var image_url_insert = featuredata.image_url.insert(26, "t");
         
         $('#feature-info').find('.feature-image').attr('src', image_url_insert);
@@ -61,11 +62,16 @@ function pushDataToBottomPanel(e) {
 
         placement: function(pop){
 
-            if(window.innerWidth < 560){
-              return 'bottom'
+            if (window.innerWidth < 560) {
+                
+                return 'top'
+                
             } else {
-              return 'right'
+                
+                return 'right'
+                
             }
+            
         },
 
         content: function() {
@@ -79,7 +85,7 @@ function pushDataToBottomPanel(e) {
         });
 
     // Event listener to look at the game results
-    // TODO if user_id isn't in result list, prevent
+    // TODO if user_id isn't in result list, prevent action
     $('.game-results-modal-link').on('click', function () {
         
         var user_id = localStorage.getItem['userid'],
@@ -97,6 +103,7 @@ function pushDataToBottomPanel(e) {
         else {
 
             showAlert("Sorry. You are not on the player list, you can't look at this data.", "warning", 2000);
+            
             return;
 
         }
@@ -104,7 +111,7 @@ function pushDataToBottomPanel(e) {
     });
 
     // Event listener for delete button
-    // TODO finish this
+    // TODO finish this once feature_type is available in the backend
     $('#feature-info').find('.btn-delete').one('click', function (e) {
         
         e.preventDefault();
@@ -119,14 +126,17 @@ function pushDataToBottomPanel(e) {
                   var deleteurl = api.deleteCleaning.method;
                   var deletemethod = api.deleteCleaning.url(featuredata.id);
                   break;
+
                 case 'polyline_littr':
                   var deleteurl = api.deleteLitter.method;
                   var deletemethod = api.deleteLitter.url(featuredata.id);
                   break;
+
                 case 'polygon_area':
                   var deleteurl = api.deleteArea.method;
                   var deletemethod = api.deleteArea.url(featuredata.id);
                   break;
+
                 default:
                   var deleteurl = api.deleteTrash.method;
                   var deletemethod = api.deleteTrash.url(featuredata.id);
@@ -180,8 +190,7 @@ bottombar.on('hide', function () {
     // force destroy the popup which hangs on certain tablets (tested on samsung w/ android) 
     $('.btn-social').popover('destroy');
 
-    $('.btn-social').popover('destroy');
-
+    // reset any modals that was created
     $('.modal').modal('hide').data('bs.modal', null);
     
 });

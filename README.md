@@ -9,17 +9,14 @@ Just open /html/index.html in your browser. If you want to build for distributio
 ### Contributing
 When adding a new function to the code, add a comment about what it does. Build with gulp and open `index.html` from the `/dist` folder to check if there's any error. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
-### Note (March 2016)
-The build system doesn't currently include the templating code so the minified build won't have all html elements.
-
 ### TODO
 #### Security
 - [ ] move from tokens to cookies (use Secure and HTTPOnly)
+- [ ] check session with backend before login user in with localStorage
 
 #### Feature actions
 - [ ] finalize the edit system (build the feature creation forms from templates)
 - [ ] build the cleaned, join, play and confirm functions with a prototype
-- [ ] rewrite the data loading functions with a prototype
 - [ ] modal to see/export/save area data
 - [ ] navigate between markers from bottom panel by listing markers in [current view](http://turbo87.github.io/leaflet-sidebar/examples/listing-markers.html)
 
@@ -41,9 +38,6 @@ The build system doesn't currently include the templating code so the minified b
 #### Mobile: Edge on Windows Phone
 - [ ] fails to show slider input.
 - [ ] weird map panning behavior when creating markers
-
-### Future prospects
-- [ ] localized calendar, tag cloud and gallery in the bottom bar, group markers with [L.PruneCluster](https://github.com/SINTEF-9012/PruneCluster)
 
 ### Bugs and suggestions
 Current issues for this branch [issues](https://github.com/garbageplanet/web-ui/labels/branch%3Abottom-bar).
