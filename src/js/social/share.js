@@ -29,8 +29,8 @@ function shareThisFeature(obj) {
 
     console.log("encoded tags", feature_tags_encoded);*/
 
-    // Create the links dynamically in the templatedata objects
-    templatedata.social.network[0].targeturl = "https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=" + encoded_url + "&description=" + feature_note_encoded + "&link=" + encoded_url + "&picture=" + feature_image_url_encoded + "&name=Garbagepla.net&redirect_uri=http://garbagepla.net";
+    // Create the links dynamically in the templatedata object
+    templatedata.social.network[0].targeturl = "https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=" + encoded_url + "&description=" + feature_note_encoded + "&link=" + encoded_url + "&picture=" + feature_image_url_encoded + "&name=Garbagepla.net&redirect_uri=https://www.garbagepla.net";
 
     templatedata.social.network[1].targeturl = "https://twitter.com/intent/tweet?text=Shared%20from%20www.garbagepla.net%20" + feature_note_encoded + "%20" + feature_tags_encoded + "%20" + encoded_url;
 

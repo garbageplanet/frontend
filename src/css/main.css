@@ -272,9 +272,14 @@ a.menu-backlink:hover {
     z-index: 1000;
     width: 35px;
     height: 45px;
-    background-color: #ff3300;
+    background-color: rgba(255, 44, 8, 0.8);
+    opacity: 0.8;
     border-top-right-radius: 18px;
     border-bottom-right-radius: 18px; 
+}
+
+.btn-close-layers-control:hover, .btn-close-layers-control:active {
+    background-color: rgba(255, 44, 8, 1);
 }
 
 .btn-close-layers-control a {

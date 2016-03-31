@@ -1,5 +1,7 @@
-
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // TODO Push the data to the form on .btn-edit click
+// add ajax calls to check if user owns feature
+// TODO finish this
 function editFeature(e) {
     
     bottombar.hide();
@@ -7,36 +9,75 @@ function editFeature(e) {
     console.log('value of object from editFeature()', e);
     
     showAlert("The editing system isn't currently functional.", "warning", 3000);
+    
+    // var useToken = localStorage["token"] || window.token;
+    var useToken = localStorage.getItem('token') || window.token;
 
-    // if (e.options.featuretype === 'marker_garbage') {
-    if (typeof e.options.feature_type === 'undefined') {
-      
-        sidebar.show($('#create-garbage-dialog').fadeIn());
-      
-        e.dragging.enable();
-      
-    }
-  
-  
-    if (e.options.feature_type === 'marker_cleaning') {
+    $.ajax({
         
-        sidebar.show($('#create-cleaning-dialog').fadeIn());
-        
-        e.dragging.enable();
+        method: api.editFeature.method,
 
-    }
+        url: api.editFeature.url(),
 
-    if (e.options.feature_type === 'polyline_litter') {
-        
-        sidebar.show($('#create-litter-dialog').fadeIn());
+        headers: {"Authorization": "Bearer" + useToken},
 
-    }
+        data: {
 
-    if (e.options.feature_type === 'polygon_area') {
-        
-        sidebar.show($('#create-area-dialog').fadeIn());
+            // TODO Send the user_id to check if it belongs to created_by in db
+            'user_id': user_id 
 
-    }
+        },
+
+        success: function (data) {
+            
+            // FIXME
+            if (user_id === this.user_id) {
+                
+                // if (e.options.featuretype === 'marker_garbage') {
+                if (typeof e.options.feature_type === 'undefined') {
+
+                    sidebar.show($('#create-garbage-dialog').fadeIn());
+
+                    e.dragging.enable();
+
+                }
+
+
+                if (e.options.feature_type === 'marker_cleaning') {
+
+                    sidebar.show($('#create-cleaning-dialog').fadeIn());
+
+                    e.dragging.enable();
+
+                }
+
+                if (e.options.feature_type === 'polyline_litter') {
+
+                    sidebar.show($('#create-litter-dialog').fadeIn());
+
+                }
+
+                if (e.options.feature_type === 'polygon_area') {
+
+                    sidebar.show($('#create-area-dialog').fadeIn());
+
+                }
+                
+            }
+            
+            else {
+                
+                showAlert("You cannot edit feature created by others.", "warning", 2000);
+                
+            }
+
+        },
+
+        error: function (err) {
+                
+                showAlert("Please login to do that.", "warning", 2000);
+                
+        }
   
 };
 
@@ -116,6 +157,7 @@ function joinCleaning(e){
         var useToken = localStorage.getItem('token') || window.token;
 
         $.ajax({
+            
             method: api.joinCleaning.method,
             
             url: api.readCleaning.url(),

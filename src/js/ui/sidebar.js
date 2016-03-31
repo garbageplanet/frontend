@@ -1,3 +1,14 @@
+// Get rid of the mobile menu on larger screens
+// TODO add as template if mobile so there's no need to load by default
+$(document).ready(function() {
+
+    if (window.innerWidth >= 768) {
+
+        $('#mobile-menu-dialog').remove();
+        
+    }
+    
+}
 
 // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
 $('.sidebar-link').click(function(e) {

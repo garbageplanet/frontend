@@ -191,7 +191,11 @@
 .close-panel {
     position: absolute;
     cursor: pointer;
-    background-color: #ff3300;
+    background-color: rgba(255, 44, 8, 0.8);
+}
+
+.close-panel:hover, .close-panel:active {
+    background-color: rgba(255, 44, 8, 1);
 }
 
 .close-panel a {
