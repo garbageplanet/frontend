@@ -79,7 +79,10 @@ function editFeature(e) {
                 
         }
   
-};
+    });
+    
+}
+           
 
 // TODO Confirm garbage function
 function confirmGarbage(e){

@@ -8,7 +8,7 @@ $(document).ready(function() {
         
     }
     
-}
+});
 
 // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
 $('.sidebar-link').click(function(e) {
