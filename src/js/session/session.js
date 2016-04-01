@@ -61,12 +61,13 @@ function switchSession(sessionStatus) {
             
                                     });
         
+        // Must reload the dropdows in bootstrap to enable new event listeners
         $("#user-tools").dropdown();
         
+        // Hide all the login elements
         $(".session-link").addClass('hidden');
 
         // get the data from localStorage or sessionStorage and clear the other
-
         if (classicSessionType === "true") {
 
             $('#account-info').find('.user-email').removeClass('hidden');
@@ -87,7 +88,7 @@ function switchSession(sessionStatus) {
                 
             }
 
-        $('#account-info').show();
+            $('#account-info').show();
 
         }
 
@@ -97,9 +98,9 @@ function switchSession(sessionStatus) {
             
             $('#account-info').find('.user-email').addClass('hidden');
             
-            $('#account-info').find('.user-glome-key p').html( localStorage.getItem('glomekey') );
-            
-            $('#account-info').find('.user-id').html( localStorage.getItem('userid') );
+            $('#account-info').find('.user-glome-key p').html(localStorage.getItem('glomekey').ellipsis(30));
+                        
+            $('#account-info').find('.user-id').html(localStorage.getItem('userid'));
             
             $('.sidebar-content').hide();
 
@@ -110,7 +111,7 @@ function switchSession(sessionStatus) {
             }
 
             $('#account-info').show();
-
+            
         }
 
     }
@@ -118,13 +119,10 @@ function switchSession(sessionStatus) {
 }
 
 // Check if the localStorage has token, if yes log the user in with data
+// TODO check token with backend if still valid
 $(document).ready(function() {
   
-    var tokenTest = localStorage.getItem('token');
-
-    // console.log('token value', tokenTest);
-
-    if (tokenTest !== null ) {
+    if (localStorage.getItem('token')) {
 
         switchSession('login');
 

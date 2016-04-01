@@ -241,10 +241,12 @@ function loadCleaningMarkers () {
             url: api.readCleaningWithinBounds.url(currentViewBounds),
 
             success: function(data) {
+                
+                console.log("Cleaning markers successfully loaded.");
 
                 $(data).each(function(index, obj) {
 
-                    console.log(obj);
+                    // console.log(obj);
 
                     var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
                         {
@@ -310,8 +312,10 @@ function loadAreas () {
             headers: {"Authorization": "Bearer " + useToken},
 
             success: function (data) {
+                
+                console.log("Areas polygons successfully loaded.");
 
-                console.log('area data', data);
+                // console.log('Loading area data', data);
 
                 $(data).each(function(index, obj) {
 
@@ -336,7 +340,7 @@ function loadAreas () {
 
                       polygonLayer.on('click', function() {
 
-                          // Ui behavior
+                          // UI behavior
                           onAreaClick(polygonLayer);
 
                           // Push data
@@ -381,8 +385,10 @@ function loadLitters () {
             headers: {"Authorization": "Bearer " + useToken},
 
             success: function (data) {
-
-                console.log('litter data', data);
+                
+                console.log("Litter polylines successfully loaded.");
+                
+                // console.log('litter data', data);
 
                 $(data).each(function(index, obj) {
 

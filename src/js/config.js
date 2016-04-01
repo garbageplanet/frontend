@@ -5,6 +5,7 @@
 var api = {
   // Backend
   server: 'https://dev.garbagepla.net:8443/api',
+  // server: 'http://homestead.app/api',
 
   // API entry points
   /* User */

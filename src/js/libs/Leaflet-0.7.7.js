@@ -8413,7 +8413,8 @@ L.Control.Layers = L.Control.extend({
 		} else {
 			this._expand();
 		}
-         
+        
+        // CUSTOME CODE
         if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina) {
             var ownCloseButton = this.ownCloseButton = L.DomUtil.create('div', className + '-close');
             this.ownCloseButton = L.DomUtil.create('div', className + '-close', form);

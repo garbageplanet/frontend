@@ -88,6 +88,7 @@ function editFeature(e) {
 function confirmGarbage(e){
     // TODO count function in the backend, not here
     // TODO make session-dependant and allow once per user per marker
+    // TODO check if it's window.token
     if (!localStorage.getItem('token')){
 
         showAlert("You need to login to do that.", "info", 2000);

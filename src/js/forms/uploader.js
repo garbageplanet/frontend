@@ -1,5 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // author: xr@github
+// FUTURE enable multiple uploads
 $(function () {
   
     $('.image-uploader').fileupload({
@@ -32,16 +33,14 @@ $(function () {
 
 	$('.btn-image-uploader').on('click', function () {
         
-        // FIXME, this doesn't work
-        var checkToken = localStorage.getItem['token'];
-
-        if (checkToken || typeof checkToken !== 'undefined') {
+        if (localStorage.getItem('token')) {
 
             $(this).next().trigger('click');
 
         }
-
-        else {
+        
+        // TODO this needs to be more secure
+        if (!localStorage.getItem('token')) {
 
             showAlert("You need to be be authenticated to do that.", "warning", 2000);
         

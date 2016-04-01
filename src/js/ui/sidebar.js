@@ -10,6 +10,13 @@ $(document).ready(function() {
     
 });
 
+// Easily add ellipses to long strings credit: http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
+String.prototype.ellipsis = function(n){
+    
+          return this.substr(0,n-1)+(this.length>n?'&hellip;':'');
+    
+}
+
 // Hide all the siblings of the clicked link in the sidebar when linking internally and reset sidebar scroll
 $('.sidebar-link').click(function(e) {
     

@@ -21,7 +21,7 @@ function pushDataToBottomPanel(e) {
     }
 
     // Fill the template data
-    document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
+    document.getElementById('bottombar-content-container').innerHTML = tmpl('tmpl-feature-info', featuredata);
 
     // Create the templateData.social data dynamically before calling the template
     // The function shareThisFeature() is in the file /social/share.js
