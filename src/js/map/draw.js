@@ -258,6 +258,7 @@ map.on('draw:edited', function (e) {
 });
 
 // Own handlers for calling L.Draw
+// TODO change to "once" handlers so that only one shape can be drawn before saving
 $('.btn-draw-polyline').on('click', function () {
     
     // Stop default marker event listener
@@ -298,7 +299,7 @@ $('.btn-draw-polygon').on('click', function () {
     new L.Draw.Polygon(map, 
       { 
        shapeOptions:{
-          color: '#dd55ff',
+          color: '#33cccc',
           weight: 5,
           opacity: 0.5,
           smoothFactor: 2},
