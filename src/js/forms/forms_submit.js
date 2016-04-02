@@ -70,7 +70,7 @@ $(function () {
                 url: api.createTrash.url(),
                 
                 headers: {"Authorization": "Bearer " + useToken},
-                
+                                
                 data: {
                     
                   'lat': lat,
@@ -226,7 +226,7 @@ $(function () {
         amount_quantitative;
 
     latlngs = $(this).find('.litter-latlngs').val();
-
+        
     $(this).find('.selectpicker.litter-type-select option:selected').each(function (index, value) {
         
         litterType.push($(value).val());
@@ -259,7 +259,7 @@ $(function () {
             
             data: {
                 
-                'latlngs': latlngs.join(),
+                'latlngs': latlngs,
                 'amount': litterAmount,
                 'types': litterType.join(),
                 'image_url': image_url,
@@ -373,8 +373,7 @@ $(function () {
             data: {
               
                 'type': 'polygon',
-                'latlngs': latlngs.join(),
-                'players': players.join(),
+                'latlngs': latlngs,
                 'note': note,
                 'contact': contact,
                 'secret': secret,
