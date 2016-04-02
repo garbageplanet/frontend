@@ -251,9 +251,9 @@ $(function () {
 
         $.ajax({
             
-            method: api.createShape.method,
+            method: api.createLitter.method,
             
-            url: api.createShape.url(),
+            url: api.createLitter.url(),
             
             headers: {"Authorization": "Bearer " + useToken},
             
@@ -364,9 +364,9 @@ $(function () {
         $.ajax({
             
             
-            method: api.createShape.method,
+            method: api.createArea.method,
 
-            url: api.createShape.url(),
+            url: api.createArea.url(),
 
             headers: {"Authorization": "Bearer " + useToken},
 
