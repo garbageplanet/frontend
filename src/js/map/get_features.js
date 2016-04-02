@@ -35,6 +35,10 @@ map.addOneTimeEventListener('move', function (e) {
 // FIXME the data loading functions get called but the data is not fetched?
 map.on('dragend zoomend', function (e){
   
+    var bounds = map.getBounds();
+    
+    currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
+    
     if (e.type === 'zoomend') {
                   
         if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {

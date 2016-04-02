@@ -69,7 +69,7 @@ $(function () {
                 
                 url: api.createTrash.url(),
                 
-                headers: {"Authorization": "Bearer" + useToken},
+                headers: {"Authorization": "Bearer " + useToken},
                 
                 data: {
                     
@@ -161,7 +161,7 @@ $(function () {
               
                 url: api.createCleaning.url(),
               
-                headers: {"Authorization": "Bearer" + useToken},
+                headers: {"Authorization": "Bearer " + useToken},
                 
                 data: {
                   
@@ -255,7 +255,7 @@ $(function () {
             
             url: api.createShape.url(),
             
-            headers: {"Authorization": "Bearer" + useToken},
+            headers: {"Authorization": "Bearer " + useToken},
             
             data: {
                 
@@ -368,7 +368,7 @@ $(function () {
 
             url: api.createShape.url(),
 
-            headers: {"Authorization": "Bearer" + useToken},
+            headers: {"Authorization": "Bearer " + useToken},
 
             data: {
               
