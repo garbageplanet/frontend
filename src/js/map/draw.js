@@ -98,6 +98,8 @@ map.on('draw:created', function (e) {
     var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
 
     if (e.layerType === 'polyline') {
+        
+        polylineLayer = e.layer;
 
         map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
         //FIXME get the length inside $('.polyline-length')
@@ -109,8 +111,6 @@ map.on('draw:created', function (e) {
         // $('input[class=polyline-length]').val($('.leaflet-draw-tooltip-subtext').val());  
 
         // push the latlngs to the form
-        // The latlngs array must follow the format (lat1 lng1, lat2 lng2, ...) for easier transformation to geom
-
         $('.form-litter .litter-latlngs').val(latlngs);
         
         console.log("layer's latlngs", latlngs);
@@ -125,61 +125,70 @@ map.on('draw:created', function (e) {
 
             switch (selectedValue) {
                     
-              case 1:
+                case 1:
                   e.layer.setStyle({color: "green"});
                   break;
-              case 2:
+                case 2:
                   e.layer.setStyle({color: "limegreen"});
                   break;
-              case 3:
+                case 3:
                   e.layer.setStyle({color: "yellow"});
                   break;
-              case 4:
+                case 4:
                   e.layer.setStyle({color: "gold"});
                   break;
-              case 5:
+                case 5:
                   e.layer.setStyle({color: "orange"});
                   break;
-              case 6:
+                case 6:
                   e.layer.setStyle({color: "orangered"});
                   break;
-              case 7:
+                case 7:
                   e.layer.setStyle({color: "red"});
                   break;
-              case 8:
+                case 8:
                   e.layer.setStyle({color: "darkred"});
                   break;
-              case 9:
+                case 9:
                   e.layer.setStyle({color: "purple"});
                   break;
-              case 10:
+                case 10:
                   e.layer.setStyle({color: "black"});
                   break;
-              default:
+                default:
                   e.layer.resetStyle();
                   break;
-                    
-              }
+       
+            }
             
-      });
+        });
 
-      editableLayerGroup.addLayer(e.layer);
+        editableLayerGroup.addLayer(e.layer);
+
+        map.addLayer(editableLayerGroup);
+
+        // Delete the feature on cancel button
+        $('.btn-cancel').on('click', function () {
+
+            $('.leaflet-draw-edit-edit').removeClass('visible');
+
+            $('.leaflet-draw-edit-remove').removeClass('visible');
+
+            map.removeLayer(e.layer);
+
+        });
         
-      map.addLayer(editableLayerGroup);
-
-      $('.btn-cancel').on('click', function () {
-          
-        $('.leaflet-draw-edit-edit').removeClass('visible');
-          
-        $('.leaflet-draw-edit-remove').removeClass('visible');
-
-        map.removeLayer(e.layer);
-          
-      });
+        sidebar.on('hide', function() {
+            
+            map.removeLayer(e.layer);
+            
+        });
 
     }
 
     if( e.layerType === 'polygon') {
+        
+        polygonLayer = e.layer;
         
         map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
 
@@ -190,6 +199,7 @@ map.on('draw:created', function (e) {
 
         map.addLayer(editableLayerGroup);
 
+        // Delete the feature on cancel button
         $('.btn-cancel').on('click', function () {
             
             $('.leaflet-draw-edit-edit').removeClass('visible');
@@ -199,6 +209,13 @@ map.on('draw:created', function (e) {
             map.removeLayer(e.layer);
             
         });
+        
+        sidebar.on('hide', function() {
+            
+            map.removeLayer(e.layer);
+            
+        });
+        
     }
 
     // Reactivate default marker event listener and drawing button
@@ -209,8 +226,9 @@ map.on('draw:created', function (e) {
 });
 
 // What to do once a shape was edited
-// TODO save edited features after eidt
+// TODO save edited features after edit
 // FIXME if the user saves after editing the onMapClick function fails
+// FIXME one edit handler during feature creation and one for editing already created features
 map.on('draw:edited', function (e) {
     
     var layers = e.layers;
@@ -245,9 +263,11 @@ $('.btn-draw-polyline').on('click', function () {
     // Stop default marker event listener
     map.off('click', onMapClick);
 
-    $('.leaflet-draw-edit-edit').addClass('visible');
+    // Disable editing for now
+    // $('.leaflet-draw-edit-edit').addClass('visible');
 
     $('.leaflet-draw-edit-remove').addClass('visible');
+    
     new L.Draw.Polyline(map, 
       { 
         allowIntersection: false,
@@ -261,20 +281,21 @@ $('.btn-draw-polyline').on('click', function () {
           weight: 10,
           opacity: 0.5,
           smoothFactor: 2}
-      }).enable();
+    }).enable();
     
 });
 
 $('.btn-draw-polygon').on('click', function () {
     
-  // Stop default marker event listener
-  map.off('click', onMapClick);
-    
-  $('.leaflet-draw-edit-edit').addClass('visible');
-    
-  $('.leaflet-draw-edit-remove').addClass('visible');
+    // Stop default marker event listener
+    map.off('click', onMapClick);
 
-  new L.Draw.Polygon(map, 
+    // Disable editing for now
+    // $('.leaflet-draw-edit-edit').addClass('visible');
+    
+    $('.leaflet-draw-edit-remove').addClass('visible');
+
+    new L.Draw.Polygon(map, 
       { 
        shapeOptions:{
           color: '#dd55ff',
@@ -288,6 +309,6 @@ $('.btn-draw-polygon').on('click', function () {
              drawError:{
              color: '#cc0000',
              timeout: 2000}
-      }).enable();
+    }).enable();
     
 });

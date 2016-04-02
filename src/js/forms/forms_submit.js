@@ -237,7 +237,9 @@ $(function () {
         
     amount_quantitative = $(this).find('.litter-amount-quantitative').val();
         
-    litterAmount = $('input[class=litter-range-input]').val();
+    // FIXME the slider selector cannot take a form-control class for now, so user might submit the form without
+    // selecting the amount of garbage, add 5 by default if option is not set
+    litterAmount = $('input[class=litter-range-input]').val() || "5";
         
     physical_length = $(this).find('.litter-path-length').val();
         
