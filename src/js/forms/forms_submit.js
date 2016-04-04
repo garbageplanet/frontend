@@ -3,6 +3,7 @@ window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJ
 // for production build purpose window.token = '@@windowToken';
 
 // Save garbage marker
+// TODO sort obligatoey and optional fields
 $(function () {
     
 	$('.form-garbage').on('submit', function (event) {
@@ -23,7 +24,7 @@ $(function () {
 
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function (index, value) {
             
-			garbageType.push($(value).val());
+			garbageType.push($(value).val()) || null;
             
 		});
 
@@ -35,23 +36,23 @@ $(function () {
 
         $(this).find('.selectpicker.garbage-size-select option:selected').each(function (index, value) {
             
-			garbageSize.push($(value).val());
+			garbageSize.push($(value).val()) || "";
             
 		});
 
         $(this).find('.selectpicker.garbage-embed-select option:selected').each(function (index, value) {
             
-            garbageEmbed.push($(value).val());
+            garbageEmbed.push($(value).val()) || "";
             
         });
 
 		garbageAmout = $('input[class=garbage-range-input]').val();
         
-        note = $(this).find('.garbage-note').val();
+        note = $(this).find('.garbage-note').val() || "";
         
-		image_url = $(this).find('.garbage-image-hidden-value').val();
+		image_url = $(this).find('.garbage-image-hidden-value').val() || "";
         
-        tags = $(this).find('.garbage-tags').tagsinput('items');
+        tags = $(this).find('.garbage-tags').tagsinput('items') || "";
 
         // Coordinates
 		lat = $(this).find('.marker-lat').val();
@@ -233,19 +234,19 @@ $(function () {
         
     });
 
-    tags = $(this).find('.litter-tags').tagsinput('items');
+    tags = $(this).find('.litter-tags').tagsinput('items') || "";
         
-    amount_quantitative = $(this).find('.litter-amount-quantitative').val();
+    amount_quantitative = $(this).find('.litter-amount-quantitative').val() || "";
         
     // FIXME the slider selector cannot take a form-control class for now, so user might submit the form without
     // selecting the amount of garbage, add 5 by default if option is not set
     litterAmount = $('input[class=litter-range-input]').val() || "5";
         
-    physical_length = $(this).find('.litter-path-length').val();
+    physical_length = $(this).find('.litter-path-length').val() || "";
         
-    image_url = $(this).find('.litter-image-hidden-value').val();
+    image_url = $(this).find('.litter-image-hidden-value').val() || "";
         
-    note = $('input[class=litter-note]').val();
+    note = $('input[class=litter-note]').val() || "";
 
     setTimeout(function () {
         
@@ -326,15 +327,15 @@ $(function () {
 
     title = $(this).find('.area-title').val();
 
-    note = $(this).find('.area-note').val();
+    note = $(this).find('.area-note').val() || "";
 
-    secret = $(this).find('.area-secret').val();
+    secret = $(this).find('.area-secret').val() || "";
 
-    contact = $(this).find('.area-contact').val();
+    contact = $(this).find('.area-contact').val() || "";
 
-    players = $(this).find('.area-players').val();
+    players = $(this).find('.area-players').val() || "";
 
-    tags = $(this).find('.area-tags').tagsinput('items');
+    tags = $(this).find('.area-tags').tagsinput('items') || "";
 
     // Generate a random id if the user didn't set a title
     if (!title) {
