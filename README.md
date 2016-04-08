@@ -10,9 +10,8 @@ Just open /html/index.html in your browser. If you want to build for distributio
 When adding a new function to the code, add a comment about what it does. Build with gulp and open `index.html` from the `/dist` folder to check if there's any error. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### TODO
-#### Security
-- [ ] move from tokens to cookies (use Secure and HTTPOnly)
-- [ ] check session with backend before login user in with localStorage
+
+- [ ] fix uploader
 
 #### Feature actions
 - [ ] finalize the edit system (build the feature creation forms from templates)

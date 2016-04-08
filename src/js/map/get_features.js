@@ -211,6 +211,8 @@ function loadGarbageMarkers () {
                         break;
                     }
 
+                    // TODO switch codes for TODO and TYPE values as well
+                    
                 });
 
             },
@@ -256,10 +258,10 @@ function loadCleaningMarkers () {
                         {
                             icon:cleaningMarker,
                             id: obj.id,
-                            date: obj.date,
+                            datetime: obj.datetime,
                             lat: obj.lat,
                             lng: obj.lng,
-                            feature_type: obj.featuretype,
+                            feature_type: obj.feature_type,
                             participants: obj.participants,
                             recurrence: obj.recurrence,
                             marked_by: obj.marked_by
@@ -270,6 +272,9 @@ function loadCleaningMarkers () {
                     cleaningLayerGroup.addLayer(marker);
 
                     map.addLayer(cleaningLayerGroup);
+                    
+                    // TODO add logic to change marker color if date is before today
+                    $(marker._icon).addClass('marker-color-coral');
 
                     marker.on('click', function() {
 
@@ -495,6 +500,8 @@ function onGarbageMarkerClick (e) {
 function onCleaningMarkerClick (e) {
     
     console.log("Cleaning marker clicked");
+    
+    console.log(e);
     
     map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
     

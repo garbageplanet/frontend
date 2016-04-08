@@ -28,7 +28,7 @@
           <span class="badge badge-notify badge-notify-confirm">{%=o.confirm%}</span>
         </div>
         {% } %}
-        {% if (o.date) { %}
+        {% if (o.datetime) { %}
         <div class="btn-group btn-group-lg" role="group">
           <button type="button" title="Say you will help" class="btn btn-round btn-info btn-join-cleaning">
             <span class="fa fa-group"></span>
@@ -98,15 +98,15 @@
         </div>
       </div>
       {% } %}
-      {% if (o.date) { %}
+      {% if (o.datetime) { %}
       <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">time:{%=o.date%}</span>
+        <span class="pull-left">time:{%=o.datetime%}</span>
           <span class="feature-info feature-info-cleaning feature-info-time pull-left"></span>
         </div>
       </div>
       {% } %}
-      {% if (o.date) { %}
+      {% if (o.datetime) { %}
       <div class="panel panel-default">
         <div class="panel-body">
         <span class="pull-left">location:</span>

@@ -77,6 +77,22 @@
   padding-left: 1px;
 }
 
+.z19 .map-marker {
+  font-size:21px;
+  width:36px !important;
+  height:36px !important;
+  padding-top: 4px;
+  padding-left: 1px;
+}
+
+.z20 .map-marker {
+  font-size:21px;
+  width:36px !important;
+  height:36px !important;
+  padding-top: 4px;
+  padding-left: 1px;
+}
+
 /* Styling trashbins icons */
 
 .z0 .marker-nearby-trashbin, .z1 .marker-nearby-trashbin, .z2 .marker-nearby-trashbin, .z3 .marker-nearby-trashbin, .z4 .marker-nearby-trashbin, .z5 .marker-nearby-trashbin, .z6 .marker-nearby-trashbin, .z7 .marker-nearby-trashbin, .z8 .marker-nearby-trashbin, .z9 .marker-nearby-trashbin, .z10 .marker-nearby-trashbin, .z11 .marker-nearby-trashbin, .z12 .marker-nearby-trashbin {display: none !important;}

@@ -3,6 +3,10 @@
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
   <meta http-equiv="Content-Security-Policy" content="default-src https://*.garbagepla.net; connect-src https://*.garbagepla.net:*; script-src 'self' https://*.garbagepla.net; style-src https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://*.garbagepla.net http://i.imgur.com; object-src 'none'">
+    
+<!--
+  <meta name="csrf_token" content="{{ csrf_token() }}">
+-->
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
   <meta http-equiv="X-UA-Compatible">
@@ -208,12 +212,13 @@
                       <input type="hidden" class="event-date-time-hidden">
 
                         <!-- Date and time picker for events -->
+                      <div class="lead">Starts at ...</div>
                       <div class="container from-group" style="width:100%">
                         <div class="row">
                             <div class="form-group">
                                     <div class="input-group date" id="event-date-time-picker">
                                         <input type="datetime" class="form-control">
-                                        <input type="hidden" class="date-time-value">
+                                        <input type="hidden" id="date-time-value">
                                         <span class="input-group-addon">
                                         <span class="fa fa-fw fa-clock-o"></span>
                                         </span>
@@ -370,13 +375,14 @@
                     <select class="selectpicker form-control garbage-todo-select"
                             title="What to do here?"
                             name="garbageTodoName"
-                            data-width="100%">
+                            data-width="100%"
+                            required>
                         <option value="" disabled="disabled"></option>
-                        <option value="nothing">It's been cleaned up already</option>
-                        <option value="pickup">Need to pick up bags</option>
-                        <option value="organize_event">Organize a cleaning</option>
-                        <option value="need_help">I need help</option>
-                        <option value="inform">Tell local authorities</option>
+                        <option value="1">It's been cleaned up already</option>
+                        <option value="2">Need to pick up bags</option>
+                        <option value="3">Organize a cleaning</option>
+                        <option value="4">I need help</option>
+                        <option value="5">Tell local authorities</option>
                     </select>
                   <div class="help-block with-errors"></div>
                 </div>
@@ -405,12 +411,12 @@
                               data-selected-text-format="count"
                               data-width="100%"
                               multiple >
-                          <option value="huge">Too big to carry alone</option>
-                          <option value="big">Large pieces</option>
-                          <option value="medium">Easily visible</option>
-                          <option value="small">Small enough to escape the eye</option>
-                          <option value="tiny">Too small to pick up by hand</option>
-                          <option value="microscopic">Can't see it</option>
+                          <option value="1">Too big to carry alone</option>
+                          <option value="2">Large pieces</option>
+                          <option value="3">Easily visible</option>
+                          <option value="4">Small enough to escape the eye</option>
+                          <option value="5">Too small to pick up by hand</option>
+                          <option value="6">Can't see it</option>
                       </select>
                   </div>
 
@@ -421,12 +427,12 @@
                               data-selected-text-format="count"
                               data-width="100%"
                               multiple >
-                          <option value="vegetation">Vegetation</option>
-                          <option value="water">Water</option>
-                          <option value="stones">Stones, rocks</option>
-                          <option value="sand">Sand, gravel</option>
-                          <option value="sediment">Soil, sediment</option>
-                          <option value="ice">Ice, snow</option>
+                          <option value="1">Vegetation</option>
+                          <option value="2">Water</option>
+                          <option value="3">Stones, rocks</option>
+                          <option value="4">Sand, gravel</option>
+                          <option value="5">Soil, sediment</option>
+                          <option value="6">Ice, snow</option>
                       </select>
                   </div>
 
@@ -467,7 +473,7 @@
 
                 <div class="tab-pane form-group form-group-lg" id="garbage-info" role="tabpanel">
                 <br>
-                  <p class="lead"> Anybody can anonymously mark trash on the map. Markers can only be placed between zoom level 10 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 10 now</a>). When editing any of the marker type, all the changes are tracked and publicly visible in the marker information panel.</p>
+                  <p class="lead"> Anybody can anonymously mark trash on the map. Markers can only be placed between zoom level 10 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 10 now</a>). When choosing the amount of garbage on the scale of 1 to 10, think of 1 as 'a little' and 10 as a dumpster.</p>
                 </div>
               </div>
             </div>

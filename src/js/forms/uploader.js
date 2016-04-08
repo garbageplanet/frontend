@@ -5,14 +5,14 @@ $(function () {
   
     $('.image-uploader').fileupload({
 
-        headers: {"Authorization": "Client-ID " + "@@imgurToken"},
+        headers: {'Authorization': 'Client-ID 6f050e213f46ba9'},
 
-        url: "https://api.imgur.com/3/image",
+        url: 'https://api.imgur.com/3/upload',
 
         dataType: 'json',
 
         progressall: function (e, data) {
-
+                        
             var progress = parseInt(data.loaded / data.total * 100, 10);
 
             $('.progress').removeClass('hidden');
@@ -22,7 +22,7 @@ $(function () {
         },
 
         done: function (e, data) {
-
+            
             $(e.target).parent().next().val(data.result.data.link);
 
             $('.progress').addClass('hidden').delay(200);
@@ -42,7 +42,7 @@ $(function () {
         // TODO this needs to be more secure
         if (!localStorage.getItem('token')) {
 
-            showAlert("You need to be be authenticated to do that.", "warning", 2000);
+            showAlert('You need to be be authenticated to do that.', 'warning', 2000);
         
             return;
 

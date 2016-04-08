@@ -158,9 +158,7 @@ function registerUser(e) {
         },
         
         error: function (response) {
-            
-            console.log(response);
-            
+                        
             showAlert(response.responseText.substring(2, 30), "danger", 3500);
             
             localStorage.removeItem("token");

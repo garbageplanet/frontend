@@ -9,7 +9,7 @@ $(document).ready(function() {
         
             .datetimepicker({
             
-                minDate: new Date(2015, 11, 31),
+                minDate: new Date(2016, 04, 01),
             
                 showClose: true,
             

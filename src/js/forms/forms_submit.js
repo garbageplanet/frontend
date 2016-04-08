@@ -13,40 +13,36 @@ $(function () {
 		var that = this,
 		    garbageType = [],
             tags = [],
-            garbageTodo = [],
+            garbageTodo,
 		    garbageAmount,
             lat,
             lng,
             image_url,
-		    garbageSize,
-		    garbageEmbed,
+		    garbageSize = [],
+		    garbageEmbed = [],
             note;
 
         $(this).find('.selectpicker.garbage-type-select option:selected').each(function (index, value) {
-            
-			garbageType.push($(value).val()) || null;
+			
+            garbageType.push($(value).val());
             
 		});
 
-        $(this).find('.selectpicker.garbage-todo-select option:selected').each(function (index, value) {
-            
-			garbageTodo.push($(value).val());
-            
-		});
+        garbageTodo = $(this).find('.selectpicker.garbage-todo-select option:selected').val();
 
         $(this).find('.selectpicker.garbage-size-select option:selected').each(function (index, value) {
             
-			garbageSize.push($(value).val()) || "";
+            garbageSize.push($(value).val()) || "0";
             
 		});
 
         $(this).find('.selectpicker.garbage-embed-select option:selected').each(function (index, value) {
             
-            garbageEmbed.push($(value).val()) || "";
+            garbageEmbed.push($(value).val()) || "0";
             
         });
 
-		garbageAmout = $('input[class=garbage-range-input]').val();
+		garbageAmount = $('.garbage-range-input').val() || "5";
         
         note = $(this).find('.garbage-note').val() || "";
         
@@ -71,7 +67,7 @@ $(function () {
                 url: api.createTrash.url(),
                 
                 headers: {"Authorization": "Bearer " + useToken},
-                                
+                                                                
                 data: {
                     
                   'lat': lat,
@@ -81,43 +77,55 @@ $(function () {
                   'todo': garbageTodo,
                   'image_url': image_url,
                   'tag': tags.join(),
-                  'size': garbageSize,
-                  'embed': garbageEmbed,
+                  'sizes': garbageSize.join(),
+                  'embed': garbageEmbed.join(),
                   'note': note,
                   'feature_type': "marker_garbage"
+                    
                 },
+                
                 success: function (data) {
                     
                     console.log('success data', data);
-                    
+
                     showAlert("Marker saved successfully!", "success", 1500);
 
-                    if (garbageAmount > 8) {
-                        showAlert("That's a lot of trash, we opened a 311 ticket!", "warning", 3000);
-                    }
-
                     sidebar.hide('slow');
-                    
+
                     map.removeLayer(marker);
-                    
+
                     loadGarbageMarkers();
                     
                 },
                 
                 error: function (response) {
                     
-                  showAlert("Something went wrong, HTTP error " + response.status, "danger", 2500);
+                    console.log("Error data", response);
                     
-                  console.log(response.status);
-                    
-                  sidebar.hide();
-                    
-                  map.removeLayer(marker);
+                    if (response.status == "200") {
+                        
+                        showAlert("Sorry, something went wrong with the server", "danger", 2500);
+                        
+                    } else if (response.status == "error") {
+                        
+                        showAlert("The request wasn't handled properly by the server", "danger", 2500);
+
+                    } else {
+                        
+                        showAlert("Something went wrong, HTTP error " + response.status, "danger", 2500);
+                         
+                    }
+
+                    console.log(response.status);
+
+                    sidebar.hide();
+
+                    map.removeLayer(marker);
                     
                 }
                 
-              });
-            
+            });
+                            
 		}, 100);
         
 	});
@@ -129,15 +137,16 @@ $(function () {
     $('.form-cleaning').on( 'submit', function (event) {
         event.preventDefault();
         var that = this,
-          tags = [],
-          eventRecurrence = [],
-          dateTime,
-          note,
-          lat,
-          lng;
+            tags = [],
+            eventRecurrence,
+            dateTime,
+            note,
+            lat,
+            lng;
 
-        dateTime = $('.date-time-value').val();
-        
+        // NOTE the time and date value is set in the onMapClick() function in js/map/map_actions.js for now
+        dateTime = $('#date-time-value').val();
+                
         tags = $(this).find('.cleaning-tags').tagsinput('items') || "";
         
         note = $(this).find('.cleaning-note').val() || "";
@@ -145,13 +154,9 @@ $(function () {
         lat = $(this).find('.cleaning-lat').val();
         
         lng = $(this).find('.cleaning-lng').val();
-
-        $(this).find('.selectpicker.cleaning-recurrent-select option:selected').each(function(index, value) {
+        
+        eventRecurrence = $(this).find('.selectpicker.cleaning-recurrent-select option:selected').val();
             
-			eventRecurrence.push($(value).val());
-            
-		});
-
 		setTimeout(function () {
             
             var useToken = localStorage.getItem('token') || window.token;
@@ -163,6 +168,8 @@ $(function () {
                 url: api.createCleaning.url(),
               
                 headers: {"Authorization": "Bearer " + useToken},
+                
+                dataType: 'json',
                 
                 data: {
                   
@@ -202,6 +209,8 @@ $(function () {
               }
                 
           });
+            
+        debugger;
             
 		}, 100);
         
@@ -259,6 +268,8 @@ $(function () {
             url: api.createLitter.url(),
             
             headers: {"Authorization": "Bearer " + useToken},
+            
+            dataType: 'jsonp',
             
             data: {
                 
@@ -372,6 +383,8 @@ $(function () {
             url: api.createArea.url(),
 
             headers: {"Authorization": "Bearer " + useToken},
+            
+            dataType: 'jsonp',
 
             data: {
               

@@ -163,11 +163,12 @@ function onMapClick(e) {
     });
         
     // Change the cleaning event icon if a time is set
+    // FIXME put this logic seomwhere else
     $('#event-date-time-picker').on('dp.change', function (e) {
         
-        var eventDateTime = e.date.format('DD/MM/YYYY HH:MM');
+        var eventDateTime = e.date.format('YYYY-MM-DD HH:MM:SS');
         
-        $('.date-time-value').val(eventDateTime);
+        $('#date-time-value').val(eventDateTime);
         
         // Change the icon of the marker if a time is set
         $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');

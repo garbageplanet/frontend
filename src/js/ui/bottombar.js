@@ -1,9 +1,9 @@
 // Get data from the feature object into the bottom panel
 function pushDataToBottomPanel(e) {
   
-    console.log("feature data content: ", featuredata);
-
     var featuredata = e.options;
+
+    console.log("feature data content: ", featuredata);
 
     // Add character into strings
     String.prototype.insert = function (index, string) {
@@ -127,7 +127,7 @@ function pushDataToBottomPanel(e) {
                   var deletemethod = api.deleteCleaning.url(featuredata.id);
                   break;
 
-                case 'polyline_littr':
+                case 'polyline_litter':
                   var deleteurl = api.deleteLitter.method;
                   var deletemethod = api.deleteLitter.url(featuredata.id);
                   break;
