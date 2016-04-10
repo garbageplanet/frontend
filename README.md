@@ -11,7 +11,9 @@ When adding a new function to the code, add a comment about what it does. Build 
 
 ### TODO
 
-- [ ] fix uploader
+- [ ] fix uploader (imgur api currently returns `404`)
+- [ ] fix form bootstrap validation - disallow submit button until ok (not only add class `disabled`)
+- [ ] load features into layer but do not re-create each layer after each element is add (get_features.js) 
 
 #### Feature actions
 - [ ] finalize the edit system (build the feature creation forms from templates)

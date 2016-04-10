@@ -43,7 +43,19 @@ function pushDataToBottomPanel(e) {
 
     // Event listener for actions buttons (edit, cleaned join, confirm, play)
     // the functions called are inside the file /map/features_actions.js
-    $('#feature-info').find('.btn-edit').on('click', function() {editFeature(featuredata);});
+    $('#feature-info').find('.btn-edit').on('click', function() {
+        
+        if (localStorage.getItem('token')) {
+                
+            editFeature(featuredata);
+
+        } else {
+            
+            showAlert("Please login to do that.", "warning", 2000);
+
+        }
+    
+    });
     
     $('#feature-info').find('.btn-cleaned').on('click', function() {cleanedGarbage(featuredata);});
     

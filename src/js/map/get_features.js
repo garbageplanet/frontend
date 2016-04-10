@@ -105,8 +105,6 @@ map.on('dragend zoomend', function (e){
 
 });
   
-
-
 // Get garbage
 function loadGarbageMarkers () {
     
@@ -123,7 +121,22 @@ function loadGarbageMarkers () {
             url: api.readTrashWithinBounds.url(currentViewBounds),
 
             success: function (data) {
+                
+                // Set the color given the amount of trash
+                function setClassColor(c) {
 
+                    return c === 1  ? 'marker-color-gree' :
+                           c === 2  ? 'marker-color-limegree' :
+                           c === 3  ? 'marker-color-yellow' :
+                           c === 4  ? 'marker-color-gold' :
+                           c === 4  ? 'marker-color-orange' :
+                           c === 6  ? 'marker-color-orangered' :
+                           c === 7  ? 'marker-color-red' :
+                           c === 8  ? 'marker-color-penk' :
+                           c === 9  ? 'marker-color-freespeech' :
+                                      'marker-color-lonestar' ;
+                    };
+                
                 console.log("Garbage markers successfully loaded.");
 
                 $(data).each(function (index, obj) {
@@ -133,7 +146,7 @@ function loadGarbageMarkers () {
                             icon: garbageMarker,
                             id: obj.id,
                             amount: obj.amount,
-                            types: obj.types,
+                            types: obj.types.join(", "),
                             image_url: obj.image_url,
                             lat: obj.lat,
                             lng: obj.lng,
@@ -141,7 +154,7 @@ function loadGarbageMarkers () {
                             todo: obj.todo,
                             tags: obj.tag,
                             note: obj.note,
-                            feature_type: obj.featuretype,
+                            feature_type: 'marker_garbage',
                             size: obj.size,
                             embed: obj.embed,
                             marked_by: obj.marked_by,
@@ -151,6 +164,8 @@ function loadGarbageMarkers () {
                         });
 
                     garbageLayerGroup.addLayer(marker);
+                    
+                    $(marker._icon).addClass(setClassColor(obj.amount));
 
                     map.addLayer(garbageLayerGroup);
 
@@ -163,55 +178,6 @@ function loadGarbageMarkers () {
                         pushDataToBottomPanel(marker);
 
                     });
-
-                    switch(obj.amount){
-
-                    case 0:
-                        $(marker._icon).addClass('marker-color-darkgreen');
-                        break;
-                            
-                    case 1:
-                        $(marker._icon).addClass('marker-color-green');
-                        break;
-                            
-                    case 2:
-                        $(marker._icon).addClass('marker-color-limegreen');
-                        break;
-                            
-                    case 3:
-                        $(marker._icon).addClass('marker-color-yellow');
-                        break;
-                            
-                    case 4:
-                        $(marker._icon).addClass('marker-color-gold');
-                        break;
-                            
-                    case 5:
-                        $(marker._icon).addClass('marker-color-orange');
-                        break;
-                            
-                    case 6:
-                        $(marker._icon).addClass('marker-color-orangered');
-                        break;
-                            
-                    case 7:
-                        $(marker._icon).addClass('marker-color-red');
-                        break;
-                    case 8:
-                        $(marker._icon).addClass('marker-color-darkred');
-                        break;
-                    case 9:
-                        $(marker._icon).addClass('marker-color-purple');
-                        break;
-                    case 10:
-                        $(marker._icon).addClass('marker-color-black');
-                        break;
-                    default:
-                        $(marker._icon).addClass('marker-color-unknown');
-                        break;
-                    }
-
-                    // TODO switch codes for TODO and TYPE values as well
                     
                 });
 
@@ -261,7 +227,7 @@ function loadCleaningMarkers () {
                             datetime: obj.datetime,
                             lat: obj.lat,
                             lng: obj.lng,
-                            feature_type: obj.feature_type,
+                            feature_type: 'marker_cleaning',
                             participants: obj.participants,
                             recurrence: obj.recurrence,
                             marked_by: obj.marked_by
@@ -274,7 +240,7 @@ function loadCleaningMarkers () {
                     map.addLayer(cleaningLayerGroup);
                     
                     // TODO add logic to change marker color if date is before today
-                    $(marker._icon).addClass('marker-color-coral');
+                    $(marker._icon).addClass('marker-color-blue');
 
                     marker.on('click', function() {
 
@@ -329,8 +295,10 @@ function loadAreas () {
                 $(data).each(function(index, obj) {
 
                     console.log("object data", obj);
+                    
+                    var latlngs = JSON.parse("[" + obj.latlngs + "]");
 
-                      var polygonLayer = new L.Polygon(obj.latlngs,
+                      var polygonLayer = new L.Polygon(latlngs,
                         {
                           id: obj.id,
                           title: obj.title,
@@ -339,7 +307,7 @@ function loadAreas () {
                           note: obj.note,
                           tags: obj.tag,
                           contact: obj.contact,
-                          feature_type: obj.featuretype,
+                          feature_type: 'polygon_area',
                           marked_by: obj.marked_by
                         });
 
@@ -393,84 +361,58 @@ function loadLitters () {
 
             headers: {"Authorization": "Bearer " + useToken},
 
-            success: function (data) {
-                
-                console.log("Litter polylines successfully loaded.");
-                
-                // console.log('litter data', data);
+            success: function (data) {                
 
                 $(data).each(function(index, obj) {
+                    
+                var latlngs = JSON.parse("[" + obj.latlngs + "]");
+                    
+                // Set the color given the amount of trash
+                function setColor(c) {
 
-                    console.log("object data", obj);
-
-                    var polylineLayer = new L.Polyline(obj.latlngs,
+                    return c === 1  ? '#' :
+                           c === 2  ? '#' :
+                           c === 3  ? '#' :
+                           c === 4  ? '#' :
+                           c === 4  ? '#' :
+                           c === 6  ? '#' :
+                           c === 7  ? '#' :
+                           c === 8  ? '#' :
+                           c === 9  ? '#' :
+                                      '#' ;
+                    };
+                    
+                    var polylineLayer = L.polyline(latlngs,
                     {
-                      id: obj.id,
-                      amount: obj.amount,
-                      types: obj.types,
-                      image_url: obj.image_url,
-                      tags: obj.tag,
-                      feature_type: obj.featuretype,
-                      marked_by: obj.marked_by,
-                      cleaned: obj.cleaned,
-                      cleaned_by: obj.cleaned_by,
-                      physical_length: obj.physical_length
+                        id: obj.id,
+                        amount: obj.amount,
+                        types: obj.types.join(', '),
+                        image_url: obj.image_url,
+                        tags: obj.tag,
+                        feature_type: 'polyline_litter',
+                        marked_by: obj.marked_by,
+                        cleaned: obj.cleaned,
+                        cleaned_by: obj.cleaned_by,
+                        physical_length: obj.physical_length,
+                        color: setColor(obj.amount)
                     });
+                    
+                    
+                    litterLayerGroup.addLayer(polylineLayer);
+                    
+                    map.addLayer(litterLayerGroup);
 
-                  switch(obj.amount){
+                    polylineLayer.on('click', function() {
 
-                    case 1:
-                        polylineLayer.setStyle({color:"green"});
-                        break;
-                    case 2:
-                        polylineLayer.setStyle({color:"limegreen"});
-                        break;
-                    case 3:
-                        polylineLayer.setStyle({color:"yellow"});
-                        break;
-                    case 4:
-                        polylineLayer.setStyle({color:"gold"});
-                        break;
-                    case 5:
-                        polylineLayer.setStyle({color:"orange"});
-                        break;
-                    case 6:
-                        polylineLayer.setStyle({color:"orangered"});
-                        break;
-                    case 7:
-                        polylineLayer.setStyle({color:"red"});
-                        break;
-                    case 8:
-                        polylineLayer.setStyle({color:"darkred"});
-                        break;
-                    case 9:
-                        polylineLayer.setStyle({color:"purple"});
-                        break;
-                    case 10:
-                        polylineLayer.setStyle({color:"black"});
-                        break;
-                    default:
-                        polylineLayer.resetStyle();
-                        break;
+                        // UI behavior
+                        onLitterClick(polylineLayer);
 
-                  }
+                        // Push data - the function is inside the file js/ui/bottombar.js
+                        pushDataToBottomPanel(polylineLayer);
 
-                  litterLayerGroup.addLayer(polylineLayer);
-
-                  map.addLayer(litterLayerGroup);
-
-                  polylineLayer.on('click', function() {
-
-                      // UI behavior
-                      onLitterClick(polylineLayer);
-
-                      // Push data
-                      pushDataToBottomPanel(polylineLayer);
-
-                  });
-                }
-
-            );
+                    });
+                    
+                });
 
             },
 

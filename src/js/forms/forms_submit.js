@@ -353,13 +353,16 @@ $(function () {
 
       function randomString(len)
         {
-            var text = " ",
+            var randomStringValue = " ",
             
                 charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             
-            for( var i=0; i < len; i++ )
+            for( var i=0; i < len; i++ ) {
                 
                 randomStringValue += charset.charAt(Math.floor(Math.random() * charset.length));
+                
+            }
+                
 
             return randomStringValue; 
             

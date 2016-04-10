@@ -137,19 +137,19 @@ function onMapClick(e) {
             case 8:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-darkred');
+                }).addClass('marker-color-penk');
                 break;
                 
             case 9:
                 $(marker._icon).removeClass(function (index, css) {
                   return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-purple');
+                }).addClass('marker-color-freespeech');
                 break;
                 
             case 10:
                 $(marker._icon).removeClass(function (index, css) {
                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-black');
+                }).addClass('marker-color-lonestar');
                 break;
                 
             default:
