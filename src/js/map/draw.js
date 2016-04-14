@@ -97,8 +97,19 @@ map.on('draw:created', function (e) {
   
     var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
 
+    console.log("THIS LATLNGGGGGG: ", e.layer.getLatLngs());
+    
     if (e.layerType === 'polyline') {
         
+        function setClassColor(c) {
+
+            return c === 1  ? '#ccff66' :
+                   c === 2  ? '#ffff00' :
+                   c === 3  ? '#FF4500' :
+                   c === 4  ? '#ff1a1a' :
+                              '#e60073' ;
+        };
+
         polylineLayer = e.layer;
 
         map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
@@ -111,55 +122,16 @@ map.on('draw:created', function (e) {
         // $('input[class=polyline-length]').val($('.leaflet-draw-tooltip-subtext').val());  
 
         // push the latlngs to the form
-        $('.form-litter .litter-latlngs').val(latlngs);
+        $('.litter-latlngs').val(latlngs);
         
-        console.log("layer's latlngs", latlngs);
-
         // Range slider for amount of garbage on polyline
-        $('.litter-range-input').on('change', function () {
-
-            $('.litter-range-value').html(this.value);
+        $('input[type=radio]').on('change', function () {
 
             // Get the color value from the select options
-            var selectedValue = parseInt($(this).val(), 10);
+            var selectedValue = parseInt($(this).attr('name'), 10);
 
-            switch (selectedValue) {
-                    
-                case 1:
-                  e.layer.setStyle({color: "green"});
-                  break;
-                case 2:
-                  e.layer.setStyle({color: "limegreen"});
-                  break;
-                case 3:
-                  e.layer.setStyle({color: "yellow"});
-                  break;
-                case 4:
-                  e.layer.setStyle({color: "gold"});
-                  break;
-                case 5:
-                  e.layer.setStyle({color: "orange"});
-                  break;
-                case 6:
-                  e.layer.setStyle({color: "orangered"});
-                  break;
-                case 7:
-                  e.layer.setStyle({color: "red"});
-                  break;
-                case 8:
-                  e.layer.setStyle({color: "darkred"});
-                  break;
-                case 9:
-                  e.layer.setStyle({color: "purple"});
-                  break;
-                case 10:
-                  e.layer.setStyle({color: "black"});
-                  break;
-                default:
-                  e.layer.resetStyle();
-                  break;
-       
-            }
+           // Set the color of the line
+            e.layer.setStyle({color: setClassColor(selectedValue)});
             
         });
 

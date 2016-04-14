@@ -186,6 +186,39 @@ body {
   color: #FFF;
 }
 
+/*Style the garbage amount form buttons*/
+
+.btn-limegreen {    
+    background-color: rgb(204, 255, 102)/*#ccff66*/;
+    border-color: rgb(204, 255, 102)/*#ccff66*/;
+    color: #FFF;
+}
+.btn-yellow {
+    background-color: rgb(255, 255, 0)/*#ffff00*/;
+    border-color: rgb(255, 255, 0)/*#ffff00*/;
+    color: #FFF;
+}
+.btn-orangered { 
+    background-color: rgb(255, 102, 0)/*#ff6600*/;
+    border-color: rgb(255, 102, 0)/*#ff6600*/;
+    color: #FFF;
+}
+.btn-red {
+    background-color: rgb(255, 26, 26)/*#ff1a1a*/;
+    border-color: rgb(255, 26, 26)/*#ff1a1a*/;
+    color: #FFF;
+}
+.btn-violet {
+    background-color: rgb(230, 0, 115)/*##e60073*/;
+    border-color: rgb(230, 0, 115)/*##e60073*/;
+    color: #FFF;
+}
+.btn-limegreen:active, .btn-yellow:active, .btn-orangered:active, .btn-red:active, .btn-violet:active {
+    border-color: dimgray !important;
+    color: dimgray !important;
+    
+}
+
 /* hide all the bottom panel content by default */
 .sidebar-content, .bottombar-content {
   display: none;

@@ -62,11 +62,11 @@ function onMapClick(e) {
         draggable: true
             
         }).on('click', onLocalMarkerClick).addTo(map);
-    
-    $('.marker-lat').val(marker._latlng.lat);
-
-    $('.marker-lng').val(marker._latlng.lng);
-
+        
+    var latlng = marker._latlng.lat + ", " + marker._latlng.lng;
+            
+    $('.marker-latlng').val(latlng);
+        
     if ($(window).width() >= 567) {
         
         map.panToOffset(marker._latlng, _getHorizontalOffset());
@@ -78,88 +78,32 @@ function onMapClick(e) {
     $('#sidebar').scrollTop = 0;
 
     sidebar.show($("#create-marker-dialog").show());
+        
+    function setClassColor(c) {
 
-    // Range slider for amount of garbage on marker icon
-    $('.garbage-range-input').on('change', function () {
+        return c === 1 ? 'marker-color-limegreen' :
+               c === 2 ? 'marker-color-yellow' : 
+               c === 3 ? 'marker-color-orangered' : 
+               c === 4 ? 'marker-color-red' : 
+                         'marker-color-violet'
+    };
+
+    // Range selector for amount of garbage on marker icon
+    $('input[type=radio]').on('change', function () {
         
         // Remove the generic marker class
         $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
+                
+        // Get the color value from the select options 
+        var selectedValue = parseInt($(this).attr('name'), 10);
+        // Change the class to the corresponding value
         
-        $('.garbage-range-value').html(this.value);
-        
-        // Get the color value from the select options and add corresponding class to the icon
-        var selectedValue = parseInt($(this).val(), 10);
-        
-        switch (selectedValue) {
+        $(marker._icon).removeClass(function (index, css) {
+            
+            return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+            
+        }).addClass(setClassColor(selectedValue));
                 
-            case 1:
-                $(marker._icon).removeClass(function (index, css) {
-                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-green');
-                break;
-                
-            case 2:
-                $(marker._icon).removeClass(function (index, css) {
-                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-limegreen');
-                break;
-                
-            case 3:
-                $(marker._icon).removeClass(function (index, css) {
-                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-yellow');
-                break;
-                
-            case 4:
-                $(marker._icon).removeClass(function (index, css) {
-                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-gold');
-                break;
-                
-            case 5:
-                $(marker._icon).removeClass(function (index, css) {
-                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-orange');
-                break;
-                
-            case 6:
-                $(marker._icon).removeClass(function (index, css) {
-                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-orangered');
-                break;
-                
-            case 7:
-                $(marker._icon).removeClass(function (index, css) {
-                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-red');
-                break;
-                
-            case 8:
-                $(marker._icon).removeClass(function (index, css) {
-                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-penk');
-                break;
-                
-            case 9:
-                $(marker._icon).removeClass(function (index, css) {
-                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-freespeech');
-                break;
-                
-            case 10:
-                $(marker._icon).removeClass(function (index, css) {
-                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-lonestar');
-                break;
-                
-            default:
-                $(marker._icon).removeClass(function (index, css) {
-                  return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-                }).addClass('marker-color-unknown');
-                break;
-                
-          }
-        
     });
         
     // Change the cleaning event icon if a time is set
@@ -171,7 +115,7 @@ function onMapClick(e) {
         $('#date-time-value').val(eventDateTime);
         
         // Change the icon of the marker if a time is set
-        $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-coral');
+        $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
 
     });
     
@@ -179,12 +123,8 @@ function onMapClick(e) {
     marker.on("dragend", function (event){
         
         var newPos = event.target.getLatLng();
-
-        console.log("dragged marker id:", event.target._leaflet_id );
-
-        $('.marker-lat').val(newPos.lat);
-
-        $('.marker-lng').val(newPos.lng);
+        
+        $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
         
     });
 
@@ -262,10 +202,8 @@ function onLocalMarkerClick (e) {
         
         var newPos = event.target.getLatLng();
         
-        $('.marker-lat').val(newPos.lat);
-        
-        $('.marker-lng').val(newPos.lng);
-        
+        $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
+                
     });
 
     $('#sidebar').scrollTop =0;
@@ -275,5 +213,3 @@ function onLocalMarkerClick (e) {
     sidebar.show($("#create-marker-dialog").fadeIn());
     
 };
-
-// FIXME Reload the features from the backend when a layer is re-added from leaflet-layers-control menu 

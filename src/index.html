@@ -78,7 +78,7 @@
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header col-lg-12 col-xl-12 col-sm-12 col-xs-12">
-        <a class="navbar-brand pull-left" href="#"><span class="icon-trashbag"></span><strong class="page-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.0.1</kbd></a>
+        <a class="navbar-brand pull-left" href="#"><span class="icon-trashbag"></span><strong class="page-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.1</kbd></a>
 
         <div class="pull-right">
           <ul class="nav navbar-nav">
@@ -206,8 +206,7 @@
 
                     <div class="tab-pane active form-group form-group-lg" id="cleaning-main-tab" role="tabpanel">
 
-                      <input type="hidden" class="marker-lat cleaning-lat">
-                      <input type="hidden" class="marker-lng cleaning-lng">
+                      <input type="hidden" class="marker-latlng cleaning-latlng">
                       <input type="hidden" class="event-date-time-hidden">
 
                         <!-- Date and time picker for events -->
@@ -315,21 +314,22 @@
 
                   <br>
 
-                  <input type="hidden" class="marker-lat garbage-lat">
-                  <input type="hidden" class="marker-lng garbage-lng">
+                  <input type="hidden" class="marker-latlng garbage-latlng">
 
-                  <div class="range-slider form-group">
-                    <p class="lead">Amount of garbage: <strong><span class="garbage-range-value"></span></strong></p>
-                  <input class="garbage-range-input" type="range" value="1" min="1" max="10" required>
-                  <div class="help-block with-errors"></div>
-                  </div>
-
-                  <br>
+                  <div class="form-group">
+                    <p class="lead">Amount of garbage</p>              
+                    <div class="btn-group btn-group-justified btn-group-amount btn-group-amount-garbage" data-toggle="buttons">
+                      <label class="btn btn-lg btn-limegreen"><input type="radio" autocomplete="off" name="1">1</label>
+                      <label class="btn btn-lg btn-yellow" ><input type="radio" autocomplete="off" name="2">2</label>
+                      <label class="btn btn-lg btn-orangered active" ><input type="radio" autocomplete="off" name="3">3</label>
+                      <label class="btn btn-lg btn-red" ><input type="radio" autocomplete="off" name="4">4</label>
+                      <label class="btn btn-lg btn-violet" ><input type="radio" autocomplete="off" name="5">5</label>
+                    </div>
+                </div>
 
                 <div class="dropdown form-group">
                     <select class="selectpicker garbage-type-select form-control"
                             title="What kind?"
-                            name="garbageTypeName"
                             data-selected-text-format="count"
                             data-width="100%"
                             required
@@ -353,12 +353,13 @@
                         <option value="gas">Gasoline, petroleum oil</option>
                         <option value="crude">Crude oil</option>
                         <option value="party">Party leftovers</option>
+                        <option value="drug">Syringes and needles</option>
                         <option value="fastfood">Fastfood garbage</option>
                         <option value="vehicle">Large vehicle</option>
                         <option value="bicycle">Bicycle</option>
                         <option value="motorcyle">Motorcycle</option>
                         <option value="tyres">Tyres</option>
-                        <option value="fishing">Fishing gears</option>
+                        <option value="fishing">Fishing equipment</option>
                         <option value="net">Fishing net</option>
                         <option value="lines">Fishing line</option>
                         <option value="boat">Small boat</option>
@@ -373,7 +374,6 @@
                 <div class="dropdown">
                     <select class="selectpicker form-control garbage-todo-select"
                             title="What to do here?"
-                            name="garbageTodoName"
                             data-width="100%"
                             required>
                         <option value="" disabled="disabled"></option>
@@ -472,7 +472,7 @@
 
                 <div class="tab-pane form-group form-group-lg" id="garbage-info" role="tabpanel">
                 <br>
-                  <p class="lead"> Anybody can anonymously mark trash on the map. Markers can only be placed between zoom level 10 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 10 now</a>). When choosing the amount of garbage on the scale of 1 to 10, think of 1 as 'a little' and 10 as a dumpster.</p>
+                  <p class="lead"> Anybody can anonymously mark trash on the map. Markers can only be placed between zoom level 10 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 10 now</a>). When choosing the amount of garbage on the scale of 1 to 5, think of 1 as 'a little' and 5 as a dumpster.</p>
                 </div>
               </div>
             </div>
@@ -524,7 +524,11 @@
                     <input type="hidden" class="area-latlngs">
 
                     <div class="form-group form-group-lg" style="width:100%">
-                      <input class="form-control area-title" placeholder="Use a custom area name">
+                      <input class="form-control area-title" 
+                             placeholder="Use a custom area name"
+                             data-maxlength="50"
+                             data-minlength="5"
+                             data-pattern="^[a-zA-Z0-9]+$">
                       <div class="help-block with-errors"></div>
                     </div>
 
@@ -638,17 +642,22 @@
                     <span class="fa fa-fw fa-pencil"></span> Start drawing
                   </button>
                 </div>
+                  
+                <input type="hidden" class="litter-latlngs">
 
                 <br>
 
-                <div class="range-slider form-group form-group-lg">
-                  <p class="lead">Amount of garbage: <strong><span class="litter-range-value"></span></strong></p>
-                  <input type="hidden" class="litter-latlngs">
-                  <input class="litter-range-input" type="range" value="1" min="1" max="10" required>
-                    <div class="help-block with-errors"></div>
+                  <div class="form-group">
+                    <p class="lead">Amount of garbage</p>              
+                      
+                    <div class="btn-group btn-group-justified btn-group-amount btn-group-amount-litter" data-toggle="buttons">
+                      <label class="btn btn-lg btn-limegreen"><input type="radio" name="1" autocomplete="off">1</label>
+                      <label class="btn btn-lg btn-yellow"><input type="radio" name="2" autocomplete="off">2</label>
+                      <label class="btn btn-lg btn-orangered active"><input type="radio" name="3" autocomplete="off" checked>3</label>
+                      <label class="btn btn-lg btn-red"><input type="radio" name="4" autocomplete="off">4</label>
+                      <label class="btn btn-lg btn-violet"><input type="radio" name="5" autocomplete="off">5</label>
+                    </div>
                 </div>
-
-                <br>
 
                 <div class="dropdown form-group form-group-lg" >
                     <select class="selectpicker litter-type-select form-control"
@@ -708,6 +717,27 @@
 
               <div class="tab-pane form-group form-group-lg" id="litter-quantitative" role="tabpanel">
 
+                                  <div class="form-group">
+                  <div class="input-group input-group-lg">
+                    <!-- Uploader part need to follow the following strict format -->
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-image-uploader"
+                                    type="button">
+                            <span class="fa fa-fw fa-file-image-o"></span></button>
+                            <input class="image-uploader" type="file" style="display:none;">
+                        </span>
+
+                        <input type="text"
+                               class="form-control litters-image-hidden-value"
+                               placeholder="Upload an image">
+                  </div>
+
+                  <div class="progress hidden">
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:%"></div>
+                  </div>
+
+                </div>
+                  
                 <div class="form-group form-group-lg" style="width:100%">
                     <input class="form-control litter-amount-quantitative"
                               type="number"

@@ -222,7 +222,8 @@ if (typeof jQuery === 'undefined') {
     }, this), 0)
   }
 
-  Button.prototype.toggle = function () {
+  // Somehow this breaks something in our code.
+/*  Button.prototype.toggle = function () {
     var changed = true
     var $parent = this.$element.closest('[data-toggle="buttons"]')
 
@@ -242,8 +243,28 @@ if (typeof jQuery === 'undefined') {
       this.$element.attr('aria-pressed', !this.$element.hasClass('active'))
       this.$element.toggleClass('active')
     }
-  }
+  }*/
 
+  // Button prototype before commit
+ Button.prototype.toggle = function () {
+    
+    var $parent = this.$element.closest('[data-toggle="buttons"]')
+
+    if ($parent.length) {
+        
+        var $input = this.$element.find('input').prop('checked', !this.$element.hasClass('active')).trigger('change')
+        
+        if ($input.prop('type') === 'radio') {
+            
+            $parent.find('.active').removeClass('active')
+        
+        }
+
+    }
+
+    this.$element.toggleClass('active')
+    
+}
 
   // BUTTON PLUGIN DEFINITION
   // ========================

@@ -3,7 +3,6 @@ window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJ
 // for production build purpose window.token = '@@windowToken';
 
 // Save garbage marker
-// TODO sort obligatoey and optional fields
 $(function () {
     
 	$('.form-garbage').on('submit', function (event) {
@@ -15,8 +14,7 @@ $(function () {
             tags = [],
             garbageTodo,
 		    garbageAmount,
-            lat,
-            lng,
+            latlng,
             image_url,
 		    garbageSize = [],
 		    garbageEmbed = [],
@@ -32,32 +30,30 @@ $(function () {
 
         $(this).find('.selectpicker.garbage-size-select option:selected').each(function (index, value) {
             
-            garbageSize.push($(value).val()) || "0";
+            garbageSize.push($(value).val()) || '';
             
 		});
 
         $(this).find('.selectpicker.garbage-embed-select option:selected').each(function (index, value) {
             
-            garbageEmbed.push($(value).val()) || "0";
+            garbageEmbed.push($(value).val()) || '';
             
         });
 
-		garbageAmount = $('.garbage-range-input').val() || "5";
+        garbageAmount = $('.btn-group-amount').find('.active > input').attr('name') || '3';
         
-        note = $(this).find('.garbage-note').val() || "";
+        note = $(this).find('.garbage-note').val() || '';
         
-		image_url = $(this).find('.garbage-image-hidden-value').val() || "";
+		image_url = $(this).find('.garbage-image-hidden-value').val() || '';
         
-        tags = $(this).find('.garbage-tags').tagsinput('items') || "";
+        tags = $(this).find('.garbage-tags').tagsinput('items') || '';
 
         // Coordinates
-		lat = $(this).find('.marker-lat').val();
+		latlng = $(this).find('.garbage-latlng').val();
         
-		lng = $(this).find('.marker-lng').val();
-
 		setTimeout(function () {
             
-            // var useToken = localStorage["token"] || window.token;
+            // var useToken = localStorage['token'] || window.token;
             var useToken = localStorage.getItem('token') || window.token;
 
             $.ajax({
@@ -66,12 +62,11 @@ $(function () {
                 
                 url: api.createTrash.url(),
                 
-                headers: {"Authorization": "Bearer " + useToken},
+                headers: {'Authorization': 'Bearer ' + useToken},
                                                                 
                 data: {
                     
-                  'lat': lat,
-                  'lng': lng,
+                  'latlng': latlng,
                   'amount': garbageAmount,
                   'types': garbageType.join(),
                   'todo': garbageTodo,
@@ -79,16 +74,14 @@ $(function () {
                   'tag': tags.join(),
                   'sizes': garbageSize.join(),
                   'embed': garbageEmbed.join(),
-                  'note': note,
-                  'feature_type': "marker_garbage"
-                    
+                  'note': note                    
                 },
                 
                 success: function (data) {
                     
                     console.log('success data', data);
 
-                    showAlert("Marker saved successfully!", "success", 1500);
+                    showAlert('Marker saved successfully!', 'success', 1500);
 
                     sidebar.hide('slow');
 
@@ -100,19 +93,19 @@ $(function () {
                 
                 error: function (response) {
                     
-                    console.log("Error data", response);
+                    console.log('Error data', response);
                     
-                    if (response.status == "200") {
+                    if (response.status === '200') {
                         
-                        showAlert("Sorry, something went wrong with the server", "danger", 2500);
+                        showAlert('Sorry, something went wrong with the server', 'danger', 2500);
                         
-                    } else if (response.status == "error") {
+                    } else if (response.status === 'error') {
                         
-                        showAlert("The request wasn't handled properly by the server", "danger", 2500);
+                        showAlert('The request was not handled properly by the server', 'danger', 2500);
 
                     } else {
                         
-                        showAlert("Something went wrong, HTTP error " + response.status, "danger", 2500);
+                        showAlert('Something went wrong, HTTP error ' + response.status, 'danger', 2500);
                          
                     }
 
@@ -141,20 +134,17 @@ $(function () {
             eventRecurrence,
             dateTime,
             note,
-            lat,
-            lng;
+            latlng;
 
         // NOTE the time and date value is set in the onMapClick() function in js/map/map_actions.js for now
         dateTime = $('#date-time-value').val();
-                
-        tags = $(this).find('.cleaning-tags').tagsinput('items') || "";
+        console.log(dateTime);
+        tags = $(this).find('.cleaning-tags').tagsinput('items') || '';
         
-        note = $(this).find('.cleaning-note').val() || "";
+        note = $(this).find('.cleaning-note').val() || '';
         
-        lat = $(this).find('.cleaning-lat').val();
-        
-        lng = $(this).find('.cleaning-lng').val();
-        
+        latlng = $(this).find('.cleaning-latlng').val();
+        console.log(latlng); 
         eventRecurrence = $(this).find('.selectpicker.cleaning-recurrent-select option:selected').val();
             
 		setTimeout(function () {
@@ -167,26 +157,24 @@ $(function () {
               
                 url: api.createCleaning.url(),
               
-                headers: {"Authorization": "Bearer " + useToken},
+                headers: {'Authorization': 'Bearer ' + useToken},
                 
                 dataType: 'json',
                 
                 data: {
                   
-                    'lat': lat,
-                    'lng': lng,
+                    'latlng': latlng,
                     'datetime': dateTime,
                     'note': note,
                     'recurrence': eventRecurrence,
-                    'tag':tags.join(),
-                    'feature_type': "marker_cleaning"
+                    'tag':tags.join()
                 },
                 
                 success: function (data) {
                   
                     console.log('success data', data);
                     
-                    showAlert("Cleaning event saved successfully!", "success", 2000);
+                    showAlert('Cleaning event saved successfully!', 'success', 2000);
                     
                     sidebar.hide('slow');
                     
@@ -200,7 +188,7 @@ $(function () {
                   
                     console.log('err', err);
 
-                    showAlert("Sorry, failed to save the event.", "danger", 3000);
+                    showAlert('Sorry, failed to save the event.', 'danger', 3000);
 
                     sidebar.hide();
 
@@ -209,9 +197,7 @@ $(function () {
               }
                 
           });
-            
-        debugger;
-            
+                        
 		}, 100);
         
 	});
@@ -236,26 +222,25 @@ $(function () {
         amount_quantitative;
 
     latlngs = $(this).find('.litter-latlngs').val();
-        
+                
     $(this).find('.selectpicker.litter-type-select option:selected').each(function (index, value) {
         
         litterType.push($(value).val());
         
     });
 
-    tags = $(this).find('.litter-tags').tagsinput('items') || "";
+    tags = $(this).find('.litter-tags').tagsinput('items') || '';
         
-    amount_quantitative = $(this).find('.litter-amount-quantitative').val() || "";
+    amount_quantitative = $(this).find('.litter-amount-quantitative').val() || '';
         
-    // FIXME the slider selector cannot take a form-control class for now, so user might submit the form without
-    // selecting the amount of garbage, add 5 by default if option is not set
-    litterAmount = $('input[class=litter-range-input]').val() || "5";
+    // selecting the amount of garbage, add 3 by default if option is not set
+    litterAmount = $('.btn-group-amount-litter').find('.active > input').attr('name') || '3';
         
-    physical_length = $(this).find('.litter-path-length').val() || "";
+    physical_length = $(this).find('.litter-path-length').val() || '';
         
-    image_url = $(this).find('.litter-image-hidden-value').val() || "";
+    image_url = $(this).find('.litter-image-hidden-value').val() || '';
         
-    note = $('input[class=litter-note]').val() || "";
+    note = $('input[class=litter-note]').val() || '';
 
     setTimeout(function () {
         
@@ -267,29 +252,29 @@ $(function () {
             
             url: api.createLitter.url(),
             
-            headers: {"Authorization": "Bearer " + useToken},
+            headers: {'Authorization': 'Bearer ' + useToken},
             
-            dataType: 'jsonp',
+            dataType: 'json',
             
             data: {
                 
-                'latlngs': latlngs,
+                'latlngs': latlngs.toString(),
                 'amount': litterAmount,
                 'types': litterType.join(),
                 'image_url': image_url,
-                'physical_length': physical_length,
-                'tag': tags.join(),
-                'amount_quantitative': amount_quantitative,
-                'feature_type': "polyline_litter"
+                'tag': tags.join()
+                // 'physical_length': physical_length,
+                // 'amount_quantitative': amount_quantitative
             },
             
             success: function (data) {
               
               console.log('success data', data);
               
-              showAlert("Litter saved successfully!", "success", 1500);
+              showAlert('Litter saved successfully!', 'success', 1500);
               
               sidebar.hide('slow');
+                
               loadLitters();
               
             },
@@ -298,7 +283,7 @@ $(function () {
               
               console.log('err', err);
               
-              showAlert("Sorry, failed to save the litter.", "danger", 2000);
+              showAlert('Sorry, failed to save the litter.', 'danger', 2000);
               
               sidebar.hide();
               
@@ -308,7 +293,7 @@ $(function () {
             }
             
         });
-        
+                        
     }, 200);
         
     });
@@ -332,45 +317,50 @@ $(function () {
         contact,
         game;
 
-    game = $( ".tile-game-check input:checked" ).length || 0;
-
+    game = $( '.tile-game-check input:checked' ).length || 0;
+    console.log("game: ",game)
     latlngs = $(this).find('.area-latlngs').val();
+    console.log("latlngs: ",latlngs)
 
     title = $(this).find('.area-title').val();
+    console.log("title: ",title)
 
-    note = $(this).find('.area-note').val() || "";
+    note = $(this).find('.area-note').val() || '';
+    console.log("ntoe: ",note)
 
-    secret = $(this).find('.area-secret').val() || "";
+    secret = $(this).find('.area-secret').val() || '';
+    console.log("secret: ",secret)
 
-    contact = $(this).find('.area-contact').val() || "";
+    contact = $(this).find('.area-contact').val() || '';
+    console.log("contact: ",contact)
 
-    players = $(this).find('.area-players').val() || "";
+    players = $(this).find('.area-players').val() || '';
 
-    tags = $(this).find('.area-tags').tagsinput('items') || "";
+    tags = $(this).find('.area-tags').tagsinput('items') || '';
+    console.log("tags: ",tags)
 
+    function randomString(len) {
+
+        var randomStringValue = ' ',
+
+            charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+        for( var i=0; i < len; i++ ) {
+
+            randomStringValue += charset.charAt(Math.floor(Math.random() * charset.length));
+
+        }
+
+        return randomStringValue; 
+
+    }
+        
     // Generate a random id if the user didn't set a title
     if (!title) {
 
-      function randomString(len)
-        {
-            var randomStringValue = " ",
-            
-                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            
-            for( var i=0; i < len; i++ ) {
-                
-                randomStringValue += charset.charAt(Math.floor(Math.random() * charset.length));
-                
-            }
-                
+        title = randomString(12);
 
-            return randomStringValue; 
-            
-        }
-
-      title = randomString(12);
-
-      console.log("randomly generated area title ", title);
+        console.log('randomly generated area title ', title);
 
     }
 
@@ -385,29 +375,25 @@ $(function () {
 
             url: api.createArea.url(),
 
-            headers: {"Authorization": "Bearer " + useToken},
+            headers: {'Authorization': 'Bearer ' + useToken},
             
-            dataType: 'jsonp',
+            dataType: 'json',
 
             data: {
-              
-                'type': 'polygon',
                 'latlngs': latlngs,
                 'note': note,
                 'contact': contact,
                 'secret': secret,
                 'title': title,
                 'tag': tags.join(),
-                'game' : game,
-                'feature_type': "polygon_area"
-                
+                'game' : game
             },
             
             success: function (data) {
               
                 console.log('success data', data);
 
-                showAlert("Area saved successfully!", "success", 1500);
+                showAlert('Area saved successfully!', 'success', 1500);
 
                 sidebar.hide('slow');
 
@@ -419,7 +405,7 @@ $(function () {
               
                 console.log('err', err);
 
-                showAlert("Sorry, failed to save the area.", "danger", 2000);
+                showAlert('Sorry, failed to save the area.', 'danger', 2000);
 
                 sidebar.hide();
 

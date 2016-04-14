@@ -29,11 +29,7 @@ function login(e) {
         success: function (response) {
             
             localStorage.setItem('token', response.token);
-            
-            console.log('logged in');
-            
-            $('#user-login-dialog').hide();
-            
+                        
             $.ajax({
                 
                 method: api.readUser.method,
@@ -43,6 +39,8 @@ function login(e) {
                 headers: {"Authorization": "Bearer " + response.token},
                 
                 success: function (data) {
+                    
+                    $('#user-login-dialog').hide();
                   
                     // Push the data into localStorage
                     localStorage.setItem('classic', 'true');
@@ -76,6 +74,7 @@ function login(e) {
 }
 
 //logout
+// TODO serverside logout
 function logout() {
     
     if (!localStorage.token) {
@@ -139,6 +138,7 @@ function registerUser(e) {
                 
                 success: function (data) {
                     
+                    console.log(data);
                     // Push the data into localStorage
                     localStorage.setItem('classic', 'true');
                     

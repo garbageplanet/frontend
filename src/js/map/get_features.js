@@ -2,6 +2,7 @@
 // Load the feature once in the currentView on page load
 map.addOneTimeEventListener('move', function (e) {
     
+    // use map.toBBoxString();
     var bounds = map.getBounds();
     
     currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
@@ -125,31 +126,26 @@ function loadGarbageMarkers () {
                 // Set the color given the amount of trash
                 function setClassColor(c) {
 
-                    return c === 1  ? 'marker-color-gree' :
-                           c === 2  ? 'marker-color-limegree' :
-                           c === 3  ? 'marker-color-yellow' :
-                           c === 4  ? 'marker-color-gold' :
-                           c === 4  ? 'marker-color-orange' :
-                           c === 6  ? 'marker-color-orangered' :
-                           c === 7  ? 'marker-color-red' :
-                           c === 8  ? 'marker-color-penk' :
-                           c === 9  ? 'marker-color-freespeech' :
-                                      'marker-color-lonestar' ;
+                    return c === 1  ? 'marker-color-limegreen'  :
+                           c === 2  ? 'marker-color-yellow'     :
+                           c === 3  ? 'marker-color-orangered'  :
+                           c === 4  ? 'marker-color-red'        :
+                                      'marker-color-violet';
                     };
                 
-                console.log("Garbage markers successfully loaded.");
-
                 $(data).each(function (index, obj) {
-
-                    var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
+                    console.log("MARKER GARBAGE DATA OBJ:", obj);
+                    // Need to parse the string from the db ugggghhh
+                    var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
+                                        
+                    var marker = new L.Marker(new L.LatLng(latlng[0],latlng[1]),
                         {
                             icon: garbageMarker,
                             id: obj.id,
                             amount: obj.amount,
                             types: obj.types.join(", "),
                             image_url: obj.image_url,
-                            lat: obj.lat,
-                            lng: obj.lng,
+                            latlng: obj.latlng,
                             confirm: obj.confirm,
                             todo: obj.todo,
                             tags: obj.tag,
@@ -162,7 +158,7 @@ function loadGarbageMarkers () {
                             cleaned_by: obj.cleaned_by,
                             cleaned_date: obj.cleaned_date
                         });
-
+                    
                     garbageLayerGroup.addLayer(marker);
                     
                     $(marker._icon).addClass(setClassColor(obj.amount));
@@ -214,24 +210,20 @@ function loadCleaningMarkers () {
 
             success: function(data) {
                 
-                console.log("Cleaning markers successfully loaded.");
-
                 $(data).each(function(index, obj) {
+                    
+                    var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
 
-                    // console.log(obj);
-
-                    var marker = new L.Marker(new L.LatLng(obj.lat, obj.lng),
+                    var marker = new L.Marker(new L.LatLng(latlng[0], latlng[1]),
                         {
                             icon:cleaningMarker,
                             id: obj.id,
                             datetime: obj.datetime,
-                            lat: obj.lat,
-                            lng: obj.lng,
+                            latlng: obj.latlng,
                             feature_type: 'marker_cleaning',
                             participants: obj.participants,
                             recurrence: obj.recurrence,
                             marked_by: obj.marked_by
-
                         });
 
                     // TODO add hasLayer() logic here to only add absent markers?
@@ -294,21 +286,24 @@ function loadAreas () {
 
                 $(data).each(function(index, obj) {
 
-                    console.log("object data", obj);
+                    console.log("Area object data", obj);
                     
                     var latlngs = JSON.parse("[" + obj.latlngs + "]");
 
-                      var polygonLayer = new L.Polygon(latlngs,
+                    var polygonLayer = new L.Polygon(latlngs,
                         {
-                          id: obj.id,
-                          title: obj.title,
-                          max_players: obj.max_players,
-                          curr_players: obj.curr_players, // how many user have already confirmed participation
-                          note: obj.note,
-                          tags: obj.tag,
-                          contact: obj.contact,
-                          feature_type: 'polygon_area',
-                          marked_by: obj.marked_by
+                            id: obj.id,
+                            title: obj.title,
+                            max_players: obj.max_players,
+                            curr_players: obj.curr_players, // how many user have already confirmed participation
+                            note: obj.note,
+                            tags: obj.tag,
+                            contact: obj.contact,
+                            feature_type: 'polygon_area',
+                            marked_by: obj.marked_by,
+                            color: '#33cccc',
+                            weight: 5,
+                            opacity: 0.5,
                         });
 
                       areaLayerGroup.addLayer(polygonLayer);
@@ -362,24 +357,19 @@ function loadLitters () {
             headers: {"Authorization": "Bearer " + useToken},
 
             success: function (data) {                
-
+                
                 $(data).each(function(index, obj) {
-                    
-                var latlngs = JSON.parse("[" + obj.latlngs + "]");
-                    
-                // Set the color given the amount of trash
-                function setColor(c) {
+                                        
+                    var latlngs = JSON.parse("[" + obj.latlngs + "]");
+                                                            
+                    // Set the color given the amount of trash
+                    function setColor(c) {
 
-                    return c === 1  ? '#' :
-                           c === 2  ? '#' :
-                           c === 3  ? '#' :
-                           c === 4  ? '#' :
-                           c === 4  ? '#' :
-                           c === 6  ? '#' :
-                           c === 7  ? '#' :
-                           c === 8  ? '#' :
-                           c === 9  ? '#' :
-                                      '#' ;
+                        return c === 1  ? '#ccff66' :
+                               c === 2  ? '#ffff00' :
+                               c === 3  ? '#FF4500' :
+                               c === 4  ? '#ff1a1a' :
+                                          '#e60073' ;
                     };
                     
                     var polylineLayer = L.polyline(latlngs,
@@ -394,9 +384,12 @@ function loadLitters () {
                         cleaned: obj.cleaned,
                         cleaned_by: obj.cleaned_by,
                         physical_length: obj.physical_length,
+                        weight: 15, 
+                        opacity: 0.5,
                         color: setColor(obj.amount)
                     });
                     
+                    console.log("POLYLINE OBJ DATA: ", polylineLayer);
                     
                     litterLayerGroup.addLayer(polylineLayer);
                     
@@ -430,9 +423,11 @@ function loadLitters () {
 // onClick behavior for saved garbage markers
 function onGarbageMarkerClick (e) {
     
+    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
+    
     console.log("Garbage marker clicked");
     
-    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
+    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
     
     sidebar.hide();
     
@@ -441,11 +436,13 @@ function onGarbageMarkerClick (e) {
 // onClick behavior for saved cleaning markers
 function onCleaningMarkerClick (e) {
     
+    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
+    
     console.log("Cleaning marker clicked");
     
     console.log(e);
     
-    map.panToOffset([e.options.lat, e.options.lng], _getVerticalOffset());
+    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
     
     sidebar.hide();
     
@@ -469,9 +466,11 @@ function onLitterClick (e) {
     
     console.log("remote polyline clicked");
     
+    console.log(e);
+        
     sidebar.hide();
     
-    map.panToOffset(e.getCenter(), _getVerticalOffset());
+    map.panToOffset(e.getBounds().getCenter(), _getVerticalOffset());
     
     map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
     
