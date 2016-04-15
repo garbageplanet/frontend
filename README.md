@@ -10,19 +10,17 @@ Just open /html/index.html in your browser. If you want to build for distributio
 When adding a new function to the code, add a comment about what it does. Build with gulp and open `index.html` from the `/dist` folder to check if there's any error. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### TODO
-- [ ] fix form bootstrap validation - disallow submit button until ok (not only add class `disabled`)
-- [ ] load features into layer but do not re-create each layer after each element is add (get_features.js) 
+- [ ] fill in all feature data in bottom panel
+- [ ] fix bootstrap form validation - disallow submit button until ok (not only add class `disabled`)
+- [ ] load features into layer but do not re-create each layer after each element is added (get_features.js) 
 - [ ] create radial css menu for mobile marker creation
+- [ ] build the search widget in sidebar for mobile and in the top panel on desktop.
 
 #### Feature actions
 - [ ] finalize the edit system (build the feature creation forms from templates)
 - [ ] build the cleaned, join, play and confirm functions with a prototype
 - [ ] modal to see/export/save area data
 - [ ] navigate between markers from bottom panel by listing markers in [current view](http://turbo87.github.io/leaflet-sidebar/examples/listing-markers.html)
-
-#### Map actions
-- [ ] make the map add new markers instead of reloading everything in the current view when map moves. Either check if any new db element was added to a nearby location after the last load or check with `contains()` [see this link](http://leafletjs.com/reference.html#latlngbounds-contains).
-- [ ] build the search widget in sidebar for mobile and in the top panel on desktop.
 
 #### Upgrade
 - [ ] move to Leaflet 1.0, make custom build and upgrade plugins (almost everything works out of the box)

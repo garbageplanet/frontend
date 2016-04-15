@@ -451,18 +451,26 @@ function onCleaningMarkerClick (e) {
 // onClick behavior for saved areas
 function onAreaClick (e) {
     
+    map.off('click', onMapClick);
+    
     console.log("remote polygon clicked");
+    
+    console.log(e);
     
     sidebar.hide();
     
-    map.panToOffset(e.getCenter(), _getVerticalOffset());
+    bottombar.show();
     
-    map.fitBounds(e.layer.getBounds());
+    map.panToOffset(e.getBounds().getCenter(), _getVerticalOffset());
+    
+    map.on('click', onMapClick);
     
 }
 
 // onClick behavior for saved litters
 function onLitterClick (e) {
+    
+    map.off('click', onMapClick);
     
     console.log("remote polyline clicked");
     
@@ -470,8 +478,10 @@ function onLitterClick (e) {
         
     sidebar.hide();
     
+    bottombar.show();
+    
     map.panToOffset(e.getBounds().getCenter(), _getVerticalOffset());
     
-    map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [0,200]});
-    
+    map.on('click', onMapClick);
+        
 };

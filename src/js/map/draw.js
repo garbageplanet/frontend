@@ -29,8 +29,9 @@ map.on('draw:drawstart', function (e) {
         layer = e.layer;
   
     // Disable start drawing buttons
+    // FIXME entirely disable handlers
     $('.btn-draw').addClass('disabled');
-  
+      
 });
 
 // Stop click listeners when editing and deleting features
@@ -46,7 +47,7 @@ map.on('draw:editstart', function (e) {
 
 map.on('draw:editstop', function (e) { 
     
-    $('.btn-draw').removeClass('disabled');
+    // $('.btn-draw').removeClass('disabled');
     
     $('.leaflet-draw-edit-edit').removeClass('visible');
     
@@ -70,7 +71,7 @@ map.on('draw:deletestop', function (e) {
 
     map.on('click', onMapClick);
 
-    $('.btn-draw').removeClass('disabled');
+    // $('.btn-draw').removeClass('disabled');
 
     $('.leaflet-draw-edit-edit').removeClass('visible');
 
@@ -88,7 +89,7 @@ map.on('draw:drawstop', function () {
 
     map.on('click', onMapClick);
 
-    $('.btn-draw').removeClass('disabled');
+    // $('.btn-draw').removeClass('disabled');
     
 });
 
@@ -97,7 +98,7 @@ map.on('draw:created', function (e) {
   
     var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
 
-    console.log("THIS LATLNGGGGGG: ", e.layer.getLatLngs());
+    console.log("LatLng data: ", e.layer.getLatLngs());
     
     if (e.layerType === 'polyline') {
         
@@ -193,7 +194,7 @@ map.on('draw:created', function (e) {
     // Reactivate default marker event listener and drawing button
     map.on('click', onMapClick);
     
-    $('.btn-draw').removeClass('disabled');  
+    // $('.btn-draw').removeClass('disabled');  
     
 });
 

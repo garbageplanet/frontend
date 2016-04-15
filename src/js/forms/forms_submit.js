@@ -5,9 +5,21 @@ window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJ
 // Save garbage marker
 $(function () {
     
-	$('.form-garbage').on('submit', function (event) {
+	   // $('.form-garbage').validator().on('submit', function (event) {
+       $('.form-garbage').on('submit', function (e) {
+
+        // Prevent form submit if validator is active - this doesn't work
+        /* if (event.isDefaultPrevented()) {
+
+            showAlert('Please fill all required fields.', 'warning', 2000);
+
+            // event.stopPropagation();
+            
+            return;
+
+        } else {*/
         
-        event.preventDefault();
+        e.preventDefault();
         
 		var that = this,
 		    garbageType = [],
@@ -121,14 +133,17 @@ $(function () {
                             
 		}, 100);
         
-	});
+	/*}*/
+    });
     
 });
 
 // Save cleaning event marker
 $(function () {
-    $('.form-cleaning').on( 'submit', function (event) {
-        event.preventDefault();
+    $('.form-cleaning').on( 'submit', function (e) {
+        
+        e.preventDefault();
+        
         var that = this,
             tags = [],
             eventRecurrence,
@@ -138,13 +153,13 @@ $(function () {
 
         // NOTE the time and date value is set in the onMapClick() function in js/map/map_actions.js for now
         dateTime = $('#date-time-value').val();
-        console.log(dateTime);
+                
         tags = $(this).find('.cleaning-tags').tagsinput('items') || '';
         
         note = $(this).find('.cleaning-note').val() || '';
         
         latlng = $(this).find('.cleaning-latlng').val();
-        console.log(latlng); 
+        
         eventRecurrence = $(this).find('.selectpicker.cleaning-recurrent-select option:selected').val();
             
 		setTimeout(function () {
@@ -171,9 +186,7 @@ $(function () {
                 },
                 
                 success: function (data) {
-                  
-                    console.log('success data', data);
-                    
+                                      
                     showAlert('Cleaning event saved successfully!', 'success', 2000);
                     
                     sidebar.hide('slow');
@@ -207,9 +220,9 @@ $(function () {
 // Save polyline / litter
 $(function () {
     
-    $('.form-litter').on( 'submit', function (event) {
+    $('.form-litter').on( 'submit', function (e) {
 
-    event.preventDefault();
+    e.preventDefault();
 
     var that = this,
         litterType = [],
@@ -303,9 +316,9 @@ $(function () {
 // Save polygon / area
 $(function () {
     
-    $('.form-area').on( 'submit', function (event) {
+    $('.form-area').on( 'submit', function (e) {
 
-    event.preventDefault();
+    e.preventDefault();
 
     var that = this,
         tags = [],
@@ -319,25 +332,20 @@ $(function () {
 
     game = $( '.tile-game-check input:checked' ).length || 0;
     console.log("game: ",game)
+    
     latlngs = $(this).find('.area-latlngs').val();
-    console.log("latlngs: ",latlngs)
 
     title = $(this).find('.area-title').val();
-    console.log("title: ",title)
 
     note = $(this).find('.area-note').val() || '';
-    console.log("ntoe: ",note)
 
     secret = $(this).find('.area-secret').val() || '';
-    console.log("secret: ",secret)
 
     contact = $(this).find('.area-contact').val() || '';
-    console.log("contact: ",contact)
 
     players = $(this).find('.area-players').val() || '';
 
     tags = $(this).find('.area-tags').tagsinput('items') || '';
-    console.log("tags: ",tags)
 
     function randomString(len) {
 
