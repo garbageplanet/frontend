@@ -123,73 +123,86 @@ function pushDataToBottomPanel(e) {
     });
 
     // Event listener for delete button
-    // TODO finish this once feature_type is available in the backend
-    $('#feature-info').find('.btn-delete').one('click', function (e) {
+    $('#feature-info').find('.btn-delete').on('click', function (e) {
         
+        console.log(featuredata);
+                
         e.preventDefault();
         // Set the ajax type and url for deletion given the type of feature
-        if (!featuredata.feature_type) {return;}
-
-        if (featuredata.feature_type){
+        if (featuredata.feature_type) {
             
             switch (featuredata.feature_type) {
                   
                 case 'marker_cleaning':
-                  var deleteurl = api.deleteCleaning.method;
-                  var deletemethod = api.deleteCleaning.url(featuredata.id);
+                  var deletemethod = api.deleteCleaning.method;
+                  var deleteurl = api.deleteCleaning.url(featuredata.id);
                   break;
 
                 case 'polyline_litter':
-                  var deleteurl = api.deleteLitter.method;
-                  var deletemethod = api.deleteLitter.url(featuredata.id);
+                  var deletemethod = api.deleteLitter.method;
+                  var deleteurl = api.deleteLitter.url(featuredata.id);
                   break;
 
                 case 'polygon_area':
-                  var deleteurl = api.deleteArea.method;
-                  var deletemethod = api.deleteArea.url(featuredata.id);
+                  var deletemethod = api.deleteArea.method;
+                  var deleteurl = api.deleteArea.url(featuredata.id);
                   break;
 
-                default:
-                  var deleteurl = api.deleteTrash.method;
-                  var deletemethod = api.deleteTrash.url(featuredata.id);
+                case 'marker_garbage':
+                  var deletemethod = api.deleteTrash.method;
+                  var deleteurl = api.deleteTrash.url(featuredata.id);
                   break;
-                  
-          }
+            
+            }
+                    
+            var useToken = localStorage.getItem('token') || window.token;
+            
+            if ((featuredata.marked_by || featuredata.created_by)  == localStorage.getItem('userid')) {
+                
+                $.ajax({
 
-          var useToken = localStorage.getItem('token') || window.token;
+                    type: deletemethod,
+
+                    url: deleteurl,
+
+                    headers: {"Authorization": "Bearer " + useToken},
+
+                    success: function(response) {
+
+                        bottombar.hide();
+
+                        loadGarbageMarkers();
+
+                        loadCleaningMarkers();
+
+                        loadLitters();
+
+                        loadAreas();
+
+                        showAlert("Feature deleted successfully!", "success", 1500);
+
+                    },
+
+                    error: function(response) {
+
+                        console.log("DELETE ERROR: ", response);
+
+                        showAlert("Failed to remove this feature.", "warning", 2000);
+
+                    }
+
+                });
+                
+            }
             
-          $.ajax({
-              
-              type: deletemethod,
-              
-              url: deleteurl,
-              
-              headers: {"Authorization": "Bearer " + useToken},
-              
-              success: function(response) {
-                  
-                  bottombar.hide();
-                  
-                  loadGarbageMarkers();
-                  
-                  loadCleaningMarkers();
-                  
-                  loadLitters();
-                  
-                  loadAreas();
-                  
-                  showAlert("Feature deleted successfully!", "success", 1500);
-                  
-              },
-              
-              error: function(response) {
-                  
-                  showAlert("Failed to remove this feature.", "warning", 2000);
-                  
-              }
-              
-          });
-            
+            else {
+                
+                bottombar.hide();
+                
+                showAlert("You cannot delete features you did not create.", "danger", 2500);
+                
+            }
+
         }
         
     });

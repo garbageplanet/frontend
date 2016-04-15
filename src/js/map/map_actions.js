@@ -176,8 +176,6 @@ function onMapClick(e) {
     setTimeout(function() {
 
         $('div.marker-generic').remove();
-
-        sidebar.hide();
         
     }, 400000);
   

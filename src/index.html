@@ -181,7 +181,7 @@
               <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
               <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
               <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
-              <li class="disabled hidden" role="presentation"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
+              <li role="presentation" class="disabled" role="presentation"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
             </ul>
 
         </div>
@@ -336,13 +336,16 @@
                             required
                             multiple >                        
                         <option value="" disabled="disabled"></option>
+                        <option value="plastic">Plastic</option>
+                        <option value="pet">PET bottles</option>
+                        <option value="poly">Styrofoam</option>
+                        <option value="butts">Cigarette butts</option>
+                        <option value="party">Party leftovers</option>
+                        <option value="fastfood">Fastfood garbage</option>
                         <option value="glass">Glass</option>
                         <option value="bottles">Glass bottles</option>
                         <option value="metal">Metal</option>
                         <option value="alu">Aluminium cans</option>
-                        <option value="plastic">Plastic</option>
-                        <option value="pet">PET bottles</option>
-                        <option value="poly">Styrofoam</option>
                         <option value="wood">Plywood, treated/painted wood</option>
                         <option value="chemicals">Chemicals</option>
                         <option value="household">Household garbage</option>
@@ -354,8 +357,6 @@
                         <option value="construction">Construction wastes</option>
                         <option value="gas">Gasoline, petroleum oil</option>
                         <option value="crude">Crude oil</option>
-                        <option value="party">Party leftovers</option>
-                        <option value="fastfood">Fastfood garbage</option>
                         <option value="vehicle">Large vehicle</option>
                         <option value="bicycle">Bicycles</option>
                         <option value="motorcyle">Motorcycles</option>
@@ -380,9 +381,9 @@
                             required>
                         <option value="" disabled="disabled"></option>
                         <option value="1">It's been cleaned up already</option>
-                        <option value="2">Need to pick up bags</option>
-                        <option value="3">Organize a cleaning</option>
-                        <option value="4">I need help</option>
+                        <option value="2">I need help to clean it up</option>
+                        <option value="3">Need to pick up bags</option>
+                        <option value="4">Organize a cleaning</option>
                         <option value="5">Tell local authorities</option>
                     </select>
                   <div class="help-block with-errors"></div>
@@ -669,13 +670,16 @@
                             data-width="100%"
                             required>
                         <option value="" disabled="disabled"></option>
+                        <option value="plastic">Plastic</option>
+                        <option value="pet">PET bottles</option>
+                        <option value="poly">Styrofoam</option>
+                        <option value="butts">Cigarette butts</option>
+                        <option value="party">Party leftovers</option>
+                        <option value="fastfood">Fastfood garbage</option>
                         <option value="glass">Glass</option>
                         <option value="bottles">Glass bottles</option>
                         <option value="metal">Metal</option>
                         <option value="alu">Aluminium cans</option>
-                        <option value="plastic">Plastic</option>
-                        <option value="pet">PET bottles</option>
-                        <option value="poly">Styrofoam</option>
                         <option value="wood">Plywood, treated/painted wood</option>
                         <option value="chemicals">Chemicals</option>
                         <option value="household">Household garbage</option>
@@ -687,8 +691,6 @@
                         <option value="construction">Construction wastes</option>
                         <option value="gas">Gasoline, petroleum oil</option>
                         <option value="crude">Crude oil</option>
-                        <option value="party">Party leftovers</option>
-                        <option value="fastfood">Fastfood garbage</option>
                         <option value="vehicle">Large vehicle</option>
                         <option value="bicycle">Bicycles</option>
                         <option value="motorcyle">Motorcycles</option>

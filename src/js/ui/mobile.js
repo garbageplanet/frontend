@@ -5,13 +5,16 @@ $(document).ready(function() {
     if (window.innerWidth < 768) {
 
         $('#topbar').remove();
+        
+        // Remove the search field from multiselect else the softkeyboard shows up on mobile
+        $('.garbage-type-select, .litter-type-select').attr('data-live-search', 'false');
 
         // add swipe areas
         $('body').append('<div class="swipe-area swipe-area-right"></div>');
         
         $('#sidebar').append('<div class="swipe-area swipe-area-left"></div>');
         
-        $('#bottombar').append('<div class="swipe-area swipe-area-top"></div>');
+        $('#bottombar').prepend('<div class="swipe-area swipe-area-top"></div>');
         
 
         $('.draw-link').addClass('disabled');

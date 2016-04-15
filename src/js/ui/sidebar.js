@@ -79,3 +79,6 @@ sidebar.on('hide', function () {
 
 // Fill the templates
 document.getElementById('credits').innerHTML = tmpl("tmpl-credits", templatedata);
+
+// Fill the form templates
+// $('.garbage-type-select, .litter-type-select').innerHTML = tmpl("tmpl-form-garbage-type", templatedata);

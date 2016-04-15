@@ -119,5 +119,44 @@ var templatedata = {
             "linkurl":"https://github.com/garbageplanet",
             "text":"Source code available on"
       }
+  ],
+"garbagetypes" : [
+    {
+        "plastic":"Plastic",
+        "pet":"PET bottles",
+        "poly":"Styrofoam",
+        "butts":"Cigarette butts",
+        "party":"Party leftovers",
+        "fastfood":"Fastfood garbage",
+        "glass":"Glass",
+        "bottles":"Glass bottles",
+        "metal":"Metal",
+        "alu":"Aluminium cans",
+        "wood":"Plywood, treated/painted wood",
+        "chemicals":"Chemicals",
+        "household":"Household garbage",
+        "clothes":"Shoes and clothes",
+        "fabric":"Carpets and fabrics",
+        "tarp":"Tarps, other large covers",
+        "electronic":"Electronics",
+        "electric":"Electric appliances, batteries",
+        "industrial":"Industrial wastes",
+        "construction":"Construction wastes",
+        "gas":"Gasoline, petroleum oil",
+        "crude":"Crude oil",
+        "vehicle":"Large vehicle",
+        "bicycle":"Bicycles",
+        "motorcyle":"Motorcycles",
+        "tyres":"Tyres",
+        "fishing":"Fishing gears",
+        "commercial":"Commercial fishing equipment",
+        "net":"Fishing net",
+        "lines":"Fishing line",
+        "boat":"Small boat",
+        "vessel":"Large boat, wreck",
+        "boating":"Boating equipment",
+        "buoy":"Buoys and floats",
+        "maritime":"Maritime equipment"
+    }
   ]
 };

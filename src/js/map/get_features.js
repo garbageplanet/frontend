@@ -223,7 +223,7 @@ function loadCleaningMarkers () {
                             feature_type: 'marker_cleaning',
                             participants: obj.participants,
                             recurrence: obj.recurrence,
-                            marked_by: obj.marked_by
+                            created_by: obj.created_by
                         });
 
                     // TODO add hasLayer() logic here to only add absent markers?
@@ -300,7 +300,7 @@ function loadAreas () {
                             tags: obj.tag,
                             contact: obj.contact,
                             feature_type: 'polygon_area',
-                            marked_by: obj.marked_by,
+                            created_by: obj.created_by,
                             color: '#33cccc',
                             weight: 5,
                             opacity: 0.5,
