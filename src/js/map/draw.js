@@ -253,8 +253,7 @@ $('.btn-draw-polyline').on('click', function () {
         shapeOptions: {
           color: '#A9A9A9',
           weight: 10,
-          opacity: 0.5,
-          smoothFactor: 2}
+          opacity: 0.5}
     }).enable();
     
 });
@@ -274,8 +273,7 @@ $('.btn-draw-polygon').on('click', function () {
        shapeOptions:{
           color: '#33cccc',
           weight: 5,
-          opacity: 0.5,
-          smoothFactor: 2},
+          opacity: 0.5},
       showArea: true,
       metric: true,
       clickable: true,

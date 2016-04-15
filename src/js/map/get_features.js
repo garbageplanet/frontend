@@ -304,6 +304,7 @@ function loadAreas () {
                             color: '#33cccc',
                             weight: 5,
                             opacity: 0.5,
+                            smoothFactor: 3
                         });
 
                       areaLayerGroup.addLayer(polygonLayer);
@@ -386,6 +387,7 @@ function loadLitters () {
                         physical_length: obj.physical_length,
                         weight: 15, 
                         opacity: 0.5,
+                        smoothFactor: 3,
                         color: setColor(obj.amount)
                     });
                     
