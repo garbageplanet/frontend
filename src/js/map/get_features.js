@@ -153,7 +153,9 @@ function loadGarbageMarkers () {
                             feature_type: 'marker_garbage',
                             size: obj.size,
                             embed: obj.embed,
-                            marked_by: obj.marked_by,
+                            created_by: obj.marked_by,
+                            created_at: obj.created_at,
+                            modified_at: obj.updated_at,
                             cleaned: obj.cleaned,
                             cleaned_by: obj.cleaned_by,
                             cleaned_date: obj.cleaned_date
@@ -223,7 +225,9 @@ function loadCleaningMarkers () {
                             feature_type: 'marker_cleaning',
                             participants: obj.participants,
                             recurrence: obj.recurrence,
-                            created_by: obj.created_by
+                            created_by: obj.created_by,
+                            created_at: obj.created_at,
+                            modified_at: obj.updated_at
                         });
 
                     // TODO add hasLayer() logic here to only add absent markers?
@@ -301,6 +305,8 @@ function loadAreas () {
                             contact: obj.contact,
                             feature_type: 'polygon_area',
                             created_by: obj.created_by,
+                            created_at: obj.created_at,
+                            modified_at: obj.updated_at,
                             color: '#33cccc',
                             weight: 5,
                             opacity: 0.5,
@@ -381,9 +387,11 @@ function loadLitters () {
                         image_url: obj.image_url,
                         tags: obj.tag,
                         feature_type: 'polyline_litter',
-                        marked_by: obj.marked_by,
+                        created_by: obj.marked_by,
                         cleaned: obj.cleaned,
                         cleaned_by: obj.cleaned_by,
+                        created_at: obj.created_at,
+                        modified_at: obj.updated_at,
                         physical_length: obj.physical_length,
                         weight: 15, 
                         opacity: 0.5,

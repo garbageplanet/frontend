@@ -35,7 +35,7 @@
           </button><span class="badge badge-notify badge-notify-join">{%=o.join%}</span>
         </div>
         {% } %}
-        {% if (o.title) { %}
+        {% if (o.contact) { %}
         <div class="btn-group btn-group-lg" role="group">
           <button type="button" title="Join game" class="btn btn-round btn-info btn-participate-game">
             <span class="fa fa-play"></span>
@@ -67,6 +67,30 @@
         <div class="panel-body">
         <span class="pull-left">amount:{%=o.amount%}</span>
         <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-amount pull-left"></span>
+        </div>
+      </div>
+      {% } %}
+      {% if (o.size) { %}
+      <div class="panel panel-default">
+        <div class="panel-body">
+        <span class="pull-left">sizes:{%=o.size%}</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-size pull-left"></span>
+        </div>
+      </div>
+      {% } %}
+      {% if (o.embed) { %}
+      <div class="panel panel-default">
+        <div class="panel-body">
+        <span class="pull-left">in:{%=o.embed%}</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-embed pull-left"></span>
+        </div>
+      </div>
+      {% } %}
+      {% if (o.physical_length) { %}
+      <div class="panel panel-default">
+        <div class="panel-body">
+        <span class="pull-left">length:{%=o.physical_length%}</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-litter-length pull-left"></span>
         </div>
       </div>
       {% } %}
@@ -162,8 +186,8 @@
   <div><h3>Track changes</h3></div>
     <div class="panel panel-default">
       <div class="panel-body">
-        <span class="pull-left">creation date:{%=o.creation_time %}</span>
-        <span class="feature-info feature-info-creation-time pull-left"></span>
+        <span class="pull-left">creation date:{%=o.created_at %}</span>
+        <span class="feature-info feature-info-created-at pull-left"></span>
       </div>
     </div>
     <div class="panel panel-default">
@@ -179,12 +203,18 @@
         <span class="feature-info feature-info-modified-by pull-left"></span>
       </div>
     </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <span class="pull-left">modified at:{%=o.modifided_at %}</span>
+        <span class="feature-info feature-info-modified-at pull-left"></span>
+      </div>
+    </div>
     {% } %}
     {% if (o.cleaned_by) { %}
     <div class="panel panel-default">
       <div class="panel-body">
         <span class="pull-left">modified by:{%=o.cleaned_by %}</span>
-        <span class="feature-info feature-info-modified-by pull-left"></span>
+        <span class="feature-info feature-info-cleaned-by pull-left"></span>
       </div>
     </div>
     {% } %}

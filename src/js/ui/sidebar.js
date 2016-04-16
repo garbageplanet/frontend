@@ -42,7 +42,7 @@ $('.menu-backlink').click(function(e) {
 });
 
 // Close sidebar if cancel button clicked
-$(".btn-cancel").on('click', function (){
+$('.btn-cancel').on('click', function (){
     
     sidebar.hide();
     
@@ -78,7 +78,9 @@ sidebar.on('hide', function () {
 });
 
 // Fill the templates
-document.getElementById('credits').innerHTML = tmpl("tmpl-credits", templatedata);
+document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templatedata);
 
-// Fill the form templates
-// $('.garbage-type-select, .litter-type-select').innerHTML = tmpl("tmpl-form-garbage-type", templatedata);
+// Fill the multi select templates
+document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', templatedata);
+document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', templatedata);
+

@@ -418,8 +418,8 @@ a.menu-backlink:hover {
   margin-bottom: 0px;
 }
 
-.progress-bar {
-    border-radius: 0;
+.progress {
+    border-radius: 0 !important;
 }
 
 /* Style the popovers */
