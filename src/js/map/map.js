@@ -31,28 +31,61 @@ baselayer['Mapbox Outdoors'].addTo(map);
 baselayer['Mapbox Outdoors'].addTo(minimap);
 minimap.sync(map);*/
 
-function onLocationError(e) {
+function getLocation() {
+    
+    tries = 0;
+    
+    if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
 
-    showAlert("Couldn't find your position.", "warning", 2000);
+        tries += 1;
 
-    map.setZoom(2);
+        map.locate({
 
+            setView: true,
+            maxZoom: 16,
+            timeout: 10000,
+            enableHighAccuracy: true
+
+        });
+        
+        return tries;
+    }
 }
 
-// FIXME this doesnt work
-// function onLocationFound(e) {
-// Locate the user if the url doesn't contains lat lngs regex adatped from Iain Fraser http://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
-  if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
+function onLocationError(e) {
+    
+    if (tries < 5) {
+        
+        getLocation();
+        
+    }
+    
+    else {
+            
+        showAlert("Couldn't find your position.", "warning", 2000);
 
-    map.locate({setView: true, maxZoom: 16});
-
-  }
-// }
+        map.setZoom(2);
+        
+    }
+    
+}
 
 map.on('locationerror', onLocationError);
 
-// map.on('locationfound', onLocationFound);
+$(document).ready(function () {
+    
+    getLocation();
+    
+    // Add a scale, layers and zoom controls
+    if (window.innerWidth > 568) { 
 
+        map.addControl(L.control.zoom({position: 'topleft'}));
+        
+    }
+                     
+    L.control.scale({metric: true, imperial: false}).addTo(map);                       
+    
+});
 
 // Sidebar creation and placement
 var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
@@ -99,18 +132,7 @@ var overlayGroups = {
     
 };
 
-// Add a scale, layers and zoom controls
-// TODO Remove scale and zoom controls on mobile with L.Browser in Lealfet 1.0
-if (window.innerWidth > 568) { 
-    
-    map.addControl(L.control.zoom({position: 'topleft'}));
-    
-    new L.control.scale({metric: true, imperial: false}).addTo(map);
-                             
-}
-
 L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
-
 
 // Set an icon on the layer select button
 $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");

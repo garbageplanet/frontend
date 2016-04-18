@@ -221,6 +221,8 @@ $(function () {
 $(function () {
     
     $('.form-litter').on( 'submit', function (e) {
+        
+    $('.btn-draw').removeClass('disabled');
 
     e.preventDefault();
 
@@ -318,6 +320,8 @@ $(function () {
     
     $('.form-area').on( 'submit', function (e) {
 
+    $('.btn-draw').removeClass('disabled');    
+    
     e.preventDefault();
 
     var that = this,

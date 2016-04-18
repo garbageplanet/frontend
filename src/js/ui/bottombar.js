@@ -35,7 +35,7 @@ function pushDataToBottomPanel(e) {
     // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
     if (featuredata.image_url) {
         
-        var image_url_insert = featuredata.image_url.insert(26, "t");
+        var image_url_insert = featuredata.image_url.insert(26, "b");
         
         $('#feature-info').find('.feature-image').attr('src', image_url_insert);
         

@@ -32,8 +32,7 @@ map.addOneTimeEventListener('move', function (e) {
 });
 
 // After the first page load, the features from the backend only if the map is moved by a certain extent (here window width / 2)
-// TODO smarter way to determine smallest map move distance
-// FIXME the data loading functions get called but the data is not fetched?
+// TODO smarter way to load stuff
 map.on('dragend zoomend', function (e){
   
     var bounds = map.getBounds();
@@ -461,37 +460,35 @@ function onCleaningMarkerClick (e) {
 // onClick behavior for saved areas
 function onAreaClick (e) {
     
-    map.off('click', onMapClick);
+    // map.off('click', onMapClick);
     
     console.log("remote polygon clicked");
     
-    console.log(e);
+    setTimeout(function () {
     
-    sidebar.hide();
-    
-    bottombar.show();
-    
-    map.panToOffset(e.getBounds().getCenter(), _getVerticalOffset());
-    
-    map.on('click', onMapClick);
+        sidebar.hide();
+
+        bottombar.show();
+
+        map.panToOffset(e.getCenter(), _getVerticalOffset());
+        
+    }, 100);
     
 }
 
 // onClick behavior for saved litters
 function onLitterClick (e) {
-    
-    map.off('click', onMapClick);
-    
+        
     console.log("remote polyline clicked");
-    
-    console.log(e);
         
-    sidebar.hide();
+    setTimeout(function () {
     
-    bottombar.show();
-    
-    map.panToOffset(e.getBounds().getCenter(), _getVerticalOffset());
-    
-    map.on('click', onMapClick);
+        sidebar.hide();
+
+        bottombar.show();
+
+        map.panToOffset(e.getCenter(), _getVerticalOffset());
         
+    }, 100);
+   
 };
