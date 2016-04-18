@@ -72,21 +72,6 @@ function onLocationError(e) {
 
 map.on('locationerror', onLocationError);
 
-$(document).ready(function () {
-    
-    getLocation();
-    
-    // Add a scale, layers and zoom controls
-    if (window.innerWidth > 568) { 
-
-        map.addControl(L.control.zoom({position: 'topleft'}));
-        
-    }
-                     
-    L.control.scale({metric: true, imperial: false}).addTo(map);                       
-    
-});
-
 // Sidebar creation and placement
 var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
 
@@ -132,10 +117,27 @@ var overlayGroups = {
     
 };
 
-L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
 
-// Set an icon on the layer select button
-$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
+$(document).ready(function () {
+    
+    getLocation();
+    
+    // Add a scale, layers and zoom controls
+    if (window.innerWidth > 568) { 
+
+        map.addControl(L.control.zoom({position: 'topleft'}));
+        
+    }
+                     
+    L.control.scale({metric: true, imperial: false}).addTo(map);
+    
+    L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
+    
+    // Set an icon on the layer select button
+    $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
+    
+});
+
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();

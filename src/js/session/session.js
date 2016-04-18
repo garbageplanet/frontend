@@ -33,7 +33,11 @@ function switchSession(sessionStatus) {
         
         $("#session-status a").removeClass('dropdown-link');
         
-        $("#session-status").on('click', '#btn-logout', function() {switchSession("logout"); logout();});
+        $("#session-status").on('click', '#btn-logout', function() {
+            
+            switchSession("logout"); logout();
+        
+        });
         
         $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="#account-info">User info</a></li>');
         
@@ -50,7 +54,7 @@ function switchSession(sessionStatus) {
                                     });
         
         $(".mobile-menu").append('<a href="#account-info" id="user-info-mobile-link" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-user"></span> User info</a>');
-        
+                
         $("#user-info-mobile-link").on("click", function(e) {
             
                                       e.preventDefault();

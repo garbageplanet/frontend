@@ -245,7 +245,7 @@
 /* general toolbar styles */
 
 .leaflet-bar {
-	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	box-shadow: 0 1px 5px rgba(0,0,0,0);
 	border-radius: 4px;
 	}
 .leaflet-bar a,
@@ -372,8 +372,8 @@
 	background-size: 26px 26px;
 	}
 .leaflet-touch .leaflet-control-layers-toggle {
-	width: 44px;
-	height: 44px;
+	width: 40px;
+	height: 40px;
 	}
 .leaflet-control-layers .leaflet-control-layers-list,
 .leaflet-control-layers-expanded .leaflet-control-layers-toggle {
@@ -465,7 +465,7 @@
 	}
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
-	border: 2px solid rgba(0,0,0,0.2);
+	border: 0px solid rgba(0,0,0,0);
 	background-clip: padding-box;
 	}
 
@@ -512,7 +512,7 @@
 .leaflet-popup-tip {
 	background: white;
 	color: #333;
-	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	box-shadow: 0 3px 14px rgba(0,0,0,0);
 	}
 .leaflet-container a.leaflet-popup-close-button {
 	position: absolute;
@@ -556,7 +556,7 @@
 .leaflet-oldie .leaflet-control-layers,
 .leaflet-oldie .leaflet-popup-content-wrapper,
 .leaflet-oldie .leaflet-popup-tip {
-	border: 1px solid #999;
+	border: 0px solid #999;
 	}
 
 

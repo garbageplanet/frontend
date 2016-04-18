@@ -1,22 +1,23 @@
 // Mobile display
 // TODO use L.Browser once Leaflet 1.0 is in use
 $(document).ready(function() {
+    
+    if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android23 || L.Browser.mobileOpera) {
 
-    if (window.innerWidth < 768) {
+        // if (window.innerWidth < 768) {
 
         $('#topbar').remove();
         
         // Remove the search field from multiselect else the softkeyboard shows up on mobile
         $('.garbage-type-select, .litter-type-select').attr('data-live-search', 'false');
 
-        // add swipe areas
+        // Add swipe areas
         $('body').append('<div class="swipe-area swipe-area-right"></div>');
         
         $('#sidebar').append('<div class="swipe-area swipe-area-left"></div>');
         
         $('#bottombar').prepend('<div class="swipe-area swipe-area-top"></div>');
         
-
         $('.draw-link').addClass('disabled');
 
         // Activate swipe on the right border to show the mobile menu
