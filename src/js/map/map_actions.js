@@ -210,4 +210,17 @@ function onLocalMarkerClick (e) {
     
     sidebar.show($("#create-marker-dialog").fadeIn());
     
-};
+    $('.marker-latlng').val(marker._latlng);
+    
+}
+
+// Locate the user on click of either mobile of top bar menu button
+$('.btn-locate').on('click', function(){
+
+    sidebar.hide();
+
+    bottombar.hide();
+
+    map.locate({setView: true, maxZoom: 20}).on('locationerror', onLocationError);
+    
+});

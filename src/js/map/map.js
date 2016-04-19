@@ -48,7 +48,6 @@ function getLocation() {
 
         });
         
-        return tries;
     }
 }
 

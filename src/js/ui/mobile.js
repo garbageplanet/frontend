@@ -2,9 +2,10 @@
 // TODO use L.Browser once Leaflet 1.0 is in use
 $(document).ready(function() {
     
-    if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android23 || L.Browser.mobileOpera) {
+        // This still doesn't work in 1.0 rc1
+        // if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android23 || L.Browser.mobileOpera) {
 
-        // if (window.innerWidth < 768) {
+        if (window.innerWidth < 768) {
 
         $('#topbar').remove();
         

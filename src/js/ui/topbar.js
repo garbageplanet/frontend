@@ -18,17 +18,6 @@ $(document).ready(function() {
         
     });
 
-    // Locate the user on click
-    $('.btn-locate').on('click', function(){
-
-        sidebar.hide('slow');
-
-        bottombar.hide();
-
-        map.locate({setView: true, maxZoom: 20}).on('locationerror', onLocationError);
-
-    });
-
   // Show nearby trashbins
   $('#btn-trashbins').on('click', function(){
       
