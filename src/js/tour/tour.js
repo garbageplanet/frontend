@@ -112,7 +112,7 @@ var devTour = new Tour({
         placement: 'bottom',
       },*/
       {
-        content: 'Note that this platform is currently under development. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
+        content: 'Note that this platform is currently under active development but all basic functions can be used to save markers and images. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
         duration: 5000,
         orphan: true
       }
@@ -127,16 +127,9 @@ var mobileTour = new Tour({
       {
         element: ".swipe-area-right",
         placement: 'left',
-        content: "Access the main menu by swiping from the right border.",
+        content: "Access the main menu by swiping from the right border of the screen.",
         duration: 5000
-      },
-    
-      {
-        content: "All the other actions happen by tapping the map at close zoom.",
-        duration: 6000,
-        orphan: true
       }
-    
   ]
 });
 
@@ -157,8 +150,6 @@ window.startTour = function() {
 
     if($(window).width() < 768){
 
-        sidebar.hide();
-
         mobileTour.init();
 
         mobileTour.start(true);
@@ -169,7 +160,7 @@ window.startTour = function() {
 
 $(document).ready(function() {
   
-    setTimeout(startTour, 4000)
+    setTimeout(startTour, 1000)
     
 });
 

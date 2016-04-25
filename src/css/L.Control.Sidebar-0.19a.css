@@ -21,9 +21,7 @@
        -moz-transition: bottom 0.8s, height 0.8s;
          -o-transition: bottom 0.8s, height 0.8s;
     padding-bottom: 0; 
-/*
-    overflow: hidden 
-*/
+/*overflow: hidden */
 }
 
 .leaflet-sidebar.bottom.visible {
@@ -93,6 +91,10 @@
     
       .leaflet-sidebar.bottom.visible ~ .leaflet-bottom {
         bottom: 0%; 
+      }
+      
+      .leaflet-sidebar.bottom.visible ~ .leaflet-left {
+        bottom: 50%; 
       }
       
       .leaflet-sidebar.right.visible ~ .leaflet-right {
@@ -243,8 +245,16 @@
 }
 
 .leaflet-bottom {
-          transition: bottom 0.5s;
-  -webkit-transition: bottom 0.5s;
-     -moz-transition: bottom 0.5s;
-       -o-transition: bottom 0.5s;
+          transition: bottom 0.8s;
+  -webkit-transition: bottom 0.8s;
+     -moz-transition: bottom 0.8s;
+       -o-transition: bottom 0.8s;
 }
+
+.leaflet-sidebar.bottom.visible ~ .leaflet-bottom.leaflet-right {
+    bottom: 0px; 
+} 
+
+.leaflet-sidebar.right.visible ~ .leaflet-bottom.leaflet-right {
+    right: 0px; 
+} 

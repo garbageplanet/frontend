@@ -14,8 +14,6 @@
    function in the same way as above add tmpl.min.js after 
    template.js in the body of your main html file. */
 
-
-
 var templatedata = {
   "social" : {
       "network": [
@@ -123,20 +121,24 @@ var templatedata = {
 "garbagetypes" : {
         "value" : [
             "plastic",
+            "bags",
             "pet",
             "poly",
             "butts",
+            "foodpacks",
             "party",
             "fastfood",
             "glass",
             "bottles",
             "metal",
+            "tin",
             "alu",
             "wood",
             "chemicals",
             "household",
             "clothes",
             "fabric",
+            "matress",
             "tarp",
             "electronic",
             "electric",
@@ -148,6 +150,8 @@ var templatedata = {
             "bicycle",
             "motorcyle",
             "tyres",
+            "engine",
+            "parts",
             "fishing",
             "commercial",
             "net",
@@ -159,21 +163,25 @@ var templatedata = {
             "maritime"
         ],
         "name" : [
-            "Plastic",
+            "Plastic items",
+            "Plastic bags",
             "PET bottles",
-            "Styrofoam",
+            "Expanded plastic polymers",
             "Cigarette butts",
+            "Plastic food containers",
             "Party leftovers",
             "Fastfood garbage",
             "Glass",
             "Glass bottles",
             "Metal",
+            "Tin cans",
             "Aluminium cans",
             "Plywood, treated/painted wood",
             "Chemicals",
             "Household garbage",
             "Shoes and clothes",
             "Carpets and fabrics",
+            "Matresses",
             "Tarps, other large covers",
             "Electronics",
             "Electric appliances, batteries",
@@ -185,6 +193,8 @@ var templatedata = {
             "Bicycles",
             "Motorcycles",
             "Tyres",
+            "Engine parts",
+            "Vehicles parts",
             "Fishing gears",
             "Commercial fishing equipment",
             "Fishing net",

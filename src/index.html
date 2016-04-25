@@ -31,10 +31,11 @@
 
   <link rel="stylesheet" type="text/css" href="css/font-awesome-4.5.0.css" >
   <link rel="stylesheet" type="text/css" href="css/google-work-sans.css" >
-<!--
   <link rel="stylesheet" type="text/css" href="css/leaflet-0.7.7.css"/>
--->
+<!--
   <link rel="stylesheet" type="text/css" href="css/leaflet-1.0.css"/>
+-->
+  <link rel="stylesheet" type="text/css" href="css/L.Compact.Attributions.css"/>
   <link rel="stylesheet" type="text/css" href="css/L.Search.css"/>
   <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.6.css">
   <link rel="stylesheet" type="text/css" href="css/L.Control.Sidebar-0.19a.css">
@@ -50,7 +51,6 @@
   <link rel="stylesheet" type="text/css" href="css/markers.css">
 
   <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
-  <script type="text/javascript" src="js/libs/jquery-longclick-0.3.2.js"></script>
   <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-datetimepicker-4.17.37.js"></script>
@@ -62,12 +62,14 @@
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
   <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
 
-<!--
   <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
--->
+<!--
   <script type="text/javascript" src="js/libs/Leaflet-1.0-rc1.js"></script>
-  <script type="text/javascript" src="js/libs/L.hash.js"></script>
+-->
+  <script type="text/javascript" src="js/libs/L.Hash.js"></script>
   <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
+  <script type="text/javascript" src="js/libs/L.Compact.Attributions.js"></script>
+  <script type="text/javascript" src="js/libs/L.Marker.Menu.js"></script>
   <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
   <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
   <script type="text/javascript" src="js/libs/L.Draw.js"></script>
@@ -79,7 +81,8 @@
 
 </head>
 <body>
-<div class="meter"></div>
+<div class="container"><div class="modal-default"></div></div>
+
 <div id="topbar" class="topbar-container container">
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -88,7 +91,7 @@
 
         <div class="pull-right">
           <ul class="nav navbar-nav">
-          <li class="hidden">
+          <li class="hidden search-form">
             <form class="navbar-form">
               <div class="input-group">
                 <div class="input-group-btn search-filter">
@@ -112,13 +115,15 @@
             </form>
           </li>
 
-          <li class="session-link"><a href="#" class="btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><i id="tour-element-glome-shortcut" class="fa fa-fw fa-icon-green fa-sign-in"></i></a></li>
+          <li class="session-link"><a href="#" class="btn btn-success btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><strong class="fa-icon-white">Anon Login</strong></a></li>
 
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <span class="fa fa-fw fa-cogs"></span><span class="hidden title-collapsed">Map tools</span></a>
               <ul class="dropdown-menu" id="map-tools">
-                <li class="disabled"><a class="bottombar-link" href="#cleaning-calendar">Cleaning calendar</a></li>
+                <li class=""><a id="modal-list-features" class="modal-link">List markers</a></li>
+                <li class="disabled"><a id="modal-calendar" class="modal-link">Cleaning calendar</a></li>
+                <li class="disabled"><a id="modal-get-data" class="modal-link">Get the data</a></li>
                 <li class="divider"></li>
                 <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
                 <li class="disabled"><a class="" href="#">Local forecast</a></li>
@@ -149,7 +154,7 @@
 </div><!-- Contents of the top bar -->
 
 <div id="map" class="map-container"></div>
-
+    
 <div id="sidebar" class="sidebar-container">
         
     <div class="sidebar-content-container">
@@ -195,7 +200,7 @@
         <div class="sidebar-content" id="create-cleaning-dialog">
         <!-- Cleaning event creation -->
           <div id="create-cleaning">
-            <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#create-marker-dialog"></a></span>Cleaning event</h3>
+            <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>Add a cleaning event</h3>
           </div>
 
             <form class="form-feature form-cleaning " data-toggle="validator">
@@ -299,9 +304,7 @@
           <div>
               <h3>
                   <span>
-                      <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left"
-                         href="#create-marker-dialog">
-                      </a>
+                      <a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a>
                   </span> Mark garbage
               </h3>
           </div>
@@ -470,7 +473,7 @@
 
         </div>
         <div class="sidebar-content" id="create-area-dialog">
-            <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#create-marker-dialog"></a></span>Create an area</h3>
+            <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>Create an area</h3>
 
             <form class="form-feature form-area" data-toggle="validator">
 
@@ -595,7 +598,7 @@
             </form>
         </div>
         <div class="sidebar-content" id="create-litter-dialog">
-          <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#create-marker-dialog"></a></span>Mark litter</h3>
+          <h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>Mark litter</h3>
           
             <form class="form-feature form-litter" data-toggle="validator">
 
@@ -1067,6 +1070,7 @@
 <script type="text/javascript" src="js/forms/forms_elements.js"></script>
 <script type="text/javascript" src="js/forms/forms_submit.js"></script>
 <script type="text/javascript" src="js/forms/search.js"></script>
+<script type="text/javascript" src="js/ui/modal.js"></script>
 
 <!-- Others -->
 <script type="text/javascript" src="js/social/share.js"></script>

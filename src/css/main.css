@@ -63,6 +63,11 @@ body {
    margin-right: auto;
 }
 
+/* Style top panel elements */
+.btn-glome-shortcut:hover {
+    background-color: #006600 !important;
+}
+
 /* Icons color shortcuts */
 .fa-icon-green {
   color: limegreen;
@@ -426,9 +431,9 @@ a.menu-backlink:hover {
 .popover {
   border-radius: 0 !important;
   border: 0px !important;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
+  -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.5) !important;
+  -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.5) !important;
+ box-shadow: 0px 0px 10px rgba(0,0,0,0.5) !important;
 }
 
 .popover-navigation > a {
@@ -441,6 +446,9 @@ a.menu-backlink:hover {
   max-width: 100%;
   background-color: rgba(255,255,255,0);
   max-height: 55px; /* force horizontal display on mobile */
+  -webkit-box-shadow: none !important;
+     -moz-box-shadow: none !important;
+          box-shadow: none !important;
 }
 
 /* Style default buttons and link colors */
@@ -521,6 +529,7 @@ textarea {
     resize: none;
 }
 
+/* Force sizing of tags widget to match other inputs */
 .bootstrap-tagsinput input {
   line-height: 1.3333333 !important;
   height: 34px;
@@ -557,7 +566,7 @@ textarea {
   font-family: 'Work Sans', sans-serif;
 }
 
-/* Squarify bs3 buttons and alerts */
+/* Squarify buttons and alerts */
 .btn {border-radius: 0;}
 .btn-group>.btn:last-child,
 .btn-group> btn:first-child {
@@ -600,4 +609,28 @@ textarea {
 .leaflet-draw-edit-edit.visible, .leaflet-draw-edit-remove.visible  {
   display:inherit !important;
   margin-right: 0px;
+}
+
+/* Style the radial marker menu */
+.leaflet-marker-menu-item {
+	background: #FFF;
+	border-radius: 50%;
+    color: #000 !important;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+}
+
+.fa-marker-menu {
+    line-height: 50px !important;
+}
+
+.leaflet-marker-menu-item:hover {
+    text-decoration: none;
+}
+
+/* Style modals */
+
+.modal-content {
+    height: 100% !important;
+    border-radius: 0;
+    box-shadow: none;
 }

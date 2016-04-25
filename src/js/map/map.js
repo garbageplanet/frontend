@@ -1,6 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Set the map
-var map = L.map('map', {zoomControl: false, attributionControl: false});
+var map = L.map('map', {zoomControl: false, attributionControl: true});
 // Add location hash
 var hash = new L.Hash(map);
 
@@ -8,10 +8,16 @@ var hash = new L.Hash(map);
 var baselayer = {
     
     "Mapbox Outdoors": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
-    {maxZoom: 20, reuseTiles: true}),
+    {maxZoom: 18,
+     reuseTiles: true,
+     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
+    }),
     
     "Mapbox Satellite": L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.nej0l93m/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
-    {maxZoom: 20, reuseTiles: true})
+    {maxZoom: 18,
+     reuseTiles: true,
+     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
+    })
     
 };
 
@@ -32,44 +38,38 @@ baselayer['Mapbox Outdoors'].addTo(minimap);
 minimap.sync(map);*/
 
 function getLocation() {
-    
-    tries = 0;
-    
+            
     if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
-
-        tries += 1;
+        
+        console.log("beinging localization");
 
         map.locate({
 
-            setView: true,
-            maxZoom: 16,
-            timeout: 10000,
+            setView: false,
+            timeout: 8000,
             enableHighAccuracy: true
 
         });
-        
+                                
     }
 }
 
 function onLocationError(e) {
+      
+    showAlert("Couldn't find your position.", "warning", 2000);
     
-    if (tries < 5) {
-        
-        getLocation();
-        
-    }
-    
-    else {
-            
-        showAlert("Couldn't find your position.", "warning", 2000);
-
-        map.setZoom(2);
-        
-    }
+    map.setView([0, 0], 2);
     
 }
 
+function onLocationFound(e) {
+    
+    map.setView(e.latlng, 18);
+}
+
 map.on('locationerror', onLocationError);
+
+map.on('locationfound', onLocationFound);
 
 // Sidebar creation and placement
 var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
@@ -92,13 +92,13 @@ var garbageLayerGroup = new L.LayerGroup(),
     
     allLayers = new L.LayerGroup([
         
-                                      garbageLayerGroup,
+                  garbageLayerGroup,
 
-                                      areaLayerGroup,
+                  areaLayerGroup,
 
-                                      cleaningLayerGroup,
+                  cleaningLayerGroup,
 
-                                      litterLayerGroup
+                  litterLayerGroup
         
                 ]);
 
@@ -136,7 +136,6 @@ $(document).ready(function () {
     $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
     
 });
-
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();

@@ -50,107 +50,175 @@ function _getHorizontalOffset() {
 }
 //////////////////////////////////////////////////////////////////////
 
+// Create the context menu for mobile / small screens
+var featureMenu = L.markerMenu({
+    
+        radius: 100,
+        size: [50, 50],                    
+        animate: true,                     
+        duration: 200,                    
+
+        items: [
+            {
+            title: "Mark garbage",
+            className: "fa fa-fw fa-2x fa-marker-menu fa-map-marker",
+            click: function () {
+                sidebar.show($("#create-garbage-dialog").show());
+                setTimeout(function () {marker.closeMenu();}, 500);
+            }
+        }
+
+        , {
+            title: "Create a cleaning event",
+            className: "fa fa-fw fa-2x fa-marker-menu fa-calendar-o",
+            click: function () {
+                sidebar.show($("#create-cleaning-dialog").show());
+                setTimeout(function () {marker.closeMenu();}, 500);
+            }
+        }
+        , {
+            title: "Mark litter",
+            className: "fa fa-fw fa-2x fa-marker-menu fa-hand-lizard-o",
+            click: function () {
+                sidebar.show($("#create-litter-dialog").show());
+                setTimeout(function () {marker.closeMenu();}, 500);
+            }
+
+            }
+        , {
+            title: "Add an area",
+            className: "fa fa-fw fa-2x fa-marker-menu fa-map",
+            click: function () {
+                sidebar.show($("#create-area-dialog").show());
+                setTimeout(function () {marker.closeMenu();}, 500);
+            }
+        }
+        ]
+    
+});
+
 // Default behavior for map clicks
 function onMapClick(e) {
     
-    if (!sidebar.isVisible() && !bottombar.isVisible() && e.target.getZoom() >= 10 && !$('.dropdown').hasClass('open') && !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && !$('.leaflet-control-search').hasClass('leaflet-control-search-expanded')) {
+    if (!sidebar.isVisible() && 
+        !bottombar.isVisible() && 
+        e.target.getZoom() >= 10 && 
+        !$('.dropdown').hasClass('open') && 
+        !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && 
+        !$('.leaflet-control-search').hasClass('leaflet-control-search-expanded')) {
         
-        marker = L.marker(e.latlng, {
+        marker = L.marker(e.latlng, { icon: genericMarker, draggable: true});
+        
+        // Actions for mobile and small screens
+        if ($(window).width() <= 567) {
             
-        icon: genericMarker,
-            
-        draggable: true
-            
-        }).on('click', onLocalMarkerClick).addTo(map);
-        
-    var latlng = marker._latlng.lat + ", " + marker._latlng.lng;
-            
-    $('.marker-latlng').val(latlng);
-        
-    if ($(window).width() >= 567) {
-        
-        map.panToOffset(marker._latlng, _getHorizontalOffset());
-        
-    } 
-      
-    $('.sidebar-content').hide();
+            if (!$('.leaflet-marker-menu').is(':visible')) {
 
-    $('#sidebar').scrollTop = 0;
+                marker.setMenu(featureMenu);
 
-    sidebar.show($("#create-marker-dialog").show());
-        
-    function setClassColor(c) {
+                map.addLayer(marker).panTo(marker._latlng);
 
-        return c === 1 ? 'marker-color-limegreen' :
-               c === 2 ? 'marker-color-yellow' : 
-               c === 3 ? 'marker-color-orangered' : 
-               c === 4 ? 'marker-color-red' : 
-                         'marker-color-violet'
-    };
-
-    // Range selector for amount of garbage on marker icon
-    $('input[type=radio]').on('change', function () {
-        
-        // Remove the generic marker class
-        $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
+                marker.openMenu();   
                 
-        // Get the color value from the select options 
-        var selectedValue = parseInt($(this).attr('name'), 10);
-        // Change the class to the corresponding value
-        
-        $(marker._icon).removeClass(function (index, css) {
-            
-            return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-            
-        }).addClass(setClassColor(selectedValue));
-                
-    });
-        
-    // Change the cleaning event icon if a time is set
-    // FIXME put this logic seomwhere else
-    $('#event-date-time-picker').on('dp.change', function (e) {
-        
-        var eventDateTime = e.date.format('YYYY-MM-DD HH:MM:SS');
-        
-        $('#date-time-value').val(eventDateTime);
-        
-        // Change the icon of the marker if a time is set
-        $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
+            }
 
-    });
+        }
+        
+        // Actions for desktop and larger screens      
+        if ($(window).width() > 567) {
+            
+            map.addLayer(marker);
+
+            map.panToOffset(marker._latlng, _getHorizontalOffset());
+
+            $('.sidebar-content').hide();
+
+            $('#sidebar').scrollTop = 0;
+            
+            sidebar.show($("#create-marker-dialog").show());
+
+        }
+            
+        $('.marker-latlng').val(marker._latlng.lat + ", " + marker._latlng.lng);
+                
+        function setClassColor(c) {
+
+            return c === 1 ? 'marker-color-limegreen' :
+                   c === 2 ? 'marker-color-yellow' : 
+                   c === 3 ? 'marker-color-orangered' : 
+                   c === 4 ? 'marker-color-red' : 
+                             'marker-color-violet'
+        };
+
+        // Range selector for amount of garbage on marker icon
+        $('input[type=radio]').on('change', function () {
+        
+            // Remove the generic marker class
+            $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
+
+            // Get the color value from the select options 
+            var selectedValue = parseInt($(this).attr('name'), 10);
+            // Change the class to the corresponding value
+
+            $(marker._icon).removeClass(function (index, css) {
+
+                return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+
+            }).addClass(setClassColor(selectedValue));
+
+        });
+        
+        // Change the cleaning event icon if a time is set
+        // FIXME put this logic seomwhere else
+        $('#event-date-time-picker').on('dp.change', function (e) {
+
+            var eventDateTime = e.date.format('YYYY-MM-DD HH:MM:SS');
+
+            $('#date-time-value').val(eventDateTime);
+
+            // Change the icon of the marker if a time is set
+            $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
+
+        });
     
-    // Allow unsaved markers to be dragged and get new coordinates after drag
-    marker.on("dragend", function (event){
-        
-        var newPos = event.target.getLatLng();
-        
-        $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
-        
-    });
+        // Allow unsaved markers to be dragged and get new coordinates after drag
+        marker.on("dragend", function (event){
 
-    // Remove the point marker if the user wants to draw
-    map.on('draw:drawstart', function (e) {
-        
-        map.removeLayer(marker);
-        
-    });
+            var newPos = event.target.getLatLng();
+
+            $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
+
+        });
+
+        // Remove the point marker if the user wants to draw
+        map.on('draw:drawstart', function (e) {
+
+            map.removeLayer(marker);
+
+        });
   
-    // Reset unsaved marker styles if sidebar is closed after marker creation
-    sidebar.on ('hide', function () {
+        // Reset unsaved marker styles if sidebar is closed after marker creation
+        sidebar.on ('hide', function () {
+            
+            if (marker) {
+                
+                $(marker._icon).removeClass('marker-garbage');
 
-        $(marker._icon).removeClass('marker-garbage');
+                $(marker._icon).removeClass('marker-cleaning');
+
+                $(marker._icon).removeClass(function (index, css) {
+
+                    return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+
+                }).addClass('marker-generic');
+
+                $(marker._icon).addClass('marker-color-gray');
+                
+            }
+
+        });
         
-        $(marker._icon).removeClass('marker-cleaning');
-
-        $(marker._icon).removeClass(function (index, css) {
-            
-            return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-            
-        }).addClass('marker-generic');
-
-        $(marker._icon).addClass('marker-color-gray');
-
-    });
+        marker.on('click', onLocalMarkerClick);
     
     } else {
         
@@ -163,13 +231,13 @@ function onMapClick(e) {
         bottombar.hide();
 
         sidebar.hide();
-
+        
         $('.dropdown').removeClass('open');
 
         $('.leaflet-control-layers').removeClass('leaflet-control-layers-expanded');
 
         $('.leaflet-control-search').removeClass('leaflet-control-search-expanded');
-      
+              
     }
   
     // Remove unsaved markers with class 'marker-generic' after a timeout
@@ -183,7 +251,6 @@ function onMapClick(e) {
 
 // Default behaviour for creating a marker
 map.on('click', onMapClick);  
-// map.on('longclick', onMapClick);  
 
 // onClick behavior for non-saved markers
 function onLocalMarkerClick (e) {
@@ -191,10 +258,38 @@ function onLocalMarkerClick (e) {
     bottombar.hide();
 
     marker = this;
+    
+    if ($(window).width() <= 567) {
+        
+        if ($('.leaflet-marker-menu').is(':visible')) {
+            
+            marker.closeMenu();
+            
+        }
+        
+        else {
+            
+            marker.setMenu(featureMenu);
 
-    map.panToOffset(marker._latlng, _getHorizontalOffset());
+            map.panTo(marker._latlng);
 
-    console.log("clicked marker id:", marker._leaflet_id );
+            marker.openMenu();
+
+        }
+
+    }
+    
+    if ($(window).width() > 567) {
+
+        map.panToOffset(marker._latlng, _getHorizontalOffset());
+        
+        $('#sidebar').scrollTop =0;
+    
+        $('.sidebar-content').hide();
+    
+        sidebar.show($("#create-marker-dialog").fadeIn());
+        
+    }
 
     marker.on("dragend", function(event){
         
@@ -203,24 +298,22 @@ function onLocalMarkerClick (e) {
         $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
                 
     });
-
-    $('#sidebar').scrollTop =0;
     
-    $('.sidebar-content').hide();
-    
-    sidebar.show($("#create-marker-dialog").fadeIn());
-    
-    $('.marker-latlng').val(marker._latlng);
+    $('.marker-latlng').val(marker._latlng.lat + ", " + marker._latlng.lng);
     
 }
 
 // Locate the user on click of either mobile of top bar menu button
 $('.btn-locate').on('click', function(){
+    
+    getLocation();
+    
+    console.log("locating from button click");
 
     sidebar.hide();
 
     bottombar.hide();
 
-    map.locate({setView: true, maxZoom: 20}).on('locationerror', onLocationError);
+    // map.locate({setView: true, maxZoom: 20}).on('locationerror', onLocationError);
     
 });

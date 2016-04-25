@@ -102,6 +102,13 @@ map.on('draw:created', function (e) {
     
     if (e.layerType === 'polyline') {
         
+        // Show the sidebar again on mobile
+        if ($(window).width() <= 567) {
+
+            sidebar.show($("#create-litter-dialog").show());
+
+        }
+        
         function setClassColor(c) {
 
             return c === 1  ? '#ccff66' :
@@ -160,6 +167,13 @@ map.on('draw:created', function (e) {
     }
 
     if( e.layerType === 'polygon') {
+        
+        // Show the sidebar again on mobile    
+        if ($(window).width() <= 567) {
+
+            sidebar.show($("#create-area-dialog").show());
+
+        }
         
         polygonLayer = e.layer;
         
@@ -256,6 +270,14 @@ $('.btn-draw-polyline').on('click', function () {
           opacity: 0.5}
     }).enable();
     
+        if ($(window).width() <= 567) {
+            
+            sidebar.hide();
+            
+            showAlert('Drawing on mobile is still in development, expect issues.', 'warning', 3500);
+            
+        }
+
 });
 
 $('.btn-draw-polygon').on('click', function () {
@@ -282,5 +304,13 @@ $('.btn-draw-polygon').on('click', function () {
              color: '#cc0000',
              timeout: 2000}
     }).enable();
+    
+    if ($(window).width() <= 567) {
+            
+            sidebar.hide();
+            
+            showAlert('Drawing on mobile is still in development, expect issues.', 'warning', 3500);
+            
+    }
     
 });

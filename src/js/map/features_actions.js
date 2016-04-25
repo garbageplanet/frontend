@@ -50,7 +50,6 @@ function editFeature(e) {
     
 }
            
-
 // TODO Confirm garbage function
 function confirmGarbage(e){
     // TODO count function in the backend, not here
