@@ -68,6 +68,10 @@ body {
     background-color: #006600 !important;
 }
 
+.modal-link {
+    cursor: pointer;
+}
+
 /* Icons color shortcuts */
 .fa-icon-green {
   color: limegreen;
@@ -234,7 +238,7 @@ body {
   margin-bottom: 2px !important;
   margin-top: 2px !important;
   border: 0 !important;
-  box-shadow: 0 1px 1px rgba(0,0,0,0);
+  box-shadow: none !important;
 }
 .card .panel .panel-body {
   padding: 2px !important;
@@ -412,7 +416,9 @@ a.menu-backlink:hover {
 }
 
 /* Custom bootstrap styles */
-/* Style forms */
+/* Style forms and elements */
+
+/* Fix inconsistencies between form elements  */
 .form-group {
   margin-bottom: 10px !important;
 }
@@ -423,17 +429,13 @@ a.menu-backlink:hover {
   margin-bottom: 0px;
 }
 
-.progress {
-    border-radius: 0 !important;
-}
-
-/* Style the popovers */
+/* Style the popovers (tour) */
 .popover {
   border-radius: 0 !important;
   border: 0px !important;
-  -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.5) !important;
-  -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.5) !important;
- box-shadow: 0px 0px 10px rgba(0,0,0,0.5) !important;
+  -webkit-box-shadow: -1px -1px 10px rgba(0,0,0,0.5) !important;
+     -moz-box-shadow: -1px -1px 10px rgba(0,0,0,0.5) !important;
+          box-shadow: -1px -1px 10px rgba(0,0,0,0.5) !important;
 }
 
 .popover-navigation > a {
@@ -475,6 +477,7 @@ a.menu-backlink:hover {
   float: left !important;
 }
 
+/* Remove rounded corners from other elements */
 input {
  border-radius: 0 !important;
 }
@@ -489,6 +492,11 @@ button {
 }
 textarea {
  border-radius: 0 !important;
+ resize: none;
+}
+
+.progress {
+    border-radius: 0 !important;
 }
 
 h1, h2, h3, h4, span, .lead, p, input, textarea, select, button, .page-name, .navbar .nav-pills > li > a {
@@ -523,10 +531,6 @@ h1, h2, h3, h4, span, .lead, p, input, textarea, select, button, .page-name, .na
     border-bottom-color: #fff !important;
   }
 
-}
-
-textarea {
-    resize: none;
 }
 
 /* Force sizing of tags widget to match other inputs */
@@ -590,7 +594,7 @@ textarea {
 
 .tt-menu {background-color: #fff}
 
-/* Leaflet Draw button behavior*/
+/* style Leaflet Draw buttons and movement behavior */
 .leaflet-draw-edit-edit, .leaflet-draw-edit-remove  {
   margin-right: -50px;
             transition: margin-right 0.5s;
@@ -630,7 +634,11 @@ textarea {
 /* Style modals */
 
 .modal-content {
-    height: 100% !important;
     border-radius: 0;
     box-shadow: none;
+}
+
+.modal-body{
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
 }

@@ -169,8 +169,8 @@
 
                 menuItem.title = item.title;
 
-                listItem.style.zIndex = 10000000;
                 listItem.style.position = 'absolute';
+                listItem.style.zIndex = 1000;
 
                 // only css3 for a now needs implementation something like PosAnimation for opacity
                 if (this.options.animate) {

@@ -1,4 +1,7 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+// Create a global array to store retrievable data objects for onscreen objects
+var featurearray = [];
+
 // Load the feature once in the currentView on page load
 map.addOneTimeEventListener('move', function (e) {
     
@@ -40,6 +43,8 @@ map.on('dragend zoomend', function (e){
     currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
     
     if (e.type === 'zoomend') {
+        
+        featurearray = [];
                   
         if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
 
@@ -76,6 +81,8 @@ map.on('dragend zoomend', function (e){
         console.log("distance in pixels", e.distance);
 
         if (e.distance >= window.innerWidth / 3) {
+            
+            featurearray = [];
             
             console.log("Window width / 3: ", window.innerWidth / 3);
 
@@ -133,10 +140,19 @@ function loadGarbageMarkers () {
                     };
                 
                 $(data).each(function (index, obj) {
-                    console.log("MARKER GARBAGE DATA OBJ:", obj);
-                    // Need to parse the string from the db ugggghhh
+
+                    // Need to parse the string from the db because LatLngs are now stored as single key:value pair
                     var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
-                                        
+                    
+                    // Push data summary to global object
+                    featurearray.push(
+                        
+                        {
+                            "latlng":obj.latlng, 
+                            "type":"garbage", 
+                            "amount":obj.amount
+                        });
+                                                            
                     var marker = new L.Marker(new L.LatLng(latlng[0],latlng[1]),
                         {
                             icon: garbageMarker,

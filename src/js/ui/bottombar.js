@@ -114,7 +114,7 @@ function pushDataToBottomPanel(e) {
 
         else {
 
-            showAlert("Sorry. You are not on the player list, you can't look at this data.", "warning", 2000);
+            showAlert("Sorry. You are not on the players list, you can't look at this data.", "warning", 2000);
             
             return;
 
