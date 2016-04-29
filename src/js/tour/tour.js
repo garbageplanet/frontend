@@ -112,8 +112,8 @@ var devTour = new Tour({
         placement: 'bottom',
       },*/
       {
-        content: 'Note that this platform is currently under active development but all basic functions can be used to save markers and images. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
-        duration: 5000,
+        content: 'Note that this platform is currently under active development but all the basic functions are available and can be used to save markers and images. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
+        duration: 8000,
         orphan: true
       }
   ]

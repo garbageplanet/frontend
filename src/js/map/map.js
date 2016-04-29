@@ -115,6 +115,7 @@ var overlayGroups = {
 };
 
 
+
 $(document).ready(function () {
     
     getLocation();
@@ -129,7 +130,16 @@ $(document).ready(function () {
     L.control.scale({metric: true, imperial: false}).addTo(map);
     
     L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
-    
+  
+    // Setup the geocoder plugin
+    var opencageoptions = {
+        key: '2bb5bf0d3b9300eacceb225f3cf9cd7d',
+        limit: 5
+    };
+
+    var geocoder = L.Control.OpenCageSearch.geocoder(opencageoptions);
+    var geocodercontrol = new L.Control.openCageSearch(opencageoptions).setPosition('topleft').addTo(map);
+
     // Set an icon on the layer select button
     $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
     

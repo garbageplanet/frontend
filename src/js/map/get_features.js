@@ -1,6 +1,10 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Create a global array to store retrievable data objects for onscreen objects
-var featurearray = [];
+// TODO make a global object containing both arrays
+var garbageArray = [];
+var cleaningArray = [];
+
+console.log(cleaningArray);
 
 // Load the feature once in the currentView on page load
 map.addOneTimeEventListener('move', function (e) {
@@ -44,7 +48,8 @@ map.on('dragend zoomend', function (e){
     
     if (e.type === 'zoomend') {
         
-        featurearray = [];
+        garbageArray = [];
+        cleaningArray = [];
                   
         if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
 
@@ -82,7 +87,8 @@ map.on('dragend zoomend', function (e){
 
         if (e.distance >= window.innerWidth / 3) {
             
-            featurearray = [];
+            garbageArray = [];
+            cleaningArray = [];
             
             console.log("Window width / 3: ", window.innerWidth / 3);
 
@@ -145,12 +151,14 @@ function loadGarbageMarkers () {
                     var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
                     
                     // Push data summary to global object
-                    featurearray.push(
+                    // TODO add all keys
+                    garbageArray.push(
                         
                         {
-                            "latlng":obj.latlng, 
-                            "type":"garbage", 
-                            "amount":obj.amount
+                            "latlng": obj.latlng, 
+                            "id": obj.id,
+                            "amount": obj.amount,
+                            "types": obj.types.join(", "),
                         });
                                                             
                     var marker = new L.Marker(new L.LatLng(latlng[0],latlng[1]),
@@ -230,6 +238,16 @@ function loadCleaningMarkers () {
                 $(data).each(function(index, obj) {
                     
                     var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
+                    
+                    // Push data summary to global object
+                    // TODO add all keys
+                    cleaningArray.push(
+                        
+                        {
+                            "latlng": obj.latlng, 
+                            "id": obj.id,
+                            "datetime": obj.datetime,
+                        });
 
                     var marker = new L.Marker(new L.LatLng(latlng[0], latlng[1]),
                         {
@@ -283,8 +301,6 @@ function loadAreas () {
     
     setTimeout(function () {
     
-        // console.log('loading remote area polygons');
-
         areaLayerGroup.clearLayers();
 
         var useToken = localStorage.getItem('token') || window.token;
@@ -299,13 +315,7 @@ function loadAreas () {
 
             success: function (data) {
                 
-                console.log("Areas polygons successfully loaded.");
-
-                // console.log('Loading area data', data);
-
                 $(data).each(function(index, obj) {
-
-                    console.log("Area object data", obj);
                     
                     var latlngs = JSON.parse("[" + obj.latlngs + "]");
 
@@ -364,8 +374,6 @@ function loadLitters () {
     
     setTimeout(function () {
     
-        // console.log('loading remote litter polylines');
-
         litterLayerGroup.clearLayers();
 
         var useToken = localStorage.getItem('token') || window.token;
@@ -413,9 +421,7 @@ function loadLitters () {
                         smoothFactor: 3,
                         color: setColor(obj.amount)
                     });
-                    
-                    console.log("POLYLINE OBJ DATA: ", polylineLayer);
-                    
+                                        
                     litterLayerGroup.addLayer(polylineLayer);
                     
                     map.addLayer(litterLayerGroup);

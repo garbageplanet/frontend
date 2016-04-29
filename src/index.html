@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
+<!--
   <meta http-equiv="Content-Security-Policy" content="default-src https://*.garbagepla.net; connect-src https://*.garbagepla.net:* https://api.imgur.com/3/upload; script-src 'self' https://*.garbagepla.net; style-src https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://*.garbagepla.net http://i.imgur.com; object-src https://*.garbagepla.net">
+-->
 <!--
   <meta name="csrf_token" content="{{ csrf_token() }}">
 -->
@@ -36,13 +38,14 @@
   <link rel="stylesheet" type="text/css" href="css/leaflet-1.0.css"/>
 -->
   <link rel="stylesheet" type="text/css" href="css/L.Compact.Attributions.css"/>
-  <link rel="stylesheet" type="text/css" href="css/L.Search.css"/>
+  <link rel="stylesheet" type="text/css" href="css/L.Geocoder.Opencage-1.1.2.css"/>
   <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.6.css">
   <link rel="stylesheet" type="text/css" href="css/L.Control.Sidebar-0.19a.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker-4.17.37.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-select-1.9.4.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-tagsinput-0.4.3.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-horizon.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-datatables-1.10.11.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-tour-0.10.1.css">
   <link rel="stylesheet" type="text/css" href="css/trashbag.css">
   <link rel="stylesheet" type="text/css" href="css/L.Draw.css">
@@ -57,6 +60,7 @@
   <script type="text/javascript" src="js/libs/bootstrap-3.3.6.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-select-1.9.4.js"> </script>
   <script type="text/javascript" src="js/libs/bootstrap-validator-0.9.0.js"></script>
+  <script type="text/javascript" src="js/libs/bootstrap-datatables-1.10.11.js"></script>
   <script type="text/javascript" src="js/libs/bootstrap-tour-0.10.1.js"></script>
   <script type="text/javascript" src="js/libs/jquery.ui.widget.js"></script>
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
@@ -73,11 +77,7 @@
   <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
   <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
   <script type="text/javascript" src="js/libs/L.Draw.js"></script>
-  <script type="text/javascript" src="js/libs/L.Search.js"></script>
-
-  <!-- <script type="text/javascript" src="js/libs/L.control.geosearch.js"></script> -->
-  <!-- <script type="text/javascript" src="js/libs/L.geosearch.provider.openstreetmap.js"></script> -->
-
+  <script type="text/javascript" src="js/libs/L.Geocoder.Opencage-1.1.2.js"></script>
 </head>
 <body>
 
@@ -89,38 +89,15 @@
 
         <div class="pull-right">
           <ul class="nav navbar-nav">
-          <li class="hidden search-form">
-            <form class="navbar-form">
-              <div class="input-group">
-                <div class="input-group-btn search-filter">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span id="search_filter_value">Filter</span> <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Location</a></li>
-                        <li class="disabled"><a href="#">Cleaning event</a></li>
-                        <li class="disabled"><a href="#">Tags</a></li>
-                        <li class="disabled"><a href="#">Garbage</a></li>
-                        <li class="disabled"><a href="#">Areas</a></li>
-                        <li class="disabled"><a href="#">Everything</a></li>
-                      </ul>
-                  </div>
-                <input class="form-control search-query" placeholder="Search" type="text">
-                <div id ="search" class="input-group-btn">
-                    <button class="btn btn-default btn-search" type="submit"><i class="fa fa-fw fa-search"></i></button>
-                </div>
-              </div>
-            </form>
-          </li>
 
-          <li class="session-link"><a href="#" class="btn btn-success btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><strong class="fa-icon-white">Anon Login</strong></a></li>
+          <li class="session-link"><a href="#" class="btn btn-success btn-glome-go btn-glome-shortcut" title="One-click anonymous login."><strong class="fa-icon-white">Anonymous login</strong></a></li>
 
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <span class="fa fa-fw fa-cogs"></span><span class="hidden title-collapsed">Map tools</span></a>
               <ul class="dropdown-menu" id="map-tools">
-                <li class=""><a id="modal-list-features" class="modal-link">Get data</a></li>
-                <li class="disabled"><a id="modal-calendar" class="modal-link">Cleaning calendar</a></li>                <li class="divider"></li>
+                <li><a id="modal-list-garbage" class="modal-link">Get data</a></li>
+                <li><a id="modal-list-cleaning" class="modal-link">Cleaning calendar</a></li>                <li class="divider"></li>
                 <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
                 <li class="disabled"><a class="" href="#">Local forecast</a></li>
                 <li class="disabled"><a class="" href="#">Hotspots</a></li>
@@ -1065,7 +1042,6 @@
 <script type="text/javascript" src="js/forms/uploader.js"></script>
 <script type="text/javascript" src="js/forms/forms_elements.js"></script>
 <script type="text/javascript" src="js/forms/forms_submit.js"></script>
-<script type="text/javascript" src="js/forms/search.js"></script>
 <script type="text/javascript" src="js/ui/modal.js"></script>
 
 <!-- Others -->

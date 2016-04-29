@@ -1,9 +1,10 @@
-<script type="text/x-tmpl" id="tmpl-modal">
+<script type="text/x-tmpl" id="tmpl-modal-garbage">
     {% for (var i=0; i<o.length; i++) { %}
         <tr class="modal-data-row">
-            <td>{%=o[i].type%}</td>
+            <td>{%=o[i].id%}</td>		
             <td>{%=o[i].latlng%}</td>		
             <td>{%=o[i].amount%}</td>
+            <td>{%=o[i].types%}</td>
         </tr>
     {% } %}
 </script>

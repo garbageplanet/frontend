@@ -121,7 +121,6 @@
 	margin-right: 10px;
 	}
 
-
 /* zoom and fade animations */
 
 .leaflet-fade-anim .leaflet-tile,
@@ -265,18 +264,8 @@
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-	font: bold 25px 'Work Sans';
+	font-size: 15px;
 	text-indent: 1px;
-	}
-.leaflet-control-zoom-out {
-	font-size: 25px;
-	}
-
-.leaflet-touch .leaflet-control-zoom-in {
-	font-size: 22px;
-	}
-.leaflet-touch .leaflet-control-zoom-out {
-	font-size: 24px;
 	}
 
 /* layers control */

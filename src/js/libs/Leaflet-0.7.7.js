@@ -7977,9 +7977,9 @@ L.Map.include({
 L.Control.Zoom = L.Control.extend({
 	options: {
 		position: 'topleft',
-		zoomInText: '+',
+		zoomInText: '<i class="fa fa-fw fa-plus"></i>',
 		zoomInTitle: 'Zoom in',
-		zoomOutText: '-',
+		zoomOutText: '<i class="fa fa-fw fa-minus"></i>',
 		zoomOutTitle: 'Zoom out'
 	},
 

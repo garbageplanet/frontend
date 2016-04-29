@@ -83,6 +83,11 @@ var templatedata = {
             "text":"POIs retrieved using the"
       },
       {
+            "title":"OpenCage Geocoder",
+            "linkurl":"https://geocoder.opencagedata.com/",
+            "text":"Address search and geocoding"
+      },
+      {
             "title":"Leaflet",
             "linkurl":"http://leafletjs.com/",
             "text":"Mapping done with "

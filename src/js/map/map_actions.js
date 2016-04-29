@@ -105,7 +105,8 @@ function onMapClick(e) {
         e.target.getZoom() >= 10 && 
         !$('.dropdown').hasClass('open') && 
         !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && 
-        !$('.leaflet-control-search').hasClass('leaflet-control-search-expanded')) {
+        !$('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded') &&
+        $('.leaflet-control-ocd-search-alternatives').hasClass('leaflet-control-ocd-search-alternatives-minimized')) {
         
         marker = L.marker(e.latlng, { icon: genericMarker, draggable: true});
         
@@ -214,6 +215,13 @@ function onMapClick(e) {
 
                 $(marker._icon).addClass('marker-color-gray');
                 
+                // Delete the marker on small screen else the mobile marker menu bugs
+                if ($(window).width() <= 567) {
+
+                    map.removeLayer(marker);
+
+                }
+                
             }
 
         });
@@ -226,7 +234,7 @@ function onMapClick(e) {
         
             showAlert("Zoom in closer to create features", "info", 1200);
         
-        }
+        }    
       
         bottombar.hide();
 
@@ -237,6 +245,13 @@ function onMapClick(e) {
         $('.leaflet-control-layers').removeClass('leaflet-control-layers-expanded');
 
         $('.leaflet-control-search').removeClass('leaflet-control-search-expanded');
+        
+        // Reset the search container
+        $('.leaflet-control-ocd-search').removeClass('leaflet-control-ocd-search-expanded');
+        
+        $('.leaflet-control-ocd-search-alternatives').addClass('leaflet-control-ocd-search-alternatives-minimized');
+        
+        $('.leaflet-control-ocd-search-icon').removeClass('fa-close').addClass('fa-search');
               
     }
   

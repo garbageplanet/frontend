@@ -38,7 +38,7 @@ $(document).ready(function() {
     });
 
 
-    $("form").bind("keypress", function (e) {
+    $(".form-feature").bind("keypress", function (e) {
         
         if (e.keyCode === 13) {
 
