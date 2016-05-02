@@ -323,7 +323,7 @@ $('.btn-locate').on('click', function(){
     
     getLocation();
     
-    console.log("locating from button click");
+    // console.log("locating from button click");
 
     sidebar.hide();
 
