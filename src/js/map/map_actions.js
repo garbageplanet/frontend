@@ -106,7 +106,9 @@ function onMapClick(e) {
         !$('.dropdown').hasClass('open') && 
         !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && 
         !$('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded') &&
-        $('.leaflet-control-ocd-search-alternatives').hasClass('leaflet-control-ocd-search-alternatives-minimized')) {
+        $('.leaflet-control-ocd-search-alternatives').hasClass('leaflet-control-ocd-search-alternatives-minimized') &&
+        !$('.leaflet-compact-attribution-toggle').is(':checked')       
+       ) {
         
         marker = L.marker(e.latlng, { icon: genericMarker, draggable: true});
         
@@ -252,6 +254,11 @@ function onMapClick(e) {
         $('.leaflet-control-ocd-search-alternatives').addClass('leaflet-control-ocd-search-alternatives-minimized');
         
         $('.leaflet-control-ocd-search-icon').removeClass('fa-close').addClass('fa-search');
+        
+        // Hide the expanded atttributions by unchecking the control        
+        $(".leaflet-compact-attribution-toggle").prop("checked", false);
+        
+        
               
     }
   
@@ -274,23 +281,16 @@ function onLocalMarkerClick (e) {
 
     marker = this;
     
+    $('.marker-latlng').val(marker._latlng.lat + ", " + marker._latlng.lng);
+    
     if ($(window).width() <= 567) {
         
-        if ($('.leaflet-marker-menu').is(':visible')) {
+        // NOTE since the marker menu has already been set for the temp markers
+        // there is no need to add the click behavior again
+                    
+            map.addLayer(marker).panTo(marker._latlng);
             
-            marker.closeMenu();
-            
-        }
-        
-        else {
-            
-            marker.setMenu(featureMenu);
-
-            map.panTo(marker._latlng);
-
-            marker.openMenu();
-
-        }
+            return;
 
     }
     
@@ -304,17 +304,15 @@ function onLocalMarkerClick (e) {
     
         sidebar.show($("#create-marker-dialog").fadeIn());
         
-    }
-
-    marker.on("dragend", function(event){
+        marker.on("dragend", function(event){
         
-        var newPos = event.target.getLatLng();
+            var newPos = event.target.getLatLng();
         
-        $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
+            $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
                 
-    });
-    
-    $('.marker-latlng').val(marker._latlng.lat + ", " + marker._latlng.lng);
+        });
+        
+    }
     
 }
 
