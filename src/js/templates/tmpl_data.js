@@ -58,6 +58,12 @@ var templatedata = {
             "btnclass": "btn-whatsapp",
             "title": "Share on Whatsapp",
             "targeturl": ""
+          },
+          {
+            "iconclass": "fa-renren fa-lg fa-icon-centered",
+            "btnclass": "btn-renren",
+            "title": "Share on RenRen",
+            "targeturl": ""
           }
     ]
 },

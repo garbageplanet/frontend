@@ -26,6 +26,7 @@ L.Control.Attribution.prototype.addTo = function(map) {
     L.DomEvent
         .on(parent, 'contextmenu', stop)
         .on(parent, 'click', fakeStop)
+        .on(parent, 'tap', fakeStop)
         .on(parent, 'mousedown', stop)
         .on(parent, 'touchstart', stop)
         .on(parent, 'dblclick', fakeStop)

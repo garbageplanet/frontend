@@ -64,37 +64,34 @@ var featureMenu = L.markerMenu({
             className: "fa fa-fw fa-2x fa-marker-menu fa-map-marker",
             click: function () {
                 sidebar.show($("#create-garbage-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 500);
+                setTimeout(function () {marker.closeMenu();}, 400);
+                }
             }
-        }
-
-        , {
+            ,{
             title: "Create a cleaning event",
             className: "fa fa-fw fa-2x fa-marker-menu fa-calendar-o",
             click: function () {
                 sidebar.show($("#create-cleaning-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 500);
+                setTimeout(function () {marker.closeMenu();}, 400);
+                }
             }
-        }
-        , {
+            ,{
             title: "Mark litter",
             className: "fa fa-fw fa-2x fa-marker-menu fa-hand-lizard-o",
             click: function () {
                 sidebar.show($("#create-litter-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 500);
+                setTimeout(function () {marker.closeMenu();}, 400);
+                }
             }
-
-            }
-        , {
+            ,{
             title: "Add an area",
             className: "fa fa-fw fa-2x fa-marker-menu fa-map",
             click: function () {
                 sidebar.show($("#create-area-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 500);
+                setTimeout(function () {marker.closeMenu();}, 400);
+                }
             }
-        }
         ]
-    
 });
 
 // Default behavior for map clicks
@@ -267,7 +264,9 @@ function onMapClick(e) {
 
         $('div.marker-generic').remove();
         
-    }, 400000);
+        marker.closeMenu();
+        
+    }, 80000);
   
 }
 
@@ -286,11 +285,10 @@ function onLocalMarkerClick (e) {
     if ($(window).width() <= 567) {
         
         // NOTE since the marker menu has already been set for the temp markers
-        // there is no need to add the click behavior again
-                    
-            map.addLayer(marker).panTo(marker._latlng);
-            
-            return;
+        // there is no need to add the click behavior again           
+        map.addLayer(marker).panTo(marker._latlng);
+
+        return;
 
     }
     
@@ -321,12 +319,8 @@ $('.btn-locate').on('click', function(){
     
     getLocation();
     
-    // console.log("locating from button click");
-
     sidebar.hide();
 
     bottombar.hide();
-
-    // map.locate({setView: true, maxZoom: 20}).on('locationerror', onLocationError);
     
 });

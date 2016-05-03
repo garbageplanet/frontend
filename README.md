@@ -1,10 +1,10 @@
 # README #
 
 ### What is this repository for?
-Repository for the [garbagepla.net](http://www.garbagepla.net) frontend v. 0.1.
+Repository for the [garbagepla.net](https://www.garbagepla.net) frontend v. 0.1.
 
 ### How to get started?
-Just open /src/index.html in your browser. If you want to build for distribution just run `npm i` to install gulp and dependencies in the root directory and type `gulp`. Note that the build script is currently incomplete.
+Just open /src/index.html in your browser. If you want to build for distribution just run `npm i` to install gulp and dependencies in the root directory and type `gulp`.
 
 ### Contributing
 All contributions are welcome. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
@@ -16,13 +16,10 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 ### TODO
 - [ ] finalize the edit system (build the feature creation forms from templates)
 - [ ] build the cleaned, join, play and confirm functions with a prototype
-- [ ] split mobile / desktop css
-- [ ] build the search widget in sidebar for mobile and in the top panel on desktop.
 - [ ] allow drawing shapes but hide the sidebar on draw:start and show it on draw:created
 
-
 #### Upgrade
-- [ ] custom builds (Leaflet, FontAwesome, Bootstrap)
+- [ ] custom builds (Leaflet, Bootstrap, FontAwesome)
 - [ ] move to leaflet 1.0 - works out of the box but fix `L.marker.menu.js` plugin menu first
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
 - [ ] modularize js code

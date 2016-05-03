@@ -155,8 +155,30 @@ body {
   color: #FFF;
 }
 
-.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span, btn-whatsapp span, btn-vk span {
+.btn-renren {
+  background-color: rgba(232, 59, 55, 1) !important;
+  border-color: rgba(232, 59, 55, 1) !important;
+  color: #FFF;
+}
+
+.btn-weibo {
+  background-color: rgba(230, 22, 45, 1) !important;
+  border-color: rgba(230, 22, 45, 1) !important;
+  color: #FFF;
+}
+
+.btn-weibo span, .btn-renren span,.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span, btn-whatsapp span, btn-vk span {
   vertical-align: bottom;
+  color: #FFF;
+}
+
+.btn-weibo:hover, .btn-weibo:active, .btn-weibo:visited {
+  background-color: rgba( 230, 22, 45, 0.8) !important;
+  color: #FFF;
+}
+
+.btn-renren:hover, .btn-renren:active, .btn-renren:visited {
+  background-color: rgba( 232, 59, 55, 0.8) !important;
   color: #FFF;
 }
 
@@ -185,13 +207,13 @@ body {
   color: #FFF;
 }
 
-.btn-reddit:hover, .btn-reddit:active, .btn-reddit:visited  {
+.btn-reddit:hover, .btn-reddit:active, .btn-reddit:visited {
   background-color: rgba(128, 128, 128, 0.8) !important;
   border-color: rgba(128, 128, 128, 1) !important;
   color: #FFF;
 }
 
-.btn-whatsapp:hover, .btn-whatsapp:active, .btn-whatsapp:visited  {
+.btn-whatsapp:hover, .btn-whatsapp:active, .btn-whatsapp:visited {
   background-color: rgba(167 ,216, 84, 0.8) !important;
   border-color: rgba(67, 216, 84, 1) !important;
   color: #FFF;
@@ -291,6 +313,15 @@ a.menu-backlink:hover {
 .lealfet-control {
 	border: 10px;
 }
+
+
+@media (min-width: 768px) {
+    .leaflet-top {
+        margin-top: 5px !important;
+        margin-left: 5px !important;
+    }
+}
+
 /* Style the search button */
 .leaflet-control-search {
   	min-width: 40px;

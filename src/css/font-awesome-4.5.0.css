@@ -2,7 +2,7 @@
 @font-face {
   font-family: 'FontAwesome';
   src: url('fonts/Font-Awesome/fontawesome-webfont.eot?v=4.5.0');
-  src: url('fonts/Font-Awesome/fontawesome-webfont.eot?#iefix&v=4.5.0') format('embedded-opentype'),url('fonts/Font-Awesome/fontawesome-webfont.woff2?v=4.5.0') format('woff2'), url('fonts/Font-Awesome/fontawesome-webfont.woff?v=4.5.0') format('woff'), url('fonts/Font-Awesome/fontawesome-webfont.ttf?v=4.5.0') format('truetype'), url('fonts/Font-Awesome/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular') format('svg');
+  src: url('fonts/Font-Awesome/fontawesome-webfont.eot?#iefix&v=4.5.0') format('embedded-opentype'),url('fonts/Font-Awesome/fontawesome-webfont.woff2?v=4.5.0') format('woff2'), url('fonts/Font-Awesome/fontawesome-webfont.woff?v=4.5.0') format('woff'), url('fonts/Font-Awesome/fontawesome-webfont.ttf?v=4.5.0') format('truetype')/*, url('fonts/Font-Awesome/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular') format('svg')*/;
   font-weight: normal;
   font-style: normal;
 }
@@ -175,41 +175,14 @@
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
-.fa-glass:before {
-  content: "\f000";
-}
-.fa-music:before {
-  content: "\f001";
-}
 .fa-search:before {
   content: "\f002";
 }
 .fa-envelope-o:before {
   content: "\f003";
 }
-.fa-heart:before {
-  content: "\f004";
-}
-.fa-star:before {
-  content: "\f005";
-}
-.fa-star-o:before {
-  content: "\f006";
-}
 .fa-user:before {
   content: "\f007";
-}
-.fa-film:before {
-  content: "\f008";
-}
-.fa-th-large:before {
-  content: "\f009";
-}
-.fa-th:before {
-  content: "\f00a";
-}
-.fa-th-list:before {
-  content: "\f00b";
 }
 .fa-check:before {
   content: "\f00c";
@@ -730,30 +703,6 @@
 .fa-bars:before {
   content: "\f0c9";
 }
-.fa-list-ul:before {
-  content: "\f0ca";
-}
-.fa-list-ol:before {
-  content: "\f0cb";
-}
-.fa-strikethrough:before {
-  content: "\f0cc";
-}
-.fa-underline:before {
-  content: "\f0cd";
-}
-.fa-table:before {
-  content: "\f0ce";
-}
-.fa-magic:before {
-  content: "\f0d0";
-}
-.fa-truck:before {
-  content: "\f0d1";
-}
-.fa-pinterest:before {
-  content: "\f0d2";
-}
 .fa-pinterest-square:before {
   content: "\f0d3";
 }
@@ -762,9 +711,6 @@
 }
 .fa-google-plus:before {
   content: "\f0d5";
-}
-.fa-money:before {
-  content: "\f0d6";
 }
 .fa-caret-down:before {
   content: "\f0d7";
@@ -795,9 +741,6 @@
 }
 .fa-envelope:before {
   content: "\f0e0";
-}
-.fa-linkedin:before {
-  content: "\f0e1";
 }
 .fa-rotate-left:before,
 .fa-undo:before {
@@ -846,41 +789,11 @@
 .fa-user-md:before {
   content: "\f0f0";
 }
-.fa-stethoscope:before {
-  content: "\f0f1";
-}
-.fa-suitcase:before {
-  content: "\f0f2";
-}
-.fa-bell-o:before {
-  content: "\f0a2";
-}
-.fa-coffee:before {
-  content: "\f0f4";
-}
-.fa-cutlery:before {
-  content: "\f0f5";
-}
 .fa-file-text-o:before {
   content: "\f0f6";
 }
 .fa-building-o:before {
   content: "\f0f7";
-}
-.fa-hospital-o:before {
-  content: "\f0f8";
-}
-.fa-ambulance:before {
-  content: "\f0f9";
-}
-.fa-medkit:before {
-  content: "\f0fa";
-}
-.fa-fighter-jet:before {
-  content: "\f0fb";
-}
-.fa-beer:before {
-  content: "\f0fc";
 }
 .fa-h-square:before {
   content: "\f0fd";
@@ -1035,15 +948,6 @@
 .fa-calendar-o:before {
   content: "\f133";
 }
-.fa-fire-extinguisher:before {
-  content: "\f134";
-}
-.fa-rocket:before {
-  content: "\f135";
-}
-.fa-maxcdn:before {
-  content: "\f136";
-}
 .fa-chevron-circle-left:before {
   content: "\f137";
 }
@@ -1055,12 +959,6 @@
 }
 .fa-chevron-circle-down:before {
   content: "\f13a";
-}
-.fa-html5:before {
-  content: "\f13b";
-}
-.fa-css3:before {
-  content: "\f13c";
 }
 .fa-anchor:before {
   content: "\f13d";
@@ -1189,41 +1087,8 @@
 .fa-thumbs-down:before {
   content: "\f165";
 }
-.fa-youtube-square:before {
-  content: "\f166";
-}
-.fa-youtube:before {
-  content: "\f167";
-}
-.fa-xing:before {
-  content: "\f168";
-}
-.fa-xing-square:before {
-  content: "\f169";
-}
-.fa-youtube-play:before {
-  content: "\f16a";
-}
-.fa-dropbox:before {
-  content: "\f16b";
-}
-.fa-stack-overflow:before {
-  content: "\f16c";
-}
 .fa-instagram:before {
   content: "\f16d";
-}
-.fa-flickr:before {
-  content: "\f16e";
-}
-.fa-adn:before {
-  content: "\f170";
-}
-.fa-bitbucket:before {
-  content: "\f171";
-}
-.fa-bitbucket-square:before {
-  content: "\f172";
 }
 .fa-tumblr:before {
   content: "\f173";
@@ -1243,52 +1108,6 @@
 .fa-long-arrow-right:before {
   content: "\f178";
 }
-.fa-apple:before {
-  content: "\f179";
-}
-.fa-windows:before {
-  content: "\f17a";
-}
-.fa-android:before {
-  content: "\f17b";
-}
-.fa-linux:before {
-  content: "\f17c";
-}
-.fa-dribbble:before {
-  content: "\f17d";
-}
-.fa-skype:before {
-  content: "\f17e";
-}
-.fa-foursquare:before {
-  content: "\f180";
-}
-.fa-trello:before {
-  content: "\f181";
-}
-.fa-female:before {
-  content: "\f182";
-}
-.fa-male:before {
-  content: "\f183";
-}
-.fa-gittip:before,
-.fa-gratipay:before {
-  content: "\f184";
-}
-.fa-sun-o:before {
-  content: "\f185";
-}
-.fa-moon-o:before {
-  content: "\f186";
-}
-.fa-archive:before {
-  content: "\f187";
-}
-.fa-bug:before {
-  content: "\f188";
-}
 .fa-vk:before {
   content: "\f189";
 }
@@ -1297,12 +1116,6 @@
 }
 .fa-renren:before {
   content: "\f18b";
-}
-.fa-pagelines:before {
-  content: "\f18c";
-}
-.fa-stack-exchange:before {
-  content: "\f18d";
 }
 .fa-arrow-circle-o-right:before {
   content: "\f18e";
@@ -1314,36 +1127,11 @@
 .fa-caret-square-o-left:before {
   content: "\f191";
 }
-.fa-dot-circle-o:before {
-  content: "\f192";
-}
-.fa-wheelchair:before {
-  content: "\f193";
-}
-.fa-vimeo-square:before {
-  content: "\f194";
-}
-.fa-turkish-lira:before,
-.fa-try:before {
-  content: "\f195";
-}
 .fa-plus-square-o:before {
   content: "\f196";
 }
-.fa-space-shuttle:before {
-  content: "\f197";
-}
-.fa-slack:before {
-  content: "\f198";
-}
 .fa-envelope-square:before {
   content: "\f199";
-}
-.fa-wordpress:before {
-  content: "\f19a";
-}
-.fa-openid:before {
-  content: "\f19b";
 }
 .fa-institution:before,
 .fa-bank:before,
@@ -1366,29 +1154,8 @@
 .fa-reddit-square:before {
   content: "\f1a2";
 }
-.fa-stumbleupon-circle:before {
-  content: "\f1a3";
-}
-.fa-stumbleupon:before {
-  content: "\f1a4";
-}
-.fa-delicious:before {
-  content: "\f1a5";
-}
-.fa-digg:before {
-  content: "\f1a6";
-}
-.fa-pied-piper:before {
-  content: "\f1a7";
-}
 .fa-pied-piper-alt:before {
   content: "\f1a8";
-}
-.fa-drupal:before {
-  content: "\f1a9";
-}
-.fa-joomla:before {
-  content: "\f1aa";
 }
 .fa-language:before {
   content: "\f1ab";

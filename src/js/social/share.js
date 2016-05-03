@@ -19,16 +19,6 @@ function shareThisFeature(obj) {
 
     feature_tags_encoded = encodeURIComponent(feature_tags);
 
-    /*    console.log("value of feature data: ", featuredata);
-
-    console.log("encoded URL", encoded_url);
-
-    console.log("encoded image link", feature_image_url_encoded);
-
-    console.log("encoded note", feature_note_encoded);
-
-    console.log("encoded tags", feature_tags_encoded);*/
-
     // Create the links dynamically in the templatedata object
     templatedata.social.network[0].targeturl = "https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=" + encoded_url + "&description=" + feature_note_encoded + "&link=" + encoded_url + "&picture=" + feature_image_url_encoded + "&name=Garbagepla.net&redirect_uri=https://www.garbagepla.net";
 
@@ -42,5 +32,8 @@ function shareThisFeature(obj) {
 
     templatedata.social.network[5].targeturl = "whatsapp://send?text=Shared%20from%20www.garbagepla.net";
 
-    templatedata.social.network[5].targeturl = "https://vk.com/share.php?url=" + encoded_url;
+    templatedata.social.network[6].targeturl = "https://vk.com/share.php?url=" + encoded_url;
+    
+    templatedata.social.network[7].targeturl = "http://share.renren.com/share/buttonshare.do?link=" + encoded_url +  "&title=Share from Garbagepla.net";
+    
 };

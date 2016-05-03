@@ -1,6 +1,7 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // TODO add the templating system build
 var gulp = require('gulp'),
+    Promise = require('es6-promise').Promise,
     inject = require('gulp-inject'),
     deleteLines = require('gulp-delete-lines'),
     stripDebug = require('gulp-strip-debug'),
@@ -62,7 +63,10 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/bootstrap-tagsinput-0.4.3.css',
                     './src/css/bootstrap-horizon.css',
                     './src/css/bootstrap-tour-0.10.1.css',
+                    './src/css/bootstrap-datatables-1.10.11.css',
                     './src/css/leaflet-0.7.7.css',
+                    './src/css/L.Compact.Attributions.css',
+                    './src/css/L.Geocoder.Opencage-1.1.2.css',
                     './src/css/leaflet.draw.css',
                     './src/css/L.Control.Sidebar-0.19a.css',
                     './src/css/main.css',
@@ -78,11 +82,14 @@ gulp.task('styles', ['trimHTML'], function() {
 gulp.task('scripts:leaflet', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/libs/Leaflet-0.7.7.js',
-                    './src/js/libs/L.hash.js',
+                    './src/js/libs/L.Hash.js',
                     './src/js/libs/L.zoomCSS.js',
+                    './src/js/libs/L.Compact.Attributions.js',
+                    './src/js/libs/L.Marker.Menu.js',
                     './src/js/libs/L.Control.Sidebar-0.19a.js',
                     './src/js/libs/L.Overpass.Layer.js',
-                    './src/js/libs/L.Draw.js'
+                    './src/js/libs/L.Draw.js',
+                    './src/js/libs/L.Geocoder.Opencage-1.1.2.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('leaflet.min.js'))
@@ -101,8 +108,10 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
                     './src/js/libs/bootstrap-select-1.9.4.js',
                     './src/js/libs/bootstrap-validator-0.9.0.js',
                     './src/js/libs/bootstrap-tour-0.10.1.js',
-                    './src/js/libs/jquery.ui.widget.js',
-                    './src/js/libs/jquery-fileupload.js'
+                    './src/js/libs/jquery-ui-widget-1.11.4.js',
+                    './src/js/libs/jquery-fileupload.js',
+                    './src/js/libs/bootstrap-datatables-1.10.11.js',
+                    './src/js/libs/jquery-touchwipe-1.1.1.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('jquery.min.js'))
@@ -130,6 +139,8 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/forms/uploader.js',
                     './src/js/forms/forms_submit.js',
                     './src/js/forms/forms_elements.js',
+                    './src/js/ui/modal.js',
+                    './src/js/tour/tour.js',
                     './src/js/draw.js',
                     './src/js/social/share.js'
                   ])
