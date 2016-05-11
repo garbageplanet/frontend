@@ -1,6 +1,7 @@
 ## General license
 
 Copyright (C) 2016, Garbagepla.net
+https://www.garbagepla.net
 [ISC](https://en.wikipedia.org/wiki/ISC_license) License
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.

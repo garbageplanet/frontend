@@ -497,6 +497,14 @@ a.menu-backlink:hover {
 }
 
 /*Style the navbar*/
+.navbar-brand-name {
+    vertical-align: text-top;
+}
+
+.navbar-brand-icon {
+    margin-right: 5px;
+}
+
 .navbar-default {
   background-color: #FFF;
   border-color: transparent;
@@ -534,7 +542,7 @@ textarea {
     border-radius: 0 !important;
 }
 
-h1, h2, h3, h4, span, strong, a, .lead, p, input, textarea, select, button, .page-name, .navbar .nav-pills > li > a {
+h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, button, .page-name, .navbar .nav-pills > li > a {
   font-family: 'Work Sans', sans-serif;
   font-weight: 200
 }

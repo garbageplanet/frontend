@@ -14,7 +14,9 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] load features into layer but do not re-create each layer after elements are added or removed (get_features.js) 
 
 ### TODO
-- [ ] finalize the edit system (build the feature creation forms from templates)
+- [ ] tags do not get saved to the db
+- [ ] build all sidebar views from templates
+- [ ] finalize the edit system (build the forms from templates)
 - [ ] build the cleaned, join, play and confirm functions with a prototype
 - [ ] allow drawing shapes but hide the sidebar on draw:start and show it on draw:created
 

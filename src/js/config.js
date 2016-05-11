@@ -26,7 +26,7 @@ var api = {
     removeUser: {
         method: 'DELETE',
         url: function () {
-            return api.createLogin.url() + '/user';
+            return api.createLogin.url() + '/delete';
         }
     },
 

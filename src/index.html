@@ -46,7 +46,7 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap-datatables-1.10.11.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap-tour-0.10.1.css">
   <link rel="stylesheet" type="text/css" href="css/trashbag.css">
-  <link rel="stylesheet" type="text/css" href="css/L.Draw.css">
+  <link rel="stylesheet" type="text/css" href="css/L.Draw-0.2.4.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/map.css">
   <link rel="stylesheet" type="text/css" href="css/markers.css">
@@ -74,7 +74,7 @@
   <script type="text/javascript" src="js/libs/L.Marker.Menu.js"></script>
   <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
   <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
-  <script type="text/javascript" src="js/libs/L.Draw.js"></script>
+  <script type="text/javascript" src="js/libs/L.Draw-0.2.4.js"></script>
   <script type="text/javascript" src="js/libs/L.Geocoder.Opencage-1.1.2.js"></script>
 </head>
 <body>
@@ -83,7 +83,7 @@
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header col-lg-12 col-xl-12 col-sm-12 col-xs-12">
-        <a class="navbar-brand pull-left" href="#"><span class="icon-trashbag"></span><strong class="page-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.1</kbd></a>
+        <a class="navbar-brand pull-left" href="#"><span class="navbar-brand-icon icon-trashbag"></span><strong class="navbar-brand-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.1</kbd></a>
 
         <div class="pull-right">
           <ul class="nav navbar-nav">
@@ -95,7 +95,8 @@
               <span class="fa fa-fw fa-wrench"></span><span class="hidden title-collapsed">Map tools</span></a>
               <ul class="dropdown-menu" id="map-tools">
                 <li><a id="modal-list-garbage" class="modal-link">Get data</a></li>
-                <li><a id="modal-list-cleaning" class="modal-link">Cleaning calendar</a></li>                <li class="divider"></li>
+                <li><a id="modal-list-cleaning" class="modal-link">Cleaning calendar</a></li>                
+                <li class="divider"></li>
                 <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
                 <li class="disabled"><a class="" href="#">Local forecast</a></li>
                 <li class="disabled"><a class="" href="#">Hotspots</a></li>
@@ -134,7 +135,6 @@
 
             <div class="form-group form-group-lg mobile-menu">
 
-                <a href="#credits-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-question"></span> About</a>
 
                 <a href="#create-account-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-user"></span> Register</a>
 
@@ -146,11 +146,9 @@
 
                 <a href="#" class="btn btn-default btn-lg btn-block btn-locate"><span class="fa fa-fw fa-compass"></span> Locate me</a>
 
-                <a href="#" class="sidebar-link btn btn-default btn-lg btn-block disabled"><span class="fa fa-fw fa-calendar-o"></span> Calendar</a>
-
-                <a href="#" class="sidebar-link btn btn-default btn-lg btn-block disabled"><span class="fa fa-fw fa-fire"></span> Hotspots</a>
-
                 <a href="#" class="sidebar-link btn btn-default btn-lg btn-block disabled"><span class="fa fa-fw fa-cloud"></span> Forecast</a>
+                
+                <a href="#credits-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-question"></span> About</a>
 
             </div>
             
@@ -816,11 +814,13 @@
           <p class="lead">All user data and references are removed but the features you have created are kept in the database.</p>
             <form id="delete-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
               <div class="form-group form-group-lg">
-                <div class="checkbox form-group-lg tile-game-check">
-                  <label><input type="checkbox" required>I understand there's no going back.</label>
-                  <div class="help-block with-errors"></div>
+                <div class="form-group">
+                  <input type="email" class="form-control" placeholder="Email" id="delete-email" required>
                 </div>
-                <br>
+                <div class="form-group">
+                  <input type="password" class="form-control" placeholder="Password" id="delete-password" required>
+                </div>
+                <div class="help-block with-errors"></div>
                 <div>
                   <div>
                     <button type="submit" class="btn btn-danger btn-lg btn-block btn-delete-account">Delete</button>
@@ -866,13 +866,13 @@
                   <h3>Terms of service</h3>
                   <p>As a user (anybody who has registered an account or is creating markers anonymously) of the grabagepla.net platform, you agree to use this platform for the sole purpose that it was designed for and no other ends including but not limited to the promotion of hate speech, third-party material advertisement or any other illegal activity.</p>
                   <p>The underlying software is distributed under the <a href="https://opensource.org/licenses/ISC" target="_blank">ISC Licence</a>. The data gathered by this platform is available upon request under the ODC Open Database License (<a href="http://opendatacommons.org/licenses/odbl/" target="_blank">ODbL v1.0</a>). The garbagepla.net logo is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0</a> International License.</p>
-                  <p>Content in preparation - this platform is not meant to be used for active reporint yet.</p>
+                  <p>Content in preparation.</p>
                 </div>
 
                 <div class="tab-pane form-group form-group-lg" id="user-info-privacy" role="tabpanel">
-                  <h3>Privacy policy</h3>
-                    <p>As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collectthat could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
-                    <p>Note that as of February 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
+                  <h3>Privacy policy and data protection</h3>
+                    <p>As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collect and that could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
+                    <p>Note that as of May 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
                 </div>
               </div>
             </div>

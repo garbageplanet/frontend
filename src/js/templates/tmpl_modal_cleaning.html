@@ -1,9 +1,9 @@
 <script type="text/x-tmpl" id="tmpl-modal-cleaning">
-    {% for (var i=0; i<o.length; i++) { %}
-        <tr class="modal-calendar-row">
-            <td>{%=o[i].id%}</td>
-            <td>{%=o[i].datetime%}</td>
-            <td>{%=o[i].latlng%}</td>		
-        </tr>
-    {% } %}
+{% for (var i=0; i<o.length; i++) { %}
+<tr class="modal-calendar-row">
+<td>{%=o[i].id%}</td>
+<td>{%=o[i].datetime%}</td>
+<td>{%=o[i].latlng%}</td>		
+</tr>
+{% } %}
 </script>

@@ -4,14 +4,18 @@
 // modified by feri
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 
+/**
+* Logins, logouts, account deletion and glome pairing
+*/
+
 //login function
 function login(e) {
     
     e.preventDefault();
     
-    var email = $("#login-email").val(),
+    var email = $('#login-email').val(),
         
-        password = $("#login-password").val();
+        password = $('#login-password').val();
     
     $.ajax({
         
@@ -21,8 +25,8 @@ function login(e) {
         
         data: {
             
-            "email": email,
-            "password": password
+            'email': email,
+            'password': password
             
         },
         
@@ -36,7 +40,7 @@ function login(e) {
                 
                 url: api.readUser.url(),
                 
-                headers: {"Authorization": "Bearer " + response.token},
+                headers: {'Authorization': 'Bearer ' + response.token},
                 
                 success: function (data) {
                     
@@ -55,9 +59,9 @@ function login(e) {
                     
                     console.log('username value: ', localStorage.getItem('username'));
                   
-                    switchSession("login");
+                    switchSession('login');
                     
-                    showAlert("Login successful", "success", 1500);
+                    showAlert('Login successful', 'success', 1500);
                   
                 }
                 
@@ -67,8 +71,8 @@ function login(e) {
         
         error: function (response) {
             console.log(response);
-            showAlert("Failed to log in.", "danger", 2000);
-            localStorage.removeItem("token");
+            showAlert('Failed to log in.', 'danger', 2000);
+            localStorage.removeItem('token');
         }
     });
 }
@@ -79,7 +83,7 @@ function logout() {
     
     if (!localStorage.token) {
         
-        showAlert("User is already logged out.", "info", 2000);
+        showAlert('User is already logged out.', 'info', 2000);
         
         localStorage.clear();
         
@@ -89,9 +93,9 @@ function logout() {
     
     sidebar.hide();
     
-    switchSession("logout");
+    switchSession('logout');
     
-    showAlert("You are logged out.", "info", 2000);
+    showAlert('You are logged out.', 'info', 2000);
     
     return;
     
@@ -102,9 +106,9 @@ function registerUser(e) {
     
     e.preventDefault();
     
-    var email = $("#register-email").val(),
-        name = $("#register-name").val(),
-        password = $("#register-password").val();
+    var email = $('#register-email').val(),
+        name = $('#register-name').val(),
+        password = $('#register-password').val();
     
     $.ajax({
         
@@ -114,9 +118,9 @@ function registerUser(e) {
         
         data: {
             
-            "email": email,
-            "password": password,
-            "name": name
+            'email': email,
+            'password': password,
+            'name': name
             
         },
         
@@ -134,7 +138,7 @@ function registerUser(e) {
                 
                 url: api.readUser.url(),
                 
-                headers: {"Authorization": "Bearer " + response.token},
+                headers: {'Authorization': 'Bearer ' + response.token},
                 
                 success: function (data) {
                     
@@ -148,9 +152,9 @@ function registerUser(e) {
                     
                     localStorage.setItem('useremail', data.user.email);
                   
-                    switchSession("login");
+                    switchSession('login');
                     
-                    showAlert("Registration successful, you are now logged in.", "success", 2000);
+                    showAlert('Registration successful, you are now logged in.', 'success', 2000);
                 }
                 
             });
@@ -159,9 +163,9 @@ function registerUser(e) {
         
         error: function (response) {
                         
-            showAlert(response.responseText.substring(2, 30), "danger", 3500);
+            showAlert(response.responseText.substring(2, 30), 'danger', 3500);
             
-            localStorage.removeItem("token");
+            localStorage.removeItem('token');
             
         }
         
@@ -195,7 +199,7 @@ function glomego(e) {
 
                 console.log('bad luck with soft account creation');
 
-                showAlert("Failed to login anonymously. Reload the page and try again.", "warning", 3000);
+                showAlert('Failed to login anonymously. Reload the page and try again.', 'warning', 3000);
 
                 return;
 
@@ -221,7 +225,7 @@ function glomego(e) {
                 
                 url: api.readSoftAccount.url(glomeid),
                 
-                headers: {"Authorization": "Bearer " + token},
+                headers: {'Authorization': 'Bearer ' + token},
                 
                 dataType: 'json',
                 
@@ -239,9 +243,9 @@ function glomego(e) {
 
                       localStorage.setItem('classic', 'false');
                         
-                      switchSession("login");
+                      switchSession('login');
                         
-                      showAlert("You are now logged in anonymously.", "success", 2000);
+                      showAlert('You are now logged in anonymously.', 'success', 2000);
 
                     }
                     
@@ -255,9 +259,9 @@ function glomego(e) {
             
             console.log(response);
             
-            showAlert("Failed to login anonymously. Reload the page and try again.", "warning", 3000);
+            showAlert('Failed to login anonymously. Reload the page and try again.', 'warning', 3000);
             
-            localStorage.removeItem("token");
+            localStorage.removeItem('token');
             
         }
         
@@ -271,7 +275,7 @@ function sendGlomeKey(e) {
     e.preventDefault();
     
     // TODO parse the field
-    var glomeKey = $("#glome-key").val();
+    var glomeKey = $('#glome-key').val();
     
     $.ajax({
 
@@ -281,7 +285,7 @@ function sendGlomeKey(e) {
         
         data: {
             
-            "key": glomeKey
+            'key': glomeKey
             
         },
         
@@ -293,9 +297,9 @@ function sendGlomeKey(e) {
             
             $('#create-account-dialog').hide();
             
-            switchSession("login");
+            switchSession('login');
             
-            showAlert("Welcome back, anonymous!.", "success", 2000);
+            showAlert('Welcome back, anonymous!.', 'success', 2000);
             
             $.ajax({
                 
@@ -303,7 +307,7 @@ function sendGlomeKey(e) {
                 
                 url: 'http://api.garbagepla.net/api/authenticate/glome',
                 
-                headers: {"Authorization": "Bearer " + response.token},
+                headers: {'Authorization': 'Bearer ' + response.token},
                 
                 success: function (data) {
                     
@@ -329,9 +333,9 @@ function sendGlomeKey(e) {
             
             console.log(response);
             
-            showAlert("Sorry. Key not recognized.", "danger", 3000);
+            showAlert('Sorry. Key not recognized.', 'danger', 3000);
             
-            localStorage.removeItem("token");
+            localStorage.removeItem('token');
             
         }
         
@@ -340,13 +344,22 @@ function sendGlomeKey(e) {
 }
 
 // Remove user account
+// FIXME backend replies 405 method not allowed
 function deleteUser(e) {
     
     var classicSessionType = localStorage.getItem('classic');
 
-    if (classicSessionType === 'true' ) {
-
+    if (classicSessionType === 'true') {
+        
+        console.log('DELETING ACCOUNT');
+        
         e.preventDefault();
+        
+        var useToken = localStorage.getItem('token'),
+            
+            email = $('#delete-email').val(),
+        
+            password = $('#delete-password').val();
 
         $.ajax({
             
@@ -354,19 +367,30 @@ function deleteUser(e) {
             
             url: api.readUser.url(),
             
-            headers: {"Authorization": "Bearer " + response.token},
+            /*headers: {'Authorization': 'Bearer ' + useToken},*/
+            
+            data: {
+            
+                'email': email,
+                'password': password
+            
+            },
             
             success: function (data) {
 
-              switchSession("logout");
+              switchSession('logout');
 
-              showAlert("Farewell, old friend.", "success", 1500);
+              showAlert('Account successfully deleted.', 'success', 2000);
 
             },
 
             error: function (response) {
 
-            sidebar.hide();
+                sidebar.hide();
+                
+                console.log(response);
+                
+                showAlert('Sorry, something went wrong.', 'danger', 2500);
 
             }
             
@@ -374,7 +398,7 @@ function deleteUser(e) {
 
     } else {
 
-        showAlert("You cannot delete soft accounts.", "warning", 2000);
+        showAlert('You cannot delete soft accounts.', 'warning', 2000);
 
     }
   
@@ -383,21 +407,21 @@ function deleteUser(e) {
 $(function () {
     
     // logout, there are two places where user can click to logout ('button' and 'a')
-    $(".btn-logout").on('click', logout);
+    $('.btn-logout').on('click', logout);
   
     // login
-    $(".btn-login").click(login);
+    $('.btn-login').click(login);
 
     // register
-    $("#registration-form").submit(registerUser);
+    $('#registration-form').submit(registerUser);
 
     // glome go
-    $(".btn-glome-go").on('click', glomego);
+    $('.btn-glome-go').on('click', glomego);
 
     // TODO send glome key
-    $(".btn-glome-key-send").click(sendGlomeKey);
+    $('.btn-glome-key-send').click(sendGlomeKey);
   
     // delete account
-    $(".btn-delete-account").one('click', deleteUser);
+    $('.btn-delete-account').one('click', deleteUser);
     
 });

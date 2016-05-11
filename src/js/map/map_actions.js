@@ -1,6 +1,10 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 
-// Warn user once if zoom is too far
+/**
+* User actions on the map pane and unsaved markers
+*/
+
+// Warn user once if zoom is too far, then warn on map click inside onMapClick()
 map.addOneTimeEventListener('zoomend', function (e) {
 
     if (e.target.getZoom() < 10) {
@@ -107,7 +111,7 @@ function onMapClick(e) {
         !$('.leaflet-compact-attribution-toggle').is(':checked')       
        ) {
         
-        marker = L.marker(e.latlng, { icon: genericMarker, draggable: true});
+        marker = L.marker(e.latlng, { icon: genericMarker, draggable: true });
         
         // Actions for mobile and small screens
         if ($(window).width() <= 567) {
@@ -191,11 +195,11 @@ function onMapClick(e) {
         });
 
         // Remove the point marker if the user wants to draw
-        map.on('draw:drawstart', function (e) {
+/*        map.on('draw:drawstart', function (e) {
 
             map.removeLayer(marker);
 
-        });
+        });*/
   
         // Reset unsaved marker styles if sidebar is closed after marker creation
         sidebar.on ('hide', function () {

@@ -1,3 +1,7 @@
+/**
+* Forms elements that requires js activations and setting
+*/
+
 // Display the date and time picker and get the data in the cleaning form on change
 $(document).ready(function() {
 

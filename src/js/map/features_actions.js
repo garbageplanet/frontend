@@ -1,4 +1,73 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+
+/**
+* User actions on map features that are already present
+*/
+
+// onClick behavior for saved garbage markers
+function onGarbageMarkerClick (e) {
+    
+    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
+    
+    console.log("Garbage marker clicked");
+    
+    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
+    
+    sidebar.hide();
+    
+}
+
+// onClick behavior for saved cleaning markers
+function onCleaningMarkerClick (e) {
+    
+    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
+    
+    console.log("Cleaning marker clicked");
+    
+    console.log(e);
+    
+    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
+    
+    sidebar.hide();
+    
+}
+
+// onClick behavior for saved areas
+function onAreaClick (e) {
+    
+    // map.off('click', onMapClick);
+    
+    console.log("remote polygon clicked");
+    
+    setTimeout(function () {
+    
+        sidebar.hide();
+
+        bottombar.show();
+
+        map.panToOffset(e.getCenter(), _getVerticalOffset());
+        
+    }, 100);
+    
+}
+
+// onClick behavior for saved litters
+function onLitterClick (e) {
+        
+    console.log("remote polyline clicked");
+        
+    setTimeout(function () {
+    
+        sidebar.hide();
+
+        bottombar.show();
+
+        map.panToOffset(e.getCenter(), _getVerticalOffset());
+        
+    }, 100);
+   
+};
+
 // TODO Push the data to the form on .btn-edit click
 function editFeature(e) {
     
@@ -59,47 +128,43 @@ function confirmGarbage(e){
 
         showAlert("You need to login to do that.", "info", 2000);
 
+    } else {
+
+        setTimeout(function () {
+
+            var useToken = localStorage.getItem('token') || window.token;
+
+            $.ajax({
+
+                method: api.confirmTrash.method,
+
+                url: api.confirmTrash.url(),
+
+                headers: {"Authorization": "Bearer" + useToken},
+
+                data: {
+                    // TODO how to do this?
+                    'confirm': counts 
+
+                },
+
+                success: function (data) {
+
+                    // TODO change the value in the UI by fetching the new data and reloading the template
+                    console.log('success data', data);
+                },
+
+                error: function (err) {
+
+                  console.log('err', err);
+
+                }
+
+          });
+
+        }, 100);
+        
     }
-
-    var counts = parseInt($(".badge-notify-confirm").val, 10);
-    
-    counts = isNaN(counts) ? 0 : value; counts++;
-    
-    $(".badge-notify-confirm").val = counts;
-
-    setTimeout(function () {
-        
-        var useToken = localStorage.getItem('token') || window.token;
-
-        $.ajax({
-            
-            method: api.confirmTrash.method,
-            
-            url: api.confirmTrash.url(),
-            
-            headers: {"Authorization": "Bearer" + useToken},
-            
-            data: {
-                // TODO how to do this?
-                'confirm': counts 
-                
-            },
-            
-            success: function (data) {
-                
-                // TODO change the value in the UI
-                console.log('success data', data);
-            },
-            
-            error: function (err) {
-                
-              console.log('err', err);
-                
-            }
-            
-      });
-        
-    }, 100);
     
 };
 
@@ -114,13 +179,7 @@ function joinCleaning(e){
         showAlert("You need to login to do that.", "info", 2000);
         
     }
-
-    var counts = parseInt($(".badge-notify-join").val, 10);
-    
-    counts = isNaN(counts) ? 0 : value; counts++;
-    
-    $(".badge-notify-join").val = counts;
-
+        
     setTimeout(function () {
         
       // var useToken = localStorage["token"] || window.token;
@@ -137,7 +196,7 @@ function joinCleaning(e){
             data: {
                 
                 // TODO how to do this?
-                'confirm': data 
+                'join': data 
                 
             },
             success: function (data) {
@@ -159,20 +218,13 @@ function joinCleaning(e){
 // TODO Take part in game function
 function participateGame(e){
     // TODO Finish this
-    // TODO count function in the backend, not here
     // TODO make session-dependant and allow once per user per marker
     if (!localStorage.getItem('token')){
         
         showAlert("You need to login to do that.", "info", 2000);
         
     }
-
-    var counts = parseInt($(".badge-notify-participate").val, 10);
-    
-    counts = isNaN(counts) ? 0 : value; counts++;
-    
-    $(".badge-notify-join").val = counts;
-
+        
     setTimeout(function () {
         
         var useToken = localStorage.getItem('token') || window.token;
@@ -219,39 +271,43 @@ function cleanedGarbage(e){
         
     }
 
-    setTimeout(function () {
+    else {
         
-        var useToken = localStorage.getItem('token') || window.token;
+        setTimeout(function () {
 
-        $.ajax({
-            
-            method: api.confirmTrash.method,
-            
-            url: api.confirmTrash.url(),
-            
-            headers: {"Authorization": "Bearer" + useToken},
-            
-            data: {
-                
-                // TODO finish this
-                'clean': 1 
-                
-            },
-            
-            success: function (data) {
-                
-                // TODO reload the markers to display change
-                console.log('success data', data);
-                
-            },
-            
-            error: function (err) {
-                
-              console.log('err', err);
-                
-          }
-            
-      });
+            var useToken = localStorage.getItem('token') || window.token;
+
+            $.ajax({
+
+                method: api.confirmTrash.method,
+
+                url: api.confirmTrash.url(),
+
+                headers: {"Authorization": "Bearer" + useToken},
+
+                data: {
+
+                    // TODO finish this
+                    'clean': 1 
+
+                },
+
+                success: function (data) {
+
+                    // TODO reload the markers to display change
+                    console.log('success data', data);
+
+                },
+
+                error: function (err) {
+
+                  console.log('err', err);
+
+              }
+
+          });
+
+        }, 100);
         
-    }, 100);
+    }
 };

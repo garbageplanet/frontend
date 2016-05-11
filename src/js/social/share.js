@@ -1,4 +1,9 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+
+/**
+* Sharing map features from the bottom panel
+*/
+
 function shareThisFeature(obj) {
     
     var featuredata = obj,

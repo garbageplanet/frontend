@@ -1,42 +1,44 @@
-// Swtch session function
+/**
+* UI session behaviors
+*/
+
 // TODO destroy/replace/append elements instead of hiding them
-// TODO add direct logout button to mobile menu
 function switchSession(sessionStatus) {
 
     var classicSessionType = localStorage.getItem('classic');
 
     if (sessionStatus === "logout") {
-
-        $('#session-status a').text('Login').attr("href","#user-login-dialog");
-
-        $('#session-status a').attr("id","");
-
-        $('#session-status a').addClass('dropdown-link');
-
-        $('#user-info-link').remove();
-
-        $('#user-info-mobile-link').remove();
-
-        $('#user-tools').dropdown();
-
-        $('.user-email, .user-glome-key').removeClass('hidden');
-
-        $(".session-link").removeClass('hidden');
         
+        $('#session-status a').text('Login').attr("href","#user-login-dialog");
+        
+        $('#session-status a').attr("id","");
+        
+        $('#session-status a').addClass('dropdown-link');
+        
+        $('#user-info-link').remove();
+        
+        $('#user-info-mobile-link').remove();
+        
+        $('#user-tools').dropdown();
+        
+        $('.user-email, .user-glome-key').removeClass('hidden');
+        
+        $(".session-link").removeClass('hidden');
+       
     }
 
     if (sessionStatus === "login") {
-
+        
         $("#session-status a").text("Logout").attr("href","#");
-        
+       
         $("#session-status a").attr("id","btn-logout");
-        
+       
         $("#session-status a").removeClass('dropdown-link');
-        
+       
         $("#session-status").on('click', '#btn-logout', function() {
-            
+           
             switchSession("logout"); logout();
-        
+       
         });
         
         $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="#account-info">User info</a></li>');
@@ -96,6 +98,7 @@ function switchSession(sessionStatus) {
 
         }
 
+        // FIXME that's a literal false
         if  (classicSessionType === "false") {
 
             $('#account-info').find('.user-name').text('anon (⌐■_■)');

@@ -2,6 +2,10 @@
 // author: xr@github
 // FUTURE enable multiple uploads
 
+/**
+* Uploading images to imgur anonymously
+*/
+
 $(function () {
     
     $('.image-uploader').fileupload({

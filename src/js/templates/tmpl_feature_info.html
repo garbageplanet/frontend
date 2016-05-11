@@ -1,234 +1,234 @@
 <script type="text/x-tmpl" id="tmpl-feature-info">
 <div class="row row-horizon bottombar-content" id="feature-info">
-  <div class="card card-actions col-xl-1 col-lg-1 col-md-1 col-ms-1 col-sm-2 col-xs-2">
-    <div>
-      <div class="btn-group-vertical" role="group">
-        <div class="btn-group btn-group-lg" role="group">
-          <button type="button" title="Edit this feature" class="btn btn-warning btn-edit btn-round sidebar-link">
-            <span class="fa fa-pencil"></span>
-          </button>
-        </div>
-        <div class="btn-group btn-group-lg hidden-xs" role="group">
-          <button type="button" title="Delete this feature" class="btn btn-danger btn-round btn-delete">
-            <span class="fa fa-times"></span>
-          </button>
-        </div>
-        {% if (o.amount) { %}
-        <div class="btn-group btn-group-lg" role="group">
-          <button type="button" title="The garbage has been cleaned" class="btn btn-round btn-success btn-cleaned">
-            <span class="fa fa-check"></span>
-          </button>
-        </div>
-        {% } %}
-        {% if (o.amount) { %}
-        <div class="btn-group btn-group-lg" role="group">
-          <button type="button" title="Confirm there is garbage here" class="btn btn-round btn-info btn-confirm-garbage">
-            <span class="fa fa-binoculars"></span>
-          </button>
-          <span class="badge badge-notify badge-notify-confirm">{%=o.confirm%}</span>
-        </div>
-        {% } %}
-        {% if (o.datetime) { %}
-        <div class="btn-group btn-group-lg" role="group">
-          <button type="button" title="Say you will help" class="btn btn-round btn-info btn-join-cleaning">
-            <span class="fa fa-group"></span>
-          </button><span class="badge badge-notify badge-notify-join">{%=o.join%}</span>
-        </div>
-        {% } %}
-        {% if (o.contact) { %}
-        <div class="btn-group btn-group-lg" role="group">
-          <button type="button" title="Join game" class="btn btn-round btn-info btn-participate-game">
-            <span class="fa fa-play"></span>
-          </button><span class="badge badge-notify badge-notify-participate">{%=o.participant%}</span>
-        </div>
-        {% } %}
-        <div class="btn-group btn-group-lg" role="group">
-          <button type="button" title="Share this" class="btn btn-round btn-default btn-social" data-toggle="popover" data-placement="top" data-trigger="focus">
-            <span class="fa fa-share-alt"></span>
-          </button>
-        </div>
-      </div>
-      <div class="hidden" id="social-links"></div>
-    </div>
-  </div>
-  <div class="card card-scroll card-data col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
-    <div><h3>Data</h3></div>
-    <div class="feature-data-card">
-      {% if (o.types) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <span class="pull-left">type:{%=o.types%}</span>
-          <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-type pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.amount) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">amount:{%=o.amount%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-amount pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.size) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">sizes:{%=o.size%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-size pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.embed) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">in:{%=o.embed%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-embed pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.physical_length) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">length:{%=o.physical_length%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-litter-length pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.todo) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">todo:{%=o.todo%}</span>
-        <span class="feature-info-garbage feature-info feature-info-todo pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.note) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">note:{%=o.note%}</span>
-          <span class="feature-info feature-info-common feature-info-note pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.tags) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">note:{%=o.tags%}</span>
-          <span class="feature-info feature-info-common feature-info-tags pull-left">
-          {% for (var i=0; i<o.tags.length; i++) { %}
-            <span class="label label-default">{%=o.tags[i]%}</span>
-          {% } %}
-          </span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.datetime) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">time:{%=o.datetime%}</span>
-          <span class="feature-info feature-info-cleaning feature-info-time pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.datetime) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">location:</span>
-          <span class="feature-info feature-info-cleaning feature-info-location pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-       {% if (o.physical_length) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">length:{%=o.physical_length%}</span>
-          <span class="feature-info feature-info-litter feature-info-length pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-       {% if (o.title) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">name:{%=o.title%}</span>
-          <span class="feature-info feature-info-area feature-info-name pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-      {% if (o.contact) { %}
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">contact:{%=o.contact%}</span>
-          <span class="feature-info feature-info-area feature-info-contact pull-left"></span>
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">players:{%=o.players%}</span>
-          <span class="feature-info feature-info-area feature-info-players pull-left"></span>
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-body">
-        <span class="pull-left">results:<a href="{%=o.results_link%}" class="game-results-modal-link" data-toggle="modal" data-target="#game-results-modal"> click here to view<a/></span>
-          <span class="feature-info feature-info-area feature-info-results pull-left"></span>
-        </div>
-      </div>
-      {% } %}
-    </div>
-  </div>
-  {% if (o.image_url) { %}
-    <div class="card card-scroll card-media col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
-      <div><h3>Media</h3></div>
-        <a class="feature-image-link" href="{%#o.image_url%}" target="_blank"><img src="{%#o.image_url%}" alt="feature image" class="feature-image center-block"></a>
-    </div>
-  {% } %}
-  <div class="card card-scroll card-track col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
-  <div><h3>Track changes</h3></div>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="pull-left">creation date:{%=o.created_at %}</span>
-        <span class="feature-info feature-info-created-at pull-left"></span>
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="pull-left">created by:{%=o.created_by %}</span>
-        <span class="feature-info feature-info-created-by pull-left"></span>
-      </div>
-    </div>
-    {% if (o.modifided_by) { %}
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="pull-left">modified by:{%=o.modifided_by %}</span>
-        <span class="feature-info feature-info-modified-by pull-left"></span>
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="pull-left">modified at:{%=o.modifided_at %}</span>
-        <span class="feature-info feature-info-modified-at pull-left"></span>
-      </div>
-    </div>
-    {% } %}
-    {% if (o.cleaned_by) { %}
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="pull-left">modified by:{%=o.cleaned_by %}</span>
-        <span class="feature-info feature-info-cleaned-by pull-left"></span>
-      </div>
-    </div>
-    {% } %}
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="pull-left"><a class="feature-info-report" href="#">Report</a></span>
-      </div>
-    </div>
-  </div>
-  {% if (o.date) { %}
-      <div class="card card-minimap col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
-        <div><h3>Access minimap</h3></div>
-        <div id ="minimap" class="cleaning-minimap-card"></div>
-      </div>
-  {% } %}
+<div class="card card-actions col-xl-1 col-lg-1 col-md-1 col-ms-1 col-sm-2 col-xs-2">
+<div>
+<div class="btn-group-vertical" role="group">
+<div class="btn-group btn-group-lg" role="group">
+<button type="button" title="Edit this feature" class="btn btn-warning btn-edit btn-round sidebar-link">
+<span class="fa fa-pencil"></span>
+</button>
+</div>
+<div class="btn-group btn-group-lg hidden-xs" role="group">
+<button type="button" title="Delete this feature" class="btn btn-danger btn-round btn-delete">
+<span class="fa fa-times"></span>
+</button>
+</div>
+{% if (o.amount) { %}
+<div class="btn-group btn-group-lg" role="group">
+<button type="button" title="The garbage has been cleaned" class="btn btn-round btn-success btn-cleaned">
+<span class="fa fa-check"></span>
+</button>
+</div>
+{% } %}
+{% if (o.confirm) { %}
+<div class="btn-group btn-group-lg" role="group">
+<button type="button" title="Confirm there is garbage here" class="btn btn-round btn-info btn-confirm-garbage">
+<span class="fa fa-binoculars"></span>
+</button>
+<span class="badge badge-notify badge-notify-confirm">{%=o.confirm%}</span>
+</div>
+{% } %}
+{% if (o.datetime) { %}
+<div class="btn-group btn-group-lg" role="group">
+<button type="button" title="Say you will help" class="btn btn-round btn-info btn-join-cleaning">
+<span class="fa fa-group"></span>
+</button><span class="badge badge-notify badge-notify-join">{%=o.join%}</span>
+</div>
+{% } %}
+{% if (o.contact) { %}
+<div class="btn-group btn-group-lg" role="group">
+<button type="button" title="Join game" class="btn btn-round btn-info btn-participate-game">
+<span class="fa fa-play"></span>
+</button><span class="badge badge-notify badge-notify-participate">{%=o.participant%}</span>
+</div>
+{% } %}
+<div class="btn-group btn-group-lg" role="group">
+<button type="button" title="Share this" class="btn btn-round btn-default btn-social" data-toggle="popover" data-placement="top" data-trigger="focus">
+<span class="fa fa-share-alt"></span>
+</button>
+</div>
+</div>
+<div class="hidden" id="social-links"></div>
+</div>
+</div>
+<div class="card card-scroll card-data col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
+<div><h3>Data</h3></div>
+<div class="feature-data-card">
+{% if (o.types) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">type:{%=o.types%}</span>
+<span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-type pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.amount) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">amount:{%=o.amount%}</span>
+<span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-amount pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.size) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">sizes:{%=o.size%}</span>
+<span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-size pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.embed) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">in:{%=o.embed%}</span>
+<span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-embed pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.physical_length) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">length:{%=o.physical_length%}</span>
+<span class="feature-info feature-info-garbage feature-info-litter feature-info-litter-length pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.todo) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">todo:{%=o.todo%}</span>
+<span class="feature-info-garbage feature-info feature-info-todo pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.note) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">note:{%=o.note%}</span>
+<span class="feature-info feature-info-common feature-info-note pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.tags) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">note:{%=o.tags%}</span>
+<span class="feature-info feature-info-common feature-info-tags pull-left">
+{% for (var i=0; i<o.tags.length; i++) { %}
+<span class="label label-default">{%=o.tags[i]%}</span>
+{% } %}
+</span>
+</div>
+</div>
+{% } %}
+{% if (o.datetime) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">time:{%=o.datetime%}</span>
+<span class="feature-info feature-info-cleaning feature-info-time pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.datetime) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">location:</span>
+<span class="feature-info feature-info-cleaning feature-info-location pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.physical_length) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">length:{%=o.physical_length%}</span>
+<span class="feature-info feature-info-litter feature-info-length pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.title) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">name:{%=o.title%}</span>
+<span class="feature-info feature-info-area feature-info-name pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.contact) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">contact:{%=o.contact%}</span>
+<span class="feature-info feature-info-area feature-info-contact pull-left"></span>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">players:{%=o.players%}</span>
+<span class="feature-info feature-info-area feature-info-players pull-left"></span>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">results:<a href="{%=o.results_link%}" class="game-results-modal-link" data-toggle="modal" data-target="#game-results-modal"> click here to view<a/></span>
+<span class="feature-info feature-info-area feature-info-results pull-left"></span>
+</div>
+</div>
+{% } %}
+</div>
+</div>
+{% if (o.image_url) { %}
+<div class="card card-scroll card-media col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
+<div><h3>Media</h3></div>
+<a class="feature-image-link" href="{%#o.image_url%}" target="_blank"><img src="{%#o.image_url%}" alt="feature image" class="feature-image center-block"></a>
+</div>
+{% } %}
+<div class="card card-scroll card-track col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
+<div><h3>Track changes</h3></div>
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">creation date:{%=o.created_at %}</span>
+<span class="feature-info feature-info-created-at pull-left"></span>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">created by:{%=o.created_by %}</span>
+<span class="feature-info feature-info-created-by pull-left"></span>
+</div>
+</div>
+{% if (o.modifided_by) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">modified by:{%=o.modifided_by %}</span>
+<span class="feature-info feature-info-modified-by pull-left"></span>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">modified at:{%=o.modifided_at %}</span>
+<span class="feature-info feature-info-modified-at pull-left"></span>
+</div>
+</div>
+{% } %}
+{% if (o.cleaned_by) { %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left">modified by:{%=o.cleaned_by %}</span>
+<span class="feature-info feature-info-cleaned-by pull-left"></span>
+</div>
+</div>
+{% } %}
+<div class="panel panel-default">
+<div class="panel-body">
+<span class="pull-left"><a class="feature-info-report" href="#">Report</a></span>
+</div>
+</div>
+</div>
+{% if (o.date) { %}
+<div class="card card-minimap col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
+<div><h3>Access minimap</h3></div>
+<div id ="minimap" class="cleaning-minimap-card"></div>
+</div>
+{% } %}
 </div>
 </script>

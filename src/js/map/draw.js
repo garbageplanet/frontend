@@ -1,6 +1,10 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// All code related to drawing shapes
-editableLayerGroup = new L.FeatureGroup();
+
+/**
+* All code related to drawing shapes
+*/
+
+var editableLayerGroup = new L.FeatureGroup();
 
 var drawControl = new L.Control.Draw({
     
@@ -25,16 +29,19 @@ map.addControl(drawControl);
 
 map.on('draw:drawstart', function (e) {
     
+    map.removeLayer(marker);
+    
     var type = e.layerType,
         layer = e.layer;
   
     // Disable start drawing buttons
-    // FIXME entirely disable handlers
+    // TODO entirely disable handlers
     $('.btn-draw').addClass('disabled');
       
 });
 
 // Stop click listeners when editing and deleting features
+// TODO remove these as editing / deleting unsvaed shapes isn't implemented yet
 map.on('draw:editstart', function (e) {
     
     map.off('click', onMapClick);

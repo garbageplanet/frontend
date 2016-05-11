@@ -1,5 +1,4 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-// TODO add the templating system build
 var gulp = require('gulp'),
     Promise = require('es6-promise').Promise,
     inject = require('gulp-inject'),
@@ -67,7 +66,7 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/leaflet-0.7.7.css',
                     './src/css/L.Compact.Attributions.css',
                     './src/css/L.Geocoder.Opencage-1.1.2.css',
-                    './src/css/leaflet.draw.css',
+                    './src/css/L.Draw-0.2.4.css',
                     './src/css/L.Control.Sidebar-0.19a.css',
                     './src/css/main.css',
                     './src/css/map.css',
@@ -88,7 +87,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
                     './src/js/libs/L.Marker.Menu.js',
                     './src/js/libs/L.Control.Sidebar-0.19a.js',
                     './src/js/libs/L.Overpass.Layer.js',
-                    './src/js/libs/L.Draw.js',
+                    './src/js/libs/L.Draw-0.2.4.js',
                     './src/js/libs/L.Geocoder.Opencage-1.1.2.js'
                   ])
     .pipe(stripDebug())
@@ -141,7 +140,7 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/forms/forms_elements.js',
                     './src/js/ui/modal.js',
                     './src/js/tour/tour.js',
-                    './src/js/draw.js',
+                    './src/js/map/draw.js',
                     './src/js/social/share.js'
                   ])
     .pipe(stripDebug())

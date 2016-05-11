@@ -1,4 +1,9 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+
+/**
+* Loading map features from the backend
+*/
+
 // Create a global array to store retrievable data objects for onscreen objects
 // TODO make a global object containing both arrays
 var garbageArray = [];
@@ -449,68 +454,4 @@ function loadLitters () {
         });
         
     }, 200);
-}
-
-// onClick behavior for saved garbage markers
-function onGarbageMarkerClick (e) {
-    
-    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
-    
-    console.log("Garbage marker clicked");
-    
-    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
-    
-    sidebar.hide();
-    
-}
-
-// onClick behavior for saved cleaning markers
-function onCleaningMarkerClick (e) {
-    
-    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
-    
-    console.log("Cleaning marker clicked");
-    
-    console.log(e);
-    
-    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
-    
-    sidebar.hide();
-    
-}
-
-// onClick behavior for saved areas
-function onAreaClick (e) {
-    
-    // map.off('click', onMapClick);
-    
-    console.log("remote polygon clicked");
-    
-    setTimeout(function () {
-    
-        sidebar.hide();
-
-        bottombar.show();
-
-        map.panToOffset(e.getCenter(), _getVerticalOffset());
-        
-    }, 100);
-    
-}
-
-// onClick behavior for saved litters
-function onLitterClick (e) {
-        
-    console.log("remote polyline clicked");
-        
-    setTimeout(function () {
-    
-        sidebar.hide();
-
-        bottombar.show();
-
-        map.panToOffset(e.getCenter(), _getVerticalOffset());
-        
-    }, 100);
-   
 };
