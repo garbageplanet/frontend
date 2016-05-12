@@ -109,24 +109,8 @@ $(function () {
                 },
                 
                 error: function (response) {
-                    
-                    console.log('Error data', response);
-                    
-                    if (response.status === '200') {
-                        
-                        showAlert('Sorry, something went wrong with the server', 'danger', 2500);
-                        
-                    } else if (response.status === 'error') {
-                        
-                        showAlert('The request was not handled properly by the server', 'danger', 2500);
-
-                    } else {
-                        
-                        showAlert('Something went wrong, HTTP error ' + response.status, 'danger', 2500);
-                         
-                    }
-
-                    console.log(response.status);
+                                        
+                    showErrorType(response);
 
                     sidebar.hide();
 
@@ -202,17 +186,15 @@ $(function () {
 
                 },
                 
-                error: function (err) {
-                  
-                    console.log('err', err);
-
-                    showAlert('Sorry, failed to save the event.', 'danger', 3000);
+                error: function (response) {
+                                        
+                    showErrorType(response);
 
                     sidebar.hide();
 
                     map.removeLayer(marker);
-                  
-              }
+                    
+                }
                 
           });
                         
@@ -299,18 +281,15 @@ $(function () {
               
             },
             
-            error: function (err) {
-              
-              console.log('err', err);
-              
-              showAlert('Sorry, failed to save the litter.', 'danger', 2000);
-              
-              sidebar.hide();
-              
-              // FIXME remove the feature on error?
-              map.removeLayer(polylineLayer);
-              
-            }
+            error: function (response) {
+                                        
+                    showErrorType(response);
+
+                    sidebar.hide();
+
+                    map.removeLayer(polylineLayer);
+                    
+                }
             
         });
                         
@@ -418,16 +397,15 @@ $(function () {
                 
             },
             
-            error: function (err) {
-              
-                console.log('err', err);
+            error: function (response) {
+                                        
+                    showErrorType(response);
 
-                showAlert('Sorry, failed to save the area.', 'danger', 2000);
+                    sidebar.hide();
 
-                sidebar.hide();
-
-                map.removeLayer(polygonLayer);
-            }
+                    map.removeLayer(polygoneLayer);
+                    
+                }
             
       });
         

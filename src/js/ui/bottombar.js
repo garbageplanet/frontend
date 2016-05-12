@@ -1,3 +1,7 @@
+/**
+* functions and event listeners for actions done through the bottom panel
+*/
+
 // Get data from the feature object into the bottom panel
 function pushDataToBottomPanel(e) {
   

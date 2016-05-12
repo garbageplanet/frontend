@@ -4,8 +4,8 @@
  */
 var api = {
     // Backend
-    server: 'https://dev.garbagepla.net:8443/api',
-    // server: 'http://www.homestead.app:8080/api',  
+    // server: 'https://dev.garbagepla.net:8443/api',
+    server: 'http://www.homestead.app:8080/api',  
 
     // API entry points
     /* User */
@@ -25,7 +25,7 @@ var api = {
 
     removeUser: {
         method: 'DELETE',
-        url: function () {
+        url: function (id) {
             return api.createLogin.url() + '/delete';
         }
     },
@@ -145,12 +145,12 @@ var api = {
         }
     },
 
-    editLitter: {
+/*    editLitter: {
         method: 'PUT',
         url: function (id) {
             return api.readLitter.url() + '/' + id;
         }
-    },
+    },*/
 
     readLitter: {
         method: 'GET',
@@ -181,12 +181,12 @@ var api = {
         }
     },
 
-    editArea: {
+/*    editArea: {
         method: 'PUT',
         url: function (id) {
             return api.readArea.url() + '/' + id;
         }
-    },
+    },*/
 
     readArea: {
         method: 'GET',

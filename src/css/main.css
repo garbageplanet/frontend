@@ -68,6 +68,11 @@ body {
     background-color: #006600 !important;
 }
 
+.navbar-brand-name {
+    font-size: 25px;
+    font-weight: 200;
+}
+
 .modal-link {
     cursor: pointer;
 }

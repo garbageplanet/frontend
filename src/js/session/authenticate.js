@@ -70,9 +70,13 @@ function login(e) {
         },
         
         error: function (response) {
+            
             console.log(response);
+            
             showAlert('Failed to log in.', 'danger', 2000);
+            
             localStorage.removeItem('token');
+            
         }
     });
 }
@@ -357,30 +361,33 @@ function deleteUser(e) {
         
         var useToken = localStorage.getItem('token'),
             
-            email = $('#delete-email').val(),
-        
+            email = localStorage.getItem('useremail'),
+            
+            // userid = localStorage.getItem('userid'),
+                
             password = $('#delete-password').val();
-
+        
         $.ajax({
             
             method: api.removeUser.method,
             
-            url: api.readUser.url(),
+            url: api.removeUser.url(/*userid*/),
             
-            /*headers: {'Authorization': 'Bearer ' + useToken},*/
+            headers: {'Authorization': 'Bearer ' + useToken},
             
             data: {
             
                 'email': email,
                 'password': password
-            
             },
             
             success: function (data) {
 
-              switchSession('logout');
+                switchSession('logout');
 
-              showAlert('Account successfully deleted.', 'success', 2000);
+                showAlert('Account successfully deleted.', 'success', 2000);
+
+                localStorage.clear();
 
             },
 
@@ -388,9 +395,7 @@ function deleteUser(e) {
 
                 sidebar.hide();
                 
-                console.log(response);
-                
-                showAlert('Sorry, something went wrong.', 'danger', 2500);
+                showAlert('Sorry,something went wrong.', 'danger', 2000);
 
             }
             
