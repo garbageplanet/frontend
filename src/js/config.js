@@ -4,8 +4,8 @@
  */
 var api = {
     // Backend
-    // server: 'https://dev.garbagepla.net:8443/api',
-    server: 'http://www.homestead.app:8080/api',  
+    server: 'https://dev.garbagepla.net:8443/api',
+    // server: 'http://www.homestead.app:8080/api',  
 
     // API entry points
     /* User */
