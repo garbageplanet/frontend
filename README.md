@@ -12,6 +12,7 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 ### FIXME
 - [ ] bootstrap form validation - disallow submit button until ok (not only add class `disabled` to submit button)
 - [ ] load features into layer but do not re-create each layer after elements are added or removed (get_features.js) 
+- [ ] mobile marker menu still a little buggy (stays open and cannot be deleted)
 
 ### TODO
 - [ ] tags do not get saved to the db

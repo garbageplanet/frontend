@@ -104,9 +104,6 @@ L.drawLocal = {
 		}
 	}
 };
-
-var distanceStr;
-var areaStr;
   
 L.Draw = {};
 
@@ -570,8 +567,11 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 
 		// calculate the distance from the last fixed point to the mouse position
 		distance = this._measurementRunningTotal + currentLatLng.distanceTo(previousLatLng);
-
+        
+        document.getElementById('litter-raw-length').value = distance.toFixed(2) + ' m';
+                
 		return L.GeometryUtil.readableDistance(distance, this.options.metric);
+                
 	},
 
 	_showErrorTooltip: function () {
@@ -696,7 +696,7 @@ L.Draw.Polygon = L.Draw.Polyline.extend({
 		if (!area) {
 			return null;
 		}
-
+        
 		return L.GeometryUtil.readableArea(area, this.options.metric);
 	},
 
@@ -712,9 +712,10 @@ L.Draw.Polygon = L.Draw.Polyline.extend({
 			latLngs = this._poly.getLatLngs();
 
 			this._area = L.GeometryUtil.geodesicArea(latLngs);
-		}
 
-		L.Draw.Polyline.prototype._vertexChanged.call(this, latlng, added);
+		    L.Draw.Polyline.prototype._vertexChanged.call(this, latlng, added);
+            
+        }
 	},
 
 	_cleanUpShape: function () {
@@ -2361,10 +2362,6 @@ L.Tooltip = L.Class.extend({
 		this._container.innerHTML =
 			(labelText.subtext.length > 0 ? '<span class="leaflet-draw-tooltip-subtext">' + labelText.subtext + '</span>' + '<br />' : '') +
 			'<span>' + labelText.text + '</span>';
-      
-        // FIXME update the value of lenght/area to the input in the forms
-        // window.getElementsByClassName('polygon-area').value = labelText.subtext; 
-        // window.getElementsByClassName('polyline-length').value = labelText.subtext; 
 
 		return this;
 	},

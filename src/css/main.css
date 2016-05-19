@@ -319,7 +319,6 @@ a.menu-backlink:hover {
 	border: 10px;
 }
 
-
 @media (min-width: 768px) {
     .leaflet-top {
         margin-top: 5px !important;
@@ -341,6 +340,20 @@ a.menu-backlink:hover {
 .leaflet-control-search .fa-search {
   position: absolute;
   left: 7px;
+}
+
+.leaflet-control-layers-toggle .fa {
+    color: #444 !important;
+}
+
+.leaflet-control-login a {
+    background-color: #00cc44 !important;
+    border-radius: 50% !important;
+}
+
+.leaflet-control-login a span {
+    color: #FFF;
+    vertical-align: middle;
 }
 
 /* Place the close button in the layers-control div on mobile */
@@ -680,14 +693,19 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
 }
 
 /* Style modals */
-
 .modal-content {
     border-radius: 0;
     box-shadow: none;
 }
 
+.modal-dialog {
+    width:80%;
+    margin-left:10%;
+    margin-right: 10%
+}
+
 .modal-body{
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 200px);
     overflow-y: auto;
-    min-width: 50%;
+    min-width: 700px !important;
 }

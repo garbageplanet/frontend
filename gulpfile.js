@@ -68,6 +68,7 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/L.Geocoder.Opencage-1.1.2.css',
                     './src/css/L.Draw-0.2.4.css',
                     './src/css/L.Control.Sidebar-0.19a.css',
+                    './src/css/L.Control.Locate.css',
                     './src/css/main.css',
                     './src/css/map.css',
                     './src/css/markers.css'
@@ -83,6 +84,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
                     './src/js/libs/Leaflet-0.7.7.js',
                     './src/js/libs/L.Hash.js',
                     './src/js/libs/L.zoomCSS.js',
+                    './src/js/libs/L.Control.Locate.js',
                     './src/js/libs/L.Compact.Attributions.js',
                     './src/js/libs/L.Marker.Menu.js',
                     './src/js/libs/L.Control.Sidebar-0.19a.js',

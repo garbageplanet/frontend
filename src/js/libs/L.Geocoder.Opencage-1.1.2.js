@@ -70,6 +70,7 @@
 			this._errorElement = document.createElement('div');
 			this._errorElement.className = className + '-form-no-error';
 			this._errorElement.innerHTML = this.options.errorMessage;
+            this._icon.title = "Search for places";
 
 			this._alts = L.DomUtil.create('ul', className + '-alternatives leaflet-control-ocd-search-alternatives-minimized');
 

@@ -32,26 +32,6 @@ var baselayer = {
 
 baselayer['Mapbox Outdoors'].addTo(map);
 
-// Set the minimap
-/*var minimap = L.map('minimap', { zoomControl: false, attributionControl: false });
-baselayer['Mapbox Outdoors'].addTo(minimap);
-minimap.sync(map);*/
-
-function getLocation() {
-            
-    if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
-        
-        map.locate({
-
-            setView: false,
-            timeout: 8000,
-            enableHighAccuracy: true
-
-        });
-                                
-    }
-}
-
 function onLocationError(e) {
       
     showAlert("Couldn't find your position.", "warning", 2000);
@@ -114,36 +94,48 @@ var overlayGroups = {
     
 };
 
+// Add zoom controls if not mobile / small screen
+if (window.innerWidth > 568) { 
+
+    map.addControl(L.control.zoom({position: 'topleft'}));
+
+}
+
+// Create a global Locate control object
+var locationcontrol = L.control.locate().addTo(map);
+
+// request location update and set location if the address bar doesn't already contain a location at startup
+if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
+
+    locationcontrol.start();
+
+}
+
+// Add scale and layers control
+L.control.scale({metric: true, imperial: false}).addTo(map);
+
+L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
+
+// Setup the geocoder plugin
+var opencageoptions = {
+    key: '2bb5bf0d3b9300eacceb225f3cf9cd7d',
+    limit: 5
+};
+
+var geocoder = L.Control.OpenCageSearch.geocoder(opencageoptions);
+
+var geocodercontrol = new L.Control.openCageSearch(opencageoptions).setPosition('topleft').addTo(map);
+
+// Set an icon on the layer select button
+$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
 
 
-$(document).ready(function () {
+// Add a glome anonymous login button if it's mobile
+/*if (window.innerWidth < 568) { 
     
-    getLocation();
-    
-    // Add a scale, layers and zoom controls
-    if (window.innerWidth > 568) { 
+    var logincontrol = L.control.login().addTo(map);
 
-        map.addControl(L.control.zoom({position: 'topleft'}));
-        
-    }
-                     
-    L.control.scale({metric: true, imperial: false}).addTo(map);
-    
-    L.control.layers(baselayer, overlayGroups).setPosition('topleft').addTo(map);
-  
-    // Setup the geocoder plugin
-    var opencageoptions = {
-        key: '2bb5bf0d3b9300eacceb225f3cf9cd7d',
-        limit: 5
-    };
-
-    var geocoder = L.Control.OpenCageSearch.geocoder(opencageoptions);
-    var geocodercontrol = new L.Control.openCageSearch(opencageoptions).setPosition('topleft').addTo(map);
-
-    // Set an icon on the layer select button
-    $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
-    
-});
+}*/
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();

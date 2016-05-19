@@ -101,6 +101,9 @@ var featureMenu = L.markerMenu({
 // Default behavior for map clicks
 function onMapClick(e) {
     
+    // first cancel any ongoing localization
+    locationcontrol.stop();
+    
     if (!sidebar.isVisible() && 
         !bottombar.isVisible() && 
         e.target.getZoom() >= 10 && 
@@ -237,7 +240,7 @@ function onMapClick(e) {
         
             showAlert("Zoom in closer to create features", "info", 1200);
         
-        }    
+        }            
       
         bottombar.hide();
 
@@ -316,15 +319,4 @@ function onLocalMarkerClick (e) {
         
     }
     
-}
-
-// Locate the user on click of either mobile of top bar menu button
-$('.btn-locate').on('click', function(){
-    
-    getLocation();
-    
-    sidebar.hide();
-
-    bottombar.hide();
-    
-});
+};

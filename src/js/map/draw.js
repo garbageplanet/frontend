@@ -102,7 +102,7 @@ map.on('draw:drawstop', function () {
 
 // What to do once a shape is created
 map.on('draw:created', function (e) {
-  
+      
     var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
 
     console.log("LatLng data: ", e.layer.getLatLngs());
@@ -128,13 +128,6 @@ map.on('draw:created', function (e) {
         polylineLayer = e.layer;
 
         map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
-        //FIXME get the length inside $('.polyline-length')
-        // console.log("distance size", distanceStr);
-        // the value is sotred as distanceStr in L.Draw.js
-        // $('input[class=polyline-length]').val(distanceStr);
-        // seems the the data gets cleared at draw:created
-        // console.log("length", $('.leaflet-draw-tooltip-subtext').val() )
-        // $('input[class=polyline-length]').val($('.leaflet-draw-tooltip-subtext').val());  
 
         // push the latlngs to the form
         $('.litter-latlngs').val(latlngs);
@@ -277,15 +270,16 @@ $('.btn-draw-polyline').on('click', function () {
           opacity: 0.5}
     }).enable();
     
-        if ($(window).width() <= 567) {
-            
-            sidebar.hide();
-            
-            showAlert('Drawing on mobile is still in development, expect issues.', 'warning', 3500);
-            
-        }
+    if ($(window).width() <= 567) {
 
+        sidebar.hide();
+
+        showAlert('Drawing on mobile is still in development, expect issues.', 'warning', 3500);
+
+    }
+    
 });
+
 
 $('.btn-draw-polygon').on('click', function () {
     
