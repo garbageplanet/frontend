@@ -9,6 +9,8 @@ function switchSession(sessionStatus) {
 
     if (sessionStatus === "logout") {
         
+        logincontrol.logout();
+        
         $('#session-status a').text('Login').attr("href","#user-login-dialog");
         
         $('#session-status a').attr("id","");
@@ -24,11 +26,13 @@ function switchSession(sessionStatus) {
         $('.user-email, .user-glome-key').removeClass('hidden');
         
         $(".session-link").removeClass('hidden');
-       
+               
     }
 
     if (sessionStatus === "login") {
         
+        logincontrol.login();
+                
         $("#session-status a").text("Logout").attr("href","#");
        
         $("#session-status a").attr("id","btn-logout");

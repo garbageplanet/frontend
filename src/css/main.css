@@ -39,7 +39,7 @@ body {
   }
   
   .swipe-area-left {
-    width: 40px;
+    width: 30px;
     left: 0;
     height: 100%;
     z-index: 5000;
@@ -64,8 +64,13 @@ body {
 }
 
 /* Style top panel elements */
-.btn-glome-shortcut:hover {
-    background-color: #006600 !important;
+.btn-glome-shortcut:hover, .btn-glome-shortcut:active, .btn-glome-shortcut:focus {
+    color: #FFF !important;
+    background-color: #5cb85c !important; 
+}
+
+.btn-glome-shortcut {
+    color: #5cb85c !important;
 }
 
 .navbar-brand-name {
@@ -114,8 +119,9 @@ body {
 }
 
 .fa-icon-control-centered {
-  margin-left: -2px;
-  margin-top: -2px;
+/*  margin-left: -2px;
+  margin-top: -2px;*/
+  vertical-align: middle;
 }
 
 .btn-facebook {
@@ -326,7 +332,7 @@ a.menu-backlink:hover {
     }
 }
 
-/* Style the search button */
+/* Style the leaflet bar buttons */
 .leaflet-control-search {
   	min-width: 40px;
 	height: 40px;
@@ -342,18 +348,29 @@ a.menu-backlink:hover {
   left: 7px;
 }
 
-.leaflet-control-layers-toggle .fa {
+/* Color the button icons */
+.leaflet-control-layers-toggle .fa, .leaflet-control-zoom .fa {
     color: #444 !important;
 }
 
+.leaflet-control-layers a span, .leaflet-control-locate a span {
+    vertical-align: middle;
+    margin-top: -1px;
+}
+
 .leaflet-control-login a {
-    background-color: #00cc44 !important;
+    background-color: #5cb85c !important;
     border-radius: 50% !important;
 }
 
 .leaflet-control-login a span {
     color: #FFF;
     vertical-align: middle;
+}
+
+/* Hide the quick login button if the class is logged-in*/
+.leaflet-control-login.logged-in {
+    display: none !important;
 }
 
 /* Place the close button in the layers-control div on mobile */
@@ -388,7 +405,7 @@ a.menu-backlink:hover {
 }
 
 .leaflet-touch .leaflet-control-layers, .leaflet-touch leaflet-control-layers-toggle {
-  border-bottom: 0px;
+    border-bottom: 0px;
 }
 
 .leaflet-bar a,
@@ -468,7 +485,53 @@ a.menu-backlink:hover {
 }
 
 /* Custom bootstrap styles */
-/* Style forms and elements */
+
+/* Override the default bootstrap btn-success, error, danger, info */
+.btn-danger {
+    border-color: #d9534f;
+    color: #d9534f;
+}
+.btn-danger:active, .btn-danger:hover, .btn-danger:focus  {
+    background-color: #d9534f;
+    border-color: #d9534f;
+}
+
+.btn-info {
+    border-color: #5bc0de;
+    color: #5bc0de;
+}
+.btn-info:active, .btn-info:hover, .btn-info:focus  {
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+}
+.btn-warning {
+    border-color: #f0ad4e;
+    color: #f0ad4e;
+}
+.btn-warning:active, .btn-warning:hover, .btn-warning:focus  {
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+.btn-success {
+    border-color: #5cb85c;
+    color: #5cb85c;
+}
+.btn-success:active, .btn-success:hover, .btn-success:focus  {
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+}
+
+.btn-danger, .btn-info, .btn-warning, .btn-success {
+    background-color: #FFF;
+}
+
+.btn-danger:active, .btn-danger:hover, .btn-danger:focus,
+.btn-info:active, .btn-info:hover, .btn-info:focus,
+.btn-warning:active, .btn-warning:hover, .btn-warning:focus,
+.btn-success:active, .btn-success:hover, .btn-success:focus {
+    color: #FFF;
+}
+
 
 /* Fix inconsistencies between form elements  */
 .form-group {
@@ -709,3 +772,4 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
     overflow-y: auto;
     min-width: 700px !important;
 }
+

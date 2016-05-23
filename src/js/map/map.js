@@ -32,23 +32,6 @@ var baselayer = {
 
 baselayer['Mapbox Outdoors'].addTo(map);
 
-function onLocationError(e) {
-      
-    showAlert("Couldn't find your position.", "warning", 2000);
-    
-    map.setView([0, 0], 2);
-    
-}
-
-function onLocationFound(e) {
-    
-    map.setView(e.latlng, 18);
-}
-
-map.on('locationerror', onLocationError);
-
-map.on('locationfound', onLocationFound);
-
 // Sidebar creation and placement
 var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
 
@@ -111,6 +94,42 @@ if (!window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\
 
 }
 
+    
+function onLocationFound(e) {
+    
+    map.setView(e.latlng, 18);
+    
+/*    setTimeout(function () {
+        
+        locationcontrol.stop();
+        
+    }, 1000);*/
+    
+}
+    
+// FIXME donät reset view if there
+function onLocationError(e) {
+      
+    showAlert("Couldn't find your position.", "warning", 2000);
+    
+    if (window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)) {
+
+        locationcontrol.stop();
+        
+    }
+    
+    else {
+        
+        map.setView([0, 0], 2);
+        
+    }
+    
+}
+
+map.on('locationerror', onLocationError);
+
+map.on('locationfound', onLocationFound);
+
 // Add scale and layers control
 L.control.scale({metric: true, imperial: false}).addTo(map);
 
@@ -127,46 +146,15 @@ var geocoder = L.Control.OpenCageSearch.geocoder(opencageoptions);
 var geocodercontrol = new L.Control.openCageSearch(opencageoptions).setPosition('topleft').addTo(map);
 
 // Set an icon on the layer select button
-$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-eye fa-icon-black fa-icon-control-centered'></span>");
+$('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-globe fa-icon-control-centered'></span>");
 
 
 // Add a glome anonymous login button if it's mobile
-/*if (window.innerWidth < 568) { 
+if (window.innerWidth < 568) { 
     
     var logincontrol = L.control.login().addTo(map);
 
-}*/
+}
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();
-
-// Default marker types and classes
-var genericMarker = L.divIcon({
-    
-    className: 'map-marker marker-color-gray marker-generic',
-    
-    iconSize: [30, 30],
-    
-    html: '<i class="fa fa-fw"></i>'
-    
-});
-
-var garbageMarker = L.divIcon({
-    
-    className: 'map-marker marker-garbage',
-    
-    iconSize: [30, 30],
-    
-    html: '<i class="fa fa-fw"></i>'
-    
-});
-
-var cleaningMarker = L.divIcon({
-    
-    className: 'map-marker marker-cleaning',
-    
-    iconSize: [30, 30],
-    
-    html: '<i class="fa fa-fw"></i>'
-    
-});

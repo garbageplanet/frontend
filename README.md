@@ -15,6 +15,7 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] mobile marker menu still a little buggy (stays open and cannot be deleted)
 
 ### TODO
+- [ ] add broken glass
 - [ ] tags do not get saved to the db
 - [ ] build all sidebar views from templates
 - [ ] finalize the edit system (build the forms from templates)

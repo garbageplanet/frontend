@@ -9,8 +9,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     htmlmin = require('gulp-htmlmin'),
     del = require('del'),
-    replace = require('gulp-replace-task'),
-    env = require('./env.json'); // contains token and app ids
+    replace = require('gulp-replace-task');
+    // env = require('./env.json'); // contains token and app ids
 
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function () {
@@ -90,7 +90,8 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
                     './src/js/libs/L.Control.Sidebar-0.19a.js',
                     './src/js/libs/L.Overpass.Layer.js',
                     './src/js/libs/L.Draw-0.2.4.js',
-                    './src/js/libs/L.Geocoder.Opencage-1.1.2.js'
+                    './src/js/libs/L.Geocoder.Opencage-1.1.2.js',
+                    './src/js/libs/L.Control.Login.js'
                   ])
     .pipe(stripDebug())
     .pipe(concat('leaflet.min.js'))
@@ -131,6 +132,7 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/session/session.js',
                     './src/js/ui/alerts.js',
                     './src/js/map/map.js',
+                    './src/js/map/markers.js',
                     './src/js/ui/topbar.js',
                     './src/js/ui/sidebar.js',
                     './src/js/ui/bottombar.js',

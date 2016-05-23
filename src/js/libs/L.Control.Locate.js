@@ -46,7 +46,7 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
              *                view if the user has manually panned the map.
              *                The map view follows the users location until she pans.
              */
-            setView: 'untilPan',
+            setView: 'once',
             /** Keep the current map zoom level when setting the view and only pan. */
             keepCurrentZoomLevel: false,
             /**
@@ -95,7 +95,7 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                 // fillColor: '#FFB000'
             },
             /** The CSS class for the icon. For example fa-location-arrow or fa-map-marker */
-            icon: 'fa fa-2x fa-map-marker',
+            icon: 'fa fa-2x fa-location-arrow',
             iconLoading: 'fa fa-2x fa-spinner fa-pulse',
             /** The element to be created for icons. For example span or i */
             iconElementTag: 'span',

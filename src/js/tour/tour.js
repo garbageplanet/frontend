@@ -105,14 +105,14 @@ var devTour = new Tour({
   template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
   // template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div></div>",
   steps: [
-/*      {
+/*     {
         content: 'One-click anonymous login',
-        duration: 5000,
-        element: '#tour-element-glome-shortcut',
+        duration: 4000,
+        element: '#glome-tour',
         placement: 'bottom',
       },*/
       {
-        content: 'Note that this platform is currently under active development but all the basic functions are available and can be used to save markers and images. <a href="mailto:info@garbagepla.net?Subject=Garbagepla.net" target="_top">Get in touch</a>',
+        content: 'Note that this platform is currently under active development but all the basic functions are available and can be used to save markers and images.',
         duration: 16000,
         orphan: true
       }
@@ -123,13 +123,18 @@ var mobileTour = new Tour({
   name: "mobile-tour",
   template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
   steps: [
-      
       {
         element: ".swipe-area-right",
         placement: 'left',
         content: "Access the main menu by swiping from the right border of the screen.",
-        duration: 5000
-      }
+        duration: 4000
+      }/*,
+      {
+        element: ".leaflet-control-login",
+        placement: 'right',
+        content: "One-click anonymous login.",
+        duration: 4000
+      }*/
   ]
 });
 

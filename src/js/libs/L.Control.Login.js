@@ -1,8 +1,7 @@
 /*!
-Copyright (c) 2016 Dominik Moritz
+This file is a stripped-down version of the leaflet locate control plugin which is licensed under the MIT license.
+You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. Copyright (c) 2016 Dominik Moritz
 
-This file is part of the leaflet locate control. It is licensed under the MIT license.
-You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
 */
 (function (factory, window) {
      // see https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md#module-loaders
@@ -66,68 +65,40 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                 .on(this._link, 'click', this._onClick, this)
                 .on(this._link, 'dblclick', L.DomEvent.stopPropagation);
 
-            this._resetVariables();
-
             return container;
         },
 
-        /**
-         * This method is called when the user clicks on the control.
-         */
         _onClick: function() {
-
             glomego();
-            this._active = true;
-            this._updateContainerStyle();
+            L.DomUtil.removeClasses(this._icon, 'fa-user-secret');
+            L.DomUtil.addClasses(this._icon, 'fa-spinner fa-pulse');
+
         },
         
-        updateContainerStyle: function() {
-            
-            if (!this._container) {
-                return;
-            }
+        login: function() {
+            this._setClasses('login');
+        },
 
-            if (this._active && !this._event) {
-                this._setClasses('loggedin');
-                
-            } else if (this._active) {
-                this._setClasses('loggedout');
-                
-            } else {
-                this._cleanClasses();
-            }
+        logout: function() {
+            this._setClasses('logout');
         },
 
         /**
          * Sets the CSS classes for the state.
          */
         _setClasses: function(state) {
-            if (state == 'loggedout') {
+            if (state == 'logout') {
                 L.DomUtil.removeClasses(this._container, "logged-in");
                 L.DomUtil.addClasses(this._container, "logged-out");
+                L.DomUtil.removeClasses(this._icon, 'fa-spinner fa-pulse');
+                L.DomUtil.addClasses(this._icon, 'fa-user-secret');
                 
-            } else if (state == 'loggedin') {
+            } else if (state == 'login') {
                 L.DomUtil.removeClasses(this._container, "logged-out");
                 L.DomUtil.addClasses(this._container, "logged-in");
-
             }
-        },
-
-        /**
-         * Removes all classes from button.
-         */
-        _cleanClasses: function() {
-            L.DomUtil.removeClass(this._container, "logged-in");
-        },
-
-        /**
-         * Reinitializes state variables.
-         */
-        _resetVariables: function() {
-            // whether user is actively logged in or not
-            this._active = false;
-
         }
+
     });
 
     L.control.login = function (options) {

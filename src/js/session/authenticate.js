@@ -93,6 +93,8 @@ function logout() {
         
     }
     
+    logincontrol.logout();
+    
     localStorage.clear();
     
     sidebar.hide();
@@ -178,11 +180,11 @@ function registerUser(e) {
 }
 
 // Glome authentification
-function glomego(e) {
+function glomego() {
     
     console.log('glomego clicked');
     
-    e.preventDefault();
+    // e.preventDefault();
     
     $.ajax({
         
@@ -201,8 +203,6 @@ function glomego(e) {
 
             if (!glomeid || typeof glomeid === 'undefined') {
 
-                console.log('bad luck with soft account creation');
-
                 showAlert('Failed to login anonymously. Reload the page and try again.', 'warning', 3000);
 
                 return;
@@ -214,13 +214,6 @@ function glomego(e) {
             localStorage.setItem('glomekey', glomeid);
 
             localStorage.setItem('userid', response.user.id);
-
-
-            console.log('created soft account: ' + glomeid);
-            
-            console.log('local authUser: ', authUser);
-            
-            console.log('------------------------------------------------------------');
 
             $('#user-login-dialog').hide();
 

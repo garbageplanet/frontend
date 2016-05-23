@@ -116,12 +116,16 @@ ul.leaflet-control-ocd-search-alternatives :not(.leaflet-control-ocd-search-alte
 .leaflet-control-ocd-search-alternatives li {
 	width: 100%;
 	overflow: hidden;
-	text-overflow: ellipsis;
+	text-overflow: ellipsis !important;
 	border-bottom: 1px solid #eee;
 	padding: 0;
     margin-right: 20px;
 }
 
+.leaflet-control-ocd-search-alternatives li a {
+	overflow-x: hidden;
+	text-overflow: ellipsis !important;
+}
 
 .leaflet-control-ocd-search-alternatives li:last-child {
 	border-bottom: none;
@@ -142,4 +146,12 @@ ul.leaflet-control-ocd-search-alternatives :not(.leaflet-control-ocd-search-alte
 
 .leaflet-control-ocd-search-alternatives {
     padding-left: 20px !important;
+}
+
+@media (max-width: 567px) {
+ul.leaflet-control-ocd-search-alternatives :not(.leaflet-control-ocd-search-alternatives-minimized) {
+    width: 70vw !important;
+    overflow-y: scroll;
+    }
+
 }

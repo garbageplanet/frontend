@@ -6,34 +6,41 @@
 
 // onClick behavior for saved garbage markers
 function onGarbageMarkerClick (e) {
-    
+
     var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
-    
-    console.log("Garbage marker clicked");
-    
-    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
+        
+    map.panToOffset([latlng[0], latlng[1]], getVerticalOffset());
     
     sidebar.hide();
+
+    if ($('.leaflet-marker-menu').is(':visible')) {
+        
+        marker.closeMenu();
+        
+    }
     
 }
 
 // onClick behavior for saved cleaning markers
 function onCleaningMarkerClick (e) {
-    
+
     var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
-    
-    console.log("Cleaning marker clicked");
-    
-    console.log(e);
-    
-    map.panToOffset([latlng[0], latlng[1]], _getVerticalOffset());
+            
+    map.panToOffset([latlng[0], latlng[1]], getVerticalOffset());
     
     sidebar.hide();
     
+    if ($('.leaflet-marker-menu').is(':visible')) {
+        
+        marker.closeMenu();
+        
+    }    
 }
 
 // onClick behavior for saved areas
 function onAreaClick (e) {
+    
+    // TODO if it's a game area, check if user is in game list
     
     // map.off('click', onMapClick);
     
@@ -42,10 +49,16 @@ function onAreaClick (e) {
     setTimeout(function () {
     
         sidebar.hide();
+        
+        if ($('.leaflet-marker-menu').is(':visible')) {
 
+            marker.closeMenu();
+
+        }
+        
         bottombar.show();
 
-        map.panToOffset(e.getCenter(), _getVerticalOffset());
+        map.panToOffset(e.getCenter(), getVerticalOffset());
         
     }, 100);
     
@@ -59,10 +72,16 @@ function onLitterClick (e) {
     setTimeout(function () {
     
         sidebar.hide();
+        
+        if ($('.leaflet-marker-menu').is(':visible')) {
 
+            marker.closeMenu();
+
+        }
+        
         bottombar.show();
 
-        map.panToOffset(e.getCenter(), _getVerticalOffset());
+        map.panToOffset(e.getCenter(), getVerticalOffset());
         
     }, 100);
    

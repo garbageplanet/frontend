@@ -30,7 +30,7 @@ L.Map.prototype.panToOffset = function (latlng, offset, options) {
 };
 
 // Adapted functions
-function _getVerticalOffset() {
+function getVerticalOffset() {
     
   var vOffset = [0, 0];
   
@@ -42,7 +42,7 @@ function _getVerticalOffset() {
     
 }
 
-function _getHorizontalOffset() {
+function getHorizontalOffset() {
     
   var hOffset = [0, 0];
   
@@ -55,7 +55,7 @@ function _getHorizontalOffset() {
 //////////////////////////////////////////////////////////////////////
 
 // Create the context menu for mobile / small screens
-var featureMenu = L.markerMenu({
+var featuremenu = L.markerMenu({
     
         radius: 100,
         size: [50, 50],                    
@@ -81,7 +81,7 @@ var featureMenu = L.markerMenu({
             }
             ,{
             title: "Mark litter",
-            className: "fa fa-fw fa-2x fa-marker-menu fa-hand-lizard-o",
+            className: "fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h",
             click: function () {
                 sidebar.show($("#create-litter-dialog").show());
                 setTimeout(function () {marker.closeMenu();}, 400);
@@ -89,7 +89,7 @@ var featureMenu = L.markerMenu({
             }
             ,{
             title: "Add an area",
-            className: "fa fa-fw fa-2x fa-marker-menu fa-map",
+            className: "fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h",
             click: function () {
                 sidebar.show($("#create-area-dialog").show());
                 setTimeout(function () {marker.closeMenu();}, 400);
@@ -101,9 +101,7 @@ var featureMenu = L.markerMenu({
 // Default behavior for map clicks
 function onMapClick(e) {
     
-    // first cancel any ongoing localization
-    locationcontrol.stop();
-    
+    // check that there's not already something else going on in the UI
     if (!sidebar.isVisible() && 
         !bottombar.isVisible() && 
         e.target.getZoom() >= 10 && 
@@ -111,9 +109,11 @@ function onMapClick(e) {
         !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && 
         !$('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded') &&
         $('.leaflet-control-ocd-search-alternatives').hasClass('leaflet-control-ocd-search-alternatives-minimized') &&
-        !$('.leaflet-compact-attribution-toggle').is(':checked')       
+        !$('.leaflet-compact-attribution-toggle').is(':checked') &&
+        locationcontrol._active !== true
        ) {
-        
+                
+        // We need a global object for the marker so that it can be referred during other map interactions
         marker = L.marker(e.latlng, { icon: genericMarker, draggable: true });
         
         // Actions for mobile and small screens
@@ -121,7 +121,7 @@ function onMapClick(e) {
             
             if (!$('.leaflet-marker-menu').is(':visible')) {
 
-                marker.setMenu(featureMenu);
+                marker.setMenu(featuremenu);
 
                 map.addLayer(marker).panTo(marker._latlng);
 
@@ -136,7 +136,7 @@ function onMapClick(e) {
             
             map.addLayer(marker);
 
-            map.panToOffset(marker._latlng, _getHorizontalOffset());
+            map.panToOffset(marker._latlng, getHorizontalOffset());
 
             $('.sidebar-content').hide();
 
@@ -176,7 +176,7 @@ function onMapClick(e) {
         });
         
         // Change the cleaning event icon if a time is set
-        // FIXME put this logic seomwhere else
+        // FIXME put this logic somewhere else
         $('#event-date-time-picker').on('dp.change', function (e) {
 
             var eventDateTime = e.date.format('YYYY-MM-DD HH:MM:SS');
@@ -196,13 +196,6 @@ function onMapClick(e) {
             $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
 
         });
-
-        // Remove the point marker if the user wants to draw
-/*        map.on('draw:drawstart', function (e) {
-
-            map.removeLayer(marker);
-
-        });*/
   
         // Reset unsaved marker styles if sidebar is closed after marker creation
         sidebar.on ('hide', function () {
@@ -241,7 +234,9 @@ function onMapClick(e) {
             showAlert("Zoom in closer to create features", "info", 1200);
         
         }            
-      
+        
+        locationcontrol.stop();
+        
         bottombar.hide();
 
         sidebar.hide();
@@ -261,19 +256,8 @@ function onMapClick(e) {
         
         // Hide the expanded atttributions by unchecking the control        
         $(".leaflet-compact-attribution-toggle").prop("checked", false);
-        
-        
               
     }
-  
-    // Remove unsaved markers with class 'marker-generic' after a timeout
-    setTimeout(function() {
-
-        $('div.marker-generic').remove();
-        
-        marker.closeMenu();
-        
-    }, 80000);
   
 }
 
@@ -291,8 +275,6 @@ function onLocalMarkerClick (e) {
     
     if ($(window).width() <= 567) {
         
-        // NOTE since the marker menu has already been set for the temp markers
-        // there is no need to add the click behavior again           
         map.addLayer(marker).panTo(marker._latlng);
 
         return;
@@ -301,7 +283,7 @@ function onLocalMarkerClick (e) {
     
     if ($(window).width() > 567) {
 
-        map.panToOffset(marker._latlng, _getHorizontalOffset());
+        map.panToOffset(marker._latlng, getHorizontalOffset());
         
         $('#sidebar').scrollTop =0;
     
