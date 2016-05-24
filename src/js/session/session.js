@@ -9,7 +9,11 @@ function switchSession(sessionStatus) {
 
     if (sessionStatus === "logout") {
         
-        logincontrol.logout();
+        if (window.innerWidth < 568) { 
+        
+            logincontrol.logout();
+            
+        }
         
         $('#session-status a').text('Login').attr("href","#user-login-dialog");
         
@@ -31,7 +35,11 @@ function switchSession(sessionStatus) {
 
     if (sessionStatus === "login") {
         
-        logincontrol.login();
+        if (window.innerWidth < 568) { 
+        
+            logincontrol.login();
+            
+        }
                 
         $("#session-status a").text("Logout").attr("href","#");
        
