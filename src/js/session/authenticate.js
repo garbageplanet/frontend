@@ -92,9 +92,7 @@ function logout() {
         localStorage.clear();
         
     }
-    
-    logincontrol.logout();
-    
+        
     localStorage.clear();
     
     sidebar.hide();
