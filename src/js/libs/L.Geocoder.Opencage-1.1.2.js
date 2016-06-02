@@ -124,6 +124,23 @@
 				for (var i = 0; i < results.length; i++) {
 					this._alts.appendChild(this._createAlt(results[i], i));
 				}
+                
+                // Hide soft keyboard on mobile credit: http://stackoverflow.com/a/32862822/2842348
+                if (window.innerWidth < 768) {
+                    
+                    var searchfield = this._input;
+                    
+                    searchfield.setAttribute('readonly', 'readonly');
+
+                    setTimeout(function() {
+
+                        searchfield.blur();
+                        searchfield.removeAttribute('readonly');
+
+                    }, 100);
+                
+                }
+                 
 			}
 
 			else {
@@ -180,10 +197,7 @@
 
 		_expand: function () {
 			L.DomUtil.addClass(this._container, 'leaflet-control-ocd-search-expanded');
-            
-            // document.getElementsByClassName("leaflet-control-ocd-search").style.height = ""; 
-            // document.getElementsByClassName("leaflet-control-ocd-search").style.minHeight = "40px"; 
-            
+                        
 			this._input.select();
 		},
 
@@ -191,10 +205,7 @@
 			this._container.className = this._container.className.replace(' leaflet-control-ocd-search-expanded', '');
 			L.DomUtil.addClass(this._alts, 'leaflet-control-ocd-search-alternatives-minimized');
 			L.DomUtil.removeClass(this._errorElement, 'leaflet-control-ocd-search-error');
-            
-            // document.getElementsByClassName("leaflet-control-ocd-search").style.minHeight = ""; 
-            // document.getElementsByClassName("leaflet-control-ocd-search").style.height = "40px";
-            
+                        
             L.DomUtil.removeClass(this._icon,'fa-close');
             L.DomUtil.addClass(this._icon,'fa-search');
 		},
