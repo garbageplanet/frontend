@@ -150,6 +150,7 @@ $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-globe fa-ic
 
 
 // Add a glome anonymous login button if it's mobile
+// FIXME rename object
 if (window.innerWidth < 568) { 
     
     var logincontrol = L.control.login().addTo(map);

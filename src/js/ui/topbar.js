@@ -1,4 +1,6 @@
 // Actions for map-tools dropdown
+// TODO build the top bar with L.Control.extend
+// see http://blog.webkid.io/rarely-used-leaflet-features/
 $(document).ready(function() {
   
     // Activate dropdown menu links in top panel

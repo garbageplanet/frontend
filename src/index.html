@@ -97,11 +97,12 @@
               <a title="Map and data tools" class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-fw fa-wrench"></span><span class="hidden title-collapsed">Map tools</span></a>
               <ul class="dropdown-menu" id="map-tools">
                 <li><a id="modal-list-garbage" class="modal-link">Get data</a></li>
-                <li><a id="modal-list-cleaning" class="modal-link">Cleaning calendar</a></li>                
+                <li><a id="modal-list-cleaning" class="modal-link">Cleaning calendar</a></li>              
                 <li class="divider"></li>
                 <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
                 <li class="disabled"><a class="" href="#">Local forecast</a></li>
                 <li class="disabled"><a class="" href="#">Hotspots</a></li>
+                <li class="disabled"><a class="" href="#">Create route</a></li>
               </ul>
             </li>
 
@@ -158,9 +159,9 @@
               <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
               <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
               <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
-              <li role="presentation" class="disabled" role="presentation"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
-              <li role="presentation" class="disabled" role="presentation"><a class="sidebar-link" href="#create-shards-dialog">Mark broken glass</a></li>
-              <li role="presentation" class="disabled" role="presentation"><a class="sidebar-link" href="#create-wastewater-dialog">Mark wastewater discharge</a></li>
+              <li role="presentation" class="disabled"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
+              <li role="presentation" class="disabled"><a class="sidebar-link" href="#create-wastewater-dialog">Mark sewage discharge</a></li>
+              <li role="presentation" class="disabled"><a class="sidebar-link" href="#create-dieoff-dialog">Locate mass die off</a></li>
             </ul>
 
         </div>
@@ -704,6 +705,7 @@
             <br>
           </form>
         </div>
+        <div class="sidebar-content" id="create-dieoff-dialog"></div>
 
         <div class="sidebar-content" id="user-login-dialog">
           <div>

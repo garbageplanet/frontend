@@ -12,19 +12,20 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 ### FIXME
 - [ ] bootstrap form validation - disallow submit button until ok (not only add class `disabled` to submit button)
 - [ ] load features into layer but do not re-create each layer after elements are added or removed (get_features.js) 
-- [ ] mobile marker menu still a little buggy (stays open and cannot be deleted)
+- [ ] L.Marker.Menu still a little buggy (stays open and cannot be deleted sometimes?)
+- [ ] tags do not get saved to the db
+- [ ] .getCenter() doesn't work on polyines and polygons in lealfet 0.7 (it does in 1.0rc1, but see below)
 
 ### TODO
-- [ ] add broken glass
-- [ ] tags do not get saved to the db
 - [ ] build all sidebar views from templates
 - [ ] finalize the edit system (build the forms from templates)
 - [ ] build the cleaned, join, play and confirm functions with a prototype
-- [ ] allow drawing shapes but hide the sidebar on draw:start and show it on draw:created
+- [ ] add L.Routing.Machine plugin and build routing system between selected markers
+- [ ] allow drawing shapes on mobile but hide the sidebar on draw:start and show it on draw:created
 
 #### Upgrade
 - [ ] custom builds (Leaflet, Bootstrap, FontAwesome)
-- [ ] move to leaflet 1.0 - works out of the box but fix `L.marker.menu.js` plugin menu first
+- [ ] move to leaflet 1.0 - works out of the box but fix `L.marker.menu.js` plugin first
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
 - [ ] modularize js code
 

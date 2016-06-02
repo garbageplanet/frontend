@@ -140,9 +140,7 @@ function editFeature(e) {
            
 // TODO Confirm garbage function
 function confirmGarbage(e){
-    // TODO count function in the backend, not here
-    // TODO make session-dependant and allow once per user per marker
-    // TODO check if it's window.token
+
     if (!localStorage.getItem('token')){
 
         showAlert("You need to login to do that.", "info", 2000);
@@ -214,13 +212,13 @@ function joinCleaning(e){
             
             data: {
                 
-                // TODO how to do this?
-                'join': data 
+                // TODO
+                'join': 1 
                 
             },
             success: function (data) {
                             
-                // TODO reload the markers to display change and reload the template
+                // TODO reload the markers to display change and reload the template to get the current count in the db
                 console.log('success data', data);
                 
             },

@@ -64,7 +64,9 @@ body {
 }
 
 /* Style top panel elements */
-.btn-glome-shortcut:hover, .btn-glome-shortcut:active, .btn-glome-shortcut:focus {
+.btn-glome-shortcut:hover, 
+.btn-glome-shortcut:active, 
+.btn-glome-shortcut:focus {
     color: #FFF !important;
     background-color: #5cb85c !important; 
 }
@@ -114,16 +116,17 @@ body {
   color: orange;
 }
 
+
+/* custom leaflet control classes */
 .fa-icon-centered {
   margin-left: -3px;
 }
 
 .fa-icon-control-centered {
-/*  margin-left: -2px;
-  margin-top: -2px;*/
   vertical-align: middle;
 }
 
+/* Style share buttons */
 .btn-facebook {
   background-color: rgba( 59, 89, 152, 1) !important;
   border-color: rgba( 59, 89, 152, 1) !important;
@@ -178,7 +181,15 @@ body {
   color: #FFF;
 }
 
-.btn-weibo span, .btn-renren span,.btn-facebook span, .btn-twitter span, .btn-tumblr span, .btn-reddit span, .btn-google-plus span, btn-whatsapp span, btn-vk span {
+.btn-weibo span, 
+.btn-renren span, 
+.btn-facebook span, 
+.btn-twitter span, 
+.btn-tumblr span, 
+.btn-reddit span, 
+.btn-google-plus span, 
+.btn-whatsapp span, 
+.btn-vk span {
   vertical-align: bottom;
   color: #FFF;
 }
@@ -257,7 +268,12 @@ body {
     color: #FFF;
 }
 
-.btn-limegreen:active, .btn-yellow:active, .btn-orangered:active, .btn-red:active, .btn-violet:active {
+
+.btn-limegreen:active, 
+.btn-yellow:active, 
+.btn-orangered:active, 
+.btn-red:active, 
+.btn-violet:active {
     border-color: dimgray !important;
     color: dimgray !important;
 }
@@ -719,7 +735,7 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
 .tt-menu {background-color: #fff}
 
 /* style Leaflet Draw buttons and movement behavior */
-.leaflet-draw-edit-edit, .leaflet-draw-edit-remove  {
+.leaflet-draw-edit-edit, .leaflet-draw-edit-remove {
   margin-right: -50px;
             transition: margin-right 0.5s;
     -webkit-transition: margin-right 0.5s;
@@ -734,7 +750,7 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
   display: none !important;
 }
 
-.leaflet-draw-edit-edit.visible, .leaflet-draw-edit-remove.visible  {
+.leaflet-draw-edit-edit.visible, .leaflet-draw-edit-remove.visible {
   display:inherit !important;
   margin-right: 0px;
 }

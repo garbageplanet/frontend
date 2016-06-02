@@ -8,7 +8,7 @@
 * Logins, logouts, account deletion and glome pairing
 */
 
-//login function
+// login function
 function login(e) {
     
     e.preventDefault();
@@ -81,27 +81,99 @@ function login(e) {
     });
 }
 
-//logout
-// TODO serverside logout
+// logout
+// FIXME serverside logout backend replies 401
 function logout() {
     
     if (!localStorage.token) {
         
-        showAlert('User is already logged out.', 'info', 2000);
+        showAlert('No active session.', 'info', 2000);
         
         localStorage.clear();
         
     }
+    
+    else {
         
-    localStorage.clear();
+        var useToken = localStorage.getItem('token') || window.token;
+        
+        $.ajax({
+            
+            method: api.logoutUser.method,
+            
+            url: api.logoutUser.url(),
+            
+            headers: {'Authorization': 'Bearer ' + useToken},
+            
+            success: function (response) {
+                
+                switchSession('logout');
+
+                showAlert('You are logged out.', 'info', 2000);
+
+                localStorage.clear();
+                
+                if (sidebar.isVisible()) {
+                    
+                    sidebar.hide();
+                    
+                } 
+
+            },
+
+            error: function (response) {
+                                
+                showAlert('Sorry, something went wrong.', 'danger', 2000);
+
+            }
+            
+        });
+        
+    }
     
-    sidebar.hide();
+}
+
+// check login
+function checklogin() {
+        
+    var useToken = localStorage.getItem('token') || window.token;
     
-    switchSession('logout');
-    
-    showAlert('You are logged out.', 'info', 2000);
-    
-    return;
+    $.ajax({
+                
+        method: api.readUser.method,
+
+        url: api.readUser.url(),
+
+        headers: {'Authorization': 'Bearer ' + useToken},
+
+        success: function (data) {
+
+            // double-check the localStorage has the token
+            if (useToken) {
+
+                switchSession('login');
+
+            }
+
+        },
+
+        error: function(data) {
+
+            if (useToken) {
+
+                showAlert('Session expired. Please log in again.', 'danger', 2000);
+
+                switchSession('logout');
+
+                localStorage.clear();
+
+                sidebar.show($('#user-login-dialog').show().siblings().hide());
+
+            }
+
+        }
+
+    });
     
 }
 
@@ -131,8 +203,6 @@ function registerUser(e) {
         success: function (response) {
             
             localStorage.setItem('token', response.token);
-
-            console.log('registered and logged in');
             
             $('#create-account-dialog').hide();
             
@@ -353,9 +423,7 @@ function deleteUser(e) {
         var useToken = localStorage.getItem('token'),
             
             email = localStorage.getItem('useremail'),
-            
-            // userid = localStorage.getItem('userid'),
-                
+                            
             password = $('#delete-password').val();
         
         $.ajax({
@@ -386,7 +454,7 @@ function deleteUser(e) {
 
                 sidebar.hide();
                 
-                showAlert('Sorry,something went wrong.', 'danger', 2000);
+                showAlert('Sorry, something went wrong.', 'danger', 2000);
 
             }
             

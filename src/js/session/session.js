@@ -143,8 +143,8 @@ $(document).ready(function() {
   
     if (localStorage.getItem('token')) {
 
-        switchSession('login');
-
+        checklogin();
+        
     }
   
     else {

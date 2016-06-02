@@ -15,6 +15,13 @@ var api = {
             return api.server + '/register';
         }
     },
+    
+    createLogin: {
+        method: 'POST',
+        url: function () {
+            return api.server + '/authenticate';
+        }
+    },
 
     readUser: {
         method: 'GET',
@@ -25,15 +32,15 @@ var api = {
 
     removeUser: {
         method: 'DELETE',
-        url: function (id) {
+        url: function () {
             return api.createLogin.url() + '/delete';
         }
     },
-
-    createLogin: {
-        method: 'POST',
+    
+    logoutUser: {
+        method: 'GET',
         url: function () {
-            return api.server + '/authenticate';
+            return api.createLogin.url() + '/logout';
         }
     },
 

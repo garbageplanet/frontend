@@ -1,5 +1,6 @@
 // Mobile display
 // TODO use L.Browser once Leaflet 1.0 is in use
+// TODO use an init function instead of .ready()
 $(document).ready(function() {
     
         // This still doesn't work in 1.0 rc1

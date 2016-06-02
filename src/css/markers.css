@@ -34,6 +34,15 @@
 .map-marker.marker-cleaning:before{
  content: '\f133';
 }
+.map-marker.marker-dieoff:before{
+ content: '\0e7';
+}
+.map-marker.marker-sewage:before{
+ content: '\f043';
+}
+.map-marker.marker-floating:before{
+ content: '\f21a';
+}
 .map-marker.marker-deflated:before{
  content: '\f24d';
 }
@@ -49,9 +58,12 @@
   content: '\f274';
 }
 
-/*Marker colors */
+/* Marker colors */
 .map-marker.marker-color-gray {background: lightgray;}
 .map-marker.marker-color-blue {background: #33cccc;}
+.map-marker.marker-floating {background-color: #FFF;}
+.map-marker.marker-dieoff {background-color: #000;}
+.map-marker.marker-sewage {background-color: #993300;}
 
 /* Garbage amount scale 1-5 */
 .map-marker.marker-color-limegreen {background-color: rgba(204, 255, 102, 0.9)/*#ccff66*/;}
