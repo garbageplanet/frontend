@@ -4,94 +4,57 @@
 * User actions on map features that are already present
 */
 
-// onClick behavior for saved garbage markers
-function onGarbageMarkerClick (e) {
-
-    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
-        
-    map.panToOffset([latlng[0], latlng[1]], getVerticalOffset());
+// Click actions on saved features
+function featureClick(e) {
     
-    sidebar.hide();
+    featureClick:{
+    
+        if (window.innerWidth < 768) {
 
-    if ($('.leaflet-marker-menu').is(':visible')) {
-        
-        marker.closeMenu();
-        
+            if ($('.leaflet-marker-menu').is(':visible')) {
+
+                marker.closeMenu();
+
+                break featureClick;
+
+            }
+
+        }
+
+        if (e.options) {
+
+            // check if the feature is a shape
+            if (e.options.shape) {
+
+                setTimeout(function () {
+
+                    map.panToOffset(e.getCenter(), getVerticalOffset());
+
+                }, 100);
+
+            }
+
+            // if not a shape clicked it's a marker, bring it to the map center with panToOffset()
+            else {
+
+                var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
+
+                map.panToOffset([latlng[0], latlng[1]], getVerticalOffset());
+
+            } 
+
+            // then load data into bottom panel and show it
+            pushDataToBottomPanel(e);
+
+        }
     }
-    
 }
-
-// onClick behavior for saved cleaning markers
-function onCleaningMarkerClick (e) {
-
-    var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
-            
-    map.panToOffset([latlng[0], latlng[1]], getVerticalOffset());
-    
-    sidebar.hide();
-    
-    if ($('.leaflet-marker-menu').is(':visible')) {
-        
-        marker.closeMenu();
-        
-    }    
-}
-
-// onClick behavior for saved areas
-function onAreaClick (e) {
-    
-    // TODO if it's a game area, check if user is in game list
-    
-    // map.off('click', onMapClick);
-    
-    console.log("remote polygon clicked");
-    
-    setTimeout(function () {
-    
-        sidebar.hide();
-        
-        if ($('.leaflet-marker-menu').is(':visible')) {
-
-            marker.closeMenu();
-
-        }
-        
-        bottombar.show();
-
-        map.panToOffset(e.getCenter(), getVerticalOffset());
-        
-    }, 100);
-    
-}
-
-// onClick behavior for saved litters
-function onLitterClick (e) {
-        
-    console.log("remote polyline clicked");
-        
-    setTimeout(function () {
-    
-        sidebar.hide();
-        
-        if ($('.leaflet-marker-menu').is(':visible')) {
-
-            marker.closeMenu();
-
-        }
-        
-        bottombar.show();
-
-        map.panToOffset(e.getCenter(), getVerticalOffset());
-        
-    }, 100);
-   
-};
 
 // TODO Push the data to the form on .btn-edit click
 function editFeature(e) {
     
     // TODO fill the form templates with the current marker data
-    // TODO more secure way to restrict edition
+    // TODO more secure way to restrict edition, must match current session token with id in backend
     var userid = localStorage.getItem('userid');
     
     if (userid == e.marked_by) {
@@ -104,15 +67,11 @@ function editFeature(e) {
 
             sidebar.show($('#create-garbage-dialog').fadeIn());
 
-            // e.dragging.enable();
-
         }
 
         if (e.feature_type === 'marker_cleaning') {
 
             sidebar.show($('#create-cleaning-dialog').fadeIn());
-
-            // e.dragging.enable();
 
         }
 
@@ -135,7 +94,6 @@ function editFeature(e) {
         showAlert("You cannot edit feature created by others.", "danger", 3000);
 
     }   
-    
 }
            
 // TODO Confirm garbage function
@@ -183,7 +141,7 @@ function confirmGarbage(e){
         
     }
     
-};
+}
 
 // TODO Join cleaning event function
 function joinCleaning(e){
@@ -230,7 +188,7 @@ function joinCleaning(e){
             
         });
     }, 100);
-};
+}
 
 // TODO Take part in game function
 function participateGame(e){
@@ -276,7 +234,7 @@ function participateGame(e){
         });
         
     }, 100);
-};
+}
 
 // TODO Cleaned garbage function
 function cleanedGarbage(e){

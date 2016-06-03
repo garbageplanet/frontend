@@ -1,17 +1,12 @@
 // Mobile display
 // TODO use L.Browser once Leaflet 1.0 is in use
 // TODO use an init function instead of .ready()
+// $(document).ready(function() {
 $(document).ready(function() {
     
-        // This still doesn't work in 1.0 rc1
-        // if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina || L.Browser.android23 || L.Browser.mobileOpera) {
-
-        if (window.innerWidth < 768) {
+    if (window.innerWidth < 768) {
 
         $('#topbar').remove();
-        
-        // Remove the search field from multiselect else the softkeyboard shows up on mobile
-        $('.garbage-type-select, .litter-type-select').attr('data-live-search', 'false');
 
         // Add swipe areas
         $('body').append('<div class="swipe-area swipe-area-right"></div>');
@@ -21,6 +16,9 @@ $(document).ready(function() {
         $('#bottombar').prepend('<div class="swipe-area swipe-area-top"></div>');
         
         $('.draw-link').addClass('disabled');
+            
+        // Remove the search field from multiselect else the softkeyboard shows up on mobile
+        $('.garbage-type-select, .litter-type-select').attr('data-live-search', 'false');
 
         // Activate swipe on the right border to show the mobile menu
         $(".swipe-area-right").touchwipe({

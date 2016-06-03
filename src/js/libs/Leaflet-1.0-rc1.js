@@ -1909,7 +1909,7 @@ L.LatLngBounds.prototype = {
 	// @method toBBoxString(): String
 	// Returns a string with bounding box coordinates in a 'southwest_lng,southwest_lat,northeast_lng,northeast_lat' format. Useful for sending requests to web services that return geo data.
 	toBBoxString: function () {
-		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
+		return [this.getSouth(), this.getWest(), this.getNorth(), this.getEast()].join(',');
 	},
 
 	// @method equals(otherBounds: LatLngBounds): Boolean

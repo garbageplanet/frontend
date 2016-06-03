@@ -3,6 +3,7 @@
  * Copyright (c) 2015, OpenCage Data 
  * info@opencagedata.com 
  * http://www.opencagedata.com 
+ * modified by adriennn for www.garbagepla.net
  * 
  * Licensed under the BSD license. 
  * Demo: http://geocoder.opencagedata.com/code.html 

@@ -11,8 +11,7 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 
 ### FIXME
 - [ ] bootstrap form validation - disallow submit button until ok (not only add class `disabled` to submit button)
-- [ ] load features into layer but do not re-create each layer after elements are added or removed (get_features.js) 
-- [ ] L.Marker.Menu still a little buggy (stays open and cannot be deleted sometimes?)
+- [ ] load features into layer but do not re-create each layer after elements are added or removed, use [L.VirtualGrid](https://github.com/patrickarlt/leaflet-virtual-grid)?
 - [ ] tags do not get saved to the db
 - [ ] .getCenter() doesn't work on polyines and polygons in lealfet 0.7 (it does in 1.0rc1, but see below)
 

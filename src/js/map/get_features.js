@@ -5,77 +5,45 @@
 */
 
 // Create a global array to store retrievable data objects for onscreen objects
-// TODO make a global object containing both arrays
+// TODO make a global object containing both arrays?
 var garbageArray = [];
 var cleaningArray = [];
 
-console.log(cleaningArray);
-
-// Load the feature once in the currentView on page load
-map.addOneTimeEventListener('move', function (e) {
+function getCurrentBounds () {
+        
+    var currentViewBounds = map.getBounds().toBBoxString();
     
-    // use map.toBBoxString();
-    var bounds = map.getBounds();
+    return currentViewBounds;
     
-    currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
+}
 
-    // console.log("currentViewBounds:", currentViewBounds);
-
-    if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
-        
-        loadLitters();
-        
-    }
-
-    if (e.target.getZoom() >= 8 ) {    
-        
-        loadGarbageMarkers();
-
-        loadCleaningMarkers();
-        
-    }
-
-    if (e.target.getZoom() >= 7 && e.target.getZoom() <=15) {
-    
-        loadAreas();
-        
-    }
-    
-});
-
-// After the first page load, the features from the backend only if the map is moved by a certain extent (here window width / 2)
+// Get the features from the backend only if the map is moved by a certain extent (here window width / 2)
 // TODO smarter way to load stuff
 map.on('dragend zoomend', function (e){
-  
-    var bounds = map.getBounds();
-    
-    currentViewBounds = bounds._northEast.lat + ',%20' + bounds._northEast.lng + ',%20' + bounds._southWest.lat + ',%20' + bounds._southWest.lng;
-    
+                  
     if (e.type === 'zoomend') {
         
         garbageArray = [];
+        
         cleaningArray = [];
                   
-        if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
-
-            loadLitters();
-
-        }
 
         if (e.target.getZoom() >= 8 ) {
 
             loadGarbageMarkers();
                                 
             loadCleaningMarkers();
+            
+                if (e.target.getZoom() <= 16) {
+
+                    loadLitters();
+
+                    loadAreas();
+
+                }
 
         }
 
-        if (e.target.getZoom() >= 7 && e.target.getZoom() <=15) {
-
-            loadAreas();
-
-        }
-        
         if (e.target.getZoom() < 7) {
 
             areaLayerGroup.clearLayers();
@@ -88,32 +56,26 @@ map.on('dragend zoomend', function (e){
 
     if (e.type === 'dragend') {
           
-        console.log("distance in pixels", e.distance);
-
         if (e.distance >= window.innerWidth / 3) {
             
+            // reset te gloabl objects
             garbageArray = [];
+            
             cleaningArray = [];
             
-            console.log("Window width / 3: ", window.innerWidth / 3);
-
-            if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
-
-                loadLitters();
-
-            }
-
             if (e.target.getZoom() >= 8 ) {  
 
                 loadGarbageMarkers();
                 
                 loadCleaningMarkers();
+                
+                if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
 
-            }
+                    loadLitters();
+                
+                    loadAreas();
 
-            if (e.target.getZoom() >= 7 && e.target.getZoom() <=15) {
-
-                loadAreas();
+                }
 
             }
 
@@ -125,18 +87,19 @@ map.on('dragend zoomend', function (e){
   
 // Get garbage
 function loadGarbageMarkers () {
-    
+            
     setTimeout(function () {
     
         garbageLayerGroup.clearLayers();
 
         var useToken = localStorage.getItem('token') || window.token;
+            // bounds = map.getBounds().toBBoxString();
 
         $.ajax({
 
             type: api.readTrashWithinBounds.method,
 
-            url: api.readTrashWithinBounds.url(currentViewBounds),
+            url: api.readTrashWithinBounds.url(getCurrentBounds()),
 
             success: function (data) {
                 
@@ -155,8 +118,7 @@ function loadGarbageMarkers () {
                     // Need to parse the string from the db because LatLngs are now stored as single key:value pair
                     var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
                     
-                    // Push data summary to global object
-                    // TODO add all keys
+                    // Push data summary to global object for download
                     garbageArray.push(
                         
                         {
@@ -197,11 +159,8 @@ function loadGarbageMarkers () {
 
                     marker.on('click', function() {
 
-                        // UI behavior
-                        onGarbageMarkerClick(marker);
-
-                        // Push data
-                        pushDataToBottomPanel(marker);
+                        // Bind click listener
+                        featureClick(marker);
 
                     });
                     
@@ -217,7 +176,7 @@ function loadGarbageMarkers () {
 
         });
 
-        }, 200);
+    }, 200);
     
 }
 
@@ -226,8 +185,6 @@ function loadCleaningMarkers () {
     
     setTimeout(function () {
     
-        // console.log('loading cleaning markers from db');
-
         cleaningLayerGroup.clearLayers();
 
         var useToken = localStorage.getItem('token') || window.token;
@@ -236,7 +193,7 @@ function loadCleaningMarkers () {
 
             type: api.readCleaningWithinBounds.method,
 
-            url: api.readCleaningWithinBounds.url(currentViewBounds),
+            url: api.readCleaningWithinBounds.url(getCurrentBounds()),
 
             success: function(data) {
                 
@@ -244,8 +201,7 @@ function loadCleaningMarkers () {
                     
                     var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
                     
-                    // Push data summary to global object
-                    // TODO add all keys
+                    // Push data summary to global object for download
                     cleaningArray.push(
                         
                         {
@@ -278,11 +234,8 @@ function loadCleaningMarkers () {
 
                     marker.on('click', function() {
 
-                        // UI behavior
-                        onCleaningMarkerClick(marker);
-
-                        // Push data
-                        pushDataToBottomPanel(marker);
+                        // Bind click listener
+                        featureClick(marker);
 
                     });
 
@@ -297,7 +250,7 @@ function loadCleaningMarkers () {
             }
         });
         
-    }, 200);
+    }, 300);
     
 }
 
@@ -314,7 +267,7 @@ function loadAreas () {
 
             type: api.readAreaWithinBounds.method,
 
-            url: api.readAreaWithinBounds.url(currentViewBounds),
+            url: api.readAreaWithinBounds.url(getCurrentBounds()),
 
             headers: {"Authorization": "Bearer " + useToken},
 
@@ -334,6 +287,7 @@ function loadAreas () {
                             tags: obj.tag,
                             contact: obj.contact,
                             feature_type: 'polygon_area',
+                            shape: true,
                             created_by: obj.created_by,
                             created_at: obj.created_at,
                             modified_at: obj.updated_at,
@@ -349,17 +303,12 @@ function loadAreas () {
 
                       polygonLayer.on('click', function() {
 
-                          // UI behavior
-                          onAreaClick(polygonLayer);
-
-                          // Push data
-                          pushDataToBottomPanel(polygonLayer);
+                          // Bind click listener
+                          featureClick(polygonLayer);
+                          
                       });
-
-                }
-
-              );
-
+                    }
+                );
             },
 
             error: function (data) {
@@ -370,7 +319,7 @@ function loadAreas () {
 
         });
 
-    }, 200);
+    }, 400);
     
 }
 
@@ -387,7 +336,7 @@ function loadLitters () {
 
             type: api.readLitterWithinBounds.method,
 
-            url: api.readLitterWithinBounds.url(currentViewBounds),
+            url: api.readLitterWithinBounds.url(getCurrentBounds()),
 
             headers: {"Authorization": "Bearer " + useToken},
 
@@ -414,6 +363,7 @@ function loadLitters () {
                         types: obj.types.join(', '),
                         image_url: obj.image_url,
                         tags: obj.tag,
+                        shape: true,
                         feature_type: 'polyline_litter',
                         created_by: obj.marked_by,
                         cleaned: obj.cleaned,
@@ -433,16 +383,12 @@ function loadLitters () {
 
                     polylineLayer.on('click', function() {
 
-                        // UI behavior
-                        onLitterClick(polylineLayer);
-
-                        // Push data - the function is inside the file js/ui/bottombar.js
-                        pushDataToBottomPanel(polylineLayer);
+                        // Bind click listener
+                        featureClick(polylineLayer);
 
                     });
-                    
+                   
                 });
-
             },
 
             error: function (data) {
@@ -453,5 +399,5 @@ function loadLitters () {
 
         });
         
-    }, 200);
+    }, 500);
 };

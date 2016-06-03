@@ -7,9 +7,7 @@ function pushDataToBottomPanel(e) {
   
     var featuredata = e.options;
 
-    console.log("feature data content: ", featuredata);
-
-    // Add character into strings
+    // Add character into strings to retrieve small images from imgur api with current url as input
     String.prototype.insert = function (index, string) {
         
         if (index > 0) {

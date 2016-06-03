@@ -96,8 +96,8 @@ var api = {
 
     readTrashWithinBounds: {
         method: 'GET',
-        url: function (allBounds) {
-            return api.readTrash.url() + '/withinbounds?bounds=' + currentViewBounds;
+        url: function (currentBounds) {
+            return api.readTrash.url() + '/withinbounds?bounds=' + currentBounds;
         }
     },
 
@@ -132,16 +132,16 @@ var api = {
 
     readCleaningWithinBounds: {
         method: 'GET',
-        url: function (allBounds) {
-            return api.readCleaning.url() + '/withinbounds?bounds=' + currentViewBounds;
+        url: function (currentBounds) {
+            return api.readCleaning.url() + '/withinbounds?bounds=' + currentBounds;
         }
     },
 
     /* Litter */
     readLitterWithinBounds: {
         method: 'GET',
-        url: function (allBounds) {
-            return api.readLitter.url() + '/withinbounds?bounds=' + currentViewBounds;
+        url: function (currentBounds) {
+            return api.readLitter.url() + '/withinbounds?bounds=' + currentBounds;
         }
     },
 
@@ -176,8 +176,8 @@ var api = {
     /* Area */
     readAreaWithinBounds: {
         method: 'GET',
-        url: function (allBounds) {
-            return api.readArea.url() + '/withinbounds?bounds=' + currentViewBounds;
+        url: function (currentBounds) {
+            return api.readArea.url() + '/withinbounds?bounds=' + currentBounds;
         }
     },
 
