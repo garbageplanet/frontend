@@ -18,8 +18,6 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 ### TODO
 - [ ] build all sidebar views from templates
 - [ ] finalize the edit system (build the forms from templates)
-- [ ] build the cleaned, join, play and confirm functions with a prototype
-- [ ] add L.Routing.Machine plugin and build routing system between selected markers
 - [ ] allow drawing shapes on mobile but hide the sidebar on draw:start and show it on draw:created
 
 #### Upgrade
@@ -27,6 +25,7 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] move to leaflet 1.0 - works out of the box but fix `L.marker.menu.js` plugin first
 - [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
 - [ ] modularize js code
+- [ ] add L.Routing.Machine plugin and build routing system between selected markers
 
 ### Licence
 This code is available under the ISC licence but some parts have a different license information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).

@@ -72,17 +72,17 @@ var api = {
             return api.server + '/trashes';
         }
     },
-
+    
+    showTrash: {
+        method: 'GET',
+        url: function (id) {
+            return api.readTrash.url() + '/' + id;
+        }
+    },
+    
     editTrash: {
         method: 'PUT',
         url: function () {
-            return api.readTrash.url();
-        }
-    },
-
-    confirmTrash: {
-        method: 'PUT',
-        url: function (id) {
             return api.readTrash.url();
         }
     },
@@ -91,6 +91,12 @@ var api = {
         method: 'DELETE',
         url: function (id) {
             return api.readTrash.url() + '/' + id;
+        }
+    },
+    
+    confirmTrash: {
+        url: function (id) {
+            return api.readTrash.url()+'/confirm/' + id;
         }
     },
 
@@ -115,7 +121,14 @@ var api = {
             return api.server + '/cleanings';
         }
     },
-
+    
+    showCleaning: {
+        method: 'GET',
+        url: function (id) {
+            return api.readCleaning.url() + '/' + id;
+        }
+    },
+    
     editCleaning: {
         method: 'PUT',
         url: function (id) {
@@ -134,6 +147,12 @@ var api = {
         method: 'GET',
         url: function (currentBounds) {
             return api.readCleaning.url() + '/withinbounds?bounds=' + currentBounds;
+        }
+    },
+    
+    attendCleaning: {
+        url: function (id) {
+            return api.readCleaning.url()+'/attend/' + id;
         }
     },
 
@@ -165,11 +184,24 @@ var api = {
             return api.server + '/litters';
         }
     },
+    
+    showLitter: {
+        method: 'GET',
+        url: function (id) {
+            return api.readLitter.url() + '/' + id;
+        }
+    },
 
     deleteLitter: {
         method: 'DELETE',
         url: function (id) {
             return api.readLitter.url() + '/' + id;
+        }
+    },
+    
+    confirmLitter: {
+        url: function (id) {
+            return api.readLitter.url()+'/confirm/' + id;
         }
     },
 
@@ -199,6 +231,13 @@ var api = {
         method: 'GET',
         url: function () {
             return api.server + '/areas';
+        }
+    },
+    
+    showArea: {
+        method: 'GET',
+        url: function (id) {
+            return api.readArea.url() + '/' + id;
         }
     },
 

@@ -20,19 +20,19 @@
 </button>
 </div>
 {% } %}
-{% if (o.confirm) { %}
+{% if (o.amount) { %}
 <div class="btn-group btn-group-lg" role="group">
 <button type="button" title="Confirm there is garbage here" class="btn btn-round btn-info btn-confirm-garbage">
 <span class="fa fa-binoculars"></span>
 </button>
-<span class="badge badge-notify badge-notify-confirm">{%=o.confirm%}</span>
+<span class="badge badge-notify badge-notify-confirm">{%=o.confirms%}</span>
 </div>
 {% } %}
 {% if (o.datetime) { %}
 <div class="btn-group btn-group-lg" role="group">
-<button type="button" title="Say you will help" class="btn btn-round btn-info btn-join-cleaning">
+<button type="button" title="Say you will help" class="btn btn-round btn-info btn-attend-cleaning">
 <span class="fa fa-group"></span>
-</button><span class="badge badge-notify badge-notify-join">{%=o.join%}</span>
+</button><span class="badge badge-notify badge-notify-attend">{%=o.attends%}</span>
 </div>
 {% } %}
 {% if (o.contact) { %}

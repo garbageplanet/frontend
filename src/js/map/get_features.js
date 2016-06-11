@@ -5,7 +5,7 @@
 */
 
 // Create a global array to store retrievable data objects for onscreen objects
-// TODO make a global object containing both arrays?
+// TODO make a global object containing both arrays or smarter way to achieve this?
 var garbageArray = [];
 var cleaningArray = [];
 
@@ -85,6 +85,9 @@ map.on('dragend zoomend', function (e){
 
 });
   
+// TODO add possibility to load a single feature by passing the id paramater to these functions
+// then call the respective api address with readTrash(), readCleaning(), readLitter() and readArea()
+
 // Get garbage
 function loadGarbageMarkers () {
             
@@ -136,7 +139,7 @@ function loadGarbageMarkers () {
                             types: obj.types.join(", "),
                             image_url: obj.image_url,
                             latlng: obj.latlng,
-                            confirm: obj.confirm,
+                            confirms: obj.confirms,
                             todo: obj.todo,
                             tags: obj.tag,
                             note: obj.note,
@@ -161,6 +164,12 @@ function loadGarbageMarkers () {
 
                         // Bind click listener
                         featureClick(marker);
+                                                                    
+                        // rise the marker to the top of others
+                        // FIXME need to reset the value after clicking on another marker
+                        // FIXME add highlighting (larger white circle underneath)
+                        var currentZindex = marker._zIndex;
+                        marker.setZIndexOffset(currentZindex + 10000);
 
                     });
                     
@@ -217,7 +226,7 @@ function loadCleaningMarkers () {
                             datetime: obj.datetime,
                             latlng: obj.latlng,
                             feature_type: 'marker_cleaning',
-                            participants: obj.participants,
+                            attends: obj.attends,
                             recurrence: obj.recurrence,
                             created_by: obj.created_by,
                             created_at: obj.created_at,
@@ -313,7 +322,7 @@ function loadAreas () {
 
             error: function (data) {
 
-                console.log('Error getting area (polygon) data', data);
+                console.log('Error getting area (polygon) data');
 
             }
 
@@ -367,6 +376,7 @@ function loadLitters () {
                         feature_type: 'polyline_litter',
                         created_by: obj.marked_by,
                         cleaned: obj.cleaned,
+                        confirms: obj.confirms,
                         cleaned_by: obj.cleaned_by,
                         created_at: obj.created_at,
                         modified_at: obj.updated_at,

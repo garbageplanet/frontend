@@ -17,6 +17,7 @@ map.addOneTimeEventListener('zoomend', function (e) {
 
 //MapToOffset//////////////////////////////////////////////////////////
 //See license.md in this repo Copyright 2013 Code for America//////////
+// TODO transform this into a plugin
 L.Map.prototype.panToOffset = function (latlng, offset, options) {
     
     var x = this.latLngToContainerPoint(latlng).x - offset[0],
@@ -32,13 +33,24 @@ L.Map.prototype.panToOffset = function (latlng, offset, options) {
 // Adapted functions
 function getVerticalOffset() {
     
-  var vOffset = [0, 0];
-  
-  vOffset[1] = - $(window).height() / 4;
+    var vOffset = [0, 0];
+
+    // take in account the topbar for offsetting on larger screens
+    // TODO do this dynamically
+    if (window.innerWidth > 767) { 
+        
+        vOffset[1] = - $(window).height() / 4 + 20; 
+        
+    }
     
-  vOffset[0] = 0;
-  
-  return vOffset;
+    // not needed on mobile
+    else {
+        
+        vOffset[1] = - $(window).height() / 4;
+        
+    }
+    
+    return vOffset;
     
 }
 
@@ -47,9 +59,7 @@ function getHorizontalOffset() {
   var hOffset = [0, 0];
   
   hOffset[0] = - $(window).width() / 5;
-    
-  hOffset[1] = 0;
-  
+      
   return hOffset;
 }
 //////////////////////////////////////////////////////////////////////

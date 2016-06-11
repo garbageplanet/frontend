@@ -40,12 +40,18 @@ function featureClick(e) {
                 var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
 
                 map.panToOffset([latlng[0], latlng[1]], getVerticalOffset());
-
+                
             } 
 
             // then load data into bottom panel and show it
             pushDataToBottomPanel(e);
-
+            
+            // hide the sidebar if it's visible
+            if (sidebar.isVisible()) {
+                
+                sidebar.hide();
+                
+            }
         }
     }
 }
@@ -104,34 +110,60 @@ function confirmGarbage(e){
         showAlert("You need to login to do that.", "info", 2000);
 
     } else {
-
+        
+        var callurl = null;
+        
+        if (e.feature_type === 'marker_garbage') {
+            
+            callurl = api.confirmTrash.url(e.id);
+            
+        }
+        
+        else if (e.feature_type === 'polyline_litter') {
+            
+            callurl = api.confirmLitter.url(e.id);
+            
+        }
+        
         setTimeout(function () {
 
             var useToken = localStorage.getItem('token') || window.token;
-
+            
             $.ajax({
 
-                method: api.confirmTrash.method,
+                method: 'PUT',
 
-                url: api.confirmTrash.url(),
+                url: callurl,
 
                 headers: {"Authorization": "Bearer" + useToken},
 
-                data: {
-                    // TODO how to do this?
-                    'confirm': counts 
-
-                },
-
-                success: function (data) {
-
-                    // TODO change the value in the UI by fetching the new data and reloading the template
-                    console.log('success data', data);
+                success: function (response) {
+                    
+                    var message = response.data.message;
+                    
+                    pushDataToBottomPanel(response.data.data);
+                    
+                    // TODO add the possibility to call loadFeatures() with an id to retrive only one marker
+                    
+                    // update litters if we confirmed litter
+                    if (message.indexOf('litter') === 0) {
+                        
+                        loadLitters();
+                        
+                    }
+                    
+                    // else update trash markers to reflect new data
+                    else {
+                        
+                        loadGarbageMarkers();
+                        
+                    }
+                                        
                 },
 
                 error: function (err) {
 
-                  console.log('err', err);
+                  showAlert("Something went wrong.", "info", 2000);
 
                 }
 
@@ -144,7 +176,7 @@ function confirmGarbage(e){
 }
 
 // TODO Join cleaning event function
-function joinCleaning(e){
+function attendCleaning(e){
     
     // TODO Finish this
     // TODO count function in the backend, not here
@@ -154,40 +186,42 @@ function joinCleaning(e){
         showAlert("You need to login to do that.", "info", 2000);
         
     }
+    
+    else {
         
-    setTimeout(function () {
+        setTimeout(function () {
         
-      // var useToken = localStorage["token"] || window.token;
-        var useToken = localStorage.getItem('token') || window.token;
+            var useToken = localStorage.getItem('token') || window.token,
+                id = e.id;
 
-        $.ajax({
+            $.ajax({
             
-            method: api.joinCleaning.method,
-            
-            url: api.readCleaning.url(),
-            
-            headers: {"Authorization": "Bearer" + useToken},
-            
-            data: {
+                method: 'PUT',
+
+                url: api.attendCleaning.url(id),
+
+                headers: {"Authorization": "Bearer" + useToken},
+
+                success: function (response) {
+                    // push the new data to the bottom bar
+                    pushDataToBottomPanel(response.data.data);
+                    
+                    loadCleaningMarkers();
+
+                },
+
+                error: function (err) {
+
+                    showAlert("Something went wrong.", "info", 2000);                
                 
-                // TODO
-                'join': 1 
-                
-            },
-            success: function (data) {
-                            
-                // TODO reload the markers to display change and reload the template to get the current count in the db
-                console.log('success data', data);
-                
-            },
+                }
             
-            error: function (err) {
-                
-                console.log('err', err);
-            }
+            });
             
-        });
-    }, 100);
+        }, 100);
+        
+    }
+    
 }
 
 // TODO Take part in game function

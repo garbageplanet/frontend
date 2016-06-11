@@ -6,6 +6,13 @@
 function pushDataToBottomPanel(e) {
   
     var featuredata = e.options;
+    
+    // if the data is passed from a server JSON response (attend, confirm ...) the actual data is in e
+    if (!featuredata) {
+        
+        featuredata = e;
+    
+    }
 
     // Add character into strings to retrieve small images from imgur api with current url as input
     String.prototype.insert = function (index, string) {
@@ -63,7 +70,7 @@ function pushDataToBottomPanel(e) {
     
     $('#feature-info').find('.btn-confirm-garbage').on('click', function() {confirmGarbage(featuredata);});
     
-    $('#feature-info').find('.btn-join-cleaning').on('click', function() {joinCleaning(featuredata);});
+    $('#feature-info').find('.btn-attend-cleaning').on('click', function() {attendCleaning(featuredata);});
     
     $('#feature-info').find('.btn-participate-game').on('click', function() {participateGame(featuredata);});
 
