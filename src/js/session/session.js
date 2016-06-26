@@ -138,7 +138,6 @@ function switchSession(sessionStatus) {
 }
 
 // Check if the localStorage has token, if yes log the user in with data
-// TODO check token with backend if still valid
 $(document).ready(function() {
   
     if (localStorage.getItem('token')) {

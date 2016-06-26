@@ -73,10 +73,10 @@ var templatedata = {
             "linkurl":"http://home.garbagepla.net/",
             "text":"Project"
        },
-            {
-            "title":"license",
-            "linkurl":"https://github.com/garbageplanet/web-ui/blob/dev/license.md",
-            "text":"Project"
+        {
+            "title":"Let's Encrypt",
+            "linkurl":"https://letsencrypt.org/",
+            "text":"Secured with"
        },
        {
             "title":"Mapbox",

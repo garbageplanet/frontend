@@ -1,3 +1,4 @@
 .git
 env.json
 node_modules
+/dist/.well-known
