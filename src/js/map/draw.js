@@ -274,7 +274,7 @@ $('.btn-draw-polyline').on('click', function () {
 
         sidebar.hide();
 
-        showAlert('Drawing on mobile is still in development, expect issues.', 'warning', 3500);
+        showAlert(createAlertText(14), 'warning', 3500);
 
     }
     
@@ -310,7 +310,7 @@ $('.btn-draw-polygon').on('click', function () {
             
             sidebar.hide();
             
-            showAlert('Drawing on mobile is still in development, expect issues.', 'warning', 3500);
+            showAlert(createAlertText(14), 'warning', 3500);
             
     }
     

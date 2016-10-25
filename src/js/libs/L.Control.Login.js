@@ -20,7 +20,7 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. 
         }
     }
 
-    // attach your plugin to the global 'L' variable
+    // attach the plugin to the global 'L' variable
     if(typeof window !== 'undefined' && window.L){
         window.L.Control.Login = factory(L);
     }
@@ -69,7 +69,7 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. 
         },
 
         _onClick: function() {
-            glomego();
+            session.glomego();
             L.DomUtil.removeClasses(this._icon, 'fa-user-secret');
             L.DomUtil.addClasses(this._icon, 'fa-spinner fa-pulse');
 

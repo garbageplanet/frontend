@@ -9,7 +9,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     htmlmin = require('gulp-htmlmin'),
     del = require('del'),
-    replace = require('gulp-replace-task');
+    replace = require('gulp-replace-task'),
+    gutil = require('gulp-util');
     // env = require('./env.json'); // contains token and app ids
 
 // Remove the local src scripts and styles from the head of the html
@@ -124,11 +125,10 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
 // Minify body scripts and concat them in order
 gulp.task('scripts:app', ['trimHTML'], function() {
   return gulp.src([
-                    './src/js/config.js',
+                    './src/js/config/api.js',
                     './src/js/ui/mobile.js',
-                    './src/js/templates/tmpl_data.js',
                     './src/js/templates/tmpl.js',
-                    './src/js/session/authenticate.js',
+                    './src/js/ui/tools.js',
                     './src/js/session/session.js',
                     './src/js/ui/alerts.js',
                     './src/js/map/map.js',
@@ -148,8 +148,8 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/social/share.js'
                   ])
     .pipe(stripDebug())
-    .pipe(concat('app.min.js'))
-    .pipe(uglify({mangle: false, compress: false}))
+    .pipe(uglify({mangle: false, compress: false}).on('error', gutil.log))
+    .pipe(concat('app.min.js').on('error', gutil.log))
     .pipe(gulp.dest('dist/'));
 });
 

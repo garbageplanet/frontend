@@ -3,9 +3,7 @@
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
   <meta http-equiv="Content-Security-Policy" content="default-src https://garbagepla.net https://*.garbagepla.net; connect-src https://garbagepla.net https://garbagepla.net:* https://api.imgur.com/3/upload; script-src 'self' https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com; style-src https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com; object-src https://garbagepla.net https://*.garbagepla.net">
-<!--
   <meta name="csrf_token" content="{{ csrf_token() }}">
--->
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
   <meta http-equiv="X-UA-Compatible">
@@ -66,13 +64,13 @@
   <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
 
   <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
-<!--
-  <script type="text/javascript" src="js/libs/Leaflet-1.0-rc1.js"></script>
--->
+  <!--<script type="text/javascript" src="js/libs/Leaflet-1.0-rc1.js"></script>
+  <script type="text/javascript" src="js/libs/leaflet-1.0.1.js"></script>-->
+    
   <script type="text/javascript" src="js/libs/L.Hash.js"></script>
   <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
   <script type="text/javascript" src="js/libs/L.Compact.Attributions.js"></script>
-  <script type="text/javascript" src="js/libs/L.Marker.Menu.js"></script>
+  <script type="text/javascript" src="js/libs/L.Marker.Menu.2.js"></script>
   <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
   <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
   <script type="text/javascript" src="js/libs/L.Draw-0.2.4.js"></script>
@@ -81,12 +79,12 @@
   <script type="text/javascript" src="js/libs/L.Control.Login.js"></script>
 </head>
 <body>
-
+    
 <div id="topbar" class="topbar-container container">
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header col-lg-12 col-xl-12 col-sm-12 col-xs-12">
-        <a class="navbar-brand pull-left" href="#"><span class="navbar-brand-icon icon-trashbag"></span><strong class="navbar-brand-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.1</kbd></a>
+        <a class="navbar-brand pull-left" href="#"><span class="navbar-brand-icon icon-trashbag"></span><strong class="navbar-brand-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.2</kbd></a>
 
         <div class="pull-right">
           <ul class="nav navbar-nav">
@@ -307,14 +305,16 @@
 
                 <div class="dropdown form-group">
                     <select class="selectpicker garbage-type-select form-control"
+                            id="garbage-select"
                             title="What kind?"
                             data-selected-text-format="count"
                             data-width="100%"
                             data-live-search="true"
-                            data-max-options="10"
+                            data-max-options="20"
+                            data-actions-box="true"
                             required
-                            multiple
-                            id="garbage-select"></select>
+                            multiple>
+                            </select>
                 <div class="help-block with-errors"></div>
                 </div>
 
@@ -834,7 +834,7 @@
           <div class="tab-view">
               <ul class="nav nav-tabs nav-justified" role="tablist">
                 <li class="active"><a class="tab-default" href="#user-info-main" data-toggle="tab"><span class="fa fa-fw fa-user"></span></a></li>
-                <li><a href="#user-info-terms" data-toggle="tab"><span class="fa fa-fw fa-file-o"></span></a></li>
+                <li><a href="#user-info-terms" data-toggle="tab"><span class="fa fa-fw fa-info-circle"></span></a></li>
                 <li><a href="#user-info-privacy" data-toggle="tab"><span class="fa fa-fw fa-lock"></span></a></li>
               </ul>
 
@@ -870,7 +870,7 @@
                 <div class="tab-pane form-group form-group-lg" id="user-info-privacy" role="tabpanel">
                   <h3>Privacy policy and data protection</h3>
                     <p>As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collect and that could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
-                    <p>Note that as of May 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
+                    <p>Note that as of October 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
                 </div>
               </div>
             </div>
@@ -1010,7 +1010,8 @@
 <!-- endinject -->
 
 <!-- api config -->
-<script type="text/javascript" src="js/config.js"></script>
+<script type="text/javascript" src="js/config/api.js"></script>
+<script type="text/javascript" src="js/ui/tools.js"></script>
 
 <!-- Templates -->
 <script type="text/javascript" src="js/templates/tmpl_data.js"></script>
@@ -1019,6 +1020,7 @@
 <!-- Map display and actions scripts -->
 <script type="text/javascript" src="js/ui/alerts.js"></script>
 <script type="text/javascript" src="js/map/map.js"></script>
+<script type="text/javascript" src="js/ui/mobile.js"></script>
 <script type="text/javascript" src="js/map/markers.js"></script>
 <script type="text/javascript" src="js/map/get_features.js"></script>
 <script type="text/javascript" src="js/map/map_actions.js"></script>
@@ -1026,14 +1028,12 @@
 <script type="text/javascript" src="js/map/draw.js"></script>
 
 <!-- Session and user auth scripts -->
-<script type="text/javascript" src="js/session/authenticate.js"></script>
 <script type="text/javascript" src="js/session/session.js"></script>
 
 <!-- non-map user interface scripts -->
 <script type="text/javascript" src="js/ui/bottombar.js"></script>
 <script type="text/javascript" src="js/ui/topbar.js"></script>
 <script type="text/javascript" src="js/ui/sidebar.js"></script>
-<script type="text/javascript" src="js/ui/mobile.js"></script>
 
 <!-- Form scripts -->
 <script type="text/javascript" src="js/forms/uploader.js"></script>

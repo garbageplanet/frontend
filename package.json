@@ -1,6 +1,6 @@
 {
   "name": "garbageplanet-frontend",
-  "version": "0.0.1",
+  "version": "0.2",
   "description": "Dependancies for building (gulp) the minified version of the garbagepla.net frontend.",
   "main": "gulpfile.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "gulp-inject": "^3.0.0",
     "gulp-replace-task": "^0.11.0",
     "gulp-strip-debug": "^1.1.0",
-    "gulp-uglify": "^1.5.3"
+    "gulp-uglify": "^1.5.3",
+    "gulp-util":"^3.0.0"
   }
 }

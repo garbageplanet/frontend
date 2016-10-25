@@ -3,30 +3,25 @@
 */
 
 // Get data from the feature object into the bottom panel
+// TODO remove event listeners from this function
 function pushDataToBottomPanel(e) {
   
+    // load the data from the options of the object
     var featuredata = e.options;
     
-    // if the data is passed from a server JSON response (attend, confirm ...) the actual data is in e
+    // if the data is passed from a server JSON response (attend, confirm ...) the actual data is in the direct object
     if (!featuredata) {
-        
         featuredata = e;
-    
     }
 
     // Add character into strings to retrieve small images from imgur api with current url as input
     String.prototype.insert = function (index, string) {
         
         if (index > 0) {
-          
             return this.substring(0, index) + string + this.substring(index, this.length);
-          
         } else {
-          
             return string + this;
-          
         }
-        
     }
 
     // Fill the template data
@@ -34,9 +29,8 @@ function pushDataToBottomPanel(e) {
 
     // Create the templateData.social data dynamically before calling the template
     // The function shareThisFeature() is in the file /social/share.js
-    shareThisFeature(featuredata);
-
-    document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", templatedata);
+    sharing.shareThisFeature(featuredata);
+    document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", sharing.network);
     
     // TODO use bottombar.getContent() in conjunction with template creation above
     bottombar.show($('#feature-info').fadeIn());
@@ -51,7 +45,7 @@ function pushDataToBottomPanel(e) {
     }
 
     // Event listener for actions buttons (edit, cleaned join, confirm, play)
-    // the functions called are inside the file /map/features_actions.js
+    // the functions called down here are inside the file /map/features_actions.js
     $('#feature-info').find('.btn-edit').on('click', function() {
         
         if (localStorage.getItem('token')) {
@@ -59,58 +53,43 @@ function pushDataToBottomPanel(e) {
             editFeature(featuredata);
 
         } else {
-            
-            showAlert("Please login to do that.", "warning", 2000);
-
+            alerts.showAlert(3, "warning", 2000);
         }
     
     });
     
     $('#feature-info').find('.btn-cleaned').on('click', function() {cleanedGarbage(featuredata);});
-    
     $('#feature-info').find('.btn-confirm-garbage').on('click', function() {confirmGarbage(featuredata);});
-    
     $('#feature-info').find('.btn-attend-cleaning').on('click', function() {attendCleaning(featuredata);});
-    
     $('#feature-info').find('.btn-participate-game').on('click', function() {participateGame(featuredata);});
-
+    
     // Event listener for share button and social links
     $('.btn-social').popover({
         
         html : true, 
-
         container: 'body',
-
         placement: function(pop){
 
             if (window.innerWidth < 560) {
-                
                 return 'top'
-                
             } else {
-                
                 return 'right'
-                
             }
-            
         },
-
         content: function() {
-
             return $('#social-links').html();
-
         },
-
         template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
-
-        });
+    });
 
     // Event listener to look at the game results
     // TODO if user_id isn't in result list, prevent action
-    $('.game-results-modal-link').on('click', function () {
+/*    $('.game-results-modal-link').on('click', function () {
         
         var user_id = localStorage.getItem['userid'],
-            game_list = {};
+            // TODO, query the api with credentials to generate the list of users for this game tile by retrieving the data with the tile's title
+            // the function called is in /social/game.js
+            game_list = game.getPlayers(featuredata.title);
 
         if (user_id in game_list) {
             // call to the game api, check that user making request is in the list on the server
@@ -118,18 +97,15 @@ function pushDataToBottomPanel(e) {
             var gameResults = tmpl('tmpl-game-results', gamedata);
 
             $('body').append(gameResults);
-
         }
 
         else {
 
-            showAlert("Sorry. You are not on the players list, you can't look at this data.", "warning", 2000);
-            
+            alerts.showAlert(8, "warning", 2000);
             return;
-
         }
 
-    });
+    });*/
 
     // Event listener for delete button
     $('#feature-info').find('.btn-delete').on('click', function (e) {
@@ -171,51 +147,28 @@ function pushDataToBottomPanel(e) {
                 $.ajax({
 
                     type: deletemethod,
-
                     url: deleteurl,
-
                     headers: {"Authorization": "Bearer " + useToken},
-
                     success: function(response) {
-
                         bottombar.hide();
-
-                        loadGarbageMarkers();
-
-                        loadCleaningMarkers();
-
-                        loadLitters();
-
-                        loadAreas();
-
-                        showAlert("Feature deleted successfully!", "success", 1500);
-
+                        features.loadAllFeatures();
+                        alerts.showAlert(7, "success", 1500);
                     },
 
                     error: function(response) {
-
                         console.log("DELETE ERROR: ", response);
-
-                        showAlert("Failed to remove this feature.", "warning", 2000);
-
+                        alerts.showAlert(6, "warning", 2000);
                     }
-
                 });
-                
             }
             
             else {
-                
                 bottombar.hide();
-                
-                showAlert("You cannot delete features you did not create.", "danger", 2500);
-                
+                alerts.showAlert(0, "danger", 2500);
             }
-
         }
-        
     });
-    
+   
 };
 
 // Events to execute when the bottombar is hidden

@@ -4,7 +4,7 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. 
 
 */
 
-function arrayMap(array, cb, context) {
+function _arrayMap(array, cb, context) {
     for (var i = 0, l = array.length; i < l; i++) {
         cb.call(context || null, array[i], i, array);
     }
@@ -32,9 +32,9 @@ function arrayMap(array, cb, context) {
         window.L.MarkerMenu = factory(L);
     }
     
-
-    
-} (function (L) {
+} 
+ 
+(function (L) {
     var MarkerMenu = L.Class.extend({
         includes: L.Mixin.Events,
 
@@ -147,8 +147,15 @@ function arrayMap(array, cb, context) {
             this.show();
         },
         
+        
+        _arrayMap: function (array, cb, context) {
+            for (var i = 0, l = array.length; i < l; i++) {
+                cb.call(context || null, array[i], i, array);
+            }
+        },
+        
         _appendItems: function (items) {
-            arrayMap(items, function (item) {
+            _arrayMap(items, function (item) {
                 this._items.push(item);
             }, this);
 
@@ -187,7 +194,7 @@ function arrayMap(array, cb, context) {
             this._menuList.style.width = this.options.size[0] + 'px';
             this._menuList.style.height = this.options.size[1] + 'px';
 
-            arrayMap(this._items, function (item, i, items) {
+            _arrayMap(this._items, function (item, i, items) {
                 var listItem = L.DomUtil.create('li','', this._menuList),
                     menuItem = L.DomUtil.create('a', prefix + ' ' + (this.options.itemClassName || '') +
                         ' ' + (item.className || ''), listItem);
@@ -230,7 +237,7 @@ function arrayMap(array, cb, context) {
         },
 
         _resetItemsPositions: function () {
-            arrayMap(this._menuItems, function (item) {
+            _arrayMap(this._menuItems, function (item) {
                 item.style.left = 0;
                 item.style.bottom = 0;
 
@@ -258,7 +265,7 @@ function arrayMap(array, cb, context) {
             this._container.style.left = (left - (this.options.size[0] / 2)) + 'px';
 
             setTimeout(function () {
-                arrayMap(that._menuItems, function (item, i) {
+                _arrayMap(that._menuItems, function (item, i) {
                     var itemLeft = (Math.cos(angle * (i + 1)) * radius),
                         itemBottom = (Math.sin(angle * (i + 1)) * radius) ;
 
@@ -271,7 +278,7 @@ function arrayMap(array, cb, context) {
         },
 
         _resetPosition: function () {
-            arrayMap(this._menuItems, function (item) {
+            _arrayMap(this._menuItems, function (item) {
                 item.style.left = 0 + 'px';
                 item.style.bottom = 0 + 'px';
 

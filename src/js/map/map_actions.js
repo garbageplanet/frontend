@@ -6,13 +6,9 @@
 
 // Warn user once if zoom is too far, then warn on map click inside onMapClick()
 map.addOneTimeEventListener('zoomend', function (e) {
-
     if (e.target.getZoom() < 10) {
-        
-        showAlert("Zoom in closer to create features", "info", 1200);
-        
-    }
-        
+        alerts.showAlert(15, "info", 1200);
+    }    
 });
 
 //MapToOffset//////////////////////////////////////////////////////////
@@ -64,57 +60,14 @@ function getHorizontalOffset() {
 }
 //////////////////////////////////////////////////////////////////////
 
-// Create the context menu for mobile / small screens
-var featuremenu = L.markerMenu({
-    
-        radius: 100,
-        size: [50, 50],                    
-        animate: true,                     
-        duration: 200,                    
-
-        items: [
-            {
-            title: "Mark garbage",
-            className: "fa fa-fw fa-2x fa-marker-menu fa-map-marker",
-            click: function () {
-                sidebar.show($("#create-garbage-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 400);
-                }
-            }
-            ,{
-            title: "Create a cleaning event",
-            className: "fa fa-fw fa-2x fa-marker-menu fa-calendar-o",
-            click: function () {
-                sidebar.show($("#create-cleaning-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 400);
-                }
-            }
-            ,{
-            title: "Mark litter",
-            className: "fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h",
-            click: function () {
-                sidebar.show($("#create-litter-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 400);
-                }
-            }
-            ,{
-            title: "Add an area",
-            className: "fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h",
-            click: function () {
-                sidebar.show($("#create-area-dialog").show());
-                setTimeout(function () {marker.closeMenu();}, 400);
-                }
-            }
-        ]
-});
-
 // Default behavior for map clicks
 function onMapClick(e) {
     
     // check that there's not already something else going on in the UI
+    // TODO simplify this
     if (!sidebar.isVisible() && 
         !bottombar.isVisible() && 
-        e.target.getZoom() >= 10 && 
+        e.target.getZoom() >= 12 && 
         !$('.dropdown').hasClass('open') && 
         !$('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded') && 
         !$('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded') &&
@@ -130,44 +83,27 @@ function onMapClick(e) {
         if ($(window).width() <= 567) {
             
             if (!$('.leaflet-marker-menu').is(':visible')) {
-
-                marker.setMenu(featuremenu);
-
+                marker.setMenu(mobile.featuremenu);
                 map.addLayer(marker).panTo(marker._latlng);
-
-                marker.openMenu();   
-                
+                marker.openMenu();
+                // return;
             }
-
         }
         
         // Actions for desktop and larger screens      
         if ($(window).width() > 567) {
             
             map.addLayer(marker);
-
             map.panToOffset(marker._latlng, getHorizontalOffset());
-
             $('.sidebar-content').hide();
-
             $('#sidebar').scrollTop = 0;
-            
             sidebar.show($("#create-marker-dialog").show());
-
         }
             
         $('.marker-latlng').val(marker._latlng.lat + ", " + marker._latlng.lng);
-                
-        function setClassColor(c) {
-
-            return c === 1 ? 'marker-color-limegreen' :
-                   c === 2 ? 'marker-color-yellow' : 
-                   c === 3 ? 'marker-color-orangered' : 
-                   c === 4 ? 'marker-color-red' : 
-                             'marker-color-violet'
-        };
 
         // Range selector for amount of garbage on marker icon
+        // TODO, put this in the forms code
         $('input[type=radio]').on('change', function () {
         
             // Remove the generic marker class
@@ -176,12 +112,9 @@ function onMapClick(e) {
             // Get the color value from the select options 
             var selectedValue = parseInt($(this).attr('name'), 10);
             // Change the class to the corresponding value
-
             $(marker._icon).removeClass(function (index, css) {
-
                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-
-            }).addClass(setClassColor(selectedValue));
+            }).addClass(tools.setMarkerClassColor(selectedValue));
 
         });
         
@@ -190,7 +123,6 @@ function onMapClick(e) {
         $('#event-date-time-picker').on('dp.change', function (e) {
 
             var eventDateTime = e.date.format('YYYY-MM-DD HH:MM:SS');
-
             $('#date-time-value').val(eventDateTime);
 
             // Change the icon of the marker if a time is set
@@ -200,11 +132,8 @@ function onMapClick(e) {
     
         // Allow unsaved markers to be dragged and get new coordinates after drag
         marker.on("dragend", function (event){
-
             var newPos = event.target.getLatLng();
-
             $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
-
         });
   
         // Reset unsaved marker styles if sidebar is closed after marker creation
@@ -213,60 +142,73 @@ function onMapClick(e) {
             if (marker) {
                 
                 $(marker._icon).removeClass('marker-garbage');
-
                 $(marker._icon).removeClass('marker-cleaning');
-
                 $(marker._icon).removeClass(function (index, css) {
-
                     return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-
                 }).addClass('marker-generic');
 
                 $(marker._icon).addClass('marker-color-gray');
                 
                 // Delete the marker on small screen else the mobile marker menu bugs
                 if ($(window).width() <= 567) {
-
                     map.removeLayer(marker);
-
                 }
-                
             }
-
         });
-        
+        // Set the event listener for unsaved markers
         marker.on('click', onLocalMarkerClick);
     
+    // Else clost whatever is open / active
     } else {
         
-        if (e.target.getZoom() < 10) {
+        // TODO test live
+        if (locationcontrol._active) {
+            locationcontrol.stop();
+        }
         
-            showAlert("Zoom in closer to create features", "info", 1200);
+        // Close the address search without closing anything else
+        if ( 
+            $('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded')){            
+                // Reset the search container
+                $('.leaflet-control-ocd-search').removeClass('leaflet-control-ocd-search-expanded');
+                $('.leaflet-control-ocd-search-alternatives').addClass('leaflet-control-ocd-search-alternatives-minimized');
+                $('.leaflet-control-ocd-search-icon').removeClass('fa-close').addClass('fa-search');
+            
+            return;
+        }
         
-        }            
+        if (bottombar.isVisible() || sidebar.isVisible()){
+            bottombar.hide();
+            sidebar.hide();
+            return;
+        }
         
-        locationcontrol.stop();
+        // CLose any drodowns in the menu bar
+        if ($('.dropdown').hasClass('open')){
+            $('.dropdown').removeClass('open');
+            return;
+        }
         
-        bottombar.hide();
-
-        sidebar.hide();
+        // Collapse the layers dialog
+        if ($('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded')) {
+            $('.leaflet-control-layers').removeClass('leaflet-control-layers-expanded');
+            return;
+        }
         
-        $('.dropdown').removeClass('open');
-
-        $('.leaflet-control-layers').removeClass('leaflet-control-layers-expanded');
-
-        $('.leaflet-control-search').removeClass('leaflet-control-search-expanded');
+        // Hide the expanded attributions by unchecking the control    
+        if ($('.leaflet-compact-attribution-toggle').is(':checked')) {
+            $('.leaflet-compact-attribution-toggle').prop('checked', false);  
+            return;
+        }
         
-        // Reset the search container
-        $('.leaflet-control-ocd-search').removeClass('leaflet-control-ocd-search-expanded');
+        if (e.target.getZoom() < 12) {
+            alerts.showAlert(15, "info", 1200);
+        }
         
-        $('.leaflet-control-ocd-search-alternatives').addClass('leaflet-control-ocd-search-alternatives-minimized');
-        
-        $('.leaflet-control-ocd-search-icon').removeClass('fa-close').addClass('fa-search');
-        
-        // Hide the expanded atttributions by unchecking the control        
-        $(".leaflet-compact-attribution-toggle").prop("checked", false);
-              
+        // FIXME close mobile marker menu upon mapclick
+        /* if ($('.leaflet-marker-menu').is(':visible')) {
+                marker.closeMenu();
+        }*/
     }
   
 }
@@ -278,7 +220,6 @@ map.on('click', onMapClick);
 function onLocalMarkerClick (e) {
 
     bottombar.hide();
-
     marker = this;
     
     $('.marker-latlng').val(marker._latlng.lat + ", " + marker._latlng.lng);
@@ -286,9 +227,7 @@ function onLocalMarkerClick (e) {
     if ($(window).width() <= 567) {
         
         map.addLayer(marker).panTo(marker._latlng);
-
         return;
-
     }
     
     if ($(window).width() > 567) {
@@ -296,7 +235,6 @@ function onLocalMarkerClick (e) {
         map.panToOffset(marker._latlng, getHorizontalOffset());
         
         $('#sidebar').scrollTop =0;
-    
         $('.sidebar-content').hide();
     
         sidebar.show($("#create-marker-dialog").fadeIn());
@@ -305,10 +243,8 @@ function onLocalMarkerClick (e) {
         
             var newPos = event.target.getLatLng();
         
-            $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
-                
+            $('.marker-latlng').val(newPos.lat + ", " + newPos.lng); 
         });
-        
     }
     
 };
