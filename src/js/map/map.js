@@ -61,7 +61,7 @@ var layerscontrol = L.control.layers(baselayer, overlayGroups, {position: 'tople
 var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
 var bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'});
 var geocodercontrol = new L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}); //.setPosition('topleft');
-
+var glomelogincontrol = L.control.login();
 
 //Disable doubleclick to zoom as it might interfer with other map functions
 map.doubleClickZoom.disable();

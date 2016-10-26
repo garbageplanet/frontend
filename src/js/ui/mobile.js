@@ -1,3 +1,4 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 // Mobile display
 // TODO use L.Browser once Leaflet 1.0 is in use
 // TODO modularize this
@@ -13,7 +14,6 @@ var mobile = (function () {
         $('#topbar').remove();
         
         // Add a glome anonymous login button
-        var glomelogincontrol = L.control.login();
         glomelogincontrol.addTo(map);
         
         // Add swipe areas
@@ -95,13 +95,12 @@ var mobile = (function () {
                         setTimeout(function () {marker.closeMenu();}, 400);
                     }
                 }
-            ]
+            ],
         });
         
         return {
             
             featuremenu: featuremenu,
-            glomelogincontrol : glomelogincontrol
         };
 
     }

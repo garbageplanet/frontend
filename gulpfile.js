@@ -126,12 +126,12 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
 gulp.task('scripts:app', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/config/api.js',
-                    './src/js/ui/mobile.js',
                     './src/js/templates/tmpl.js',
                     './src/js/ui/tools.js',
                     './src/js/session/session.js',
                     './src/js/ui/alerts.js',
                     './src/js/map/map.js',
+                    './src/js/ui/mobile.js',
                     './src/js/map/markers.js',
                     './src/js/ui/topbar.js',
                     './src/js/ui/sidebar.js',
