@@ -1,13 +1,7 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
-
 /**
 * Loading map features from the backend
 */
-
-// Create a global array to store retrievable data objects for onscreen objects
-// TODO make a global object containing both arrays or smarter way to achieve this?
-//  var garbageArray = [];
-// var cleaningArray = [];
 
 var features =  (function(){
     
@@ -16,36 +10,27 @@ var features =  (function(){
     
     var loadGarbageMarkers = function () {
         
+        garbageArray = [];
+                
         setTimeout(function () {
 
             garbageLayerGroup.clearLayers();
-
             var useToken = localStorage.getItem('token') || window.token;
-                // bounds = map.getBounds().toBBoxString();
-
+                        
             $.ajax({
 
                 type: api.readTrashWithinBounds.method,
-
                 url: api.readTrashWithinBounds.url(tools.getCurrentBounds()),
-
-                success: function (data) {                
-
+                success: function (data) {
+                                        
+                   // $.extend(garbageMarkers, data);
+                    
                     $(data).each(function (index, obj) {
-
+                        
+                        garbageArray.push(obj);
+                                                                        
                         // Need to parse the string from the db because LatLngs are now stored as single key:value pair
                         var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
-
-                        // Push data summary to global object for download
-                        garbageArray.push(
-
-                            {
-                                "latlng": obj.latlng, 
-                                "id": obj.id,
-                                "amount": obj.amount,
-                                "types": obj.types.join(", "),
-                                "todo": obj.todo
-                            });
 
                         var marker = new L.Marker(new L.LatLng(latlng[0],latlng[1]),
                             {
@@ -74,35 +59,30 @@ var features =  (function(){
 
                         // $(marker._icon).addClass(setClassColor(obj.amount));
                         $(marker._icon).addClass(tools.setMarkerClassColor(obj.amount));
-
                         map.addLayer(garbageLayerGroup);
-
                         marker.on('click', function() {
 
                             // Bind click listener
                             featureClick(marker);
                             console.log("marker data:", marker)
-
                             // rise the marker to the top of others
                             // FIXME need to reset the value after clicking on another marker
                             // FIXME add highlighting (larger white circle underneath)
                             var currentZindex = marker._zIndex;
                             marker.setZIndexOffset(currentZindex + 10000);
                         });
-                        
-                        // return {marker: marker};
                     });
                 },
-
                 error: function(data) {
-                    console.log('Error getting garbage (marker) data', data);
+                    console.log('Error getting garbage marker data', data);
                 }
-
             });
-
         }, 100);
     };
     var loadCleaningMarkers = function () {
+        
+        // cleaningMarkers = {};
+        cleaningArray = [];
         
         setTimeout(function () {
 
@@ -114,19 +94,14 @@ var features =  (function(){
                 type: api.readCleaningWithinBounds.method,
                 url: api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
                 success: function(data) {
+                    
+                    // $.extend(cleaningMarkers, data);
 
                     $(data).each(function(index, obj) {
 
+                        cleaningArray.push(obj);
+                        
                         var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
-                        // Push data summary to global object for download
-                        cleaningArray.push(
-
-                            {
-                                "latlng": obj.latlng, 
-                                "id": obj.id,
-                                "datetime": obj.datetime,
-                            });
-
                         var marker = new L.Marker(new L.LatLng(latlng[0], latlng[1]),
                             {
                                 icon:cleaningMarker,
@@ -268,7 +243,6 @@ var features =  (function(){
             });
         }, 300);
     };
-    
     var loadAllFeatures = function() {
             loadGarbageMarkers; 
             loadCleaningMarkers; 
@@ -279,8 +253,6 @@ var features =  (function(){
     map.on('dragend zoomend', function (e){
 
         if (e.type === 'zoomend') {
-            garbageArray = [];
-            cleaningArray = [];
 
             if (e.target.getZoom() >= 8 ) {
                 loadGarbageMarkers();              
@@ -291,18 +263,15 @@ var features =  (function(){
                         loadAreas();
                     }
             }
-
+            
             if (e.target.getZoom() < 7) {
                 areaLayerGroup.clearLayers;
                 litterLayerGroup.clearLayers;
-            }
+            } 
         }
 
         if (e.type === 'dragend') {
             if (e.distance >= window.innerWidth / 3) {
-                // reset te gloabl objects
-                garbageArray = [];
-                cleaningArray = [];
 
                 if (e.target.getZoom() >= 8 ) {  
                     loadGarbageMarkers();
@@ -318,14 +287,14 @@ var features =  (function(){
     });
     
     return {
-        garbageArray: garbageArray,
-        cleaningArray: cleaningArray,
+        garbageArray: function() {return garbageArray},
+        cleaningArray: function() {return cleaningArray},
         loadGarbageMarkers: loadGarbageMarkers,
         loadCleaningMarkers: loadCleaningMarkers,
         loadAreas: loadAreas,
         loadLitters: loadLitters,
         loadAllFeatures: loadAllFeatures
-        
     };
     
 })();
+

@@ -23,17 +23,14 @@ function featureClick(e) {
             if (e.options.shape) {
 
                 setTimeout(function () {
-                    map.panToOffset(e.getCenter(), getVerticalOffset());
-
+                    map.panToOffset(e.getBounds().getCenter(), getVerticalOffset());
                 }, 100);
             }
 
             // if not a shape clicked it's a marker, bring it to the map center with panToOffset()
             else {
-
                 var latlng = e.options.latlng.toString().replace(/,/g , "").split(' ');
                 map.panToOffset([latlng[0], latlng[1]], getVerticalOffset());
-                
             } 
 
             // then load data into bottom panel and show it
