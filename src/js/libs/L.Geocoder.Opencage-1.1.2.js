@@ -199,6 +199,18 @@
 		_expand: function () {
 			L.DomUtil.addClass(this._container, 'leaflet-control-ocd-search-expanded');
                         
+            // hide the sidebar on small screen upon search
+            if (window.innerWidth < 768 && sidebar.isVisible()) {
+                
+                sidebar.hide();                
+                
+            }
+            
+            // Hide the bottombar else the results list will be covered
+            if (bottombar.isVisible()) {
+                bottombar.hide();
+            }
+            
 			this._input.select();
 		},
 

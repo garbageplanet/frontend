@@ -115,6 +115,8 @@ var locating = (function (){
     
     map.on('locationerror', onLocationError);
     map.on('locationfound', onLocationFound);
+    // Locate on load
+    map.locate();
     
 })();
 

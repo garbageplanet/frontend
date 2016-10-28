@@ -31,7 +31,8 @@ var alerts = {
         'Marker saved successfully',
         'Cleaning event saved successfully',
         'Litter saved successfully',
-        'Area saved successfully'
+        'Area saved successfully',
+        'No data in the current area',
     ],
 
     // TODO merge showAlert and createAlertText so that Showalert is called with four params

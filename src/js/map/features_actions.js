@@ -17,6 +17,15 @@ function featureClick(e) {
                 break featureClick;
             }
         }
+        
+        // Close the address search without closing anything else
+        if ( 
+            $('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded')){            
+                // Reset the search container
+                $('.leaflet-control-ocd-search').removeClass('leaflet-control-ocd-search-expanded');
+                $('.leaflet-control-ocd-search-alternatives').addClass('leaflet-control-ocd-search-alternatives-minimized');
+                $('.leaflet-control-ocd-search-icon').removeClass('fa-close').addClass('fa-search');
+        }
 
         if (e.options) {
             // check if the feature is a shape

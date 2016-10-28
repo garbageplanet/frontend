@@ -25,7 +25,6 @@
         
                   'tmpl-modal-cleaning':function(o,tmpl){var _e=tmpl.encode,_s='\n'; for (var i=0; i<o.length; i++) { _s+='\n<tr class="modal-calendar-row">\n<td>'+_e(o[i].id)+'</td>\n<td>'+_e(o[i].datetime)+'</td>\n<td>'+_e(o[i].latlng)+'</td>\t\t\n</tr>\n'; } _s+='\n';return _s;},
         
-                  //'tmpl-modal-garbage':function(o,tmpl){var _e=tmpl.encode,_s='\n'; for (var i=0; i<o.length; i++) { _s+='\n<tr class="modal-data-row">\n<td>'+_e(o[i].id)+'</td>\t\t\n<td>'+_e(o[i].latlng)+'</td>\t\t\n<td>'+_e(o[i].amount)+'</td>\n<td>'+_e(o[i].types)+'</td>\n</tr>\n'; } _s+='\n';return _s;},
                   'tmpl-modal-garbage':function(o,tmpl){var _e=tmpl.encode,_s='\n'; for (var i=0; i<o.length; i++) { _s+='\n<tr class="modal-data-row">\n<td>'+_e(o[i].id)+'</td>\t\t\n<td>'+_e(o[i].latlng)+'</td>\t\t\n<td>'+_e(o[i].amount)+'</td>\n<td>'+_e(o[i].types)+'</td>\n</tr>\n'; } _s+='\n';return _s;},
 
                   'tmpl-social-links':function(o,tmpl){var _e=tmpl.encode,_s='\n'; for (var i=0; i<o.length; i++) { _s+='\n<div class="btn-group btn-group-lg" role="group">\n<a href="'+_e(o[i].targeturl)+'" target="_blank" title="'+_e(o[i].title)+'" class="btn '+_e(o[i].btnclass)+' btn-round btn-share"><span class="fa '+_e(o[i].iconclass)+'"></span></a>\n</div>\n'; } _s+='\n';return _s;},        
