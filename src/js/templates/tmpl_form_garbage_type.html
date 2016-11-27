@@ -1,5 +1,6 @@
+/* Template OK */
 <script type="text/x-tmpl" id="tmpl-form-garbage-type">
-{% for (var i=0; i<o.garbagetypes.value.length; i++) { %}
-<option value="{%=o.garbagetypes.value[i]%}">{%=o.garbagetypes.name[i]%}</option>
-{% } %}
+    {% for (var i=0; i<o.length; i++) { %}
+        <option value="{%=o[i].short%}">{%=o[i].long%}</option>
+    {% } %}
 </script>

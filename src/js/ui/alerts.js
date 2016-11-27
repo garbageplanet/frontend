@@ -34,7 +34,6 @@ var alerts = {
         'Area saved successfully',
         'No data in the current area',
     ],
-
     // TODO merge showAlert and createAlertText so that Showalert is called with four params
     showAlert: function (errorCode, errorType, closeDelay) {
 
@@ -55,7 +54,6 @@ var alerts = {
         }
 
     },
-
     // Give a specific error in function of the http status
     showErrorType:function (e) {
 
@@ -76,5 +74,4 @@ var alerts = {
 
         return errortype;
     },
-
 };

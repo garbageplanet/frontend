@@ -112,7 +112,7 @@ var devTour = new Tour({
         placement: 'bottom',
       },*/
       {
-        content: 'Note that this platform is currently under active development but all the basic functions are available and can be used to save markers and images.',
+        content: 'Note that this platform is currently under active development but all the basic functions are available and can be used to save markers and images. Please see the repository on github for current bugs',
         duration: 16000,
         orphan: true
       }

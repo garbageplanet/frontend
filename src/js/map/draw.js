@@ -4,314 +4,278 @@
 * All code related to drawing shapes
 */
 
-var editableLayerGroup = new L.FeatureGroup();
-
-var drawControl = new L.Control.Draw({
+var drawing = (function () {
     
-    position: 'topright',
+    var drawControl = new L.Control.Draw({
     
-    draw: { 
-        
-        circle: false,
-        rectangle: false,
-        marker: false 
-    },
-    
-    edit: {
-        
-        featureGroup: editableLayerGroup,
-        remove: false
+            position: 'topright',
+            draw: { 
+                circle: false,
+                rectangle: false,
+                marker: false 
+            },
+        }),
+        activate = function(){
+            
+            maps.map.addControl(drawing.drawControl);
 
-    }
-});
+            maps.map.on('draw:drawstart', function (e) {
 
-map.addControl(drawControl);
+                // TODO
+                // if (/*there's a tempMarker on the map, remove it*/){
+                //    maps.map.removeLayer(marker);
+                // }
 
-map.on('draw:drawstart', function (e) {
-    
-    map.removeLayer(marker);
-    
-    var type = e.layerType,
-        layer = e.layer;
-  
-    // Disable start drawing buttons
-    // TODO entirely disable handlers
-    $('.btn-draw').addClass('disabled');
-      
-});
+                var type = e.layerType,
+                    layer = e.layer;
 
-// Stop click listeners when editing and deleting features
-// TODO remove these as editing / deleting unsvaed shapes isn't implemented yet
-map.on('draw:editstart', function (e) {
-    
-    map.off('click', onMapClick);
-    
-    $('.btn-draw').addClass('disabled');
-    
-    // litterLayerGroup.off('click', onPathClick);
-    // areaLayerGroup.off('click', onAreaClick);
-});
+                // Disable start drawing buttons
+                // TODO entirely disable handlers
+                $('.btn-draw').addClass('disabled');
 
-map.on('draw:editstop', function (e) { 
-    
-    // $('.btn-draw').removeClass('disabled');
-    
-    $('.leaflet-draw-edit-edit').removeClass('visible');
-    
-    $('.leaflet-draw-edit-remove').removeClass('visible');
+            });
 
-    // litterLayerGroup.off('click', onPathClick);
-    // areaLayerGroup.off('click', onAreaClick);
-});
+            // Stop click listeners when editing and deleting features
+            // TODO remove these as editing / deleting unsvaed shapes isn't implemented yet
+            maps.map.on('draw:editstart', function (e) {
 
-map.on('draw:deletestart', function (e) { 
+                maps.map.off('click', actions.mapClick);
 
-    map.off('click', onMapClick);
+                $('.btn-draw').addClass('disabled');
 
-    $('.btn-draw').addClass('disabled');
+                // litterLayerGroup.off('click', onPathClick);
+                // areaLayerGroup.off('click', onAreaClick);
+            });
 
-    // litterLayerGroup.off('click', onPathClick);
-    // areaLayerGroup.off('click', onAreaClick);
-});
+            maps.map.on('draw:editstop', function (e) { 
 
-map.on('draw:deletestop', function (e) {
+                // $('.btn-draw').removeClass('disabled');
 
-    map.on('click', onMapClick);
+                $('.leaflet-draw-edit-edit').removeClass('visible');
 
-    // $('.btn-draw').removeClass('disabled');
+                $('.leaflet-draw-edit-remove').removeClass('visible');
 
-    $('.leaflet-draw-edit-edit').removeClass('visible');
+                // litterLayerGroup.off('click', onPathClick);
+                // areaLayerGroup.off('click', onAreaClick);
+            });
 
-    $('.leaflet-draw-edit-remove').removeClass('visible');
+            maps.map.on('draw:deletestart', function (e) { 
 
-    // litterLayerGroup.off('click', onPathClick);
-    // areaLayerGroup.off('click', onAreaClick);
-});
+                maps.map.off('click', actions.mapClick);
 
-// Need to make sure the user can click again on the map if the drawing is aborted
-// This needs to be called in this fashion else it messes up onMapClick's behavior
-map.on('draw:drawstop', function () {
-    
-    map.off('click', onMapClick);
+                $('.btn-draw').addClass('disabled');
 
-    map.on('click', onMapClick);
+                // litterLayerGroup.off('click', onPathClick);
+                // areaLayerGroup.off('click', onAreaClick);
+            });
 
-    // $('.btn-draw').removeClass('disabled');
-    
-});
+            maps.map.on('draw:deletestop', function (e) {
 
-// What to do once a shape is created
-map.on('draw:created', function (e) {
-      
-    var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
+                maps.map.on('click', actions.mapClick);
 
-    console.log("LatLng data: ", e.layer.getLatLngs());
-    
-    if (e.layerType === 'polyline') {
-        
-        // Show the sidebar again on mobile
-        if ($(window).width() <= 567) {
+                // $('.btn-draw').removeClass('disabled');
 
-            sidebar.show($("#create-litter-dialog").show());
+                $('.leaflet-draw-edit-edit').removeClass('visible');
 
-        }
-        
-        function setClassColor(c) {
+                $('.leaflet-draw-edit-remove').removeClass('visible');
 
-            return c === 1  ? '#ccff66' :
-                   c === 2  ? '#ffff00' :
-                   c === 3  ? '#FF4500' :
-                   c === 4  ? '#ff1a1a' :
-                              '#e60073' ;
+                // litterLayerGroup.off('click', onPathClick);
+                // areaLayerGroup.off('click', onAreaClick);
+            });
+
+            // Need to make sure the user can click again on the map if the drawing is aborted
+            // This needs to be called in this fashion else it messes up actions.mapClick()'s behavior
+            maps.map.on('draw:drawstop', function () {
+
+                maps.map.off('click', actions.mapClick);
+
+                maps.map.on('click', actions.mapClick);
+
+                // $('.btn-draw').removeClass('disabled');
+
+            });
+
+            // What to do once a shape is created
+            maps.map.on('draw:created', function (e) {
+
+                var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, ''),
+                    polylinelayer;
+
+                if (e.layerType === 'polyline') {
+
+                    // Show the sidebar again on mobile
+                    if ($(window).width() <= 567) {
+
+                        ui.sidebar.show($("#create-litter-dialog").show());
+                    }
+
+                    polylineLayer = e.layer;
+                    maps.map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
+                    // push the latlngs to the form
+                    $('.litter-latlngs').val(latlngs);
+                    // Range slider for amount of garbage on polyline
+                    $('input[type=radio]').on('change', function () {
+
+                        // Get the color value from the select options
+                        var selectedValue = parseInt($(this).attr('name'), 10);
+                       // Set the color of the line
+                        e.layer.setStyle({color: tools.setPolylineColor(selectedValue)});
+                    });
+
+                    // editableLayerGroup.addLayer(e.layer);
+
+                    maps.map.addLayer(e.layer);
+
+                    // Delete the feature on cancel button
+                    $('.btn-cancel').on('click', function () {
+
+                        $('.leaflet-draw-edit-edit').removeClass('visible');
+                        $('.leaflet-draw-edit-remove').removeClass('visible');
+                        maps.map.removeLayer(e.layer);
+
+                    });
+
+                    ui.sidebar.on('hide', function() {
+                        maps.map.removeLayer(e.layer);
+                    });
+                }
+
+                if( e.layerType === 'polygon') {
+
+                    // Show the sidebar again on mobile    
+                    if ($(window).width() <= 567) {
+
+                        ui.sidebar.show($("#create-area-dialog").show());
+                    }
+
+                    polygonLayer = e.layer;
+                    maps.map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
+                    // push the latlngs to the form
+                    $('.form-area .area-latlngs').val(latlngs);
+                    // editableLayerGroup.addLayer(e.layer);
+                    maps.map.addLayer(e.layer);
+
+                    // Delete the feature on cancel button
+                    $('.btn-cancel').on('click', function () {
+
+                        $('.leaflet-draw-edit-edit').removeClass('visible');
+                        $('.leaflet-draw-edit-remove').removeClass('visible');
+                        maps.map.removeLayer(e.layer);
+                    });
+
+                    ui.sidebar.on('hide', function() {
+
+                        maps.map.removeLayer(e.layer);
+                    });
+                }
+
+                // Reactivate default marker event listener and drawing button
+                maps.map.on('click', actions.mapClick);
+
+                // $('.btn-draw').removeClass('disabled');  
+
+            });
+
+            // What to do once a shape was edited
+            // TODO save edited features after edit
+            // FIXME if the user saves after editing the actions.mapClick() function fails
+            // FIXME one edit handler during feature creation and one for editing already created features
+            maps.map.on('draw:edited', function (e) {
+
+                var layers = e.layers;
+
+                layers.eachLayer(function (layer) {
+
+                    var type = e.layerType,
+                        currentlayer = e.layer;
+
+                    if ( type === 'polyline') { 
+
+                      return "polyline";/*save to backend*/ 
+                    }
+
+                    if ( type === 'polygon') { 
+
+                      return "polygon";/*save to backend*/ 
+                    }
+                });
+
+                // Reactivate default marker event listener and drawing button
+                maps.map.on('click', actions.mapClick());
+
+            });
+
+            // Own handlers for calling L.Draw
+            // TODO change to "once" handlers so that only one shape can be drawn before saving
+            $('.btn-draw-polyline').on('click', function () {
+
+                // Stop default marker event listener
+                maps.map.off('click', actions.mapClick);
+
+                // Disable editing for now
+                // $('.leaflet-draw-edit-edit').addClass('visible');
+
+                $('.leaflet-draw-edit-remove').addClass('visible');
+
+                new L.Draw.Polyline(maps.map, 
+                  { 
+                    allowIntersection: false,
+                       drawError: {
+                       color: '#cc0000',
+                       timeout: 2000},
+                    metric: true,
+                    clickable: true,
+                    shapeOptions: {
+                      color: '#A9A9A9',
+                      weight: 10,
+                      opacity: 0.5}
+                }).enable();
+
+                if ($(window).width() <= 567) {
+
+                    ui.sidebar.hide();
+                    showAlert(14, 'warning', 3500);
+                }
+            });
+            $('.btn-draw-polygon').on('click', function () {
+
+                // Stop default marker event listener
+                maps.map.off('click', actions.mapClick);
+
+                // Disable editing for now
+                // $('.leaflet-draw-edit-edit').addClass('visible');
+
+                $('.leaflet-draw-edit-remove').addClass('visible');
+
+                new L.Draw.Polygon(maps.map, 
+                  { 
+                   shapeOptions:{
+                      color: '#33cccc',
+                      weight: 5,
+                      opacity: 0.5},
+                  showArea: true,
+                  metric: true,
+                  clickable: true,
+                  allowIntersection: false,
+                         drawError:{
+                         color: '#cc0000',
+                         timeout: 2000}
+                }).enable();
+
+                if ($(window).width() <= 567) {
+
+                        ui.sidebar.hide();
+                        showAlert(14, 'warning', 3500);  
+                }
+            });
         };
 
-        polylineLayer = e.layer;
+        return {
+            init: activate,
+            drawControl: drawControl,
+        };
+}());
 
-        map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
-
-        // push the latlngs to the form
-        $('.litter-latlngs').val(latlngs);
-        
-        // Range slider for amount of garbage on polyline
-        $('input[type=radio]').on('change', function () {
-
-            // Get the color value from the select options
-            var selectedValue = parseInt($(this).attr('name'), 10);
-
-           // Set the color of the line
-            e.layer.setStyle({color: setClassColor(selectedValue)});
-            
-        });
-
-        editableLayerGroup.addLayer(e.layer);
-
-        map.addLayer(editableLayerGroup);
-
-        // Delete the feature on cancel button
-        $('.btn-cancel').on('click', function () {
-
-            $('.leaflet-draw-edit-edit').removeClass('visible');
-
-            $('.leaflet-draw-edit-remove').removeClass('visible');
-
-            map.removeLayer(e.layer);
-
-        });
-        
-        sidebar.on('hide', function() {
-            
-            map.removeLayer(e.layer);
-            
-        });
-
-    }
-
-    if( e.layerType === 'polygon') {
-        
-        // Show the sidebar again on mobile    
-        if ($(window).width() <= 567) {
-
-            sidebar.show($("#create-area-dialog").show());
-
-        }
-        
-        polygonLayer = e.layer;
-        
-        map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
-
-        // push the latlngs to the form
-        $('.form-area .area-latlngs').val(latlngs);
-
-        editableLayerGroup.addLayer(e.layer);
-
-        map.addLayer(editableLayerGroup);
-
-        // Delete the feature on cancel button
-        $('.btn-cancel').on('click', function () {
-            
-            $('.leaflet-draw-edit-edit').removeClass('visible');
-
-            $('.leaflet-draw-edit-remove').removeClass('visible');
-
-            map.removeLayer(e.layer);
-            
-        });
-        
-        sidebar.on('hide', function() {
-            
-            map.removeLayer(e.layer);
-            
-        });
-        
-    }
-
-    // Reactivate default marker event listener and drawing button
-    map.on('click', onMapClick);
-    
-    // $('.btn-draw').removeClass('disabled');  
-    
-});
-
-// What to do once a shape was edited
-// TODO save edited features after edit
-// FIXME if the user saves after editing the onMapClick function fails
-// FIXME one edit handler during feature creation and one for editing already created features
-map.on('draw:edited', function (e) {
-    
-    var layers = e.layers;
-  
-    layers.eachLayer(function (layer) {
-      
-      var type = e.layerType,
-          currentlayer = e.layer;
-      
-      if ( type === 'polyline') { 
-          
-          return "polyline";/*save to backend*/ 
-      
-      }
-      
-      if ( type === 'polygon') { 
-          
-          return "polygon";/*save to backend*/ 
-      
-      }
-      
-    });
-      
-    // Reactivate default marker event listener and drawing button
-    map.on('click', onMapClick);
-    
-});
-
-// Own handlers for calling L.Draw
-// TODO change to "once" handlers so that only one shape can be drawn before saving
-$('.btn-draw-polyline').on('click', function () {
-    
-    // Stop default marker event listener
-    map.off('click', onMapClick);
-
-    // Disable editing for now
-    // $('.leaflet-draw-edit-edit').addClass('visible');
-
-    $('.leaflet-draw-edit-remove').addClass('visible');
-    
-    new L.Draw.Polyline(map, 
-      { 
-        allowIntersection: false,
-           drawError: {
-           color: '#cc0000',
-           timeout: 2000},
-        metric: true,
-        clickable: true,
-        shapeOptions: {
-          color: '#A9A9A9',
-          weight: 10,
-          opacity: 0.5}
-    }).enable();
-    
-    if ($(window).width() <= 567) {
-
-        sidebar.hide();
-
-        showAlert(createAlertText(14), 'warning', 3500);
-
-    }
-    
-});
+drawing.init();
 
 
-$('.btn-draw-polygon').on('click', function () {
-    
-    // Stop default marker event listener
-    map.off('click', onMapClick);
-
-    // Disable editing for now
-    // $('.leaflet-draw-edit-edit').addClass('visible');
-    
-    $('.leaflet-draw-edit-remove').addClass('visible');
-
-    new L.Draw.Polygon(map, 
-      { 
-       shapeOptions:{
-          color: '#33cccc',
-          weight: 5,
-          opacity: 0.5},
-      showArea: true,
-      metric: true,
-      clickable: true,
-      allowIntersection: false,
-             drawError:{
-             color: '#cc0000',
-             timeout: 2000}
-    }).enable();
-    
-    if ($(window).width() <= 567) {
-            
-            sidebar.hide();
-            
-            showAlert(createAlertText(14), 'warning', 3500);
-            
-    }
-    
-});

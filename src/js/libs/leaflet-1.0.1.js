@@ -1923,6 +1923,10 @@ L.LatLngBounds.prototype = {
 	toBBoxString: function () {
 		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
 	},
+    
+    toBBoxStringInverse: function () {
+		return [this.getSouth(), this.getWest(), this.getNorth(), this.getEast()].join(',');
+	},
 
 	// @method equals(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds.
@@ -2431,6 +2435,19 @@ L.Map = L.Evented.extend({
 
 		return this.setView(newCenter, zoom, {zoom: options});
 	},
+    // MapToOffset - see license.md in this repository - Copyright 2013 Code for America
+    panToOffset: function(latlng, offset, zoom, options) {
+    
+        var x = this.latLngToContainerPoint(latlng).x - offset[0],
+            y = this.latLngToContainerPoint(latlng).y - offset[1],
+            point = this.containerPointToLatLng([x, y]);
+
+        if (zoom) {
+            return this.setView(point, zoom, {pan: options});
+        } else {
+            return this.setView(point, this._zoom, {pan: options});
+        }
+    },
 
 	_getBoundsCenterZoom: function (bounds, options) {
 
@@ -12257,10 +12274,8 @@ L.Control.Layers = L.Control.extend({
 
 		if (this.options.collapsed) {
 			if (!L.Browser.android) {
-				L.DomEvent.on(container, {
-					mouseenter: this.expand,
-					mouseleave: this.collapse
-				}, this);
+                // CUSTOM CODE, removed the mouse in/out
+				L.DomEvent.on(container, 'click', this.expand, this);
 			}
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
@@ -12285,12 +12300,24 @@ L.Control.Layers = L.Control.extend({
 		} else {
 			this.expand();
 		}
-
+        
+        // CUSTOM CODE
+        if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina) {
+            var ownCloseButton = this.ownCloseButton = L.DomUtil.create('div', className + '-close');
+            this.ownCloseButton = L.DomUtil.create('div', className + '-close', form);
+            this.ownCloseButton.innerHTML = '<div class=" btn-close-layers-control hidden-lg hidden-xl"><a class="fa fa-2x fa-fw fa-times"></a></div>';    
+        
+            L.DomEvent
+              .on(this.ownCloseButton, 'click', L.DomEvent.preventDefault)
+              .on(this.ownCloseButton, 'click', this._collapse, this);
+        
+        } 
+      
 		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
 		this._separator = L.DomUtil.create('div', className + '-separator', form);
 		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
-
-		container.appendChild(form);
+        
+		container.appendChild(form);  
 	},
 
 	_getLayer: function (id) {
@@ -12836,7 +12863,7 @@ L.Map.include({
 	// @method flyTo(latlng: LatLng, zoom?: Number, options?: Zoom/pan options): this
 	// Sets the view of the map (geographical center and zoom) performing a smooth
 	// pan-zoom animation.
-	flyTo: function (targetCenter, targetZoom, options) {
+	flyTo: function (targetCenter, targetZoom, offset, options) {
 
 		options = options || {};
 		if (options.animate === false || !L.Browser.any3d) {
@@ -12846,11 +12873,18 @@ L.Map.include({
 		this._stop();
 
 		var from = this.project(this.getCenter()),
-		    to = this.project(targetCenter),
+            // CUSTOM CODE //
+            ////////////////////////////////////////////////////////
+            x = this.latLngToContainerPoint(targetCenter).x,
+            y = this.latLngToContainerPoint(targetCenter).y + offset,
+            offsetpoint = this.containerPointToLatLng([x, y]),
+            ////////////////////////////////////////////////////////
+		    to = this.project(offsetpoint),
 		    size = this.getSize(),
 		    startZoom = this._zoom;
 
-		targetCenter = L.latLng(targetCenter);
+        
+		targetCenter = L.latLng(offsetpoint);
 		targetZoom = targetZoom === undefined ? startZoom : targetZoom;
 
 		var w0 = Math.max(size.x, size.y),

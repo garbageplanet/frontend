@@ -1,8 +1,11 @@
 /*!
-This file is a stripped-down version of the leaflet locate control plugin which is licensed under the MIT license.
-You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. Copyright (c) 2016 Dominik Moritz
-
+L.Control.Login - a leaflet plugin for displaying a Glome.me anonymous login button
+This file is based on the Leaflet-locate control plugin which is licensed under the MIT license.
+https://github.com/domoritz/leaflet-locatecontrol. Copyright (c) 2016 Dominik Moritz
+Author: adriennn
+License ISC
 */
+// FIXME doesn't work with Leaflet 1.0
 (function (factory, window) {
      // see https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md#module-loaders
      // for details on how to structure a leaflet plugin.
@@ -24,7 +27,10 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. 
     if(typeof window !== 'undefined' && window.L){
         window.L.Control.Login = factory(L);
     }
-} (function (L) {
+    
+} 
+ 
+(function (L) {
     var LoginControl = L.Control.extend({
         options: {
             position: 'topleft',
@@ -42,7 +48,6 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. 
                     this.options[i] = options[i];
                 }
             }
-
         },
 
         /**
@@ -72,7 +77,6 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. 
             session.glomego();
             L.DomUtil.removeClasses(this._icon, 'fa-user-secret');
             L.DomUtil.addClasses(this._icon, 'fa-spinner fa-pulse');
-
         },
         
         login: function() {

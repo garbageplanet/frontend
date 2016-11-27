@@ -3,7 +3,7 @@
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
   <meta http-equiv="Content-Security-Policy" content="default-src https://garbagepla.net https://*.garbagepla.net; connect-src https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://api.imgur.com/3/upload; script-src 'self' https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com; style-src https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com; object-src https://garbagepla.net https://*.garbagepla.net">
-  <!-- <meta name="csrf_token" content="{{ csrf_token() }}"> -->
+  <!--<meta name="csrf_token" content="{{ csrf_token() }}"> -->
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
   <meta http-equiv="X-UA-Compatible">
@@ -29,10 +29,8 @@
 
   <link rel="stylesheet" type="text/css" href="css/font-awesome-4.5.0.css" >
   <link rel="stylesheet" type="text/css" href="css/google-work-sans.css" >
-  <link rel="stylesheet" type="text/css" href="css/leaflet-0.7.7.css">
-<!--
-  <link rel="stylesheet" type="text/css" href="css/leaflet-1.0.css"/>
--->
+  <link rel="stylesheet" type="text/css" href="css/leaflet-1.0.1.css">
+  <link rel="stylesheet" type="text/css" href="css/L.Markercluster-1.0.0.css">
   <link rel="stylesheet" type="text/css" href="css/L.Compact.Attributions.css">
   <link rel="stylesheet" type="text/css" href="css/L.Geocoder.Opencage-1.1.2.css">
     
@@ -66,14 +64,12 @@
   <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
   <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
 
-  <script type="text/javascript" src="js/libs/Leaflet-0.7.7.js"></script>
-  <!--<script type="text/javascript" src="js/libs/Leaflet-1.0-rc1.js"></script>
-  <script type="text/javascript" src="js/libs/leaflet-1.0.1.js"></script>-->
-    
+  <script type="text/javascript" src="js/libs/leaflet-1.0.1.js"></script>    
   <script type="text/javascript" src="js/libs/L.Hash.js"></script>
   <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
+  <script type="text/javascript" src="js/libs/L.Markercluster-1.0.0.js"></script>
   <script type="text/javascript" src="js/libs/L.Compact.Attributions.js"></script>
-  <script type="text/javascript" src="js/libs/L.Marker.Menu.2.js"></script>
+  <script type="text/javascript" src="js/libs/L.Marker.Menu.js"></script>
   <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
   <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
   <script type="text/javascript" src="js/libs/L.Draw-0.2.4.js"></script>
@@ -87,7 +83,7 @@
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header col-lg-12 col-xl-12 col-sm-12 col-xs-12">
-        <a class="navbar-brand pull-left" href="#"><span class="navbar-brand-icon icon-trashbag"></span><strong class="navbar-brand-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.2</kbd></a>
+        <a class="navbar-brand pull-left" href="#"><span class="navbar-brand-icon icon-trashbag"></span><strong class="navbar-brand-name">Garbagepla.net </strong><kbd class="hidden-xs hidden-sm text-uppercase">0.3</kbd></a>
 
         <div class="pull-right">
           <ul class="nav navbar-nav">
@@ -125,9 +121,7 @@
     </div>
   </nav>
 </div><!-- Contents of the top bar -->
-
 <div id="map" class="map-container"></div>
-    
 <div id="sidebar" class="sidebar-container">
         
     <div class="sidebar-content-container">
@@ -135,7 +129,6 @@
         <div class="sidebar-content" id="mobile-menu-dialog">
 
             <div class="form-group form-group-lg mobile-menu">
-
 
                 <a href="#create-account-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-user"></span> Register</a>
 
@@ -156,13 +149,13 @@
             <h2 class="actions-panel hidden-sm hidden-xs">Action for this location</h2>
 
             <ul class="nav nav-pills nav-stacked">
-              <li role="presentation"><a class="sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
-              <li role="presentation"><a class="sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
-              <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
-              <li role="presentation" class="draw-link"><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
-              <li role="presentation" class="disabled"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
-              <li role="presentation" class="disabled"><a class="sidebar-link" href="#create-wastewater-dialog">Mark sewage discharge</a></li>
-              <li role="presentation" class="disabled"><a class="sidebar-link" href="#create-dieoff-dialog">Locate mass die off</a></li>
+              <li role="presentation"><a class="create-dialog sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
+              <li role="presentation"><a class="create-dialog sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
+              <li role="presentation" ><a class="sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
+              <li role="presentation" ><a class="sidebar-link" href="#create-area-dialog">Create an area</a></li>
+              <li role="presentation" class="create-dialog disabled"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
+              <li role="presentation" class="create-dialog disabled"><a class="sidebar-link" href="#create-wastewater-dialog">Mark sewage discharge</a></li>
+              <li role="presentation" class="create-dialog disabled"><a class="sidebar-link" href="#create-dieoff-dialog">Locate mass die off</a></li>
             </ul>
 
         </div>
@@ -873,7 +866,7 @@
                 <div class="tab-pane form-group form-group-lg" id="user-info-privacy" role="tabpanel">
                   <h3>Privacy policy and data protection</h3>
                     <p>As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collect and that could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
-                    <p>Note that as of October 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
+                    <p>Note that as of November 2016, this policy is not complete as this platform is currently used for development purpose only.</p>
                 </div>
               </div>
             </div>
@@ -1012,40 +1005,40 @@
 <!-- inject:body:app -->
 <!-- endinject -->
 
-<!-- api config -->
-<script type="text/javascript" src="js/config/api.js"></script>
+<!-- api config and utilities -->
+<script type="text/javascript" src="js/config/config.js"></script>
 <script type="text/javascript" src="js/ui/tools.js"></script>
 
 <!-- Templates -->
-<script type="text/javascript" src="js/templates/tmpl_data.js"></script>
 <script type="text/javascript" src="js/templates/tmpl.js"></script>
 
 <!-- Map display and actions scripts -->
+
 <script type="text/javascript" src="js/ui/alerts.js"></script>
 <script type="text/javascript" src="js/map/map.js"></script>
-<script type="text/javascript" src="js/ui/mobile.js"></script>
-<script type="text/javascript" src="js/map/markers.js"></script>
-<script type="text/javascript" src="js/map/get_features.js"></script>
-<script type="text/javascript" src="js/map/map_actions.js"></script>
-<script type="text/javascript" src="js/map/features_actions.js"></script>
+<script type="text/javascript" src="js/ui/ui.js"></script>
+<script type="text/javascript" src="js/map/features.js"></script>
+<script type="text/javascript" src="js/map/actions.js"></script>
 <script type="text/javascript" src="js/map/draw.js"></script>
 
 <!-- Session and user auth scripts -->
 <script type="text/javascript" src="js/session/session.js"></script>
 
-<!-- non-map user interface scripts -->
-<script type="text/javascript" src="js/ui/bottombar.js"></script>
-<script type="text/javascript" src="js/ui/topbar.js"></script>
-<script type="text/javascript" src="js/ui/sidebar.js"></script>
-
 <!-- Form scripts -->
-<script type="text/javascript" src="js/forms/uploader.js"></script>
-<script type="text/javascript" src="js/forms/forms_elements.js"></script>
-<script type="text/javascript" src="js/forms/forms_submit.js"></script>
-<script type="text/javascript" src="js/ui/modal.js"></script>
+<script type="text/javascript" src="js/forms/elements.js"></script>
+<script type="text/javascript" src="js/forms/submit.js"></script>
 
-<!-- Others -->
-<script type="text/javascript" src="js/social/share.js"></script>
+<!-- Social -->
+<script type="text/javascript" src="js/social/social.js"></script>
 <script type="text/javascript" src="js/tour/tour.js"></script>
+
+<noscript>
+<div class='noscript'>
+<div class='wrapper'>
+<h2>Javascript is disabled in your browser</h2>
+<p>Garbagepla.net does not work without javascript. Try to enable javascript from your browser's preferences and then reload this page to try again.</p>
+</div>
+</div>
+</noscript>
 </body>
 </html>

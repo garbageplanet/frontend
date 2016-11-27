@@ -116,8 +116,13 @@ body {
   color: orange;
 }
 
-
 /* custom leaflet control classes */
+/* put the control buttons under the sideba shadow */
+.leaflet-top.leaflet-left {
+    z-index: 499 !important;
+}
+
+
 .fa-icon-centered {
   margin-left: -3px;
 }
@@ -243,42 +248,63 @@ body {
 
 /*Style the garbage amount form buttons*/
 .btn-limegreen {    
-    background-color: #ccff66;
+    background-color: #FFF;
+    border-width: thin;
     border-color: #ccff66;
-    color: #FFF;
+    color: #ccff66;
 }
 .btn-yellow {
-    background-color: #ffff00;
+    background-color: #FFF;
+    border-width: thin;
     border-color: #ffff00;
-    color: #FFF;
+    color: #ffff00;
 }
 .btn-orangered { 
-    background-color: #ff6600;
+    background-color: #FFF;
+    border-width: thin;
     border-color: #ff6600;
-    color: #FFF;
+    color: #ff6600;
 }
 .btn-red {
-    background-color: #ff1a1a;
+    background-color: #FFF;
+    border-width: thin;
     border-color: #ff1a1a;
-    color: #FFF;
+    color: #ff1a1a;
 }
 .btn-violet {
-    background-color: #e60073;
+    background-color: #FFF;
+    border-width: thin;
     border-color: #e60073;
-    color: #FFF;
+    color: #e60073;
 }
 
-
-.btn-limegreen:active, 
-.btn-yellow:active, 
-.btn-orangered:active, 
-.btn-red:active, 
-.btn-violet:active {
-    border-color: dimgray !important;
-    color: dimgray !important;
+.btn-limegreen.active, .btn-limegreen:hover {
+    background-color: #ccff66 !important;
+    border-color: #ccff66;
+    color: #FFF !important;
+}
+.btn-yellow.active, .btn-yellow:hover {
+    background-color: #ffff00 !important;
+    border-color: #ffff00;
+    color: #FFF !important;
+}
+.btn-orangered.active, .btn-orangered:hover {
+    background-color: #ff6600 !important;
+    border-color: #ff6600;
+    color: #FFF !important;
+}
+.btn-red.active, .btn-red:hover {
+    background-color: #ff1a1a !important;
+    border-color: #ff1a1a;
+    color: #FFF !important;
+}
+.btn-violet.active, .btn-violet:hover {
+    background-color: #e60073 !important;
+    border-color: #e60073;
+    color: #FFF !important;
 }
 
-/* hide all the panel content by default */
+/* hide all the panel contents by default */
 .sidebar-content, .bottombar-content {
   display: none;
 }
@@ -289,6 +315,7 @@ body {
   border: 0 !important;
   box-shadow: none !important;
 }
+
 .card .panel .panel-body {
   padding: 2px !important;
 }
@@ -341,6 +368,15 @@ a.menu-backlink:hover {
 	border: 10px;
 }
 
+
+.leaflet-control-layers a span {
+    display: block;
+    position: absolute;
+    width: 22px;
+    left: 8px;
+    top: 7px;
+	}
+
 @media (min-width: 768px) {
     .leaflet-top {
         margin-top: 5px !important;
@@ -348,7 +384,12 @@ a.menu-backlink:hover {
     }   
 }
 
-/* Style the leaflet bar buttons */
+/* Style the leaflet bar buttons and override defaut stlyes */
+
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+    border: none;
+}
+
 .leaflet-control-search {
   	min-width: 40px;
 	height: 40px;
@@ -362,6 +403,17 @@ a.menu-backlink:hover {
 .leaflet-control-search .fa-search {
   position: absolute;
   left: 7px;
+}
+
+.leaflet-control-layers-toggle .fa {
+    margin-top: 2px;
+    margin-left: 2px;
+}
+
+.leaflet-touch .leaflet-bar a {
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
 }
 
 /* Color the button icons */

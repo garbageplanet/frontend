@@ -115,13 +115,10 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                 control.stop();
                 alert(control.options.strings.outsideMapBoundsMsg);
             },
-            /** Display a pop-up when the user click on the inner marker. */
-            showPopup: true,
             strings: {
                 title: "Show me where I am",
                 metersUnit: "meters",
                 feetUnit: "feet",
-                popup: "You are within {distance} {unit} from this point",
                 outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
             },
             /** The default options passed to leaflets locate method. */
@@ -315,6 +312,11 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                     this._circle = L.circle(latlng, radius, style).addTo(this._layer);
                 } else {
                     this._circle.setLatLng(latlng).setRadius(radius).setStyle(style);
+                    
+                    // CUSTOM CODE
+                    L.DomEvent
+                        .on(this._circle, 'click', this.stop, this)
+                        .on(this._circle, 'click', L.DomEvent.stopPropagation);
                 }
             }
 
@@ -335,14 +337,12 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                     this._marker = new this.options.markerClass(latlng, mStyle).addTo(this._layer);
                 } else {
                     this._marker.setLatLng(latlng).setStyle(mStyle);
+                    
+                    // CUSTOM CODE
+                    L.DomEvent
+                        .on(this._marker, 'click', this.stop, this)
+                        .on(this._marker, 'click', L.DomEvent.stopPropagation);
                 }
-            }
-
-            var t = this.options.strings.popup;
-            if (this.options.showPopup && t && this._marker) {
-                this._marker
-                    .bindPopup(L.Util.template(t, {distance: distance, unit: unit}))
-                    ._popup.setLatLng(latlng);
             }
         },
 

@@ -71,3 +71,110 @@
 .map-marker.marker-color-orangered {background-color: rgba(255, 102, 0, 09)/*#FF4500*/;}
 .map-marker.marker-color-red {background-color: rgba(255, 26, 26, 0.9)/*#ff1a1a*/;}
 .map-marker.marker-color-violet {background-color: rgba(230, 0, 115, 0.9)/*#e60073*/;}
+
+/* Marker cluster code adapted from L.Markercluster default css 
+* https://github.com/Leaflet/Leaflet.markercluster
+* License MIT
+* Copyright 2012 David Leaver
+*/
+.leaflet-marker-cluster-tiny {
+	background-color: rgba(204, 255, 102, 0.9);
+	}
+
+.leaflet-marker-cluster-small {
+	background-color: rgba(255, 255, 0, 0.9);
+	}
+
+.leaflet-marker-cluster-medium {
+	background-color: rgba(255, 102, 0, 0.9);
+	}
+
+.leaflet-marker-cluster-large {
+	background-color: rgba(255, 26, 26, 0.9);
+	}
+
+.leaflet-marker-cluster-huge {
+	background-color: rgba(230, 0, 115, 0.9);
+	}
+
+/* Color the text on top of the trashbags */
+.leaflet-marker-cluster-tiny .leaflet-marker-cluster-count {
+	color: rgba(204, 255, 102, 0.9);
+	}
+.leaflet-marker-cluster-small .leaflet-marker-cluster-count {
+	color: rgba(255, 255, 0, 0.9);
+	}
+.leaflet-marker-cluster-medium .leaflet-marker-cluster-count {
+	color: rgba(255, 102, 0, 09);
+	}
+.leaflet-marker-cluster-large .leaflet-marker-cluster-count {
+	color: rgba(255, 26, 26, 0.9);
+	}
+.leaflet-marker-cluster-huge .leaflet-marker-cluster-count {
+	color: rgba(230, 0, 115, 0.9);
+	}
+
+.leaflet-marker-cluster {
+    border-radius: 20px;
+	height: 30px;
+    width: 30px;
+    text-align: center;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+      -o-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+    -moz-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+     -ms-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+	}
+
+.leaflet-marker-cluster-count {
+    font-weight: bolder;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    line-height: 40px;
+    height: auto;
+    margin-left: -20px;
+    margin-top: 3px;
+    position: absolute;
+    text-align: center;
+    width: 40px;
+    z-index: 200;
+}
+
+.leaflet-marker-cluster-icon-garbage:before {
+    color: #FFF;
+    content: '\e600';
+    font-family: 'trashbag';
+    font-size: 25px;
+    font-style: normal;
+    margin-left: -13px;
+    margin-top: 0px;
+    position: absolute;
+    text-align: center;
+    z-index: 100;
+}
+
+.leaflet-marker-cluster-icon-cleaning:before {
+    color: #FFF;
+    content: '\f133';
+    font-family: 'FontAwesome';
+    font-size: 25px;
+    font-style: normal;
+    z-index: 100;
+}
+
+.leaflet-marker-cluster-cleaning {
+    background-color: #33cccc;
+}
+
+.leaflet-marker-cluster-count-cleaning {
+    color: #FFF;
+    font-weight: bolder;
+	font-size: 14px;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    line-height: 40px;
+    height: auto;
+    margin-left:-8px;
+    margin-top: 1px;
+    position: absolute;
+    width: 40px;
+    z-index: 200;
+}

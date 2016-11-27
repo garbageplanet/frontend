@@ -37,7 +37,7 @@
 			showResultIcons: false,
 			collapsed: true,
 			expand: 'click',
-			position: 'topright',
+			position: 'topleft',
 			placeholder: 'Address search...',
 			errorMessage: 'Nothing found.',
 			key: '',
@@ -79,18 +79,16 @@
 			form.appendChild(this._errorElement);
 			container.appendChild(this._alts);
 
-			L.DomEvent.addListener(form, 'submit', this._geocode, this);
-
 			if (this.options.collapsed) {
 				if (this.options.expand === 'click') {
 					L.DomEvent.addListener(icon, 'click', function(e) {
-						// TODO: touch
 						if (e.button === 0 && e.detail !== 2) {
 							this._toggle();
 						}
 					}, this);
 				}
-
+                
+                // This below doesn't work?
 				else {
 					L.DomEvent.addListener(icon, 'mouseover', this._expand, this);
 					L.DomEvent.addListener(icon, 'mouseout', this._collapse, this);
@@ -101,9 +99,37 @@
 			else {
 				this._expand();
 			}
-
-			L.DomEvent.disableClickPropagation(container);
-
+            
+            // Make sure we don't send clicks to the map when we interact with the content
+            // From L.Control.Sidebar
+            var stop = L.DomEvent.stopPropagation;
+            var fakeStop = L.DomEvent._fakeStop || stop;
+            L.DomEvent
+                .on(container, 'contextmenu', stop)
+                .on(container, 'click', fakeStop)
+                .on(container, 'mousedown', stop)
+                .on(container, 'touchstart', stop)
+                .on(container, 'dblclick', fakeStop)
+                .on(container, 'mousewheel', stop)
+                .on(container, 'MozMousePixelScroll', stop)
+                .on(icon, 'click', fakeStop)
+                .on(icon, 'mousedown', stop)
+                .on(icon, 'touchstart', stop)
+                .on(icon, 'dblclick', fakeStop);
+            
+            L.DomEvent.disableClickPropagation(container);
+            L.DomEvent.disableClickPropagation(form);
+            
+            // L.DomEvent.addListener(form, 'submit', this._geocode, this);  
+            
+            // FIXME
+            L.DomEvent.on(form, 'submit', function (e) {
+                e.stopImmediatePropagation();
+                L.DomEvent.stop;
+                L.DomEvent._fakestop;
+				setTimeout(L.bind(this._geocode, this), 10);
+			}, this);
+            
 			return container;
 		},
 
@@ -130,18 +156,14 @@
                 if (window.innerWidth < 768) {
                     
                     var searchfield = this._input;
-                    
                     searchfield.setAttribute('readonly', 'readonly');
-
                     setTimeout(function() {
 
                         searchfield.blur();
                         searchfield.removeAttribute('readonly');
 
                     }, 100);
-                
                 }
-                 
 			}
 
 			else {
@@ -153,29 +175,29 @@
 			if (result.bounds) {
 				this._map.fitBounds(result.bounds);
 			} else {
-				this._map.panTo(result.center);
+				// this._map.panTo(result.center);
+                this._map.flyTo(result.center);
 			}
 
 			return this;
 		},
 
 		_geocode: function(event) {
-			L.DomEvent.preventDefault(event);
-            
+                        
 			L.DomUtil.addClass(this._container, 'leaflet-control-ocd-search-spinner');
             
-            L.DomUtil.removeClass(this._icon,'fa-search');
+            L.DomUtil.removeClass(this._icon,'fa-arrow-left');
             L.DomUtil.addClass(this._icon,'fa-spinner');
             L.DomUtil.addClass(this._icon,'fa-pulse');
-            
-			this._clearResults();
+
+            this._clearResults();
 			this.options.geocoder.geocode(this._input.value, this._geocodeResult, this);
 
 			return false;
 		},
 
 		_geocodeResultSelected: function(result) {
-			if (this.options.collapsed) {
+			if (!this.options.collapsed) {
 				this._collapse();
 			}
 
@@ -187,6 +209,7 @@
 		},
 
 		_toggle: function() {
+            console.log("ToGGLING!!!!!!");
 			if (this._container.className.indexOf('leaflet-control-ocd-search-expanded') >= 0) {
 				this._collapse();
 			}
@@ -197,34 +220,39 @@
 		},
 
 		_expand: function () {
+            console.log("EXPANDING!!!!!!");
 			L.DomUtil.addClass(this._container, 'leaflet-control-ocd-search-expanded');
-                        
-            // hide the sidebar on small screen upon search
-            if (window.innerWidth < 768 && sidebar.isVisible()) {
-                
-                sidebar.hide();                
-                
-            }
+            
+            // CUSTOM added three lines
+            L.DomUtil.removeClass(this._icon, 'fa-search');
+            L.DomUtil.addClass(this._icon, 'fa-arrow-left');
+            this.options.collapsed = false;
             
             // Hide the bottombar else the results list will be covered
-            if (bottombar.isVisible()) {
-                bottombar.hide();
+            if (ui.bottombar.isVisible() || ui.sidebar.isVisible()) {
+                ui.bottombar.hide();
+                ui.sidebar.hide();
             }
             
 			this._input.select();
 		},
 
 		_collapse: function () {
+            console.log("COLLAPSING!!!!!!");
 			this._container.className = this._container.className.replace(' leaflet-control-ocd-search-expanded', '');
 			L.DomUtil.addClass(this._alts, 'leaflet-control-ocd-search-alternatives-minimized');
 			L.DomUtil.removeClass(this._errorElement, 'leaflet-control-ocd-search-error');
-                        
+                                    
             L.DomUtil.removeClass(this._icon,'fa-close');
+            L.DomUtil.removeClass(this._icon,'fa-arrow-left');
             L.DomUtil.addClass(this._icon,'fa-search');
+            this.options.collapsed = true;
+
 		},
 
 		_clearResults: function () {
-			L.DomUtil.addClass(this._alts, 'leaflet-control-ocd-search-alternatives-minimized');
+            console.log("CLEARING RESULTS!!!!!!");
+            L.DomUtil.addClass(this._alts, 'leaflet-control-ocd-search-alternatives-minimized');
 			this._selection = null;
 			L.DomUtil.removeClass(this._errorElement, 'leaflet-control-ocd-search-error');
 		},
@@ -236,7 +264,9 @@
 					'<img src="' + result.icon + '"/>' :
 					'') +
 				result.name + '</a>';
-			L.DomEvent.addListener(li, 'click', function clickHandler() {
+			L.DomEvent.addListener(li, 'click', function clickHandler(e) {
+                // CUSTOM line
+                L.DomEvent.preventDefault(e);
 				this._geocodeResultSelected(result);
 			}, this);
 
@@ -244,6 +274,7 @@
 		},
 
 		_keydown: function(e) {
+            
 			var _this = this,
 				select = function select(dir) {
 					if (_this._selection) {
@@ -266,7 +297,7 @@
 				select(-1);
 				L.DomEvent.preventDefault(e);
 				break;
-			// Up
+			// Down
 			case 40:
 				select(1);
 				L.DomEvent.preventDefault(e);
@@ -276,9 +307,13 @@
 				if (this._selection) {
 					var index = parseInt(this._selection.firstChild.getAttribute('data-result-index'), 10);
 					this._geocodeResultSelected(this._results[index]);
-					this._clearResults();
+                    this._clearResults();
 					L.DomEvent.preventDefault(e);
 				}
+                
+                else {
+                    // L.DomEvent.preventDefault(e);
+                }
 			}
 			return true;
 		}

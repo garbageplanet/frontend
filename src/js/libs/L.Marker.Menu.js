@@ -1,24 +1,57 @@
-(function () {
-    function array_map(array, cb, context) {
-        for (var i = 0, l = array.length; i < l; i++) {
-            cb.call(context || null, array[i], i, array);
+/*!
+This file is a stripped-down version of the leaflet locate control plugin which is licensed under the MIT license.
+You can find the project at: https://github.com/domoritz/leaflet-locatecontrol. Copyright (c) 2016 Dominik Moritz
+This file is a plugiized version of L.Marker.Menu https://github.com/umurgdk/leaflet-marker-menu (Author Umur Gedik)
+License: MIT
+Modifired by:adriennn, 2016
+*/
+            
+(function (factory, window) {
+
+    // define an AMD module that relies on 'leaflet'
+    if (typeof define === 'function' && define.amd) {
+        define(['leaflet'], factory);
+
+    // define a Common JS module that relies on 'leaflet'
+    } else if (typeof exports === 'object') {
+        if (typeof window !== 'undefined' && window.L) {
+            module.exports = factory(L);
+        } else {
+            module.exports = factory(require('leaflet'));
         }
     }
 
-    L.MarkerMenu = L.Class.extend({
+    // attach your plugin to the global 'L' variable
+    if(typeof window !== 'undefined' && window.L){
+        window.L.MarkerMenu = factory(L);
+    }
+    
+} 
+ 
+(function (L) {
+    var MarkerMenu = (L.Layer ? L.Layer : L.Class).extend({
+        
         includes: L.Mixin.Events,
 
         options: {
             pane: 'menuPane',
             radius: 100,
             animate: true,
-            duration: 200,
-            size: [24, 24]
+            duration: 100,
+            size: [24, 24],
+            // markerid: null
         },
-
+        
+        arrayMap: function (array, callback, context) {
+            for (var i = 0, l = array.length; i < l; i++) {
+                callback.call(context || null, array[i], i, array);
+            }
+        },
+        
         initialize: function (options, source) {
+            
             L.setOptions(this, options);
-
+            
             this._items = [];
 
             // DOM Element represents ul
@@ -107,7 +140,7 @@
                 }
             }, this.options.duration);
         },
-
+        
         _onZoomStart: function () {
             this.hide();
         },
@@ -118,7 +151,7 @@
         },
         
         _appendItems: function (items) {
-            array_map(items, function (item) {
+            this.arrayMap(items, function (item) {
                 this._items.push(item);
             }, this);
 
@@ -132,7 +165,7 @@
             this._container = L.DomUtil.create('div',
                 prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-hide');
 
-            this._container.style.zIndex = -1;
+            this._container.style.zIndex = 999;
             this._container.style.position = 'absolute';
         },
 
@@ -157,7 +190,7 @@
             this._menuList.style.width = this.options.size[0] + 'px';
             this._menuList.style.height = this.options.size[1] + 'px';
 
-            array_map(this._items, function (item, i, items) {
+            this.arrayMap(this._items, function (item, i, items) {
                 var listItem = L.DomUtil.create('li','', this._menuList),
                     menuItem = L.DomUtil.create('a', prefix + ' ' + (this.options.itemClassName || '') +
                         ' ' + (item.className || ''), listItem);
@@ -166,7 +199,7 @@
                 menuItem.style.height = this.options.size[1] + 'px';
                 menuItem.style.display = 'block';
                 menuItem.style.cursor = 'pointer';
-
+                menuItem.href = item.href;
                 menuItem.title = item.title;
 
                 listItem.style.position = 'absolute';
@@ -200,7 +233,7 @@
         },
 
         _resetItemsPositions: function () {
-            array_map(this._menuItems, function (item) {
+            this.arrayMap(this._menuItems, function (item) {
                 item.style.left = 0;
                 item.style.bottom = 0;
 
@@ -228,7 +261,7 @@
             this._container.style.left = (left - (this.options.size[0] / 2)) + 'px';
 
             setTimeout(function () {
-                array_map(that._menuItems, function (item, i) {
+                that.arrayMap(that._menuItems, function (item, i) {
                     var itemLeft = (Math.cos(angle * (i + 1)) * radius),
                         itemBottom = (Math.sin(angle * (i + 1)) * radius) ;
 
@@ -241,29 +274,34 @@
         },
 
         _resetPosition: function () {
-            array_map(this._menuItems, function (item) {
+            this.arrayMap(this._menuItems, function (item) {
                 item.style.left = 0 + 'px';
                 item.style.bottom = 0 + 'px';
 
                 L.DomUtil.setOpacity(item, 0);
             }, this);
         }
+
     });
 
     L.markerMenu = function (options, source) {
         return new L.MarkerMenu(options, source);
     };
-
-	L.Marker.include({
+        
+    L.Marker.include({
         openMenu: function () {
             if (!this._menu) {
                 return;
             }
 
+            console.log("OPENING MENU!!");
+            
             this._menu.setLatLng(this._latlng);
             this._menu._isOpened = true;
-
+            
             this._map.addLayer(this._menu);
+            // maps.map.addLayer(this._menu);
+            
             
             return this;
         },
@@ -272,7 +310,7 @@
             if (!this._menu) {
                 return;
             }
-
+            console.log("CLOSING MENU!!");
             this._map.removeLayer(this._menu);
             this._menu._isOpened = false;
         },
@@ -282,10 +320,17 @@
                 return;
             }
 
+            console.log("TOGGLING MENU!!");
             if (this._menu._isOpened) {
                 this.closeMenu();
             } else {
                 this.openMenu();
+            }
+        },
+        
+        isVisible: function () {
+            if (this._menu._isOpened) {
+                return true;
             }
         },
         
@@ -336,4 +381,7 @@
             this._menu.setLatLng(this._latlng);
         },
     });
-}());
+    
+    return MarkerMenu;
+    
+}, window));

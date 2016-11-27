@@ -161,6 +161,7 @@ L.Control.Sidebar = L.Control.extend({
     },
 
     hide: function (e) {
+        
         if (this.isVisible()) {
             L.DomUtil.removeClass(this._container, 'visible');
             

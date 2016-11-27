@@ -64,7 +64,8 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/bootstrap-horizon.css',
                     './src/css/bootstrap-tour-0.10.1.css',
                     './src/css/bootstrap-datatables-1.10.11.css',
-                    './src/css/leaflet-0.7.7.css',
+                    './src/css/leaflet-1.0.1.css',
+                    './src/css/L.Markercluster-1.0.0.css',
                     './src/css/L.Compact.Attributions.css',
                     './src/css/L.Geocoder.Opencage-1.1.2.css',
                     './src/css/L.Draw-0.2.4.css',
@@ -82,7 +83,8 @@ gulp.task('styles', ['trimHTML'], function() {
 // Minify head scripts and concat them in order
 gulp.task('scripts:leaflet', ['trimHTML'], function() {
   return gulp.src([
-                    './src/js/libs/Leaflet-0.7.7.js',
+                    './src/js/libs/leaflet-1.0.1.js',
+                    './src/js/libs/L.Markercluster-1.0.0.js',
                     './src/js/libs/L.Hash.js',
                     './src/js/libs/L.zoomCSS.js',
                     './src/js/libs/L.Control.Locate.js',
@@ -125,27 +127,20 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
 // Minify body scripts and concat them in order
 gulp.task('scripts:app', ['trimHTML'], function() {
   return gulp.src([
-                    './src/js/config/api.js',
+                    './src/js/config/config.js',
                     './src/js/templates/tmpl.js',
                     './src/js/ui/tools.js',
                     './src/js/session/session.js',
                     './src/js/ui/alerts.js',
                     './src/js/map/map.js',
-                    './src/js/ui/mobile.js',
-                    './src/js/map/markers.js',
-                    './src/js/ui/topbar.js',
-                    './src/js/ui/sidebar.js',
-                    './src/js/ui/bottombar.js',
-                    './src/js/map/get_features.js',
-                    './src/js/map/map_actions.js',
-                    './src/js/map/features_actions.js',
-                    './src/js/forms/uploader.js',
-                    './src/js/forms/forms_submit.js',
-                    './src/js/forms/forms_elements.js',
-                    './src/js/ui/modal.js',
+                    './src/js/ui/ui.js',
+                    './src/js/map/features.js',
+                    './src/js/map/actions.js',
+                    './src/js/forms/submit.js',
+                    './src/js/forms/elements.js',
                     './src/js/tour/tour.js',
                     './src/js/map/draw.js',
-                    './src/js/social/share.js'
+                    './src/js/social/social.js'
                   ])
     .pipe(stripDebug())
     .pipe(uglify({mangle: false, compress: false}).on('error', gutil.log))
