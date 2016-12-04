@@ -276,7 +276,7 @@ var ui = (function(){
             
             // TODO append elements if mobile instead of removing if not mobile
             if (window.innerWidth >= 768) {
-                mobiledialog.remove();
+                $('#mobile-menu-dialog').remove();
             }
 
             if (window.innerWidth < 768) {
@@ -286,22 +286,22 @@ var ui = (function(){
                 maps.map.removeControl(maps.zoomcontrol);
                 // Add swipe areas
                 $('body').append('<div class="swipe-area swipe-area-right"></div>');
-                sidebarcontainer.append('<div class="swipe-area swipe-area-left"></div>');
-                bottombarcontainer.prepend('<div class="swipe-area swipe-area-top"></div>');
+                $('#sidebar').append('<div class="swipe-area swipe-area-left"></div>');
+                $('#bottombar').prepend('<div class="swipe-area swipe-area-top"></div>');
                 // Remove the search field from multiselect else the softkeyboard shows up on mobile
                 selects.attr('data-live-search', 'false');
                 // Activate swipe on the right border to show the mobile menu
-                swiperight.touchwipe({
+                $(".swipe-area-right").touchwipe({
 
                     wipeLeft: function() {
-                        sidebar.show(mobiledialog.show());
+                        sidebar.show($('#mobile-menu-dialog').show());
                   },
                     min_move_x: 15,
                     preventDefaultEvents: true
                 });
 
                 // Hide the sidebar on right swipe from the left border
-                swipeleft.touchwipe({
+                $(".swipe-area-left").touchwipe({
 
                     wipeRight: function() {
                         sidebar.hide();
@@ -314,7 +314,7 @@ var ui = (function(){
                 // For apple stuff
                 if (L.Browser.retina) {
                     
-                    swipetop.touchwipe({
+                    (".swipe-area-top").touchwipe({
                         
                         wipeDown: function() {
                             bottombar.hide();
@@ -326,7 +326,7 @@ var ui = (function(){
                 // For all other browsers
                 if (!L.Browser.retina) {  
                     
-                    swipetop.touchwipe({
+                    (".swipe-area-top").touchwipe({
                         
                         wipeUp: function() {
                             bottombar.hide();
