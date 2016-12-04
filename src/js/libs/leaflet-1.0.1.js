@@ -12255,6 +12255,7 @@ L.Control.Layers = L.Control.extend({
 	// Collapse the control container if expanded.
 	collapse: function () {
 		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+        
 		return this;
 	},
 
@@ -12294,8 +12295,8 @@ L.Control.Layers = L.Control.extend({
 			L.DomEvent.on(form, 'click', function () {
 				setTimeout(L.bind(this._onInputClick, this), 0);
 			}, this);
-
-			this._map.on('click', this.collapse, this);
+            // CUSTOM code, we hide the layerscontrol in the ui code
+			// this._map.on('click', this.collapse, this);
 			// TODO keyboard accessibility
 		} else {
 			this.expand();

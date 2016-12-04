@@ -1,0 +1,19 @@
+<script type="text/x-tmpl" id="tmpl-mobile-menu">
+    <div class="sidebar-content" id="mobile-menu-dialog">
+        <div class="form-group form-group-lg mobile-menu">
+            <a href="#create-account-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-user"></span> Register</a>
+            <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-key"></span> Login</a>
+            <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go session-link"><span class="fa fa-fw fa-user-secret"></span> Anon login</a>
+            <a href="#search-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-search"></span> Search</a>
+            <a href="#" class="sidebar-link btn btn-default btn-lg btn-block disabled"><span class="fa fa-fw fa-cloud"></span> Forecast</a>
+            <a href="#credits-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-question"></span> About</a>
+        
+        
+            {% for (var i=0; i<o.length; i++) { %}
+                {%=o[i].text%} <a href="{%=o[i].linkurl%}">{%=o[i].title%}</a><br>
+            {% } %}
+        
+        
+        </div>    
+    </div>
+</script>

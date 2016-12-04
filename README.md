@@ -10,8 +10,6 @@ Just open /src/index.html in your browser. If you want to build for distribution
 All contributions are welcome. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### FIXME
-- [ ] fix search bar collapse on submit (map catches a click form the enter/submit event and collapses the control)
-- [ ] fix L.Control.Layers collapse on map click (map still catches clicks when control is expanded)
 - [ ] remove unsaved marker icons once maker is saved
 - [ ] fix marker creation when multiple unsaved marker are present on map
 - [ ] bootstrap form validation - disallow submit button until ok (currently only add class `disabled` to submit button)

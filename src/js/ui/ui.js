@@ -5,82 +5,122 @@
 */
 var ui = (function(){
     
-    var credits  = [
-        {
-            "title":"homepage",
-            "linkurl":"http://home.garbagepla.net/",
-            "text":"Project"
+    var templates  = {
+            garbagetypes: [
+                {short:"plastic",long:"Plastic items"},
+                {short:"bags",long:"Plastic bags"},
+                {short:"foodpacks",long:"Plastic food containers"},
+                {short:"pet",long:"PET bottles"},
+                {short:"party",long:"Party leftovers"},
+                {short:"fastfood",long:"Fastfood garbage"},
+                {short:"poly",long:"Expanded plastic polymers"},
+                {short:"butts",long:"Cigarette butts"},
+                {short:"glassb",long:"Broken glass"},
+                {short:"glass",long:"Glass"},
+                {short:"bottles",long:"Glass bottles"},
+                {short:"metal",long:"Metal"},
+                {short:"tin",long:"Tin cans"},
+                {short:"alu",long:"Aluminium cans"},
+                {short:"wood",long:"Plywood and treated or painted wood"},
+                {short:"chemicals",long:"Chemicals"},
+                {short:"household",long:"Household garbage"},
+                {short:"clothes",long:"Shoes and clothes"},
+                {short:"fabric",long:"Carpets and fabrics"},
+                {short:"matress",long:"Matresses"},
+                {short:"tarp",long:"Tarps and other large covers"},
+                {short:"electronic",long:"Electronics"},
+                {short:"electric",long:"Electric appliances"},
+                {short:"batt", long:"Batteries"},
+                {short:"industrial",long:"Industrial wastes"},
+                {short:"construction",long:"Construction wastes"},
+                {short:"gas",long:"Gasoline and petroleum oil"},
+                {short:"crude",long:"Crude oil"},
+                {short:"vehicle",long:"Large vehicle"},
+                {short:"bicycle",long:"Bicycles"},
+                {short:"motorcyle",long:"Motorcycles"},
+                {short:"tyres",long:"Tyres"},
+                {short:"engine",long:"Engine parts"},
+                {short:"parts",long:"Vehicles parts"},
+                {short:"fishing",long:"Fishing gears"},
+                {short:"commercial",long:"Commercial fishing equipment"},
+                {short:"net",long:"Fishing net"},
+                {short:"lines",long:"Fishing line"},
+                {short:"boat",long:"Small boat"},
+                {short:"vessel",long:"Large boat or wreck"},
+                {short:"boating",long:"Boating equipment"},
+                {short:"buoy",long:"Buoys and floats"},
+                {short:"maritime",long:"Maritime equipment"},
+                {short:"sew",long:"Sewage"},
+                {short:"dogs",long:"Dog poop bags"},
+            ],
+            credits: [
+                {
+                    "title":"homepage",
+                    "linkurl":"http://home.garbagepla.net/",
+                    "text":"Project"
+                },
+                {
+                    "title":"Let's Encrypt",
+                    "linkurl":"https://letsencrypt.org/",
+                    "text":"Secured with"
+                },
+                {
+                    "title":"Mapbox",
+                    "linkurl":"https://www.mapbox.com/",
+                    "text":"Basemaps imagery ©"
+                },
+                {
+                    "title":"Openstreetmap and contributors",
+                    "linkurl":"http://www.openstreetmap.org/",
+                    "text":"Maps and underlying data ©"
+                },
+                {
+                    "title":"Overpass API",
+                    "linkurl":"http://www.overpass-api.de/",
+                    "text":"POIs retrieved using the"
+                },
+                {
+                    "title":"OpenCage Geocoder",
+                    "linkurl":"https://geocoder.opencagedata.com/",
+                    "text":"Address search and geocoding using"
+                },
+                {
+                    "title":"Leaflet 1.0",
+                    "linkurl":"https://leafletjs.com/",
+                    "text":"Mapping done with "
+                },
+                {
+                    "title":"FontAwesome",
+                    "linkurl":"http://fontawesome.io/",
+                    "text":"Icons by"
+                },
+                {
+                    "title":"Bootstrap 3",
+                    "linkurl":"http://getbootstrap.com/",
+                    "text":"Built with"
+                },
+                {
+                    "title":"JQuery",
+                    "linkurl":"https://jquery.com/",
+                    "text":"Runs on"
+                },
+                {
+                    "title":"Laravel 5.1",
+                    "linkurl":"https://laravel.com/",
+                    "text":"Backed by"
+                },
+                {
+                    "title":"JavaScript-Templates",
+                    "linkurl":"https://github.com/blueimp/JavaScript-Templates",
+                    "text":"Templating with"
+                },
+                {
+                    "title":"Github",
+                    "linkurl":"https://github.com/garbageplanet",
+                    "text":"Source code available on"
+                }
+            ],
         },
-        {
-            "title":"Let's Encrypt",
-            "linkurl":"https://letsencrypt.org/",
-            "text":"Secured with"
-        },
-        {
-            "title":"Mapbox",
-            "linkurl":"https://www.mapbox.com/",
-            "text":"Basemaps imagery ©"
-        },
-        {
-            "title":"Openstreetmap and contributors",
-            "linkurl":"http://www.openstreetmap.org/",
-            "text":"Maps and underlying data ©"
-        },
-        {
-            "title":"Overpass API",
-            "linkurl":"http://www.overpass-api.de/",
-            "text":"POIs retrieved using the"
-        },
-        {
-            "title":"OpenCage Geocoder",
-            "linkurl":"https://geocoder.opencagedata.com/",
-            "text":"Address search and geocoding using"
-        },
-        {
-            "title":"Leaflet 1.0",
-            "linkurl":"https://leafletjs.com/",
-            "text":"Mapping done with "
-        },
-        {
-            "title":"FontAwesome",
-            "linkurl":"http://fontawesome.io/",
-            "text":"Icons by"
-        },
-        {
-            "title":"Bootstrap 3",
-            "linkurl":"http://getbootstrap.com/",
-            "text":"Built with"
-        },
-        {
-            "title":"JQuery",
-            "linkurl":"https://jquery.com/",
-            "text":"Runs on"
-        },
-        {
-            "title":"Laravel 5.1",
-            "linkurl":"https://laravel.com/",
-            "text":"Backed by"
-        },
-        {
-            "title":"JavaScript-Templates",
-            "linkurl":"https://github.com/blueimp/JavaScript-Templates",
-            "text":"Templating with"
-        },
-        {
-            "title":"Github",
-            "linkurl":"https://github.com/garbageplanet",
-            "text":"Source code available on"
-        }
-    ],
-        activate = function() {
-        
-        this.sidebar.addTo(maps.map);
-        this.bottombar.addTo(maps.map);
-        
-        document.getElementById('credits').innerHTML = tmpl('tmpl-credits', credits);
-        
-        ui.mobile();
-    },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
         pushDataToBottomPanel = function (obj){
@@ -224,35 +264,44 @@ var ui = (function(){
             }
         },    
         checkMobile = function() {
+            
+            var mobiledialog = $('#mobile-menu-dialog'),
+                swiperight = $(".swipe-area-right"),
+                swipeleft = $(".swipe-area-left"),
+                swipetop = $(".swipe-area-top"),
+                topbar = $('#topbar'),
+                sidebarcontainer = $('#sidebar'),
+                bottombarcontainer = $('#bottombar'),
+                selects = $('.garbage-type-select, .litter-type-select');
+            
             // TODO append elements if mobile instead of removing if not mobile
             if (window.innerWidth >= 768) {
-                $('#mobile-menu-dialog').remove();
+                mobiledialog.remove();
             }
 
             if (window.innerWidth < 768) {
                 // Remove menu bar
-                $('#topbar').remove();
+                topbar.remove();
                 // Delete the zoom keys from map
                 maps.map.removeControl(maps.zoomcontrol);
                 // Add swipe areas
                 $('body').append('<div class="swipe-area swipe-area-right"></div>');
-                $('#sidebar').append('<div class="swipe-area swipe-area-left"></div>');
-                $('#bottombar').prepend('<div class="swipe-area swipe-area-top"></div>');
-                $('.draw-link').addClass('disabled');
+                sidebarcontainer.append('<div class="swipe-area swipe-area-left"></div>');
+                bottombarcontainer.prepend('<div class="swipe-area swipe-area-top"></div>');
                 // Remove the search field from multiselect else the softkeyboard shows up on mobile
-                $('.garbage-type-select, .litter-type-select').attr('data-live-search', 'false');
+                selects.attr('data-live-search', 'false');
                 // Activate swipe on the right border to show the mobile menu
-                $(".swipe-area-right").touchwipe({
+                swiperight.touchwipe({
 
                     wipeLeft: function() {
-                        sidebar.show($('#mobile-menu-dialog').show());
+                        sidebar.show(mobiledialog.show());
                   },
                     min_move_x: 15,
                     preventDefaultEvents: true
                 });
 
                 // Hide the sidebar on right swipe from the left border
-                $(".swipe-area-left").touchwipe({
+                swipeleft.touchwipe({
 
                     wipeRight: function() {
                         sidebar.hide();
@@ -262,30 +311,66 @@ var ui = (function(){
                 });
 
                 // Hide the bottombar on down swipe
-                // FIXME to swipe down on Android you need wipeUp() (the controls are inverted)
-                // if (L.Browser.retina) {wipeDown:}
-                // if (L.Browser.android || L...) {wipeUp:}
-
-                $(".swipe-area-top").touchwipe({
-                    wipeUp: function() {
-                        bottombar.hide();
-                    },
-                    min_move_y: 20,
-                    preventDefaultEvents: true
-                });
+                // For apple stuff
+                if (L.Browser.retina) {
+                    
+                    swipetop.touchwipe({
+                        
+                        wipeDown: function() {
+                            bottombar.hide();
+                        },
+                        min_move_y: 20,
+                        preventDefaultEvents: true
+                    });
+                }
+                // For all other browsers
+                if (!L.Browser.retina) {  
+                    
+                    swipetop.touchwipe({
+                        
+                        wipeUp: function() {
+                            bottombar.hide();
+                        },
+                        min_move_y: 20,
+                        preventDefaultEvents: true
+                    });
+                }
             }
         },
-        uiEventListeners = $(function() {
+        activate = function() {
+            
+            // Add the Leaflet UI controls to the map
+            this.sidebar.addTo(maps.map);
+            this.bottombar.addTo(maps.map);
+            // Fill the main sidebar template
+            document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
+            // Fill the credits
+
+            // Fill the multiselect templates in the forms
+            document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
+            document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
+            document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
+            // check what ui to show
+            ui.checkMobile();
+        },
+        bindEvents = $(function() {
+            
+            var sidebarlink = $('.sidebar-link'),
+                menubacklink = $('.menu-backlink'),
+                usertools = $('#user-tools'),
+                trashbinbutton = $('#btn-trashbins'),
+                modallink = $('.modal-link');
+                
             // SIDEBAR ////////////////////////////////////////////////////
             // Navigation for sidebar links
-            $('.sidebar-link').click(function(e) {
+            sidebarlink.click(function(e) {
                 e.preventDefault();
                 $(this.hash).fadeIn().siblings().hide();
                 $('#sidebar').scrollTop = 0;
             });
 
             // Go back to the marker creation menu link
-            $('.menu-backlink').click(function(e) {
+            menubacklink.click(function(e) {
                 e.preventDefault();
                 $('.panel-collapse').collapse('hide');
                 $('#sidebar').scrollTop = 0;
@@ -310,7 +395,7 @@ var ui = (function(){
 
             // TOPBAR //////////////////////////////////////////////////////
             // Activate dropdown menu links in topbar
-            $('#user-tools').on('click', 'a', function(e) {
+            usertools.on('click', 'a', function(e) {
 
                 if ($(this).hasClass('dropdown-link')) {
                     e.preventDefault();
@@ -321,7 +406,7 @@ var ui = (function(){
             });
 
             // Show nearby trashbins
-            $('#btn-trashbins').on('click', function(){
+            trashbinbutton.on('click', function(){
                 maps.trashBins();
             });
 
@@ -349,7 +434,7 @@ var ui = (function(){
             });
 
             // Set the event listeners for modal
-            $('.modal-link').on('click', function(e){
+            modallink.on('click', function(e){
 
                 console.log("this from modal links clicked", this)
 
@@ -369,10 +454,11 @@ var ui = (function(){
     return {
         init: activate,
         sidebar: sidebar,
+        templates: templates,
         bottombar: bottombar,
         pushDataToBottomPanel: pushDataToBottomPanel,
         makeModal: makeModal,
-        mobile: checkMobile,
+        checkMobile: checkMobile,
     };
     
 }());

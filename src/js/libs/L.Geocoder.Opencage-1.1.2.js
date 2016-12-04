@@ -66,7 +66,7 @@
 			input.type = 'text';
 			input.placeholder = this.options.placeholder;
 
-			L.DomEvent.addListener(input, 'keydown', this._keydown, this);
+			L.DomEvent.addListener(input, 'keydown keypress', this._keydown, this);
 
 			this._errorElement = document.createElement('div');
 			this._errorElement.className = className + '-form-no-error';
@@ -122,15 +122,16 @@
             
             // L.DomEvent.addListener(form, 'submit', this._geocode, this);  
             
-            // FIXME
             L.DomEvent.on(form, 'submit', function (e) {
                 e.stopImmediatePropagation();
                 L.DomEvent.stop;
                 L.DomEvent._fakestop;
-				setTimeout(L.bind(this._geocode, this), 10);
-			}, this);
-            
-			return container;
+                setTimeout(L.bind(this._geocode, this), 10);
+                L.DomEvent.preventDefault(e);
+               console.log('submit event: ', e)
+            }, this);
+
+            return container;
 		},
 
 		_geocodeResult: function (results) {
@@ -275,6 +276,8 @@
 
 		_keydown: function(e) {
             
+            console.log('key event: ', e);
+            
 			var _this = this,
 				select = function select(dir) {
 					if (_this._selection) {
@@ -304,6 +307,9 @@
 				break;
 			// Enter
 			case 13:
+                L.DomEvent.stopPropagation(e);
+                L.DomEvent._fakeStop;
+                    
 				if (this._selection) {
 					var index = parseInt(this._selection.firstChild.getAttribute('data-result-index'), 10);
 					this._geocodeResultSelected(this._results[index]);
@@ -311,9 +317,10 @@
 					L.DomEvent.preventDefault(e);
 				}
                 
-                else {
-                    // L.DomEvent.preventDefault(e);
-                }
+                /*else {
+                    this._geocode;
+                    L.DomEvent.preventDefault(e);
+                }*/
 			}
 			return true;
 		}

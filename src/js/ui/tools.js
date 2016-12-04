@@ -1,6 +1,5 @@
-// TODO encapsulate
+// Tools and utilities
 var tools = {
-    
     makeEllipsis: function(obj, n) {
               return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
     }, // credit: http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
@@ -196,36 +195,39 @@ var tools = {
         if (id || id !== undefined) {
             
             // var marker = maps.unsavedLayerGroup.getLayer(id);
-            var marker = actions.tempmarkers[id];
+            var marker = actions.tempmarkers[id],
+                markericon = $(marker._icon);
 
-            $(marker._icon).removeClass('marker-garbage');
-            $(marker._icon).removeClass('marker-cleaning');
-            $(marker._icon).removeClass(function (index, css) {
+            markericon.removeClass('marker-garbage');
+            markericon.removeClass('marker-cleaning');
+            markericon.removeClass(function (index, css) {
                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
             }).addClass('marker-generic');
-            $(marker._icon).addClass('marker-color-gray');
+            markericon.addClass('marker-color-gray');
             // Delete the marker on small screen else the mobile marker menu bugs
             if ($(window).width() <= 567) {
                 maps.map.removeLayer(marker);
             }
         }
     },
-    clearTempMarkerStyleListeners: function (id) {
+    bindTempMarkerEvents: function (id) {
         
-        var marker = actions.tempmarkers[id];
+        var marker = actions.tempmarkers[id],
+            menubacklink = $('.menu-backlink'),
+            cancelbutton = $('.btn-cancel');
         
         ui.sidebar.on ('hide', function() {
             tools.clearTempMarkerStyle(id);
         });
 
-        $('.menu-backlink').click(function(e) {
+        menubacklink.click(function(e) {
              e.preventDefault();
             // Remove the styling for temp markers
             tools.clearTempMarkerStyle(id);
         });
         
         // Close sidebar if cancel button clicked
-        $('.btn-cancel').on('click', function (e){
+        cancelbutton.on('click', function (e){
             e.preventDefault();
             ui.sidebar.hide();
             tools.clearTempMarkerStyle(id);
@@ -233,6 +235,11 @@ var tools = {
         }); 
     },
     checkOpenUiElement: function(map){
+        
+        var compactattributions = $('.leaflet-compact-attribution-toggle'),
+            ocdsearch = $('.leaflet-control-ocd-search'),
+            dropdown = $('.dropdown'),
+            layerscontrol = $('.leaflet-control-layers');
         
         if (ui.sidebar.isVisible() ){
             ui.sidebar.hide();
@@ -243,19 +250,18 @@ var tools = {
             ui.bottombar.hide();
             return;
         }       
-        if ($('.dropdown').hasClass('open')) {
-            $('.dropdown').removeClass('open');
+        if (dropdown.hasClass('open')) {
+            dropdown.removeClass('open');
             return;
         } 
-        // FIXME This still gives off a map click 
-        if (!maps.layerscontrol.options.collapsed || $('.leaflet-control-layers').hasClass('leaflet-control-layers-expanded')) {
-            L.DomEvent.stopPropagation(map);
-            maps.layerscontrol.collapse;
-            
+        // Custom code added in leaflet (edited out), so the map click is listened to here
+        if (!maps.layerscontrol.options.collapsed || layerscontrol.hasClass('leaflet-control-layers-expanded')) {
+            maps.layerscontrol.collapse();
             return;
         }
+        // Somehow checking the collapsed property of the control doesn't work?
         // if (!maps.geocodercontrol.options.collapsed) {
-        if ($('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded')) {
+        if (ocdsearch.hasClass('leaflet-control-ocd-search-expanded')) {
             maps.geocodercontrol._collapse();
             L.DomEvent.stopPropagation(map);
             return;
@@ -264,8 +270,8 @@ var tools = {
             maps.locationcontrol.stop();
             return;
         }
-        if ($('.leaflet-compact-attribution-toggle').is(':checked')) {
-            $('.leaflet-compact-attribution-toggle').prop('checked', false);  
+        if (compactattributions.is(':checked')) {
+            compactattributions.prop('checked', false);  
             return;
         }
         

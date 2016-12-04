@@ -7,88 +7,34 @@ var forms = (function() {
     
     var activate = function() {
         
-        // Fill the multiselect templates
-        document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', forms.garbagetypes);
-        document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', forms.garbagetypes);
-    
-        // Force styling of multiselects
-        // other options are already set in the html
-        $('.selectpicker').selectpicker({ 
-            style: 'btn-lg btn-default text-center', 
-            // How many list items to display?
-            size: 6
-        });
-        // Separate tags by hitting space bar or right key
-        // FIXME space key doesn't work with mobile keyboard
-        $('.feature-tags').tagsinput({
-            maxTags: 3,
-            confirmKeys: [32, 39],
-            maxChars: 16,
-            trimValue: true
-        });
+            // Force styling of multiselects
+            // other options are already set in the html
+            $('.selectpicker').selectpicker({ 
+                style: 'btn-lg btn-default text-center', 
+                // How many list items to display?
+                size: 6
+            });
+            // Separate tags by hitting space bar or right key
+            // FIXME space key doesn't work with mobile keyboard
+            $('.feature-tags').tagsinput({
+                maxTags: 3,
+                confirmKeys: [32, 39],
+                maxChars: 16,
+                trimValue: true
+            });
 
-        // Prevent sending the form with enter key
-        // TODO change this to a self function once forms are made by templates and run after making the template
-        $(".form-feature").bind("keypress", function (e) {
+            // Prevent sending the form with enter key
+            $(".form-feature").bind("keypress", function(e) {
 
-            if (e.keyCode === 13) {
-                $(".btn-save").attr('type');
-                e.preventDefault();
-            }
-        });
-    },
-        garbagetypes = [
-        {short:"plastic",long:"Plastic items"},
-        {short:"bags",long:"Plastic bags"},
-        {short:"foodpacks",long:"Plastic food containers"},
-        {short:"pet",long:"PET bottles"},
-        {short:"party",long:"Party leftovers"},
-        {short:"fastfood",long:"Fastfood garbage"},
-        {short:"poly",long:"Expanded plastic polymers"},
-        {short:"butts",long:"Cigarette butts"},
-        {short:"glassb",long:"Broken glass"},
-        {short:"glass",long:"Glass"},
-        {short:"bottles",long:"Glass bottles"},
-        {short:"metal",long:"Metal"},
-        {short:"tin",long:"Tin cans"},
-        {short:"alu",long:"Aluminium cans"},
-        {short:"wood",long:"Plywood and treated or painted wood"},
-        {short:"chemicals",long:"Chemicals"},
-        {short:"household",long:"Household garbage"},
-        {short:"clothes",long:"Shoes and clothes"},
-        {short:"fabric",long:"Carpets and fabrics"},
-        {short:"matress",long:"Matresses"},
-        {short:"tarp",long:"Tarps and other large covers"},
-        {short:"electronic",long:"Electronics"},
-        {short:"electric",long:"Electric appliances"},
-        {short:"batt", long:"Batteries"},
-        {short:"industrial",long:"Industrial wastes"},
-        {short:"construction",long:"Construction wastes"},
-        {short:"gas",long:"Gasoline and petroleum oil"},
-        {short:"crude",long:"Crude oil"},
-        {short:"vehicle",long:"Large vehicle"},
-        {short:"bicycle",long:"Bicycles"},
-        {short:"motorcyle",long:"Motorcycles"},
-        {short:"tyres",long:"Tyres"},
-        {short:"engine",long:"Engine parts"},
-        {short:"parts",long:"Vehicles parts"},
-        {short:"fishing",long:"Fishing gears"},
-        {short:"commercial",long:"Commercial fishing equipment"},
-        {short:"net",long:"Fishing net"},
-        {short:"lines",long:"Fishing line"},
-        {short:"boat",long:"Small boat"},
-        {short:"vessel",long:"Large boat or wreck"},
-        {short:"boating",long:"Boating equipment"},
-        {short:"buoy",long:"Buoys and floats"},
-        {short:"maritime",long:"Maritime equipment"},
-        {short:"sew",long:"Sewage"},
-        {short:"dogs",long:"Dog poop bags"},
-    ],
+                if (e.keyCode === 13) {
+                    $(".btn-save").attr('type');
+                    e.preventDefault();
+                }
+            });
+        },
         makeGarbageForm = function(id) {
         
             "use strict";
-
-            console.log(actions.tempmarkers)
 
             console.log("current marker id from makeGarbageForm: ", id);
 
@@ -121,6 +67,9 @@ var forms = (function() {
                 
             var marker = actions.tempmarkers[id],
                 latlng = marker.getLatLng();
+            
+            // TODO Fill the form template
+            // document.getElementById('create-cleaning-dialog').innerHTML = tmpl('tmpl-form-cleaning', data);
 
             $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
 
@@ -212,7 +161,6 @@ var forms = (function() {
 
     return {
         init: activate,
-        garbagetypes: garbagetypes,
         makeGarbageForm: makeGarbageForm,
         makeCleaningForm: makeCleaningForm,
         makeLitterForm: makeLitterForm,

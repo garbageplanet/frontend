@@ -796,9 +796,7 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 		//Zoom on cluster click or spiderfy if we are at the lowest level
 		if (spiderfyOnMaxZoom || zoomToBoundsOnClick) {
-            
-            console.log('clustermarker clicked')
-            
+                        
 			this.on('clusterclick', this._zoomOrSpiderfy, this);
             
 		}

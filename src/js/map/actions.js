@@ -56,7 +56,7 @@ var actions = (function() {
                     // Send the marker to the forms
                     actions.passMarkerToForm(markerid); 
                     // Set listeners if the marker isn't saved
-                    tools.clearTempMarkerStyleListeners(markerid);
+                    tools.bindTempMarkerEvents(markerid);
                     return;
                 }
 
@@ -83,7 +83,7 @@ var actions = (function() {
                         marker.on('click', actions.unsavedMarkerClick);
 
                         // Setlisteners if the marker isn't saved
-                        tools.clearTempMarkerStyleListeners(markerid);
+                        tools.bindTempMarkerEvents(markerid);
                         // Open the mobile menu
                         if (!marker._menu._isOpened) {
                             marker.setZIndexOffset(1000);

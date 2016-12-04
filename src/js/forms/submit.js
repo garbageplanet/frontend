@@ -10,13 +10,37 @@ window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJ
 // Save features on the map
 var saving = (function(){
     
-    // TODO get the maps vars from marker obj
+    // TODO get the vars from marker obj
     var activate = $(function(){
-        $('.form-garbage').on('submit', saving.saveGarbage);
-        $('.form-cleaning').on( 'submit', saving.saveCleaning);               
-        $('.form-litter').on( 'submit', saving.saveLitter);               
-        $('.form-area').on( 'submit', saving.saveArea); 
-    }),
+        
+            // FIXME
+            /*var validateForm = function () {
+
+                $('.form-feature').on('submit', function(e){
+
+                    console.log(e);
+
+                    $('.form-feature').validator().on('submit', function (e) {
+
+                        if (e.isDefaultPrevented()) {
+
+                            alerts.showAlert(30, 'info', 2000);
+
+                            return false;
+
+                        } else { 
+
+                            return true; 
+                        }
+                    });
+                });
+            };*/
+
+            $('.form-garbage').on('submit', saving.saveGarbage);
+            $('.form-cleaning').on('submit', saving.saveCleaning);
+            $('.form-litter').on('submit', saving.saveLitter);
+            $('.form-area').on('submit', saving.saveArea);
+        }),
         saveGarbage = function(e) {
 
             e.preventDefault();
