@@ -102,19 +102,13 @@ var maps = (function (){
                 }
             }
         
-            // Set an icon on the layer select button
-            // TODO modify this in lealfet code once moved to 1.0
-            $('.leaflet-control-layers-toggle').append("<span class='fa fa-2x fa-globe'></span>");
+            // Set custom icons for map controls
+            $('.leaflet-control-layers-toggle').append("<span class='fa fa-fw fa-globe'></span>");
             
-            // FIXME, this doesnt work either
-            $('.leaflet-control-ocd-search-form input').on('submit', function (e) {
-                L.DomEvent.stop;
-                L.DomEvent._fakeStop;
-                e.stopImmediatePropagation();
-                e.stopPropagation();
-                e.preventDefault();
-            });
-
+            if (window.innerWidth >= 768) {
+                $('.leaflet-control-zoom-in').append('<span class="fa fa-fw fa-plus"></span>');
+                $('.leaflet-control-zoom-out').append('<span class="fa fa-fw fa-minus"></span>');
+            }
         },
         icons = (function (){
 

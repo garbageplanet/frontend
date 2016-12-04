@@ -127,10 +127,6 @@ body {
   margin-left: -3px;
 }
 
-.fa-icon-control-centered {
-  vertical-align: middle;
-}
-
 /* Style share buttons */
 .btn-facebook {
   background-color: rgba( 59, 89, 152, 1) !important;
@@ -361,21 +357,6 @@ a.menu-backlink:hover {
 }
 
 /* Own modifications to leaflet.css*/
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out,
-.lealfet-bar,
-.lealfet-control {
-	border: 10px;
-}
-
-
-.leaflet-control-layers a span {
-    display: block;
-    position: absolute;
-    width: 22px;
-    left: 8px;
-    top: 7px;
-	}
 
 @media (min-width: 768px) {
     .leaflet-top {
@@ -385,6 +366,18 @@ a.menu-backlink:hover {
 }
 
 /* Style the leaflet bar buttons and override defaut stlyes */
+
+.leaflet-top .fa {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 19px;
+    vertical-align: middle;
+}
+
+.leaflet-control-search .fa {
+    font-size: 16px !important;
+}
 
 .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
     border: none;
@@ -400,30 +393,19 @@ a.menu-backlink:hover {
      -moz-box-shadow: none !important;
 }
 
-.leaflet-control-search .fa-search {
-  position: absolute;
-  left: 7px;
-}
-
-.leaflet-control-layers-toggle .fa {
-    margin-top: 2px;
-    margin-left: 2px;
-}
-
 .leaflet-touch .leaflet-bar a {
 	width: 40px;
 	height: 40px;
 	line-height: 40px;
 }
 
+.leaflet-bottom {
+    z-index: 498 !important;
+}
+
 /* Color the button icons */
 .leaflet-control-layers-toggle .fa, .leaflet-control-zoom .fa {
     color: #444 !important;
-}
-
-.leaflet-control-layers a span, .leaflet-control-locate a span {
-    vertical-align: middle;
-    margin-top: -1px;
 }
 
 .leaflet-control-login a {
@@ -439,31 +421,6 @@ a.menu-backlink:hover {
 /* Hide the quick login button if the class is logged-in*/
 .leaflet-control-login.logged-in {
     display: none !important;
-}
-
-/* Place the close button in the layers-control div on mobile */
-.btn-close-layers-control {
-    position: absolute;
-    top: 70%;
-    right: -45px;
-    z-index: 1000;
-    width: 35px;
-    height: 45px;
-    background-color: rgba(255, 44, 8, 0.8);
-    opacity: 0.8;
-    border-top-right-radius: 18px;
-    border-bottom-right-radius: 18px; 
-}
-
-.btn-close-layers-control:hover, .btn-close-layers-control:active {
-    background-color: rgba(255, 44, 8, 1);
-}
-
-.btn-close-layers-control a {
-    text-decoration: none;
-    color: #FFF;
-    height:45px;
-    line-height:45px;
 }
 
 .leaflet-touch .leaflet-bar a, .leaflet-touch .leaflet-control-layers, :not(.leaflet-touch .leaflet-control-layers .leaflet-control-layers-expanded)  {

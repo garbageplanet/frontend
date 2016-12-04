@@ -60,13 +60,13 @@
 }
 
 .leaflet-control-ocd-search-icon {
-    position: absolute;
+   /* position: absolute;*/
 	width: auto;
 	height: auto;
 	float: right;
 	cursor: pointer;
     line-height: inherit;
-    right: 10px;
+    /*right: 10px;*/
 }
 
 .leaflet-control-ocd-search-expanded input,

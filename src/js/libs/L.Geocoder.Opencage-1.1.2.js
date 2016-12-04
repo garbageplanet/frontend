@@ -56,7 +56,7 @@
 		onAdd: function (map) {
 			var className = 'leaflet-control-ocd-search';
 			var container = L.DomUtil.create('div', className);
-			var icon = this._icon = L.DomUtil.create('div', 'leaflet-control-ocd-search-icon fa fa-fw fa-175x fa-search', container);
+			var icon = this._icon = L.DomUtil.create('span', 'leaflet-control-ocd-search-icon fa fa-fw fa-search', container);
 			var form = this._form = L.DomUtil.create('form', className + '-form', container);
 			var input;
 

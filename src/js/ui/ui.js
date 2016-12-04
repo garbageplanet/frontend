@@ -266,9 +266,9 @@ var ui = (function(){
         checkMobile = function() {
             
             var mobiledialog = $('#mobile-menu-dialog'),
-                swiperight = $(".swipe-area-right"),
-                swipeleft = $(".swipe-area-left"),
-                swipetop = $(".swipe-area-top"),
+                // swiperight = $(".swipe-area-right"),
+                // swipeleft = $(".swipe-area-left"),
+                // swipetop = $(".swipe-area-top"),
                 topbar = $('#topbar'),
                 sidebarcontainer = $('#sidebar'),
                 bottombarcontainer = $('#bottombar'),
@@ -286,8 +286,8 @@ var ui = (function(){
                 maps.map.removeControl(maps.zoomcontrol);
                 // Add swipe areas
                 $('body').append('<div class="swipe-area swipe-area-right"></div>');
-                $('#sidebar').append('<div class="swipe-area swipe-area-left"></div>');
-                $('#bottombar').prepend('<div class="swipe-area swipe-area-top"></div>');
+                sidebarcontainer.append('<div class="swipe-area swipe-area-left"></div>');
+                bottombarcontainer.prepend('<div class="swipe-area swipe-area-top"></div>');
                 // Remove the search field from multiselect else the softkeyboard shows up on mobile
                 selects.attr('data-live-search', 'false');
                 // Activate swipe on the right border to show the mobile menu
@@ -314,7 +314,7 @@ var ui = (function(){
                 // For apple stuff
                 if (L.Browser.retina) {
                     
-                    (".swipe-area-top").touchwipe({
+                    $(".swipe-area-top").touchwipe({
                         
                         wipeDown: function() {
                             bottombar.hide();
@@ -326,7 +326,7 @@ var ui = (function(){
                 // For all other browsers
                 if (!L.Browser.retina) {  
                     
-                    (".swipe-area-top").touchwipe({
+                    $(".swipe-area-top").touchwipe({
                         
                         wipeUp: function() {
                             bottombar.hide();

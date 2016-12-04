@@ -13,6 +13,7 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] remove unsaved marker icons once maker is saved
 - [ ] fix marker creation when multiple unsaved marker are present on map
 - [ ] bootstrap form validation - disallow submit button until ok (currently only add class `disabled` to submit button)
+- [ ] make css rules for devices 768 - 960px and add rules for device height
 
 ### TODO
 - [ ] cluster markers server side if there are over 500 in currentBounds and send as markerCluster marker

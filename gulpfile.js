@@ -54,6 +54,7 @@ gulp.task('trimHTML', function () {
 // Minify the styleshseets and concat them in orde
 gulp.task('styles', ['trimHTML'], function() {
   return gulp.src([
+                    './src/css/pace.css',
                     './src/css/font-awesome-4.5.0.css',
                     './src/css/google-work-sans.css',
                     './src/css/trashbag.css',
@@ -105,6 +106,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
 // Minify head scripts and concat them in order
 gulp.task('scripts:jquery', ['trimHTML'], function() {
   return gulp.src([
+                    './src/js/libs/pace.js',
                     './src/js/libs/jquery-2.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',

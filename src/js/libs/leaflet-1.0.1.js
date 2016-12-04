@@ -11745,7 +11745,7 @@ L.Control.Zoom = L.Control.extend({
 
 		// @option zoomInText: String = '+'
 		// The text set on the 'zoom in' button.
-		zoomInText: '+',
+		zoomInText: '',
 
 		// @option zoomInTitle: String = 'Zoom in'
 		// The title set on the 'zoom in' button.
@@ -11753,7 +11753,7 @@ L.Control.Zoom = L.Control.extend({
 
 		// @option zoomOutText: String = '-'
 		// The text set on the 'zoom out' button.
-		zoomOutText: '-',
+		zoomOutText: '',
 
 		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
@@ -12303,16 +12303,18 @@ L.Control.Layers = L.Control.extend({
 		}
         
         // CUSTOM CODE
-        if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina) {
+        // We don't need this as the control closes on map click without glitch
+        /*if (L.Browser.android || L.Browser.mobile || L.Browser.touch || L.Browser.retina) {
             var ownCloseButton = this.ownCloseButton = L.DomUtil.create('div', className + '-close');
             this.ownCloseButton = L.DomUtil.create('div', className + '-close', form);
+            
             this.ownCloseButton.innerHTML = '<div class=" btn-close-layers-control hidden-lg hidden-xl"><a class="fa fa-2x fa-fw fa-times"></a></div>';    
         
             L.DomEvent
               .on(this.ownCloseButton, 'click', L.DomEvent.preventDefault)
               .on(this.ownCloseButton, 'click', this._collapse, this);
         
-        } 
+        } */
       
 		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
 		this._separator = L.DomUtil.create('div', className + '-separator', form);
