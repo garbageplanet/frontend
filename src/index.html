@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <title>Garbagepla.net - Earth, spotless.</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src https://garbagepla.net https://*.garbagepla.net; connect-src https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://api.imgur.com/3/upload; script-src 'self' https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com; style-src https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://api.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com; object-src https://garbagepla.net https://*.garbagepla.net">
-  <!-- meta name="csrf_token" content="{{ csrf_token() }}"> -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src https://garbagepla.net https://*.garbagepla.net; connect-src https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://api.imgur.com/3/upload; script-src 'self' https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com; style-src https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://api.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com; object-src https://garbagepla.net https://*.garbagepla.net">
+  meta name="csrf_token" content="{{ csrf_token() }}"> -->
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
   <meta http-equiv="X-UA-Compatible">
@@ -134,12 +134,6 @@
 </div><!-- Contents of the bottom bar -->
 <div class="alert-container text-center"></div><!-- Alerts -->
 
-<!-- inject:body:jquery -->
-<!-- endinject -->
-
-<!-- inject:body:leaflet -->
-<!-- endinject -->
-
 <!-- inject:body:app -->
 <!-- endinject -->
 
@@ -166,8 +160,8 @@
 
 <noscript>
     <div class='noscript'>
-    <h2>Javascript is disabled</h2>
-    <p>Garbagepla.net does not work without javascript. Try to enable javascript from your browser's preferences and then reload this page to try again.</p>
+    <h2>Javascript is disabled<span><i class="fa fa-fw fa-hand-spock-o"></i></span></h2>
+    <p>Garbagepla.net does not work without javascript. Enable javascript from your browser's preferences and then reload this page to use the map.</p>
 </div>
 </noscript>
 </body>

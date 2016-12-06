@@ -3,7 +3,7 @@
 var alerts = {
     
     texts : [
-        // current items 0-30 add new fields at the end
+        // current items 0-31 add new fields at the end
         "You cannot delete features you did not create",
         "Sorry, something went wrong with the server",
         "The request was not handled properly by the server",
@@ -34,7 +34,8 @@ var alerts = {
         'Litter saved successfully',
         'Area saved successfully',
         'No data in the current area',
-        'Fill in all the required fields'
+        'Fill in all the required fields',
+        "Zoom in closer to do that"
     ],
     // TODO merge showAlert and createAlertText so that Showalert is called with four params
     showAlert: function (errorCode, errorType, closeDelay) {

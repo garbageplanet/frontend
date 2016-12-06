@@ -100,7 +100,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
     .pipe(stripDebug())
     .pipe(concat('leaflet.min.js'))
     .pipe(uglify({mangle: false, compress: false}))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('./temp/'));
 });
 
 // Minify head scripts and concat them in order
@@ -123,7 +123,7 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
     .pipe(stripDebug())
     .pipe(concat('jquery.min.js'))
     .pipe(uglify({mangle: false, compress: false}))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('./temp/'));
 });
 
 // Minify body scripts and concat them in order
@@ -147,18 +147,27 @@ gulp.task('scripts:app', ['trimHTML'], function() {
     .pipe(stripDebug())
     .pipe(uglify({mangle: false, compress: false}).on('error', gutil.log))
     .pipe(concat('app.min.js').on('error', gutil.log))
+    .pipe(gulp.dest('./temp/'));
+});
+
+// Minify body scripts and concat them in order
+gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function() {
+  return gulp.src([
+                    './temp/jquery.min.js',
+                    './temp/leaflet.min.js',
+                    './temp/app.min.js',
+                  ])
+    .pipe(concat('app.js').on('error', gutil.log))
     .pipe(gulp.dest('dist/'));
 });
 
 // Inject minifed files path in head and body
-gulp.task('injectFiles', ['scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles'], function() {
+gulp.task('injectFiles', ['scripts:all', 'styles'], function() {
   return gulp.src('./temp/index.html')
   // inject styles
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
   // Inject scripts
-    .pipe(inject(gulp.src('./dist/leaflet.min.js', {read: false}), {starttag: '<!-- inject:body:leaflet -->', ignorePath: 'dist', addRootSlash: false}))
-    .pipe(inject(gulp.src('./dist/jquery.min.js', {read: false}), {starttag: '<!-- inject:body:jquery -->', ignorePath: 'dist', addRootSlash: false}))
-    .pipe(inject(gulp.src('./dist/app.min.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
+    .pipe(inject(gulp.src('./dist/app.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
     .pipe(gulp.dest('temp1/'));
 });
 
@@ -169,7 +178,7 @@ gulp.task('minifyHTML', ['injectFiles'], function() {
     .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('clean:start', function() {
+gulp.task('clean:start',['injectFiles'], function() {
     return del([
                 'dist/',
                 'temp',
@@ -177,7 +186,7 @@ gulp.task('clean:start', function() {
                ]);
 });
 
-gulp.task('clean:end', ['injectFiles'], function() {
+gulp.task('clean:end', ['clean:start'], function() {
     return del([
                 'temp',
                 'temp1'
@@ -199,5 +208,5 @@ gulp.task('copy:favicon', ['clean:end'], function() {
       .pipe(gulp.dest('./dist'));
 })
 gulp.task('default', ['clean:start'], function() {
-    gulp.start('trimHTML', /*'replaceTokens',*/ 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
+    gulp.start('trimHTML', /*'replaceTokens',*/ 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'scripts:all' , 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
 });

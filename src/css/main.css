@@ -7,6 +7,10 @@ body {
   height: 100%;
 }
 
+.noscript {
+    margin: 75px 25px;
+}
+
 .map-container {
     bottom:0;
     z-index: auto;

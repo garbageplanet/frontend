@@ -112,7 +112,7 @@ var devTour = new Tour({
         placement: 'bottom',
       },*/
       {
-        content: 'Note that this platform is currently under active development but all the basic functions are available and can be used to save markers and images. Please see the repository on github for current bugs',
+        content: 'Note that this platform is currently under active development but all the basic functions are available and can be used to save markers and images. Please see the repository on github for current issues.',
         duration: 16000,
         orphan: true
       }
@@ -121,20 +121,20 @@ var devTour = new Tour({
 
 var mobileTour = new Tour({
   name: "mobile-tour",
-  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='btn-tour' data-role='end'><i class='fa fa-fw fa-times close'></i></a></div></div>",
+  template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div></div>",
   steps: [
       {
         element: ".swipe-area-right",
         placement: 'left',
         content: "Access the main menu by swiping from the right border of the screen.",
-        duration: 4000
-      }/*,
+        duration: 3000
+      },
       {
         element: ".leaflet-control-login",
         placement: 'right',
-        content: "One-click anonymous login.",
-        duration: 4000
-      }*/
+        content: "One-click anonymous login!",
+        duration: 3000
+      }
   ]
 });
 

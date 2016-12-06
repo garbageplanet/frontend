@@ -19,7 +19,7 @@ var session = (function () {
             // Change display of custom login button on mobile
             if (window.innerWidth < 768) { 
                 // this is the leaflet plugin for the custom glome anonymous login button
-                glomelogincontrol.logout();
+                maps.glomelogincontrol.logout();
             }
 
             $('#session-status a').text('Login').attr("href","#user-login-dialog");
@@ -441,7 +441,7 @@ var session = (function () {
             });
 
         }, 
-        activate = function(){
+        bindEvents = $(function(){
             // logout, there are two places where user can click to logout ('button' and 'a')
             $('.btn-logout').on('click', session.logout);
             // login
@@ -460,11 +460,10 @@ var session = (function () {
                 // Check the current session with the backend
                 session.checklogin();
             }
-        };
+        });
     
     return {
         login: login,
-        init: activate,
         checklogin:checkLogin,
         logout: logout,
         register: register,
@@ -474,5 +473,3 @@ var session = (function () {
     };
     
 }());
-
-session.init();

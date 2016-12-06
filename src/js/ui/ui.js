@@ -407,7 +407,14 @@ var ui = (function(){
 
             // Show nearby trashbins
             trashbinbutton.on('click', function(){
-                maps.trashBins();
+                if(maps.map.getZoom() < 15 ) {
+                    
+                    alerts.showAlert(31, 'info', 2000);
+                    return;
+                    
+                } else {
+                    maps.trashBins();
+                }
             });
 
             // BOTTOMBAR //////////////////////////////////////////////////////////////////
