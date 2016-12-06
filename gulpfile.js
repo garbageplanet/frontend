@@ -178,7 +178,7 @@ gulp.task('minifyHTML', ['injectFiles'], function() {
     .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('clean:start',['injectFiles'], function() {
+gulp.task('clean:start', function() {
     return del([
                 'dist/',
                 'temp',
@@ -186,7 +186,7 @@ gulp.task('clean:start',['injectFiles'], function() {
                ]);
 });
 
-gulp.task('clean:end', ['clean:start'], function() {
+gulp.task('clean:end', ['minifyHTML'], function() {
     return del([
                 'temp',
                 'temp1'
