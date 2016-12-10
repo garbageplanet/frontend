@@ -1,100 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Garbagepla.net - Earth, spotless.</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src https://garbagepla.net https://*.garbagepla.net; connect-src https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://api.imgur.com/3/upload; script-src 'self' https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com; style-src https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://api.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com; object-src https://garbagepla.net https://*.garbagepla.net">
-  <!-- <meta name="csrf_token" content="{{ csrf_token() }}"> -->
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
-  <meta http-equiv="X-UA-Compatible">
-  <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
-  <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, maptile, map marker, environmental monitoring, environment, trash, reporting">
-  <meta name="copyright" content="&copy; Garbagepla.net"/>
-  <meta property="og:site_name" content="Garbagepla.net platform"/>
-  <meta property="fb:app_id" content="302184056577324"/>
-  <!-- <meta property="fb:app_id" content="@@facebookToken"/> -->
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="http://garbagepla.net"/>
-  <meta property="og:title" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment"/>
-  <meta property="og:image" content="images/og_image.png"/>
-  <meta property="og:description" content="Garbagepla.net is an online platform that aims at helping people put environmental issues back on the map."/>
-  <!-- Mobile stuff -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#00000">
-  <meta name="msapplication-navbutton-color" content="#00000">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#00000">
-  <!-- inject:head:css:styles -->
-  <!-- endinject -->
+    <title>Garbagepla.net - Earth, spotless.</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src https://garbagepla.net https://*.garbagepla.net; connect-src https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://api.imgur.com/3/upload; script-src 'self' https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com https://www.google-analytics.com; style-src https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src data: https://placehold.it/160x120 https://placeholdit.imgix.net https://api.tiles.mapbox.com https://api.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com; object-src https://garbagepla.net https://*.garbagepla.net">
+    <!-- <meta name="csrf_token" content="{{ csrf_token() }}"> -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
+    <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, maptile, map marker, environmental monitoring, environment, trash, reporting">
+    <meta name="copyright" content="&copy; Garbagepla.net"/>
+    <meta property="og:site_name" content="Garbagepla.net"/>
+    <meta property="fb:app_id" content="302184056577324"/>
+    <!-- <meta property="fb:app_id" content="@@facebookToken"/> -->
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://garbagepla.net"/>
+    <meta property="og:title" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment"/>
+    <meta property="og:image" content="images/og_image.png"/>
+    <meta property="og:description" content="Garbagepla.net is an online platform that aims at helping people put environmental issues back on the map."/>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@garbageplanet_" />
+    <meta name="twitter:creator" content="@adriennn1" />
     
-  <script type="text/javascript" src="js/libs/pace.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/pace.css" >
-    
-    
-  <link rel="stylesheet" type="text/css" href="css/font-awesome-4.5.0.css" >
-  <link rel="stylesheet" type="text/css" href="css/google-work-sans.css" >
-  <link rel="stylesheet" type="text/css" href="css/leaflet-1.0.1.css">
-  <link rel="stylesheet" type="text/css" href="css/L.Markercluster-1.0.0.css">
-  <link rel="stylesheet" type="text/css" href="css/L.Compact.Attributions.css">
-  <link rel="stylesheet" type="text/css" href="css/L.Geocoder.Opencage-1.1.2.css">
-    
-   <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.6.css"> 
-<!--
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
--->
-  <link rel="stylesheet" type="text/css" href="css/L.Control.Sidebar-0.19a.css">
-  <link rel="stylesheet" type="text/css" href="css/L.Control.Locate.css">
-  <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker-4.17.37.css">
-  <link rel="stylesheet" type="text/css" href="css/bootstrap-select-1.9.4.css">
-  <link rel="stylesheet" type="text/css" href="css/bootstrap-tagsinput-0.4.3.css">
-  <link rel="stylesheet" type="text/css" href="css/bootstrap-horizon.css">
-  <link rel="stylesheet" type="text/css" href="css/bootstrap-datatables-1.10.11.css">
-  <link rel="stylesheet" type="text/css" href="css/bootstrap-tour-0.10.1.css">
-  <link rel="stylesheet" type="text/css" href="css/trashbag.css">
-  <link rel="stylesheet" type="text/css" href="css/L.Draw-0.2.4.css">
-  <link rel="stylesheet" type="text/css" href="css/main.css">
-  <link rel="stylesheet" type="text/css" href="css/map.css">
-  <link rel="stylesheet" type="text/css" href="css/markers.css">
+    <!-- Mobile stuff -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#00000">
+    <meta name="msapplication-navbutton-color" content="#00000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#00000">
+    <!-- inject:head:css:styles -->
+    <!-- endinject -->
 
-  <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
-  <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
-  <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
-  <script type="text/javascript" src="js/libs/bootstrap-datetimepicker-4.17.37.js"></script>
-  <script type="text/javascript" src="js/libs/bootstrap-3.3.6.js"></script>
-<!--
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
--->
-  <script type="text/javascript" src="js/libs/bootstrap-select-1.9.4.js"> </script>
-  <script type="text/javascript" src="js/libs/bootstrap-validator-0.9.0.js"></script>
-  <script type="text/javascript" src="js/libs/bootstrap-datatables-1.10.11.js"></script>
-  <script type="text/javascript" src="js/libs/bootstrap-tour-0.10.1.js"></script>
-  <script type="text/javascript" src="js/libs/jquery-ui-widget-1.11.4.js"></script>
-  <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
-  <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
+    <script type="text/javascript" src="js/libs/pace.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/pace.css" >
 
-  <script type="text/javascript" src="js/libs/leaflet-1.0.1.js"></script>    
-  <script type="text/javascript" src="js/libs/L.Hash.js"></script>
-  <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
-  <script type="text/javascript" src="js/libs/L.Markercluster-1.0.0.js"></script>
-  <script type="text/javascript" src="js/libs/L.Compact.Attributions.js"></script>
-  <script type="text/javascript" src="js/libs/L.Marker.Menu.js"></script>
-  <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
-  <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
-  <script type="text/javascript" src="js/libs/L.Draw-0.2.4.js"></script>
-  <script type="text/javascript" src="js/libs/L.Geocoder.Opencage-1.1.2.js"></script>
-  <script type="text/javascript" src="js/libs/L.Control.Locate.js"></script>
-  <script type="text/javascript" src="js/libs/L.Control.Login.js"></script>
-    
+
+    <link rel="stylesheet" type="text/css" href="css/font-awesome-4.5.0.css" >
+    <link rel="stylesheet" type="text/css" href="css/google-work-sans.css" >
+    <link rel="stylesheet" type="text/css" href="css/leaflet-1.0.1.css">
+    <link rel="stylesheet" type="text/css" href="css/L.Markercluster-1.0.0.css">
+    <link rel="stylesheet" type="text/css" href="css/L.Compact.Attributions.css">
+    <link rel="stylesheet" type="text/css" href="css/L.Geocoder.Opencage-1.1.2.css">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.6.css"> 
+    <!--
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    -->
+    <link rel="stylesheet" type="text/css" href="css/L.Control.Sidebar-0.19a.css">
+    <link rel="stylesheet" type="text/css" href="css/L.Control.Locate.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker-4.17.37.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-select-1.9.4.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-tagsinput-0.4.3.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-horizon.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datatables-1.10.11.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-tour-0.10.1.css">
+    <link rel="stylesheet" type="text/css" href="css/trashbag.css">
+    <link rel="stylesheet" type="text/css" href="css/L.Draw-0.2.4.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/map.css">
+    <link rel="stylesheet" type="text/css" href="css/markers.css">
+
+    <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
+    <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap-datetimepicker-4.17.37.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap-3.3.6.js"></script>
+    <!--
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+    -->
+    <script type="text/javascript" src="js/libs/bootstrap-select-1.9.4.js"> </script>
+    <script type="text/javascript" src="js/libs/bootstrap-validator-0.9.0.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap-datatables-1.10.11.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap-tour-0.10.1.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-ui-widget-1.11.4.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
+
+    <script type="text/javascript" src="js/libs/leaflet-1.0.1.js"></script>    
+    <script type="text/javascript" src="js/libs/L.Hash.js"></script>
+    <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
+    <script type="text/javascript" src="js/libs/L.Markercluster-1.0.0.js"></script>
+    <script type="text/javascript" src="js/libs/L.Compact.Attributions.js"></script>
+    <script type="text/javascript" src="js/libs/L.Marker.Menu.js"></script>
+    <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
+    <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
+    <script type="text/javascript" src="js/libs/L.Draw-0.2.4.js"></script>
+    <script type="text/javascript" src="js/libs/L.Geocoder.Opencage-1.1.2.js"></script>
+    <script type="text/javascript" src="js/libs/L.Control.Locate.js"></script>
+    <script type="text/javascript" src="js/libs/L.Control.Login.js"></script>
+
 </head>
 <body>
     
-<div id="topbar" class="topbar-container container">
-  
-</div><!-- Contents of the top bar -->
+<div id="topbar" class="topbar-container container"></div><!-- Contents of the top bar -->
 <div id="map" class="map-container"></div><!-- Map div -->
-<div id="sidebar" class="sidebar-container">
-    <div id="sidebar" class="sidebar-content-container"></div>
-</div><!-- Contents of the sidebar -->
+<div id="sidebar" class="sidebar-container"></div><!-- Contents of the sidebar -->
 <div id="bottombar" class="bottombar-container">
     <div id="bottombar-content-container"></div>    
 </div><!-- Contents of the bottom bar -->

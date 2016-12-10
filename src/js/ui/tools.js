@@ -254,7 +254,7 @@ var tools = {
             dropdown.removeClass('open');
             return;
         } 
-        // Custom code added in leaflet (edited out), so the map click is listened to here
+        // Custom code added in leaflet (edited out in L.Control.Layers), so the map click is bound here here
         if (!maps.layerscontrol.options.collapsed || layerscontrol.hasClass('leaflet-control-layers-expanded')) {
             maps.layerscontrol.collapse();
             return;
@@ -264,6 +264,8 @@ var tools = {
         if (ocdsearch.hasClass('leaflet-control-ocd-search-expanded')) {
             maps.geocodercontrol._collapse();
             L.DomEvent.stopPropagation(map);
+            // Force closing softkeyboard
+            $('.leaflet-control-ocd-search-form input').blur();
             return;
         }
         if (maps.locationcontrol._active || maps.locationcontrol._marker) {
@@ -307,6 +309,6 @@ var tools = {
         return true;
     },
     version: function() {
-        return 0.3
+        return "0.3.0"
     }
 };

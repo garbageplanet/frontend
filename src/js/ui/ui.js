@@ -360,6 +360,7 @@ var ui = (function(){
         },
         bindEvents = $(function() {
             
+            // TODO cache all jQuery selectors below
             var sidebarlink = $('.sidebar-link'),
                 menubacklink = $('.menu-backlink'),
                 usertools = $('#user-tools'),
@@ -383,7 +384,7 @@ var ui = (function(){
             });
 
             // Empty the sidebar on hide, reset accordion and reset scroll
-             ui.sidebar.on('hide', function () {
+             ui.sidebar.on('hide', function() {
 
                 $('.sidebar-content').hide();
                 $('.sidebar-container', '.sidebar-content').scrollTop = 0;
@@ -424,7 +425,7 @@ var ui = (function(){
 
             // BOTTOMBAR //////////////////////////////////////////////////////////////////
             // Events to execute when the bottombar is hidden
-            ui.bottombar.on('hide', function (e) {
+            ui.bottombar.on('hide', function(e) {
                 // force destroy the popup which hangs on certain tablets (tested on samsung w/ android) 
                 $('.btn-social').popover('destroy');
                 // reset any modals that was created
