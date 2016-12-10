@@ -129,8 +129,13 @@ var ui = (function(){
             
             // load the data from the options of the object
             var feature = obj,
-                featuredata = obj.options;
-            
+                featuredata = obj.options,
+                cleanedBtn = $('#feature-info').find('.btn-cleaned'),
+                confirmBtn = $('#feature-info').find('.btn-confirm-garbage'),
+                attendBtn = $('#feature-info').find('.btn-attend-cleaning'),
+                joinBtn= $('#feature-info').find('.btn-join-game'),
+                editBtn = $('#feature-info').find('.btn-edit'),
+                deleteBtn = $('#feature-info').find('.btn-delete')
 
             // if the data is passed from a server JSON response (attend, confirm ...) the actual data is in the direct object
             if (!featuredata) {
@@ -157,7 +162,7 @@ var ui = (function(){
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
             // the functions called down here are inside the file /map/features_actions.js
             // TODO make on event listener and then dispatch, modify bottom bar template
-            $('#feature-info').find('.btn-edit').on('click', function() {
+            editBtn.on('click', function() {
 
                 if (localStorage.getItem('token')) {
 
@@ -167,10 +172,10 @@ var ui = (function(){
                     alerts.showAlert(3, "warning", 2000);
                 }
             });
-            $('#feature-info').find('.btn-cleaned').on('click', function() {actions.cleanedGarbage(featuredata);});
-            $('#feature-info').find('.btn-confirm-garbage').on('click', function() {actions.confirmGarbage(featuredata);});
-            $('#feature-info').find('.btn-attend-cleaning').on('click', function() {actions.attendCleaning(featuredata);});
-            $('#feature-info').find('.btn-participate-game').on('click', function() {actions.participateGame(featuredata);});
+            cleanedBtn.on('click', function() {actions.cleanedGarbage(featuredata);});
+            confirmBtn.on('click', function() {actions.confirmGarbage(featuredata);});
+            attendBtn.on('click', function() {actions.attendCleaning(featuredata);});
+            joinBtn.on('click', function() {actions.joinGame(featuredata);});
 
             // Event listener for share button and social links
             $('.btn-social').popover({
@@ -342,9 +347,9 @@ var ui = (function(){
             // Add the Leaflet UI controls to the map
             this.sidebar.addTo(maps.map);
             this.bottombar.addTo(maps.map);
-            // Fill the main sidebar template
+            // Fill the main topbar and sidebar template
+            document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', templates);
             document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
-            // Fill the credits
 
             // Fill the multiselect templates in the forms
             document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);

@@ -208,12 +208,14 @@ var actions = (function() {
             else {
 
                 alerts.showAlert(9, "danger", 3000);
+                return;
             }   
         },
         confirmGarbage = function(e) {
 
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
+                return;
 
             } else {
 
@@ -318,10 +320,12 @@ var actions = (function() {
                 else {
                     ui.bottombar.hide();
                     alerts.showAlert(0, "danger", 2500);
+                    return;
                 }
             } else {
-                    ui.bottombar.hide();
-                    alerts.showAlert(10, "warning", 2500);
+                ui.bottombar.hide();
+                alerts.showAlert(10, "warning", 2500);
+                return;
             }
         },
         attendCleaning = function(e) {
@@ -329,6 +333,7 @@ var actions = (function() {
             if (!localStorage.getItem('token')){
 
                 alerts.showAlert(3, "info", 2000);
+                return;
             }
 
             else {
@@ -350,20 +355,20 @@ var actions = (function() {
                             features.loadCleaningMarkers();
                         },
                         error: function (err) {
-
                             alerts.showAlert(10, "info", 2000);                
                         }
                     });
                 }, 100);
             }
         },
-        participateGame = function() {},
+        joinGame = function() {},
         cleanedGarbage = function(e) {
             // TODO Finish this
             // TODO make session-dependant and allow once per user per marker
             if (!localStorage.getItem('token')){
 
-                alerts.showAlert(3, "info", 2000);  
+                alerts.showAlert(3, "info", 2000);
+                return;
             }
 
             else {
@@ -382,10 +387,13 @@ var actions = (function() {
                             'clean': 1 
                         },
                         success: function(data) {
-                            // TODO reload the markers to display change
+                            // TODO reload the markers and bottombar to display change
                             console.log('success data', data);
                         },
-                        error: function(err) {console.log('err', err);}
+                        error: function(err) {
+                            alerts.showAlert(2, "info", 2000);
+                            console.log('err', err);
+                        }
                   });
                 }, 100);
             }
@@ -444,7 +452,7 @@ var actions = (function() {
         confirmGarbage: confirmGarbage,
         deleteFeature: deleteFeature,
         attendCleaning: attendCleaning,
-        participateGame: participateGame,
+        joinGame: joinGame,
         cleanedGarbage: cleanedGarbage,
         passMarkerToForm: passMarkerToForm,
         tempmarkers: tempmarkers,

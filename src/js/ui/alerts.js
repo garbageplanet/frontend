@@ -2,7 +2,7 @@
 
 var alerts = {
     
-    texts : [
+    strings : [
         // current items 0-31 add new fields at the end
         "You cannot delete features you did not create",
         "Sorry, something went wrong with the server",
@@ -45,7 +45,7 @@ var alerts = {
             var errorType = "info";
         }
 
-        var errorMessage = this.texts[errorCode];
+        var errorMessage = this.strings[errorCode];
         var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
 
         $(".alert-container").prepend(alertMessage);
