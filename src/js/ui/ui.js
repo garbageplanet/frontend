@@ -1,7 +1,7 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 
 /**
-* User interface that don't happen directly on the map
+* User interfaces that don't happen directly on the map
 */
 var ui = (function(){
     
@@ -130,20 +130,18 @@ var ui = (function(){
             // load the data from the options of the object
             var feature = obj,
                 featuredata = obj.options,
-                cleanedBtn = $('#feature-info').find('.btn-cleaned'),
-                confirmBtn = $('#feature-info').find('.btn-confirm-garbage'),
-                attendBtn = $('#feature-info').find('.btn-attend-cleaning'),
-                joinBtn= $('#feature-info').find('.btn-join-game'),
-                editBtn = $('#feature-info').find('.btn-edit'),
-                deleteBtn = $('#feature-info').find('.btn-delete')
+                featureInfo;
 
-            // if the data is passed from a server JSON response (attend, confirm ...) the actual data is in the direct object
+            // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the direct object
             if (!featuredata) {
                 featuredata = obj;
             }
 
             // Fill the template data
-            document.getElementById('bottombar-content-container').innerHTML = tmpl('tmpl-feature-info', featuredata);
+            document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
+            
+            // Set the vars after loading the template
+            featureInfo = $('#feature-info');
 
             // Create the templateData.social data dynamically before calling the template
             // The function shareThisFeature() is in the file /social/share.js
@@ -151,32 +149,55 @@ var ui = (function(){
             document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
 
             // TODO use bottombar.getContent() in conjunction with template creation above
-            ui.bottombar.show($('#feature-info').fadeIn());
+            ui.bottombar.show(featureInfo.fadeIn());
 
             // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
             if (featuredata.image_url) {
 
                 var image_url_insert = tools.insertString(featuredata.image_url, 26, 'b');
-                $('#feature-info').find('.feature-image').attr('src', image_url_insert);
+                featureInfo.find('.feature-image').attr('src', image_url_insert);
             }
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
-            // the functions called down here are inside the file /map/features_actions.js
-            // TODO make on event listener and then dispatch, modify bottom bar template
-            editBtn.on('click', function() {
-
-                if (localStorage.getItem('token')) {
-
-                    actions.editFeature(featuredata);
-
-                } else {
-                    alerts.showAlert(3, "warning", 2000);
+            $('#feature-info .btn').on('click', function(e){
+                
+                var ct = e.target.className;
+                console.log(ct);
+                
+                if(ct.match(/(cleaned|check)/)) {
+                    actions.cleanedGarbage(featuredata);
+                    return;
                 }
-            });
-            cleanedBtn.on('click', function() {actions.cleanedGarbage(featuredata);});
-            confirmBtn.on('click', function() {actions.confirmGarbage(featuredata);});
-            attendBtn.on('click', function() {actions.attendCleaning(featuredata);});
-            joinBtn.on('click', function() {actions.joinGame(featuredata);});
+                if(ct.match(/(confirm|binoculars)/)) {
+                    actions.confirmGarbage(featuredata);
+                    return;
+                }
+                if(ct.match(/(group|attend)/)) {
+                    actions.attendCleaning(featuredata);
+                    return;
+                }
+                if(ct.match(/(join|play)/)) {
+                    actions.joinGame(featuredata);
+                    return;
+                }
+                if(ct.match(/(times|delete)/)) {
+                    // Pass the full leaflet object to delete method
+                    actions.deleteFeature(feature);
+                    return;
+                }
+                if(ct.match(/(pencil|edit)/)) {
+                    if (localStorage.getItem('token')) {
+                        
+                        actions.editFeature(featuredata);
+                        return;
 
+                    } else {
+                        alerts.showAlert(3, "warning", 2000);
+                        return;
+                    }
+                }
+                else return;
+            });
+             
             // Event listener for share button and social links
             $('.btn-social').popover({
                 html : true, 
@@ -185,88 +206,54 @@ var ui = (function(){
                 content: function() {return $('#social-links').html();},
                 template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
             });
-            // Event listener to look at the game results
-            // TODO if user_id isn't in result list, prevent action
-            /* $('.game-results-modal-link').on('click', function () {
-
-                var user_id = localStorage.getItem['userid'],
-                    // TODO, query the api with credentials to generate the list of users for this game tile by retrieving the data with the tile's title
-                    // the function called is in /social/game.js
-                    game_list = game.getPlayers(featuredata.title);
-
-                if (user_id in game_list) {
-                    // call to the game api, check that user making request is in the list on the server
-                    // build the results object (gamedata) and fill the template
-                    var gameResults = tmpl('tmpl-game-results', gamedata);
-
-                    $('body').append(gameResults);
-                }
-
-                else {
-
-                    alerts.showAlert(8, "warning", 2000);
-                    return;
-                }
-            });*/
-
-            // Event listener for delete button
-            $('#feature-info').find('.btn-delete').on('click', function (e) {
-                e.preventDefault();
-                // Pass the full leaflet object to delete method
-                actions.deleteFeature(feature);
-            });
         },
         makeModal = function(type, arr) {
         
-            var template, 
-                modaltmplclass, 
-                modaltableclass, 
+            var template,
+                modaltmplclass,
+                modaltableclass,
                 modaltablebodyclass;
 
-            console.log("array data: ", arr);
-
-            if (typeof arr !== 'undefined' && arr.length > 0) {
-
-                if (type == 'garbage') {
-                    template = '<div id="modal-data" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">View and download data from garbagepla.net</h4></div><div class="modal-body"><table id="modal-garbage-table" class="table-striped table-condensed"><thead><tr><th>Feature id</th><th>Coordinates</th><th>Amount</th><th>Garbage types</th></tr></thead><tbody id="modal-garbage-table-body"></tbody></table></div><div class="modal-footer"><a class="disabled pull-left" href="#">Get the full data</a><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
-                }
-
-                if (type == 'cleaning') {
-                    template = '<div id="modal-calendar" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Cleaning events calendar</h4></div><div class="modal-body"><table id="modal-calendar-table" class="table-striped table-condensed"><thead><tr><th>Event id</th><th>Date</th><th>Coordinates</th><th>Address</th></tr></thead><tbody id="modal-calendar-table-body"></tbody></table></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-calendar-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
-                }
-
-                if (type == 'game') {
-                    template = '<div id="modal-calendar" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Cleaning events calendar</h4></div><div class="modal-body"><table id="modal-calendar-table" class="table-striped table-condensed"><thead><tr><th>Event id</th><th>Date</th><th>Coordinates</th><th>Address</th></tr></thead><tbody id="modal-calendar-table-body"></tbody></table></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-calendar-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
-                }
-
-                modaltmplclass      = 'tmpl-modal-' + type;
-                modaltableclass     = 'modal-'      + type + '-table';
-                modaltablebodyclass = 'modal-'      + type + '-table-body';
-
-                console.log(modaltablebodyclass);
-
-                $('body').append(template);
-                document.getElementById(modaltablebodyclass).innerHTML = tmpl(modaltmplclass, arr);
-                $("#modal-data").modal('show');
-                $(modaltableclass).DataTable();
-
-                $('#modal-data-load-more').on('click', function () {
-                    maps.map.setZoom(maps.map.getZoom() - 1);
-                    $('.modal-data-row').empty();
-                    // TODO reload the template with the new data after data has changed
-                    document.getElementById(modaltablebodyclass).innerHTML = tmpl(modaltmplclass, arr);
-                });
-
-                $('#modal-download').on('click', function (e) {
-                    console.log("DOWNLOAD BUTTON LCICKED");
-                    e.preventDefault;
-                    var stringdata = "text/json;charset=utf-8," + JSON.stringify(arr);
-                    this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));            
-                });
-
-            } else {
-                alerts.showAlert(29, "warning", 2000)
+            if (type == 'garbage') {
+                template = '<div id="modal-data" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">View and download data from garbagepla.net</h4></div><div class="modal-body"><table id="modal-garbage-table" class="table-striped table-condensed"><thead><tr><th>Feature id</th><th>Coordinates</th><th>Amount</th><th>Garbage types</th></tr></thead><tbody id="modal-garbage-table-body"></tbody></table></div><div class="modal-footer"><a class="disabled pull-left" href="#">Get the full data</a><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
             }
+
+            if (type == 'cleaning') {
+                template = '<div id="modal-calendar" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Cleaning events calendar</h4></div><div class="modal-body"><table id="modal-calendar-table" class="table-striped table-condensed"><thead><tr><th>Event id</th><th>Date</th><th>Coordinates</th><th>Address</th></tr></thead><tbody id="modal-calendar-table-body"></tbody></table></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-calendar-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
+            }
+
+            if (type == 'game') {
+                template = '<div id="modal-game" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Paste in your game secret</h4></div><div class="modal-body"><input></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-game-submit" type="button" class="btn btn-success pull-right ">Join!</button></form></div></div></div></div>';
+            }
+            
+            if (typeof arr == 'undefined' && type != 'game') {
+                alerts.showAlert(29, "warning", 2000);
+                return;
+            }
+
+            modaltmplclass      = 'tmpl-modal-' + type;
+            modaltableclass     = 'modal-'      + type + '-table';
+            modaltablebodyclass = 'modal-'      + type + '-table-body';
+
+            console.log(modaltablebodyclass);
+
+            $('body').append(template);
+            document.getElementById(modaltablebodyclass).innerHTML = tmpl(modaltmplclass, arr);
+            $("#modal-data").modal('show');
+            $(modaltableclass).DataTable();
+
+            $('#modal-data-load-more').on('click', function () {
+                maps.map.setZoom(maps.map.getZoom() - 1);
+                $('.modal-data-row').empty();
+                // TODO reload the template with the new data after data has changed
+                document.getElementById(modaltablebodyclass).innerHTML = tmpl(modaltmplclass, arr);
+            });
+
+            $('#modal-download').on('click', function (e) {
+                e.preventDefault;
+                var stringdata = "text/json;charset=utf-8," + JSON.stringify(arr);
+                this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));            
+            });
         },    
         checkMobile = function() {
             
@@ -453,11 +440,15 @@ var ui = (function(){
 
                 if ($(this).hasClass('modal-list-garbage')){
                     // Passing the garbage array in the current screen to the function
-                    makeModal('garbage', features.garbageArray());
+                    ui.makeModal('garbage', features.garbageArray());
                 } 
 
                 if ($(this).hasClass('modal-list-cleaning')) {
-                    makeModal('cleaning', features.cleaningArray());
+                    ui.makeModal('cleaning', features.cleaningArray());
+                }
+                
+                if ($(this).hasClass('btn-join-game')) {
+                    ui.makeModal('game', data);
                 }
 
             });

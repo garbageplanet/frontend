@@ -4,14 +4,10 @@
 * User actions on the map and on features that are already present
 */
 
-
-// FIXME:
-// stop using L.layergroup or featuregroup with unsaved markers, that's why they catch the same colors XD
-
 var actions = (function() {
     
     'use strict';
-    // TODO, switch back to using a layerGroup fo unsaved markers so we can easily clear the markers form the map
+
     var tempmarkers = [],
         mapClick = function(map) {
             
@@ -180,12 +176,13 @@ var actions = (function() {
             // TODO fill the form templates with the current marker data
             // TODO more secure way to restrict edition, must match current session token with id in backend
             // TODO Push the data to the form on .btn-edit click (requires to build all forms with templates)
-            var userid = localStorage.getItem('userid');
+            var userid = localStorage.getItem('userid'),
+                useridmatch = e.created_by;
 
-            // FIXME use ===
-            if (userid == e.marked_by) {
+            if (userid == useridmatch) {
 
                 ui.bottombar.hide();
+                // TEMPORARY warning about edit system
                 alerts.showAlert(11, "warning", 3000);
 
                 if (e.feature_type === 'marker_garbage') {
@@ -220,6 +217,7 @@ var actions = (function() {
             } else {
 
                 var callurl = null;
+                
                 if (e.feature_type === 'marker_garbage') {
                     callurl = api.confirmTrash.url(e.id);
                 }
@@ -361,7 +359,11 @@ var actions = (function() {
                 }, 100);
             }
         },
-        joinGame = function() {},
+        joinGame = function(e) {
+            // get the userid
+            // check with backend if registered in area
+            // allow to join
+        },
         cleanedGarbage = function(e) {
             // TODO Finish this
             // TODO make session-dependant and allow once per user per marker

@@ -13,7 +13,7 @@ var saving = (function(){
     // TODO get the vars from marker obj
     var activate = $(function(){
         
-            // FIXME
+            // FIXME this ain't working
             /*var validateForm = function () {
 
                 $('.form-feature').on('submit', function(e){
@@ -123,6 +123,7 @@ var saving = (function(){
             }, 100);
         },
         saveCleaning = function(e) {
+            // FIXME add location/address for meetup
 
             e.preventDefault();
 
@@ -139,6 +140,10 @@ var saving = (function(){
             note = $(this).find('.cleaning-note').val() || '';
             latlng = $(this).find('.cleaning-latlng').val();
             eventRecurrence = $(this).find('.selectpicker.cleaning-recurrent-select option:selected').val();
+            
+            console.log(dateTime);
+            console.log(latlng);
+            console.log(eventRecurrence);
 
             if (!latlng || !dateTime) {
                 alerts.showAlert(10, "danger", 1500);
@@ -346,6 +351,5 @@ var saving = (function(){
         saveCleaning: saveCleaning,
         saveLitter: saveLitter,
         saveArea: saveArea,
-        init: activate,
     };
 }());
