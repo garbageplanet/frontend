@@ -10,9 +10,9 @@ Just open /src/index.html in your browser. If you want to build for distribution
 All contributions are welcome. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### FIXME
-- [ ] remove unsaved marker icons once maker is saved
+- [ ] remove unsaved marker icons once marker is saved
 - [ ] fix marker creation when multiple unsaved marker are present on map
-- [ ] bootstrap form validation - disallow submit button until ok (currently only add class `disabled` to submit button)
+- [ ] bootstrap form validation - disallow submit button until ok (currently only adds class `disabled` to submit button)
 - [ ] make css rules for devices 768 - 960px and add rules for device height
 
 ### TODO
@@ -24,8 +24,9 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 #### Upgrade
 - [ ] modularize?
 - [ ] optimize loading (see google page speed results)
-- [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)
-- [ ] custom builds (Bootstrap, FontAwesome,Leaflet, jQuery, or try tree-shake)
+- [ ] move to bootstrap 4 and make custom build with [cards](http://v4-alpha.getbootstrap.com/components/card)?
+- [ ] get rid of jqeury and BS?
+- [ ] custom builds (Bootstrap, FontAwesome,Leaflet, jQuery, or try tree-shake?)
 
 ### Licence
 This code is available under the ISC licence but some parts have a different license information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).

@@ -209,44 +209,55 @@ var ui = (function(){
         },
         makeModal = function(type, arr) {
         
-            var template,
-                modaltmplclass,
-                modaltableclass,
-                modaltablebodyclass;
-
-            if (type == 'garbage') {
-                template = '<div id="modal-data" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">View and download data from garbagepla.net</h4></div><div class="modal-body"><table id="modal-garbage-table" class="table-striped table-condensed"><thead><tr><th>Feature id</th><th>Coordinates</th><th>Amount</th><th>Garbage types</th></tr></thead><tbody id="modal-garbage-table-body"></tbody></table></div><div class="modal-footer"><a class="disabled pull-left" href="#">Get the full data</a><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
-            }
-
-            if (type == 'cleaning') {
-                template = '<div id="modal-calendar" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Cleaning events calendar</h4></div><div class="modal-body"><table id="modal-calendar-table" class="table-striped table-condensed"><thead><tr><th>Event id</th><th>Date</th><th>Coordinates</th><th>Address</th></tr></thead><tbody id="modal-calendar-table-body"></tbody></table></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-calendar-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
-            }
-
-            if (type == 'game') {
-                template = '<div id="modal-game" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Paste in your game secret</h4></div><div class="modal-body"><input></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-game-submit" type="button" class="btn btn-success pull-right ">Join!</button></form></div></div></div></div>';
-            }
+            console.log(type);
+            console.log(arr);
             
-            if (typeof arr == 'undefined' && type != 'game') {
+            var template,
+                modaltmplname,
+                modaltableid,
+                modaltablebodyid,
+                modalid,
+                datatableoptions = {
+                    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+                    scrollY:        '50vh',
+                    scrollCollapse: true,
+                    paging:         false
+                };
+            
+            if (arr.length < 1 && type != 'game') {
                 alerts.showAlert(29, "warning", 2000);
                 return;
             }
 
-            modaltmplclass      = 'tmpl-modal-' + type;
-            modaltableclass     = 'modal-'      + type + '-table';
-            modaltablebodyclass = 'modal-'      + type + '-table-body';
+            if (type.indexOf('garbage') > -1 ) {
+                template = '<div id="modal-garbage" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">View and download data from garbagepla.net</h4></div><div class="modal-body"><table id="modal-garbage-table" class="table-striped table-condensed"><thead><tr><th>Feature id</th><th>Coordinates</th><th>Amount</th><th>Garbage types</th></tr></thead><tbody id="modal-garbage-table-body"></tbody></table></div><div class="modal-footer"><a class="disabled pull-left" href="#">Get the full data</a><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
+            }
 
-            console.log(modaltablebodyclass);
+            // FIXME add the address fields to the data and put <th>Address</th> back in the table
+            if (type.indexOf('cleaning') > -1) {
+                template = '<div id="modal-cleaning" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Cleaning events calendar</h4></div><div class="modal-body"><table id="modal-cleaning-table" class="table-striped table-condensed"><thead><tr><th>Event id</th><th>Date</th><th>Coordinates</th></tr></thead><tbody id="modal-cleaning-table-body"></tbody></table></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-cleaning-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
+            }
+
+            if (type.indexOf('game') > -1 ) {
+                template = '<div id="modal-game" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Paste in your game secret</h4></div><div class="modal-body"><input></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-game-submit" type="button" class="btn btn-success pull-right ">Join!</button></form></div></div></div></div>';
+            }
+            
+            modalid          = '#modal-'     + type;
+            modaltmplname    = 'tmpl-modal-' + type;
+            modaltableid     = '#modal-'     + type + '-table';
+            modaltablebodyid = 'modal-'      + type + '-table-body';
 
             $('body').append(template);
-            document.getElementById(modaltablebodyclass).innerHTML = tmpl(modaltmplclass, arr);
-            $("#modal-data").modal('show');
-            $(modaltableclass).DataTable();
+            document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
+            $(modalid).modal('show');
+            $(modaltableid).DataTable(datatableoptions);
 
             $('#modal-data-load-more').on('click', function () {
                 maps.map.setZoom(maps.map.getZoom() - 1);
                 $('.modal-data-row').empty();
-                // TODO reload the template with the new data after data has changed
-                document.getElementById(modaltablebodyclass).innerHTML = tmpl(modaltmplclass, arr);
+                // TODO use the api to add row dymagically
+                document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
+                $(modaltableid).DataTable(datatableoptions);
             });
 
             $('#modal-download').on('click', function (e) {
