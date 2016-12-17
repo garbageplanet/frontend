@@ -82,6 +82,7 @@ body {
 .navbar-brand-name {
     font-size: 25px;
     font-weight: 200;
+    color: #000
 }
 
 .modal-link {
@@ -309,28 +310,43 @@ body {
   display: none;
 }
 
+/* Style cards for each box in bottom panel */
+.card {
+    border-radius: 1px;
+    background: #FFF;
+    margin: 10px 10px;
+    box-shadow: 0 2px 1px 0 rgba(0,0,0,0.5);
+    height: 275px !important;
+}
+
+/* Center actions button inside card */
+
+.card-actions {
+        max-width: 60px;
+
+}
+.card-actions > .btn-group-vertical {
+    padding-top: 50%;
+    padding-bottom: 50%;
+}
+
 .card div.panel.panel-default {
   margin-bottom: 2px !important;
   margin-top: 2px !important;
   border: 0 !important;
   box-shadow: none !important;
+  border-radius: 0;
 }
 
 .card .panel .panel-body {
   padding: 2px !important;
+    border-radius: 0;
 }
 
-.card-actions {
-  margin-top: 20px !important;
-}
-
-/* Media rules for cards height 
-* This is a hack, change this
-* when moving to bootstrap v4
-*/
-@media (min-width: 768px)  {
+/* Media rules for cards height */
+@media (max-width: 767px)  {
    .card {
-      height: 270px;
+      height: 45vh !important;
    }
 }
 
@@ -340,7 +356,14 @@ body {
   background: #000;
   position: absolute;
   top: 0px;
-  right: -5px;
+  right: -20px;
+}
+
+/* Force min-size for buttons in bottom bar */
+/* this doesnt work, must edit out the max-width 100% in bootstrap 3.3.6 source l. 3119*/
+group-vertical > .btn-group > .btn {
+    max-width: 50px !important;
+    min-width: 50px !important;
 }
 
 /* Style the sidebar */

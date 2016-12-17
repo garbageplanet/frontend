@@ -71,7 +71,7 @@ var social = (function () {
             feature_tags_encoded = encodeURIComponent(feature_tags);
 
             // Create the links in the templatedata object
-            network[0].targeturl = "https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=" + encoded_url + "&description=" + feature_note_encoded + "&link=" + encoded_url + "&picture=" + feature_image_url_encoded + "&name=Garbagepla.net&redirect_uri=https://www.garbagepla.net";
+            network[0].targeturl = "https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=" + encoded_url + "&description=" + feature_note_encoded + "&link=" + encoded_url + "&picture=" + feature_image_url_encoded + "&name=Garbagepla.net&redirect_uri=https://garbagepla.net";
             network[1].targeturl = "https://twitter.com/intent/tweet?text=Shared%20from%20www.garbagepla.net%20" + feature_note_encoded + "%20" + feature_tags_encoded + "%20" + encoded_url;
             network[2].targeturl = "https://plus.google.com/share?url=" + encoded_url;
             network[3].targeturl = "http://reddit.com/submit?url=" + encoded_url + "&title=Shared%20from%20www.garbagepla.net";

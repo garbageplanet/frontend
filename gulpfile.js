@@ -108,6 +108,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
 gulp.task('scripts:jquery', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/libs/pace.js',
+                    // './src/js/ui/init.js',
                     './src/js/libs/jquery-2.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',
@@ -170,7 +171,7 @@ gulp.task('injectFiles', ['scripts:all', 'styles'], function() {
   // Inject scripts
   // FIXME GA can't work with current CSP
     .pipe(inject(gulp.src('./dist/app.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
-    .pipe(injectStr.before('<link', "<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-88740066-1', 'auto');ga('send', 'pageview');</script>"))
+    // .pipe(injectStr.before('<link', "<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-88740066-1', 'auto');ga('send', 'pageview');</script>"))
     .pipe(gulp.dest('temp1/'));
 });
 
@@ -209,7 +210,13 @@ gulp.task('copy:media', ['clean:end'], function() {
 gulp.task('copy:favicon', ['clean:end'], function() {
     return gulp.src('./src/favicon.ico', {base: 'src/'})
       .pipe(gulp.dest('./dist'));
-})
+});
+
+gulp.task('copy:manifest', ['clean:end'], function() {
+    return gulp.src('./src/manifest.json', {base: 'src/'})
+      .pipe(gulp.dest('./dist'));
+});
+
 gulp.task('default', ['clean:start'], function() {
-    gulp.start('trimHTML', /*'replaceTokens',*/ 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'scripts:all' , 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon');
+    gulp.start('trimHTML', /*'replaceTokens',*/ 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'scripts:all' , 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon', 'copy:manifest');
 });

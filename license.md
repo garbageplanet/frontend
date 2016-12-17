@@ -1,10 +1,10 @@
 ## General license
 
 Copyright (C) 2016, Garbagepla.net
-https://www.garbagepla.net
+https://garbagepla.net
 [ISC](https://en.wikipedia.org/wiki/ISC_license) License
 
-If you are reusing the user interface as a whole, we ask that you use the credit “© Garbagepla.net” with a url to www.garbagepla.net somewhere in your credits or info view.
+If you are reusing the user interface as a whole, we ask that you use the credit “© Garbagepla.net” with a url to https://garbagepla.net somewhere in your credits or info view.
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 

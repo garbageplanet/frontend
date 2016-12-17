@@ -130,7 +130,7 @@ var ui = (function(){
             // load the data from the options of the object
             var feature = obj,
                 featuredata = obj.options,
-                featureInfo;
+                featureinfo;
 
             // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the direct object
             if (!featuredata) {
@@ -141,24 +141,43 @@ var ui = (function(){
             document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
             
             // Set the vars after loading the template
-            featureInfo = $('#feature-info');
-
-            // Create the templateData.social data dynamically before calling the template
-            // The function shareThisFeature() is in the file /social/share.js
-            social.shareThisFeature(featuredata);
-            document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
+            featureinfo = $('#feature-info');
 
             // TODO use bottombar.getContent() in conjunction with template creation above
-            ui.bottombar.show(featureInfo.fadeIn());
+            ui.bottombar.show(featureinfo.fadeIn());
 
             // Add an IMGUR api character to the url to fetch thumbnails to save bandwidth
             if (featuredata.image_url) {
 
                 var image_url_insert = tools.insertString(featuredata.image_url, 26, 'b');
-                featureInfo.find('.feature-image').attr('src', image_url_insert);
+                featureinfo.find('.feature-image').attr('src', image_url_insert);
             }
+            
+            // Create the templateData.social data dynamically before calling the template
+            // TODO only call these once share button is clicked
+            social.shareThisFeature(featuredata);
+            document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
+                         
+            // Event listener for share button and social links
+            $('.btn-social, fa-share-alt').popover({
+                trigger: 'focus',
+                html : true, 
+                container: 'body',
+                placement: function(pop){
+                    if (window.innerWidth < 560) {
+                        return 'top';
+                    } else {
+                        return 'right';
+                    }
+                },
+                content: function() {
+                    return $('#social-links').html();
+                },
+                template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
+            });
+            
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
-            $('#feature-info .btn').on('click', function(e){
+            $('.btn-feature').on('click', function(e){
                 
                 var ct = e.target.className;
                 console.log(ct);
@@ -196,15 +215,6 @@ var ui = (function(){
                     }
                 }
                 else return;
-            });
-             
-            // Event listener for share button and social links
-            $('.btn-social').popover({
-                html : true, 
-                container: 'body',
-                placement: function(pop){if (window.innerWidth < 560) {return 'top';} else {return 'right';}},
-                content: function() {return $('#social-links').html();},
-                template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
             });
         },
         makeModal = function(type, arr) {

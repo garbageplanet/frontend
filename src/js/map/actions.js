@@ -367,6 +367,7 @@ var actions = (function() {
         cleanedGarbage = function(e) {
             // TODO Finish this
             // TODO make session-dependant and allow once per user per marker
+            // TODO change the value of the todo field to 'this has been cleaned already'
             if (!localStorage.getItem('token')){
 
                 alerts.showAlert(3, "info", 2000);
