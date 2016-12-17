@@ -121,6 +121,14 @@ body {
   color: orange;
 }
 
+/* logo */
+.logo-icon  {
+        filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=5, OffY=5,Color='#444')";
+        filter: url(#drop-shadow);
+-webkit-filter: drop-shadow(5px 5px 4px rgba(0,0,0,0.5));
+        filter: drop-shadow(5px 5px 4px rgba(0,0,0,0.5));
+}
+
 /* custom leaflet control classes */
 /* put the control buttons under the sideba shadow */
 .leaflet-top.leaflet-left {
