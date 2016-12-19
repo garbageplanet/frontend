@@ -323,15 +323,14 @@ body {
     border-radius: 1px;
     background: #FFF;
     margin: 10px 10px;
-    box-shadow: 0 2px 1px 0 rgba(0,0,0,0.5);
+    /* box-shadow: 0 2px 1px 0 rgba(0,0,0,0.5);*/ 
     height: 275px !important;
 }
 
 /* Center actions button inside card */
-
 .card-actions {
-        max-width: 60px;
-
+    max-width: 80px;
+    min-width: 70px;
 }
 .card-actions > .btn-group-vertical {
     padding-top: 50%;
@@ -364,7 +363,7 @@ body {
   background: #000;
   position: absolute;
   top: 0px;
-  right: -20px;
+  right: -10px;
 }
 
 /* Force min-size for buttons in bottom bar */
@@ -401,13 +400,13 @@ a.menu-backlink:hover {
 }
 
 /* Style the leaflet bar buttons and override defaut stlyes */
-
 .leaflet-top .fa {
     width: 40px;
     height: 40px;
     line-height: 40px;
     font-size: 19px;
     vertical-align: middle;
+    display: inline-block;
 }
 
 .leaflet-control-search .fa {

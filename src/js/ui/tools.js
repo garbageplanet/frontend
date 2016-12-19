@@ -277,23 +277,12 @@ var tools = {
             return;
         }
         
-        // this gives an error when calling from L.Markercluster, but see below
-        // putting the call in the reverse order does the same
-        if (map.target.getZoom() < 15) {
-            alerts.showAlert(15, "info", 1200);
-            return;
-        }
-        
-        if (map._zoom < 15) {
-            alerts.showAlert(15, "info", 1200);
-            return;
-        }
-        // Doing the below lets the clicks go through to the map when clicking on cluster markers
-        /*if (map) {
+        // Check the current zoom level and warn the user
+        if (map) {
                         
+            // If the map itself isn't the target it means a marker cluster was clicked
             if (!map.target) {
-                if (map.getZoom() < 15) {
-                    alerts.showAlert(15, "info", 1200);
+                if (map._zoom < 15) {
                     return;
                 }
             }
@@ -304,7 +293,7 @@ var tools = {
                     return;
                 }
             }
-        }*/
+        }
         
         return true;
     },

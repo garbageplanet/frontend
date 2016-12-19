@@ -203,6 +203,6 @@ var locating = (function (){
     
     // Locate upon hoisting the function if the current address bar doesn't have coordinates (e.g. redirect from facebook)
     if (!coordsinhrf) {
-        maps.map.locate();
+        maps.locationcontrol.start();
     }
 })();
