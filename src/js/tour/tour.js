@@ -35,6 +35,11 @@ var touring = (function(){
                 placement: 'right',
                 content: "One-click anonymous login!",
                 duration: 3000
+              },
+              {
+                content: 'You can use this platform in fullscreen mode by accessing the "save this website to your homepage" function in your mobile browser.',
+                duration: 7000,
+                orphan: true
               }
             ]
         }),

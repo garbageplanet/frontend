@@ -248,6 +248,8 @@
             L.DomUtil.removeClass(this._icon,'fa-arrow-left');
             L.DomUtil.addClass(this._icon,'fa-search');
             this.options.collapsed = true;
+            
+             $('.leaflet-control-ocd-search-form input').blur();
 
 		},
 

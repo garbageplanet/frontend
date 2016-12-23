@@ -123,11 +123,19 @@ body {
 
 /* logo */
 .logo-icon  {
+    height: 120px;
+    width: auto;
         filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=5, OffY=5,Color='#444')";
         filter: url(#drop-shadow);
 -webkit-filter: drop-shadow(5px 5px 4px rgba(0,0,0,0.5));
         filter: drop-shadow(5px 5px 4px rgba(0,0,0,0.5));
 }
+@media (max-width: 768px) {
+  .logo-icon {
+    height: 60px;
+  }
+}
+
 
 /* custom leaflet control classes */
 /* put the control buttons under the sideba shadow */
