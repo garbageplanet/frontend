@@ -115,68 +115,129 @@
 	}
 
 .leaflet-marker-cluster {
-    border-radius: 20px;
-	height: 30px;
-    width: 30px;
+    border-radius: 50%;
     text-align: center;
-    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+    display: block;    
+         filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+ -webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
       -o-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
     -moz-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
      -ms-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
 	}
 
-.leaflet-marker-cluster-count {
-    display: inline-block;
-    font-weight: bolder;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    line-height: 40px;
-    height: auto;
-    margin-left: -20px;
-    margin-top: 3px;
+
+.leaflet-marker-cluster-icon {
+    color: #FFF;
+    display: block;
+    font-size: 25px;
+    font-style: normal;
+    left: 0;
     position: absolute;
-    text-align: center;
     width: 40px;
-    z-index: 200;
+    z-index: 100;
 }
 
 .leaflet-marker-cluster-icon-garbage:before {
-    color: #FFF;
     content: '\e600';
-    display: inline-block;
     font-family: 'trashbag';
-    font-size: 25px;
-    font-style: normal;
-    margin-left: -13px;
-    margin-top: 0px;
-    position: absolute;
-    text-align: center;
-    z-index: 100;
 }
 
 .leaflet-marker-cluster-icon-cleaning:before {
-    color: #FFF;
     content: '\f133';
     font-family: 'FontAwesome';
-    font-size: 25px;
-    font-style: normal;
-    z-index: 100;
 }
 
 .leaflet-marker-cluster-cleaning {
     background-color: #33cccc;
 }
 
-.leaflet-marker-cluster-count-cleaning {
-    color: #FFF;
+.leaflet-marker-cluster-count {
+    display: block;
     font-weight: bolder;
-	font-size: 14px;
     font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    line-height: 40px;
-    height: auto;
-    margin-left:-8px;
-    margin-top: 1px;
+    text-align: center;
+    left: 0;
+    line-height: 45px;
     position: absolute;
+    text-align: center;
     width: 40px;
     z-index: 200;
 }
+
+.leaflet-marker-cluster-count-garbage {
+    margin-left: 0;
+}
+
+.leaflet-marker-cluster-count-cleaning {
+    margin-left: 0;
+    color: #FFF;
+}
+
+/* Icon styling and sizing according to zoom */
+.z6 .map-marker, 
+.z5 .map-marker, 
+.z4 .map-marker, 
+.z3 .map-marker, 
+.z2 .map-marker, 
+.z1 .map-marker, 
+.z0 .map-marker {display: none;}
+
+.z7 .map-marker, 
+.z8 .map-marker,
+.z9 .map-marker, 
+.z10 .map-marker {
+  font-size:9px;
+  width:14px !important;
+  height:14px !important;
+  padding-left: 0px;
+  padding-bottom: 1px;
+}
+.z11 .map-marker, 
+.z12 .map-marker, 
+.z13 .map-marker {
+  font-size:12px;
+  width:20px !important;
+  height:20px !important;
+}
+.z14 .map-marker {
+  font-size:14px;
+  width:24px !important;
+  height:24px !important;
+  padding-top: 1px;
+}
+.z15 .map-marker {
+  font-size:20px;
+  width:33px !important;
+  height:33px !important;
+  padding-top: 2px;
+}
+.z16 .map-marker {
+  font-size:20px;
+  width:36px !important;
+  height:36px !important;
+  padding-top: 3px;
+}
+
+.z17 .map-marker,
+.z18 .map-marker {
+  font-size:21px;
+  width:38px !important;
+  height:38px !important;
+  padding-top: 4px;
+  padding-left: 1px;
+}
+
+/* Styling trashbins icons */
+.z0 .marker-nearby-trashbin,
+.z1 .marker-nearby-trashbin,
+.z2 .marker-nearby-trashbin,
+.z3 .marker-nearby-trashbin, 
+.z4 .marker-nearby-trashbin,
+.z5 .marker-nearby-trashbin,
+.z6 .marker-nearby-trashbin,
+.z7 .marker-nearby-trashbin,
+.z8 .marker-nearby-trashbin,
+.z9 .marker-nearby-trashbin,
+.z10 .marker-nearby-trashbin,
+.z11 .marker-nearby-trashbin,
+.z12 .marker-nearby-trashbin {display: none !important;}

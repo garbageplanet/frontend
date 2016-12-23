@@ -55,8 +55,8 @@ var maps = (function (){
                 var childCountText = cluster.getChildCount();
 
                 return L.divIcon({
-                    html:   '<div><span class="leaflet-marker-cluster-count-cleaning">' + childCountText + 
-                            '</span><i class="leaflet-marker-cluster-icon-cleaning"></i></div>', 
+                    html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-cleaning">' + childCountText + 
+                            '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-cleaning"></i></div>', 
                     className: 'leaflet-marker-cluster leaflet-marker-cluster-cleaning',
                     iconSize: [40,40]
                 });
@@ -94,7 +94,6 @@ var maps = (function (){
             layerscontrol.addTo(maps.map);
             geocodercontrol.addTo(maps.map);
 
-
             // Add a glome anonymous login button on mobile and small screens
             if (window.innerWidth < 768) {
                 if (!maps.map.glomelogincontrol) {
@@ -109,6 +108,9 @@ var maps = (function (){
                 $('.leaflet-control-zoom-in').append('<span class="fa fa-fw fa-plus"></span>');
                 $('.leaflet-control-zoom-out').append('<span class="fa fa-fw fa-minus"></span>');
             }
+            
+            maps.map.on('locationerror', locating.onLocationError);
+            maps.map.on('locationfound', locating.onLocationFound);
         },
         icons = (function (){
 
@@ -141,10 +143,13 @@ var maps = (function (){
             }
         })(),
         localTrashBins = function() {
-            maps.osmTrashbinLayer = new L.OverPassLayer({
+            // load trashbins icons on the map
+            var osmTrashbinLayer = new L.OverPassLayer({
                 query: '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;'
             });
-            maps.map.addLayer(maps.osmTrashbinLayer);
+            maps.map.addLayer(osmTrashbinLayer);
+            // TODO stop the function call on map move
+            // add event on trashbins icon click
         };
     
     return {
@@ -167,42 +172,41 @@ var maps = (function (){
     
 }());
 
-maps.init();
-
-// Request location update and set location if the address bar doesn't already contain a location at startup
-var locating = (function (){
+var locating = (function() {
     
-    var coordsinhrf = window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
-    
-        checkHref = function () {
-        if (!coordsinhrf) {
-            maps.locationcontrol.start();
-        }   
-    },
+    var checkHref = function() {
+            if (!tools.coordsinhrf || tools.coordsinhrf == 'undefined') {
+                console.log('no coords in href calling locationcontrol.start');
+                maps.locationcontrol.start();
+            }   
+        },
         onLocationFound = function (e) {
-        maps.map.setView(e.latlng, 18);
-    },
+            maps.map.setView(e.latlng, 18);
+        },
         onLocationError = function (e) {
-      
-        alerts.showAlert(16, "warning", 2000);
-    
-        if (coordsinhrf) {
-            maps.locationcontrol.stop();
-        }
-        // Show the world on localization fail
-        else {
-            maps.map.setView([0, 0], 2);
-            // shortcut but ugly:
-            // maps.map.fitWorld();
-        }
-    
-    };
-    
-    maps.map.on('locationerror', onLocationError);
-    maps.map.on('locationfound', onLocationFound);
-    
-    // Locate upon hoisting the function if the current address bar doesn't have coordinates (e.g. redirect from facebook)
-    if (!coordsinhrf) {
-        maps.locationcontrol.start();
+
+            alerts.showAlert(16, "warning", 2000);
+
+            if (tools.coordsinhrf) {
+                console.log('catching coors in href');
+                maps.locationcontrol.stop();
+            }
+            // Show the world on localization fail
+            else {
+                maps.locationcontrol.stop();
+                maps.map.setView([0, 0], 2);
+                // shortcut but ugly:
+                // maps.map.fitWorld();
+            }
+        };
+
+    return {
+        checkHref: checkHref,
+        onLocationError: onLocationError,
+        onLocationFound: onLocationFound,
     }
-})();
+}());
+
+maps.init();
+// Start geolocalizing
+locating.checkHref();

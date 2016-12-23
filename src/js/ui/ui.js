@@ -484,8 +484,7 @@ var ui = (function(){
         pushDataToBottomPanel: pushDataToBottomPanel,
         makeModal: makeModal,
         checkMobile: checkMobile,
-    };
-    
+    };    
 }());
 
 ui.init();

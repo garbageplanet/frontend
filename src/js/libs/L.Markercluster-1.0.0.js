@@ -781,8 +781,8 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
         }
         
 		return L.divIcon({
-            html:   '<div><span class="leaflet-marker-cluster-count">' + childCountText + 
-                    '</span><i class="leaflet-marker-cluster-icon-garbage"></i></div>', 
+            html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-garbage">' + childCountText + 
+                    '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-garbage"></i></div>', 
             className: 'leaflet-marker-cluster leaflet-marker-cluster-garbage' + c,
             iconSize: [40,40]
         });

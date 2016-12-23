@@ -299,5 +299,6 @@ var tools = {
     },
     version: function() {
         return "0.3.0"
-    }
+    },
+    coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
 };

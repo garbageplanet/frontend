@@ -459,8 +459,7 @@ var actions = (function() {
         cleanedGarbage: cleanedGarbage,
         passMarkerToForm: passMarkerToForm,
         tempmarkers: tempmarkers,
-        };
-    
+        };    
 }());
 
 maps.map.on('click', actions.mapClick);

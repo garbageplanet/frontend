@@ -74,7 +74,6 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/L.Control.Sidebar-0.19a.css',
                     './src/css/L.Control.Locate.css',
                     './src/css/main.css',
-                    './src/css/map.css',
                     './src/css/markers.css'
                   ])
       .pipe(concat('styles.min.css'))
