@@ -1,2 +1,0 @@
-// Pace.start();
-// GBPN = GBPN || {};

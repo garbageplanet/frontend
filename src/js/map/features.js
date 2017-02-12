@@ -4,16 +4,16 @@
 */
 
 // TODO make a prototype for getting data from api instead of four different functions
+// gbpn.features =
 var features =  (function(){
     
     "use strict";
     
-    // TODO, get the markers like this: http://stackoverflow.com/a/24342585
+    // TODO, get all the markers in current view like this: http://stackoverflow.com/a/24342585
+    // TODO make prototype and build the function from there instead of rewriting everything
     var garbageArray = [],
         cleaningArray = [],
-    
-    // TODO make prototype and build the function from there instead of rewriting everything
-        loadGarbageMarkers = function () {
+        loadGarbageMarkers = function() {
 
             // Empty the current arrayfor storing markers
             garbageArray = [];
@@ -21,7 +21,7 @@ var features =  (function(){
             setTimeout(function () {
 
                 // Store the current data into a new object
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
@@ -44,7 +44,7 @@ var features =  (function(){
                                     icon: maps.icons.garbageMarker,
                                     id: obj.id,
                                     amount: obj.amount,
-                                    types: obj.types.join(", "),
+                                    types: obj.types.join(', '),
                                     image_url: obj.image_url,
                                     latlng: obj.latlng,
                                     confirms: obj.confirms,
@@ -78,18 +78,18 @@ var features =  (function(){
                     },
                     error: function(data) {
                         console.log('Error getting garbage marker data', data);
-                        alerts.showAlert(10, "warning", 1500);
+                        alerts.showAlert(10, 'warning', 1500);
                     }
                 });
             }, 100);
     },
-        loadCleaningMarkers = function () {
+        loadCleaningMarkers = function() {
         
             cleaningArray = [];
 
             setTimeout(function () {
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
@@ -130,21 +130,23 @@ var features =  (function(){
                             });
                         });
                     },
-                    error: function(data) {console.log('Error getting cleaning event (marker) data', data);}
+                    error: function(data) {
+                      console.log('Error getting cleaning event (marker) data', data);
+                    }
                 });
             }, 200);
         },
-        loadAreas = function () {
+        loadAreas = function() {
         
             setTimeout(function () {
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
                     type: api.readAreaWithinBounds.method,
                     url: api.readAreaWithinBounds.url(tools.getCurrentBounds()),
-                    headers: {"Authorization": "Bearer " + useToken},
+                    headers: {"Authorization": 'Bearer ' + useToken},
                     success: function (data) {
 
                         maps.areaLayerGroup.clearLayers();
@@ -185,17 +187,17 @@ var features =  (function(){
                 });
             }, 400);
         },
-        loadLitters = function () {
+        loadLitters = function() {
         
             setTimeout(function () {
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
                     type: api.readLitterWithinBounds.method,
                     url: api.readLitterWithinBounds.url(tools.getCurrentBounds()),
-                    headers: {"Authorization": "Bearer " + useToken},
+                    headers: {"Authorization": 'Bearer ' + useToken},
                     success: function (data) {
 
                         maps.litterLayerGroup.clearLayers();
@@ -234,7 +236,9 @@ var features =  (function(){
                             });
                         });
                     },
-                    error: function (data) { console.log('Error getting litter (polyline) data', data);}
+                    error: function (data) {
+                      console.log('Error getting litter (polyline) data', data);
+                    }
                 });
             }, 300);
         },
@@ -243,15 +247,21 @@ var features =  (function(){
             loadCleaningMarkers(); 
             loadAreas();
             loadLitters();
-    };
+    }, 
+        naviguateFeatures = function(feature, direction) {
+            // TODO
+            // naviguate through the markers visible in currentView from the bottombar's  side buttons
+            // var coord = feature.latlng,
+                
+        };
     
     // Load everything on first load
-    maps.map.addOneTimeEventListener('ready', function () {
+    maps.map.addOneTimeEventListener('ready', function() {
         features.loadAllFeatures();
     });
     
     // then load markers conditionally
-    maps.map.on('dragend zoomend', function (e){
+    maps.map.on('dragend zoomend', function(e){
         console.log("map move: ", e);
 
         if (e.type === 'zoomend') {

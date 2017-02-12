@@ -1,0 +1,36 @@
+<script type="text/x-tmpl" id="tmpl-modal-og">
+  
+<div class="row">
+
+    <!-- open or hybrid Graph -->
+    {% if (o.openGraph.site_name) { %}
+        <h2>{%=o.openGraph.site_name%}
+        <small class="text-muted">{%=o.openGraph.url%}</small>
+        </h2>
+    {% } else { %}
+        <h2>{%=o.hybridGraph.site_name%}
+        <small class="text-muted">{%=o.hybridGraph.url%}</small>
+        </h2>
+    {% } %}
+  
+    {% if (o.openGraph.title) { %}
+        <h4>{%=o.openGraph.title%}</h4>
+    {% } else { %}
+          <h4>{%=o.hybridGraph.title%}</h4>
+    {% } %}
+  
+    {% if (o.openGraph.description) { %}
+        <p>{%=o.openGraph.description%}</p>
+    {% } else { %}
+        <p>{%=o.hybridGraph.description%}</p>
+    {% } %}
+  
+    {% if (o.openGraph.image) { %}
+        <img src="{%=o.openGraph.image%}" width="200px">
+    {% } else { %}
+        <img src="{%=o.hybridGraph.image%}" width="200px">
+    {% } %}
+          
+</div>
+  
+</script>

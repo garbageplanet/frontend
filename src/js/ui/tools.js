@@ -3,14 +3,14 @@ var tools = {
     makeEllipsis: function(obj, n) {
               return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
     }, // credit: http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
-    insertString: function (obj, index, string) {
+    insertString: function(obj, index, string) {
         
         if (index > 0) {
             return obj.substring(0, index) + string + obj.substring(index, obj.length);
         } else {
             return string + obj;
         }
-    },    
+    },
     setMarkerClassColor: function(c) {
 
         return c === 1  ? 'marker-color-limegreen'  :
@@ -34,11 +34,11 @@ var tools = {
                c === 3  ? '#FF4500' :
                c === 4  ? '#ff1a1a' :
                           '#e60073' ;
-    },    
+    },
     getCurrentBounds: function() {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         return bounds;
-    },    
+    },
     cloneLayer: function(layer) {
         
         // stripped down version of original function by @jieter
@@ -69,7 +69,7 @@ var tools = {
         }
 
         throw 'Unknown layer, cannot clone this layer';  
-    },    
+    },
     checkLayerContents: function(oldl, newl){
         
         // FIXME, this doesn't work because markers lose their event listerners and icons
@@ -103,7 +103,7 @@ var tools = {
                 return;
             }
         }
-    },    
+    },
     getVerticalOffset: function() {
     
         var vOffset = [0, 0];
@@ -125,8 +125,8 @@ var tools = {
         var hOffset = [0, 0];
         hOffset[0] = - $(window).width() / 6;
         return hOffset;
-    },    
-    getAllFeatures: function () {
+    },
+    getAllFeatures: function() {
         // Credit to https://github.com/kedar2a
         // http://stackoverflow.com/a/24342585
 
@@ -151,43 +151,43 @@ var tools = {
             animate: true,                     
             duration: 200,                    
             items: [
-                {   title: "Mark garbage",
-                    className: "create-dialog fa fa-fw fa-2x fa-marker-menu fa-map-marker",
+                {   title: 'Mark garbage',
+                    className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-map-marker',
                     href:'#create-garbage-dialog',
-                    // className: "icon-trashbag",
+                    // className: 'icon-trashbag',
                     // FIXME, if the link has the create-dialog classe, the shouldnt been need for event listernet function
                     click: function (e) {
                         e.preventDefault();
-                        ui.sidebar.show($("#create-garbage-dialog").show());
+                        ui.sidebar.show($('#create-garbage-dialog').show());
                     }
                 },
-                {   title: "Create a cleaning event",
-                    className: "create-dialog fa fa-fw fa-2x fa-marker-menu fa-calendar-o",
+                {   title: 'Create a cleaning event',
+                    className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-calendar-o',
                     href:'create-cleaning-dialog',
                     click: function (e) {
                         e.preventDefault();
-                        ui.sidebar.show($("#create-cleaning-dialog").show());
+                        ui.sidebar.show($('#create-cleaning-dialog').show());
                         // FIXME how to access marker menu from here?
                         // setTimeout(function () {marker.closeMenu();}, 400);
                     }
                 },
-                {   title: "Mark litter",
-                    className: "create-dialog fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h",
+                {   title: 'Mark litter',
+                    className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h',
                     href:'create-litter-dialog',
                     click: function (e) {
                         e.preventDefault();
-                        // ui.sidebar.show($("#create-litter-dialog").show());
+                        // ui.sidebar.show($('#create-litter-dialog').show());
                         // setTimeout(function () {marker.closeMenu();}, 400);
                     }
                 },
-                /*{   title: "Add an area",
-                    className: "create-dialog fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h",
-                    href:'create-area-dialog',
-                    click: function () {
-                        ui.sidebar.show($("#create-area-dialog").show());
-                        // setTimeout(function () {marker.closeMenu();}, 400);
+                {   title: 'Fetch from link',
+                    className: 'modal-link modal-link-og fa fa-fw fa-2x fa-marker-menu fa-link',
+                    href:'',
+                    click: function (e) {
+                        e.preventDefault();
+                        $('.modal-link-og').click();
                     }
-                }*/
+                }
             ],
         }),
     clearTempMarkerStyle: function(id) {
@@ -210,7 +210,7 @@ var tools = {
             }
         }
     },
-    bindTempMarkerEvents: function (id) {
+    bindTempMarkerEvents: function(id) {
         
         var marker = actions.tempmarkers[id],
             menubacklink = $('.menu-backlink'),
@@ -289,7 +289,7 @@ var tools = {
             
             if (map.target) {
                 if (map.target.getZoom() < 15) {
-                    alerts.showAlert(15, "info", 1200);
+                    alerts.showAlert(15, 'info', 1200);
                     return;
                 }
             }
@@ -298,7 +298,56 @@ var tools = {
         return true;
     },
     version: function() {
-        return "0.3.0"
+        return '0.3.0'
     },
     coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
+    token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw',
+    ogDotIoScraper: function(url) {
+
+        var ogdotiotoken = '5899e0ad4c09780e001df53b';
+
+        if (url) {
+            var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);
+            var request = $.ajax({
+                method: 'GET',
+                url: callurl,
+                data: jQuery.param({'app_id': ogdotiotoken}),
+                success: function(data) {
+                    console.log('ajax call pass', data);
+                    if (data.error) {
+                        alerts.showAlert(5, "danger", 3000);
+                        return;
+                    }
+                    if (data.openGraph.error = 'null' || !data.openGraph.error){
+                        console.log('Successfully retrieved OG data');
+                    }
+                },
+                error: function() {
+                    console.log('Error fetching og data');
+                    return;
+                }
+            });
+          
+            // Push the openg raph data to the modal
+            request.done(function(data) {
+              
+                console.log("request.done", data);
+                if (!data.error){
+                    // Load the data into the template
+                    var ogcontent = document.getElementById('og-content').innerHTML = tmpl('tmpl-modal-og', data);
+                    $('#modal-og-submit').removeClass('hidden');
+
+                    // TODO pass marker to forms with map.center() as coordinates
+                    // build a new object from data
+                    // actions.passMarkerToForm(newobj);
+                }
+                else { return; }
+          });
+        }
+      
+        else {  
+            alerts.showAlert(5, "warning", 2000);
+            return;
+        }
+    }
 };

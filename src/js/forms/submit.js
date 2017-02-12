@@ -4,15 +4,12 @@
 * Saving forms data to the backend
 */
 
-window.token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw';
-// for production build purpose window.token = '@@windowToken';
-
 // Save features on the map
-var saving = (function(){
-    
-    // TODO get the vars from marker obj
-    var activate = $(function(){
+var saving = (function (){
         
+    // TODO get the vars from marker obj
+    
+    var bindEventListeners = $(function(){        
             // FIXME this ain't working
             /*var validateForm = function () {
 
@@ -41,7 +38,7 @@ var saving = (function(){
             $('.form-litter').on('submit', saving.saveLitter);
             $('.form-area').on('submit', saving.saveArea);
         }),
-        saveGarbage = function(e) {
+        saveGarbage = function(e, obj) {
 
             e.preventDefault();
 
@@ -82,10 +79,10 @@ var saving = (function(){
                 return;
             }
             
-            setTimeout(function () {
+            setTimeout(function() {
 
-                // var useToken = localStorage['token'] || window.token;
-                var useToken = localStorage.getItem('token') || window.token;
+                // var useToken = localStorage['token'] || tools.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
@@ -105,8 +102,7 @@ var saving = (function(){
                       'note': note                    
                     },
 
-                    success: function (data) {
-
+                    success: function(data) {
                         console.log('success data', data);
                         alerts.showAlert(25, 'success', 1500);
                         ui.sidebar.hide('slow');
@@ -114,9 +110,8 @@ var saving = (function(){
                         // TODO clear unsavedMarkerLayer
                     },
 
-                    error: function (response) {
-
-                        alerts.showAlert(10, "danger", 1500);
+                    error: function(response) {
+                        alerts.showAlert(10, 'danger', 1500);
                         ui.sidebar.hide();                    
                     }
                 });              
@@ -146,13 +141,13 @@ var saving = (function(){
             console.log(eventRecurrence);
 
             if (!latlng || !dateTime) {
-                alerts.showAlert(10, "danger", 1500);
+                alerts.showAlert(10, 'danger', 1500);
                 return;
             }
             
             setTimeout(function () {
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
@@ -176,7 +171,7 @@ var saving = (function(){
                     },
                     error: function (response) {
 
-                        alerts.showAlert(10, "danger", 1500);
+                        alerts.showAlert(10, 'danger', 1500);
                         ui.sidebar.hide();
                     }
               });          
@@ -219,7 +214,7 @@ var saving = (function(){
 
             setTimeout(function () {
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
@@ -250,7 +245,9 @@ var saving = (function(){
 
                         alerts.showErrorType(response);
                         ui.sidebar.hide();
-                        map.removeLayer(polylineLayer);
+                        if (drawing.init.polylinelayer){
+                            map.removeLayer(drawing.init.polylineLayer);
+                          }
                     }
                 });               
             }, 200);
@@ -293,12 +290,12 @@ var saving = (function(){
             // Generate a random id if the user didn't set a title
             if (!title) {
                 title = randomString(12);
-                console.log('randomly generated area title ', title);
+                console.log('randomly generated area title', title);
             }
 
             setTimeout(function () {
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
@@ -325,10 +322,12 @@ var saving = (function(){
                     },
 
                     error: function (response) {
-                            alerts.showErrorType(response);
-                            ui.sidebar.hide();
-                            map.removeLayer(polygoneLayer); 
+                        alerts.showErrorType(response);
+                        ui.sidebar.hide();
+                        if (drawing.init.polygonlayer){
+                            map.removeLayer(drawing.init.polygonlayer);
                         }
+                    }
               });
             }, 200);
         },
@@ -344,12 +343,12 @@ var saving = (function(){
                 return;
 
             } else {*/
-        };
+        }; // FIXME
     
     return {
         saveGarbage: saveGarbage,
         saveCleaning: saveCleaning,
         saveLitter: saveLitter,
-        saveArea: saveArea,
+        saveArea: saveArea
     };
 }());

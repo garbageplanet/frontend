@@ -825,7 +825,6 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
 /* Style modals */
 .modal-content {
     border-radius: 0;
-    box-shadow: none;
 }
 
 .modal-dialog {
@@ -837,6 +836,5 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
 .modal-body{
     max-height: calc(100vh - 200px);
     overflow-y: auto;
-    min-width: 700px !important;
+    min-width: 70vw !important;
 }
-

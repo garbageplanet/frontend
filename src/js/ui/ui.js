@@ -4,7 +4,7 @@
 * User interfaces that don't happen directly on the map
 */
 var ui = (function(){
-    
+        
     var templates  = {
             garbagetypes: [
                 {short:"plastic",long:"Plastic items"},
@@ -52,6 +52,7 @@ var ui = (function(){
                 {short:"maritime",long:"Maritime equipment"},
                 {short:"sew",long:"Sewage"},
                 {short:"dogs",long:"Dog poop bags"},
+                {short:"stormwater",long:"Polluted stormwaters"},
             ],
             credits: [
                 {
@@ -218,63 +219,88 @@ var ui = (function(){
             });
         },
         makeModal = function(type, arr) {
-        
-            console.log(type);
-            console.log(arr);
+                  
+            console.log('type of modal: ', type);
+            console.log('value of array: ', arr);
             
             var template,
+                typeobj,
                 modaltmplname,
                 modaltableid,
                 modaltablebodyid,
                 modalid,
+                modalbodyid,
                 datatableoptions = {
-                    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+                    lengthMenu:     [[5, 10, 20, -1], [5, 10, 20, "All"]],
                     scrollY:        '50vh',
                     scrollCollapse: true,
-                    paging:         false
+                    paging:         false,
+                    retrieve:       true
                 };
+            var modalid          = 'modal-'      + type,
+                modaltmplname    = 'tmpl-modal-' + type,
+                modaltableid     = '#modal-'     + type + '-table',
+                modaltablebodyid = 'modal-'      + type + '-table-body';
             
-            if (arr.length < 1 && type != 'game') {
-                alerts.showAlert(29, "warning", 2000);
+            // Build an object to pass to the templating engine
+            var typeobj = {};
+            typeobj[type] = type;
+          
+            // Make the modal skeleton inside of which we'll load the templates
+            template = '<div id="' + modalid + '" class="modal" role="dialog"></div>';
+            $('body').append(template);
+
+            // Handle what happens for the Open Graph scraper or if no data is passed
+            if (!arr) {
+                if (type.indexOf('og') > -1 ) {
+                    document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);              
+                    $('#' + modalid).modal('show');
+                    $('#' + modalid).find('input').focus();
+                }
+
+                $('.btn-og-scrap').click(function() {
+                    // Retrieve the value of the url
+                    // TODO validate url
+                    // $(this).siblings('button').html('Loading...');
+                    var url = $('#modal-og').find('input').val();
+                    var ogdata = tools.ogDotIoScraper(url);
+                    // TODO do something with ogdata?
+                });
                 return;
             }
+          
+            // if it's a data modal check that the array contains data else warn user
+            if (arr) {
+                if (arr.length < 1 && (type != 'game' || type != 'og')) {
+                    alerts.showAlert(29, "warning", 2000);
+                    return;
+                }
+                else {
+                    // Fill the template skeleton and the data
+                    document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);              
+                    document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
+                    // Activate the datatables
+                    $(modaltableid).DataTable(datatableoptions);
 
-            if (type.indexOf('garbage') > -1 ) {
-                template = '<div id="modal-garbage" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">View and download data from garbagepla.net</h4></div><div class="modal-body"><table id="modal-garbage-table" class="table-striped table-condensed"><thead><tr><th>Feature id</th><th>Coordinates</th><th>Amount</th><th>Garbage types</th></tr></thead><tbody id="modal-garbage-table-body"></tbody></table></div><div class="modal-footer"><a class="disabled pull-left" href="#">Get the full data</a><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
+                    // Show the modal
+                    $('#' + modalid).modal('show');   
+
+                    // Attach events for buttons
+                    $('#modal-data-load-more').on('click', function() {
+                        maps.map.setZoom(maps.map.getZoom() - 1);
+                        $('.modal-data-row').empty();
+                        // TODO use the api to add row dymagically
+                        document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
+                        $(modaltableid).DataTable(datatableoptions);
+                    });
+
+                    $('#modal-download').on('click', function(e) {
+                        e.preventDefault;
+                        var stringdata = "text/json;charset=utf-8," + JSON.stringify(arr);
+                        this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));            
+                    });
+                }
             }
-
-            // FIXME add the address fields to the data and put <th>Address</th> back in the table
-            if (type.indexOf('cleaning') > -1) {
-                template = '<div id="modal-cleaning" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Cleaning events calendar</h4></div><div class="modal-body"><table id="modal-cleaning-table" class="table-striped table-condensed"><thead><tr><th>Event id</th><th>Date</th><th>Coordinates</th></tr></thead><tbody id="modal-cleaning-table-body"></tbody></table></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-cleaning-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form></div></div></div></div>';
-            }
-
-            if (type.indexOf('game') > -1 ) {
-                template = '<div id="modal-game" class="modal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close pull-right" data-dismiss="modal"><span class="fa fa-fw fa-times"></span></button><h4 class="modal-title">Paste in your game secret</h4></div><div class="modal-body"><input></div><div class="modal-footer"><form><button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button><button id="modal-game-submit" type="button" class="btn btn-success pull-right ">Join!</button></form></div></div></div></div>';
-            }
-            
-            modalid          = '#modal-'     + type;
-            modaltmplname    = 'tmpl-modal-' + type;
-            modaltableid     = '#modal-'     + type + '-table';
-            modaltablebodyid = 'modal-'      + type + '-table-body';
-
-            $('body').append(template);
-            document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
-            $(modalid).modal('show');
-            $(modaltableid).DataTable(datatableoptions);
-
-            $('#modal-data-load-more').on('click', function () {
-                maps.map.setZoom(maps.map.getZoom() - 1);
-                $('.modal-data-row').empty();
-                // TODO use the api to add row dymagically
-                document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
-                $(modaltableid).DataTable(datatableoptions);
-            });
-
-            $('#modal-download').on('click', function (e) {
-                e.preventDefault;
-                var stringdata = "text/json;charset=utf-8," + JSON.stringify(arr);
-                this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));            
-            });
         },    
         checkMobile = function() {
             
@@ -350,22 +376,6 @@ var ui = (function(){
                 }
             }
         },
-        activate = function() {
-            
-            // Add the Leaflet UI controls to the map
-            this.sidebar.addTo(maps.map);
-            this.bottombar.addTo(maps.map);
-            // Fill the main topbar and sidebar template
-            document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', templates);
-            document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
-
-            // Fill the multiselect templates in the forms
-            document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
-            document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
-            document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
-            // check what ui to show
-            ui.checkMobile();
-        },
         bindEvents = $(function() {
             
             // TODO cache all jQuery selectors below
@@ -373,20 +383,34 @@ var ui = (function(){
                 menubacklink = $('.menu-backlink'),
                 usertools = $('#user-tools'),
                 trashbinbutton = $('#btn-trashbins'),
-                modallink = $('.modal-link');
+                modallink = $('.modal-link'),
+                panelcollapse = $('.panel-collapse'),
+                sidebarcontent = $('.sidebar-content');
                 
             // SIDEBAR ////////////////////////////////////////////////////
             // Navigation for sidebar links
-            sidebarlink.click(function(e) {
+            // TODO actual routing
+            $('.sidebar-link').click(function(e) {
                 e.preventDefault();
+                if(!ui.sidebar.isVisible()){
+                    ui.sidebar.show();
+                }
+
                 $(this.hash).fadeIn().siblings().hide();
                 $('#sidebar').scrollTop = 0;
+              
+                // FIXME can't call a tab like this without plugin?
+                if ($(this).hasClass('cookie-link')){
+                  // Activate link for this alert
+                  $('#user-info-privacy').tab('show');
+                  $('#user-info-privacy a:last').tab('show')
+                }
             });
 
             // Go back to the marker creation menu link
             menubacklink.click(function(e) {
                 e.preventDefault();
-                $('.panel-collapse').collapse('hide');
+                panelcollapse.collapse('hide');
                 $('#sidebar').scrollTop = 0;
                 $(this.hash).fadeIn().siblings().hide();
             });
@@ -402,8 +426,8 @@ var ui = (function(){
                 $('.tab-default').tab('show');
                 $('.leaflet-draw-edit-edit').removeClass('visible');
                 $('.leaflet-draw-edit-remove').removeClass('visible');
-                // TODO clear the tagsinput
-                // $('.bootstrap-tagsinput').tagsinput(''); 
+                // FIXME this removes the placeholder as well ?
+                $('.bootstrap-tagsinput').tagsinput('removeAll');
             });
 
 
@@ -454,10 +478,12 @@ var ui = (function(){
                 }
             });
 
-            // Set the event listeners for modal
+            // Set the event listeners for modals in the topbar or elsewhere
             modallink.on('click', function(e){
+              
+                e.preventDefault();
 
-                console.log("this from modal links clicked", this)
+                console.log("value of this from modal-link clicked", this)
 
                 if ($(this).hasClass('modal-list-garbage')){
                     // Passing the garbage array in the current screen to the function
@@ -467,23 +493,53 @@ var ui = (function(){
                 if ($(this).hasClass('modal-list-cleaning')) {
                     ui.makeModal('cleaning', features.cleaningArray());
                 }
+              
+                if ($(this).hasClass('modal-link-og')) {
+                    console.log('OG clicked');
+                    ui.makeModal('og', null);
+                }
                 
                 if ($(this).hasClass('btn-join-game')) {
                     ui.makeModal('game', data);
                 }
-
+              
+                // TODO Hide any other open stuff 
+                tools.checkOpenUiElement();
+            });
+          
+            // Destroy modals upon hiding them
+            $('.modal').on('hidden.bs.modal', function () {
+                $(body).find('.modal').remove();
             });
 
-        });
+        }),
+        init = function() {
+            
+            // Add the Leaflet UI controls to the map
+            this.sidebar.addTo(maps.map);
+            this.bottombar.addTo(maps.map);
+            // Fill the main topbar and sidebar template
+            document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', templates);
+            document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
+
+            // Fill the multiselect templates in the forms
+            document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
+            document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
+            document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
+            // check what ui to show
+            ui.checkMobile();
+            // custom alerts at startup
+            alerts.showAlert(32, 'warning', 5000);
+       };
     
     return {
-        init: activate,
+        init: init,
         sidebar: sidebar,
         templates: templates,
         bottombar: bottombar,
         pushDataToBottomPanel: pushDataToBottomPanel,
         makeModal: makeModal,
-        checkMobile: checkMobile,
+        checkMobile: checkMobile
     };    
 }());
 

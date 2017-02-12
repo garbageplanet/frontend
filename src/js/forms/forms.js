@@ -6,17 +6,23 @@
 var forms = (function() {
     
     var activate = function() {
+      
+            var selectPickers = $('.selectpicker'),
+                tagInput = $('.feature-tags'),
+                currentForm = $(".form-feature"),
+                saveButton = $(".btn-save");
         
             // Force styling of multiselects
             // other options are already set in the html
-            $('.selectpicker').selectpicker({ 
+            selectPickers.selectpicker({ 
                 style: 'btn-lg btn-default text-center', 
                 // How many list items to display?
                 size: 6
             });
             // Separate tags by hitting space bar or right key
             // FIXME space key doesn't work with mobile keyboard
-            $('.feature-tags').tagsinput({
+            // FIXME options are removed upon calling 'removeAll' even when commenting out the code in the plugin
+           $('.feature-tags, .bootstrap-tagsinput').tagsinput({
                 maxTags: 3,
                 confirmKeys: [32, 39],
                 maxChars: 16,
@@ -24,10 +30,11 @@ var forms = (function() {
             });
 
             // Prevent sending the form with enter key
+            // FIXME this doesn't work anymore?
             $(".form-feature").bind("keypress", function(e) {
 
                 if (e.keyCode === 13) {
-                    $(".btn-save").attr('type');
+                    saveButton.attr('type');
                     e.preventDefault();
                 }
             });
@@ -92,38 +99,45 @@ var forms = (function() {
                 $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
             });
         },
-        makeLitterForm = function(id) {},
-        makeAreaForm = function(id) {},
-        uploader = $(function () {
+        makeLitterForm = function(id) {}, //TODO
+        makeAreaForm = function(id) {}, //TODO
+        uploader = $(function() {
+          
+            var imageuploader = $('.image-uploader'),
+                imageuploaderbutton = $('.btn-image-uploader'),
+                progressdiv = $('.progress');
     
-            $('.image-uploader').fileupload({
-
+            imageuploader.fileupload({
+              
                 headers: {'Authorization': 'Client-ID 6f050e213f46ba9'},
                 type: 'POST',
                 url: 'https://api.imgur.com/3/upload',
                 dataType: 'json',
                 paramName: 'image',
-                progressall: function (e, data) {       
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('.progress').removeClass('hidden');
-                    $('.progress-bar').css('width', progress + '%');
+                progressall: function(e, data) {
+                  
+                    var progress = parseInt(data.loaded / data.total * 100, 10),
+                        progressbar = $('.progress-bar');
+                  
+                    progressdiv.removeClass('hidden');
+                    progressbar.css('width', progress + '%');
                 },
 
-                fail: function (err) {
+                fail: function(err) {
                     console.log("upload error: ", err);
-                    $('.progress').addClass('hidden').delay(400);
+                    progressdiv.addClass('hidden').delay(400);
                 },
 
-                error: function (err) {
+                error: function(err) {
                     console.log("upload error: ", err);
-                    $('.progress').addClass('hidden').delay(400);
+                    progressdiv.addClass('hidden').delay(400);
                 },
 
-                done: function (e, data) {
+                done: function(e, data) {
 
                     console.log("IMGUR DATA OBJ: ", data);
                     $(e.target).parent().next().val(data.result.data.link);
-                    $('.progress').addClass('hidden').delay(200);
+                    progressdiv.addClass('hidden').delay(200);
 
                     /*$.ajax({
 
@@ -144,7 +158,7 @@ var forms = (function() {
                 }
             });
 
-            $('.btn-image-uploader').on('click', function () {
+            imageuploaderbutton.on('click', function() {
 
                 // TODO this needs to be more secure with checkLogin(checkonly)
                 if (localStorage.getItem('token')) {
@@ -164,7 +178,7 @@ var forms = (function() {
         makeGarbageForm: makeGarbageForm,
         makeCleaningForm: makeCleaningForm,
         makeLitterForm: makeLitterForm,
-        makeAreaForm: makeAreaForm,
+        makeAreaForm: makeAreaForm
     };
     
 }());

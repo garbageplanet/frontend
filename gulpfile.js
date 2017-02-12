@@ -41,7 +41,7 @@ gulp.task('trimHTML', function () {
         },
         {
           match: 'windowToken',
-          replacement: env.window.token
+          replacement: env.tools.token
         },
         {
           match: 'facebookToken',
@@ -140,7 +140,7 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/map/features.js',
                     './src/js/map/actions.js',
                     './src/js/forms/submit.js',
-                    './src/js/forms/elements.js',
+                    './src/js/forms/forms.js',
                     './src/js/tour/tour.js',
                     './src/js/map/draw.js',
                     './src/js/social/social.js'

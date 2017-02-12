@@ -5302,12 +5302,12 @@ button.close {
   opacity: 0;
 }
 .modal-backdrop.in {
-  filter: alpha(opacity=50);
+  filter: alpha(opacity=40);
   opacity: .5;
 }
 .modal-header {
   padding: 15px;
-  border-bottom: 1px solid #e5e5e5;
+  /*border-bottom: 1px solid #e5e5e5;*/
 }
 .modal-header .close {
   margin-top: -2px;
@@ -5323,7 +5323,9 @@ button.close {
 .modal-footer {
   padding: 15px;
   text-align: right;
+/*
   border-top: 1px solid #e5e5e5;
+*/
 }
 .modal-footer .btn + .btn {
   margin-bottom: 0;

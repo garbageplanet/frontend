@@ -32,7 +32,7 @@
   });
   
 });*/
-
+/*
 var searchOptions = {};
     searchOptions.address = {
         // container: 'search',
@@ -83,8 +83,8 @@ var searchOptions = {};
         minLength: 4,
         buildTip: function(text, val) {}
     };
-      
+      */
 
 // Create the search control and add it to the document
-var searchControl = new L.Control.Search(searchOptions.garbage);
+// var searchControl = new L.Control.Search(searchOptions.garbage);
 // map.addControl(searchControl);

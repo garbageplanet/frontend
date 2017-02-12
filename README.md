@@ -11,22 +11,20 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 
 ### FIXME
 - [ ] remove unsaved marker icons once marker is saved
-- [ ] fix markers css for mobile (icons aren't centered)
 - [ ] fix marker creation when multiple unsaved marker are present on map
 - [ ] bootstrap form validation - disallow submit button until ok (currently only adds class `disabled` to submit button)
-- [ ] rewrite bottombar css rule from ground up for portrait/panorama oritentation on mobile
+- [ ] taginputs reset deletes placeholder
 
 ### TODO
+- [ ] geotagged photo capability
+- [ ] add geographical location to html scraping
 - [ ] add licensing info to minified code
-- [ ] build all sidebar views from templates and make the edit system
+- [ ] rewrite bottombar css rule from ground up for portrait/panorama oritentation on mobile
+- [ ] make the edit system and build forms from templates
 - [ ] allow drawing shapes on mobile but hide the sidebar on draw:start and show it on draw:created
 
 #### Upgrade
-- [ ] cluster markers server side if there are over 500 in currentBounds and send as markerCluster marker
-- [ ] modularize?
-- [ ] optimize loading (see google page speed results)
-- [ ] get rid of jqeury and BS?
-- [ ] custom builds (Bootstrap, FontAwesome, Leaflet, jQuery, or try tree-shake?)
+- [ ] custom builds (Bootstrap, FontAwesome, Leaflet, jQuery)
 
 ### Licence
 This code is available under the ISC licence but some parts have a different license information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).

@@ -1,0 +1,115 @@
+<script type="text/x-tmpl" id="tmpl-modal">
+<!-- The template for the modal containers -->
+{% if (o.og) { %}
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close pull-right" data-dismiss="modal">X</button>
+      <h4 class="modal-title">Get data from an external url</h4>
+    </div>
+    <div class="modal-og-body modal-body">
+      <div class="container-fluid">
+        <div class="row">
+          <form>
+          <div class="form-group form-group-lg">
+            <div class="input-group input-group-lg">
+              <input id="og-url" type="url" class="form-control" placeholder="Paste or type in an url" required>
+              <span class="input-group-btn">
+                <button class="btn btn-default btn-og-scrap" type="button">Fetch</button>
+              </span>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+      <div id="og-content" class="container-fluid"></div>
+    </div>
+    <div class="modal-footer">
+      <div class="form-group form-group-lg">
+        <form>
+          <button type="button" data-dismiss="modal" class="btn btn-lg btn-danger pull-right ">Cancel</button>
+          <button id="modal-og-submit" type="button" class="hidden btn btn-lg btn-success pull-right ">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% } %}
+  
+{% if (o.game) { %}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">X </button>
+        <h4 class="modal-title">Enter your game secret</h4></div>
+      <div class="modal-body">
+        <input>
+      </div>
+      <div class="modal-footer">
+        <form>
+          <button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button>
+          <button id="modal-game-submit" type="button" class="btn btn-success pull-right ">Join!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% } %}
+
+{% if (o.garbage) { %}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">X </button>
+        <h4 class="modal-title">View and download data from garbagepla.net</h4></div>
+      <div class="modal-body">
+        <table id="modal-garbage-table" class="table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Feature id</th>
+              <th>Coordinates</th>
+              <th>Amount</th>
+              <th>Garbage types</th>
+            </tr>
+          </thead>
+          <tbody id="modal-garbage-table-body"></tbody>
+        </table>
+      </div>
+      <div class="modal-footer"><a class="disabled pull-left" href="#">Get the full data</a>
+        <form>
+          <button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button>
+          <button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form>
+      </div>
+    </div>
+  </div>
+{% } %}
+  
+{% if (o.cleaning) { %}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">X </button>
+        <h4 class="modal-title">Cleaning events calendar</h4></div>
+      <div class="modal-body">
+        <table id="modal-cleaning-table" class="table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Event id</th>
+              <th>Date</th>
+              <th>Coordinates</th>
+              <!--<th>Address</th>-->
+            </tr>
+          </thead>
+          <tbody id="modal-cleaning-table-body"></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <form>
+          <button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button>
+          <button id="modal-cleaning-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form>
+      </div>
+    </div>
+  </div>
+{% } %}  
+
+</script>

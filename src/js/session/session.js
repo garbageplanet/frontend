@@ -174,7 +174,7 @@ var session = (function () {
         checkLogin = function() {
         
             // TODO checklogin for glome key as well
-            var useToken = localStorage.getItem('token') || window.token;
+            var useToken = localStorage.getItem('token') || tools.token;
 
             $.ajax({
 
@@ -212,7 +212,7 @@ var session = (function () {
 
             else {
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 $.ajax({
 
@@ -348,7 +348,6 @@ var session = (function () {
         },
         deleteAccount = function(e) {
             // FIXME backend replies 405 method not allowed
-
             var classicSessionType = localStorage.getItem('classic');
 
             if (classicSessionType === 'true') {
@@ -471,5 +470,4 @@ var session = (function () {
         deleteaccount: deleteAccount,
         sendkey: sendKey
     };
-    
 }());

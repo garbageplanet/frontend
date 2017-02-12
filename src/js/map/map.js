@@ -115,23 +115,23 @@ var maps = (function (){
         icons = (function (){
 
             var mapMarker = L.DivIcon.extend({
-                options: {
-                    iconSize: [30, 30],
-                    className: 'map-marker',
-                    html: '<i class="fa fa-fw"></i>'
-                }
-            }),
+                    options: {
+                        iconSize: [30, 30],
+                        className: 'map-marker',
+                        html: '<i class="fa fa-fw"></i>'
+                    }
+                }),
 
-            mapmarker = function (options) {
-                return new mapMarker(options);
-            },
+                mapmarker = function (options) {
+                    return new mapMarker(options);
+                },
 
-            genericMarker  = mapmarker({className: 'map-marker marker-color-gray marker-generic'}),
-            garbageMarker  = mapmarker({className: 'map-marker marker-garbage'}),
-            cleaningMarker = mapmarker({className: 'map-marker marker-cleaning'}),
-            dieoffMarker   = mapmarker({className: 'map-marker marker-dieoff'}),
-            sewageMarker   = mapmarker({className: 'map-marker marker-sewage'}),
-            floatingMarker = mapmarker({className: 'map-marker marker-floating'});
+                genericMarker  = mapmarker({className: 'map-marker marker-color-gray marker-generic'}),
+                garbageMarker  = mapmarker({className: 'map-marker marker-garbage'}),
+                cleaningMarker = mapmarker({className: 'map-marker marker-cleaning'}),
+                dieoffMarker   = mapmarker({className: 'map-marker marker-dieoff'}),
+                sewageMarker   = mapmarker({className: 'map-marker marker-sewage'}),
+                floatingMarker = mapmarker({className: 'map-marker marker-floating'});
 
             return {
                 genericMarker : genericMarker,
@@ -144,8 +144,10 @@ var maps = (function (){
         })(),
         localTrashBins = function() {
             // load trashbins icons on the map
+            var binsquery = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
+          
             var osmTrashbinLayer = new L.OverPassLayer({
-                query: '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;'
+                query: binsquery
             });
             maps.map.addLayer(osmTrashbinLayer);
             // TODO stop the function call on map move
@@ -167,7 +169,7 @@ var maps = (function (){
         litterLayerGroup: litterLayerGroup,
         cleaningLayerGroup: cleaningLayerGroup,
         allLayers: allLayers,
-        icons: icons,
+        icons: icons
     };
     
 }());
@@ -203,7 +205,7 @@ var locating = (function() {
     return {
         checkHref: checkHref,
         onLocationError: onLocationError,
-        onLocationFound: onLocationFound,
+        onLocationFound: onLocationFound
     }
 }());
 

@@ -10,6 +10,8 @@ var actions = (function() {
 
     var tempmarkers = [],
         mapClick = function(map) {
+          
+            // TODO split this function to make a makeMarker() function or something
             
             console.log("map clicked");
             // map.originalEvent.preventDefault();
@@ -28,10 +30,10 @@ var actions = (function() {
 
                     // Make the actual marker
                     marker = L.marker(map.latlng, {
-                                                    icon: maps.icons.genericMarker, 
-                                                    draggable: true, 
-                                                    feature_type: 'marker_generic'
-                                                    });
+                      icon: maps.icons.genericMarker, 
+                      draggable: true, 
+                      feature_type: 'marker_generic'
+                    });
                     marker.addTo(maps.map);
                     markerid = marker._leaflet_id;
                     actions.tempmarkers[markerid] = marker;
@@ -58,7 +60,7 @@ var actions = (function() {
 
                 // Pan action for mobile and small screens
                 if ($(window).width() < 768) {
-                    // FIXME use the private method _isOpened() for hecking visibility
+                    // FIXME use the private method _isOpened() for checking visibility
                     if (!$('.leaflet-marker-menu').is(':visible')) {
                     // if (!marker._menu || !marker._menu.isOpened) {
 
@@ -228,7 +230,7 @@ var actions = (function() {
 
                 setTimeout(function () {
 
-                    var useToken = localStorage.getItem('token') || window.token;
+                    var useToken = localStorage.getItem('token') || tools.token;
 
                     $.ajax({
 
@@ -291,7 +293,7 @@ var actions = (function() {
                       break;
                 }
 
-                var useToken = localStorage.getItem('token') || window.token;
+                var useToken = localStorage.getItem('token') || tools.token;
 
                 if ((o.options.marked_by || o.options.created_by)  == localStorage.getItem('userid')) {
 
@@ -338,7 +340,7 @@ var actions = (function() {
 
                 setTimeout(function () {
 
-                    var useToken = localStorage.getItem('token') || window.token,
+                    var useToken = localStorage.getItem('token') || tools.token,
                         id = e.id;
 
                     $.ajax({
@@ -378,15 +380,14 @@ var actions = (function() {
 
                 setTimeout(function () {
 
-                    var useToken = localStorage.getItem('token') || window.token;
+                    var useToken = localStorage.getItem('token') || tools.token;
 
                     $.ajax({
 
-                        method: api.confirmTrash.method,
-                        url: api.confirmTrash.url(),
+                        method: api.editTrash.method,
+                        url: api.editTrash.url(),
                         headers: {"Authorization": "Bearer" + useToken},
                         data: {
-                            // TODO finish this
                             'clean': 1 
                         },
                         success: function(data) {
@@ -414,11 +415,11 @@ var actions = (function() {
 
                 if (e.target && id){
 
-                    console.log($(this));
+                    // console.log($(this));
 
                     var ct = $(this).attr('href').toString();
 
-                    console.log(ct);
+                    // console.log(ct);
 
                     if (ct.indexOf('garbage') !== -1){
                         forms.makeGarbageForm(id);
@@ -458,7 +459,7 @@ var actions = (function() {
         joinGame: joinGame,
         cleanedGarbage: cleanedGarbage,
         passMarkerToForm: passMarkerToForm,
-        tempmarkers: tempmarkers,
+        tempmarkers: tempmarkers
         };    
 }());
 
