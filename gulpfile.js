@@ -14,6 +14,8 @@ var gulp = require('gulp'),
     gutil = require('gulp-util');
     // env = require('./env.json'); // contains token and app ids
 
+// var csp = '<meta http-equiv="Content-Security-Policy" content="default-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net; connect-src http://garbageplanet.dist https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://opengraph.io https://api.imgur.com/3/upload; script-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com 'self'; style-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src http://garbageplanet.dist https://api.tiles.mapbox.com https://api.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com data:; object-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://opengraph.io">'
+
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function () {
   return gulp.src('./src/index.html')
@@ -171,6 +173,7 @@ gulp.task('injectFiles', ['scripts:all', 'styles'], function() {
   // FIXME GA can't work with current CSP
     .pipe(inject(gulp.src('./dist/app.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
     // .pipe(injectStr.before('<link', "<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-88740066-1', 'auto');ga('send', 'pageview');</script>"))
+    // .pipe(injectStr.before('<meta', csp))
     .pipe(gulp.dest('temp1/'));
 });
 
