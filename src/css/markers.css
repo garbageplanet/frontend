@@ -43,6 +43,9 @@
 .map-marker.marker-floating:before{
  content: '\f21a';
 }
+.map-marker.marker-link:before{
+ content: '\f0c1';
+}
 .map-marker.marker-deflated:before{
  content: '\f24d';
 }

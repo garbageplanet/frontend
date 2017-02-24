@@ -14,7 +14,7 @@ var alerts = {
         "Feature deleted successfully",
         "You are not on the players list and can't look at this data",
         "You cannot edit feature created by others",
-        "Something went wrong",
+        "Sorry, something went wrong",
         "The editing system isn't currently functional",
         "Failed to login anonymously. Reload the page and try again",
         "You are now logged in",
@@ -29,17 +29,17 @@ var alerts = {
         'You are logged out',
         'No active session',
         'Failed to log in',
-        'Marker saved successfully',
+        'Map feature saved successfully',
         'Cleaning event saved successfully',
         'Litter saved successfully',
         'Area saved successfully',
         'No data in the current area',
         'Fill in all the required fields',
         'Zoom in closer to do that',
-        'Garbagepla.net uses cookies. By using this website you agree to our <a href="#account-info" class="alert-link sidebar-link cookie-link"> use of cookies.'
+        'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies.'
     ],
     // TODO merge showAlert and createAlertText so that Showalert is called with four params
-    showAlert: function (errorCode, errorType, closeDelay) {
+    showAlert: function(errorCode, errorType, closeDelay) {
 
         // default to alert-info
         if (!errorType || typeof errorType === 'undefined') {
@@ -59,7 +59,7 @@ var alerts = {
 
     },
     // Give a specific error in function of the http status
-    showErrorType:function (e) {
+    showErrorType:function(e) {
 
         var errortype;
 

@@ -16,34 +16,89 @@ var drawing = (function() {
                 marker: false 
             },
         }),
-        bindEvents = function() {
+        _bindEvents = function() {
             var buttonDraw = $('.btn-draw'),
                 buttonCancel = $('.btn-cancel'),
                 buttonDrawEdit = $('.leaflet-draw-edit-edit'),
                 buttonDrawRemove = $('.leaflet-draw-edit-remove'),
                 buttonDrawPolyline = $('.btn-draw-polyline'),
                 buttonDrawPolygon = $('.btn-draw-polygon');
+            var polylineListener = new L.Draw.Polyline(maps.map, 
+                  { 
+                    allowIntersection: false,
+                       drawError: {
+                       color: '#cc0000',
+                       timeout: 2000
+                       },
+                    metric: true,
+                    clickable: true,
+                    shapeOptions: {
+                      color: '#A9A9A9',
+                      weight: 10,
+                      opacity: 0.5
+                    }
+            });
+            var polygonListener = new L.Draw.Polygon(maps.map, 
+                  { 
+                   shapeOptions:{
+                      color: '#33cccc',
+                      weight: 5,
+                      opacity: 0.5},
+                  showArea: true,
+                  metric: true,
+                  clickable: true,
+                  allowIntersection: false,
+                         drawError:{
+                         color: '#cc0000',
+                         timeout: 2000}
+            });
+          
+            buttonDrawPolyline.on('click', function() {
+
+                // Stop default marker event listener
+                maps.map.off('click', actions.mapClick);
+                polylineListener.enable();
+
+                // Disable editing for now
+                // $('.leaflet-draw-edit-edit').addClass('visible');
+
+                $('.leaflet-draw-edit-remove').addClass('visible');
+
+
+                if ($(window).width() <= 567) {
+
+                    ui.sidebar.hide();
+                    showAlert(14, 'warning', 3500);
+                }
+            });
+            buttonDrawPolygon.on('click', function() {
+
+                // Stop default marker event listener
+                maps.map.off('click', actions.mapClick);
+                polygonListener.enable();
+                $('.leaflet-draw-edit-remove').addClass('visible');
+
+                if ($(window).width() <= 567) {
+                        ui.sidebar.hide();
+                        showAlert(14, 'warning', 3500);  
+                }
+            });
           
             maps.map.on('draw:drawstart', function(e) {
-
-                // TODO
-                // if (/*there's a tempMarker on the map, remove it*/){
-                //    maps.map.removeLayer(marker);
-                // }
 
                 var type = e.layerType,
                     layer = e.layer;
 
+                console.log(actions.tempmarkers);
+              
                 // Disable start drawing buttons
                 // TODO entirely disable handlers
                 buttonDraw.addClass('disabled');
-
             });
-
             // Stop click listeners when editing and deleting features
             // TODO remove these as editing / deleting unsvaed shapes isn't implemented yet
             maps.map.on('draw:editstart', function(e) {
-
+              
                 maps.map.off('click', actions.mapClick);
 
                 $('.btn-draw').addClass('disabled');
@@ -96,7 +151,8 @@ var drawing = (function() {
             maps.map.on('draw:created', function(e) {
 
                 var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, ''),
-                    polylineLayer, polygonLayer;
+                    polylineLayer, 
+                    polygonLayer;
 
                 if (e.layerType === 'polyline') {
 
@@ -114,7 +170,7 @@ var drawing = (function() {
                     $('input[type=radio]').on('change', function () {
 
                         // Get the color value from the select options
-                        var selectedValue = parseInt($(this).attr('name'), 10);
+                        var selectedValue = parseInt($(this).attr('value'), 10);
                        // Set the color of the line
                         e.layer.setStyle({color: tools.setPolylineColor(selectedValue)});
                     });
@@ -157,11 +213,14 @@ var drawing = (function() {
                 // Reactivate default marker event listener and drawing button
                 maps.map.on('click', actions.mapClick);
 
+                // TODO set listeners somewhere else
                 // Delete the feature on cancel button
                 buttonCancel.on('click', function () {
                     buttonDrawEdit.removeClass('visible');
                     buttonDrawRemove.removeClass('visible');
                     maps.map.removeLayer(e.layer);
+                    polylineListener.disable();
+                    polygonListener.disable();
                 });
 
                 ui.sidebar.on('hide', function() {
@@ -203,73 +262,10 @@ var drawing = (function() {
             });
             // Own handlers for calling L.Draw
             // TODO change to "once" handlers so that only one shape can be drawn before saving
-            buttonDrawPolyline.on('click', function() {
-
-                // Stop default marker event listener
-                maps.map.off('click', actions.mapClick);
-
-                // Disable editing for now
-                // $('.leaflet-draw-edit-edit').addClass('visible');
-
-                $('.leaflet-draw-edit-remove').addClass('visible');
-
-                new L.Draw.Polyline(maps.map, 
-                  { 
-                    allowIntersection: false,
-                       drawError: {
-                       color: '#cc0000',
-                       timeout: 2000
-                       },
-                    metric: true,
-                    clickable: true,
-                    shapeOptions: {
-                      color: '#A9A9A9',
-                      weight: 10,
-                      opacity: 0.5
-                    }
-                }).enable();
-
-                if ($(window).width() <= 567) {
-
-                    ui.sidebar.hide();
-                    showAlert(14, 'warning', 3500);
-                }
-            });
-            buttonDrawPolygon.on('click', function() {
-
-                // Stop default marker event listener
-                maps.map.off('click', actions.mapClick);
-
-                // Disable editing for now
-                // $('.leaflet-draw-edit-edit').addClass('visible');
-
-                $('.leaflet-draw-edit-remove').addClass('visible');
-
-                new L.Draw.Polygon(maps.map, 
-                  { 
-                   shapeOptions:{
-                      color: '#33cccc',
-                      weight: 5,
-                      opacity: 0.5},
-                  showArea: true,
-                  metric: true,
-                  clickable: true,
-                  allowIntersection: false,
-                         drawError:{
-                         color: '#cc0000',
-                         timeout: 2000}
-                }).enable();
-
-                if ($(window).width() <= 567) {
-
-                        ui.sidebar.hide();
-                        showAlert(14, 'warning', 3500);  
-                }
-            });
         },
         init = function() {
-            maps.map.addControl(drawing.drawControl);
-            bindEvents();
+            maps.map.addControl(drawControl);
+            _bindEvents();
         };
 
     return {
@@ -277,5 +273,3 @@ var drawing = (function() {
         drawControl: drawControl
     };
 }());
-
-drawing.init();

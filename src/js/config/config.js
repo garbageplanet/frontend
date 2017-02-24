@@ -9,13 +9,12 @@ var api = {
     // server: 'http://www.homestead.app:8080/api',  
 
     // API entry points
-    /* User */
     createUser: {
         method: 'POST',
         url: function () {
             return api.server + '/register';
         }
-    },
+    },/* User */
     createLogin: {
         method: 'POST',
         url: function () {

@@ -11,6 +11,7 @@ var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     del = require('del'),
     replace = require('gulp-replace-task'),
+    // replace = require('gulp-string-replace'),
     gutil = require('gulp-util');
     // env = require('./env.json'); // contains token and app ids
 
@@ -48,6 +49,10 @@ gulp.task('trimHTML', function () {
         {
           match: 'facebookToken',
           replacement: env.facebook.token
+        },
+        {
+          match: 'opengraphioToken',
+          replacement: env.opengraph.token
         }
       ]
     }))

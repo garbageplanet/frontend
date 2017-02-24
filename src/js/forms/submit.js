@@ -4,351 +4,223 @@
 * Saving forms data to the backend
 */
 
+
 // Save features on the map
-var saving = (function (){
-        
-    // TODO get the vars from marker obj
-    
-    var bindEventListeners = $(function(){        
-            // FIXME this ain't working
-            /*var validateForm = function () {
+ var saving = (function() {
+  
+    // TODO prototype and allow chaining to newmarker i.e something like newmarker.Save()   
+    var _saveFeature = function(fo, ft) {
 
-                $('.form-feature').on('submit', function(e){
+        // NOTE ft = formtype, fo = formobj
+        var useToken = localStorage.getItem('token') || tools.token;
+        var postrequest;
+      
+        // Prepare an object to submit by checking if it has any arrayed keys
+        var so = {};
 
-                    console.log(e);
-
-                    $('.form-feature').validator().on('submit', function (e) {
-
-                        if (e.isDefaultPrevented()) {
-
-                            alerts.showAlert(30, 'info', 2000);
-
-                            return false;
-
-                        } else { 
-
-                            return true; 
-                        }
-                    });
-                });
-            };*/
-
-            $('.form-garbage').on('submit', saving.saveGarbage);
-            $('.form-cleaning').on('submit', saving.saveCleaning);
-            $('.form-litter').on('submit', saving.saveLitter);
-            $('.form-area').on('submit', saving.saveArea);
-        }),
-        saveGarbage = function(e, obj) {
-
-            e.preventDefault();
-
-            var that = this,
-                garbageType = [],
-                tags = [],
-                garbageTodo,
-                garbageAmount,
-                latlng,
-                image_url,
-                garbageSize = [],
-                garbageEmbed = [],
-                note;
-
-            $(this).find('.selectpicker.garbage-type-select option:selected').each(function (index, value) {
-                garbageType.push($(value).val());
-            });
-
-            garbageTodo = $(this).find('.selectpicker.garbage-todo-select option:selected').val();
-
-            $(this).find('.selectpicker.garbage-size-select option:selected').each(function (index, value) {
-                garbageSize.push($(value).val()) || '';
-            });
-
-            $(this).find('.selectpicker.garbage-embed-select option:selected').each(function (index, value) {
-                garbageEmbed.push($(value).val()) || '';
-            });
-
-            garbageAmount = $('.btn-group-amount').find('.active > input').attr('name') || '3';
-            note = $(this).find('.garbage-note').val() || '';
-            image_url = $(this).find('.garbage-image-hidden-value').val() || '';
-            tags = $(this).find('.garbage-tags').tagsinput('items') || '';
-            latlng = $(this).find('.garbage-latlng').val();
+        console.log("fo: ", fo);
+        console.log("ft: ", ft);
+  
+        for(var k in fo) {
+            var o = fo[k];
             
-            // Exit the form submit event if the latlng is missing
-            if (!latlng || !garbageAmount) {
-                alerts.showAlert(10, "danger", 1500);
-                return;
+            if (o.join) {
+              so[k] = o.join();
             }
-            
-            setTimeout(function() {
-
-                // var useToken = localStorage['token'] || tools.token;
-                var useToken = localStorage.getItem('token') || tools.token;
-
-                $.ajax({
-
-                    method: api.createTrash.method,
-                    url: api.createTrash.url(),
-                    headers: {'Authorization': 'Bearer ' + useToken},                            
-                    data: {
-
-                      'latlng': latlng,
-                      'amount': garbageAmount,
-                      'types': garbageType.join(),
-                      'todo': garbageTodo,
-                      'image_url': image_url,
-                      'tag': tags.join(),
-                      'sizes': garbageSize.join(),
-                      'embed': garbageEmbed.join(),
-                      'note': note                    
-                    },
-
-                    success: function(data) {
-                        console.log('success data', data);
-                        alerts.showAlert(25, 'success', 1500);
-                        ui.sidebar.hide('slow');
-                        features.loadGarbageMarkers();
-                        // TODO clear unsavedMarkerLayer
-                    },
-
-                    error: function(response) {
-                        alerts.showAlert(10, 'danger', 1500);
-                        ui.sidebar.hide();                    
-                    }
-                });              
-            }, 100);
-        },
-        saveCleaning = function(e) {
-            // FIXME add location/address for meetup
-
-            e.preventDefault();
-
-            var that = this,
-                tags = [],
-                eventRecurrence,
-                dateTime,
-                note,
-                latlng;
-
-            // NOTE the time and date value is set in the makeCLeaningForm() function in js/forms/element.js
-            dateTime = $('#date-time-value').val();        
-            tags = $(this).find('.cleaning-tags').tagsinput('items') || '';
-            note = $(this).find('.cleaning-note').val() || '';
-            latlng = $(this).find('.cleaning-latlng').val();
-            eventRecurrence = $(this).find('.selectpicker.cleaning-recurrent-select option:selected').val();
-            
-            console.log(dateTime);
-            console.log(latlng);
-            console.log(eventRecurrence);
-
-            if (!latlng || !dateTime) {
-                alerts.showAlert(10, 'danger', 1500);
-                return;
+            else {
+                so[k] = fo[k];
             }
+        }
+                   
+        console.log('------------------------------')
+        console.log('prepared submission obj: ', so);
             
-            setTimeout(function () {
-
-                var useToken = localStorage.getItem('token') || tools.token;
-
-                $.ajax({
-
-                    method: api.createCleaning.method,
-                    url: api.createCleaning.url(),
-                    headers: {'Authorization': 'Bearer ' + useToken},
-                    dataType: 'json',
-                    data: {
-
-                        'latlng': latlng,
-                        'datetime': dateTime,
-                        'note': note,
-                        'recurrence': eventRecurrence,
-                        'tag':tags.join()
-                    },
-                    success: function (data) {
-
-                        alerts.showAlert(26, 'success', 2000);
-                        ui.sidebar.hide('slow');
-                        features.loadCleaningMarkers();
-                    },
-                    error: function (response) {
-
-                        alerts.showAlert(10, 'danger', 1500);
-                        ui.sidebar.hide();
-                    }
-              });          
-            }, 100);
-        },
-        saveLitter = function(e) {
-
-            $('.btn-draw').removeClass('disabled');
-
-            e.preventDefault();
-
-            var that = this,
-                litterType = [],
-                tags = [],
-                litterAmount,
-                latlngs,
-                image_url,
-                length,
-                note,
-                amount_quantitative;
-
-            latlngs = $(this).find('.litter-latlngs').val();
-
-            $(this).find('.selectpicker.litter-type-select option:selected').each(function (index, value) {
-                litterType.push($(value).val());
-            });
-
-            tags = $(this).find('.litter-tags').tagsinput('items') || '';
-            amount_quantitative = $(this).find('.litter-amount-quantitative').val() || '';
-            // selecting the amount of garbage, add 3 by default if option is not set
-            litterAmount = $('.btn-group-amount-litter').find('.active > input').attr('name') || '3';
-            physical_length = $(this).find('.litter-path-length').val() || '';
-            image_url = $(this).find('.litter-image-hidden-value').val() || ''; 
-            note = $('input[class=litter-note]').val() || '';
-                        
-            if (!latlngs){
-                alerts.showAlert(10, "danger", 1500);
-                return;
-            }
-
-            setTimeout(function () {
-
-                var useToken = localStorage.getItem('token') || tools.token;
-
-                $.ajax({
-
-                    method: api.createLitter.method,
-                    url: api.createLitter.url(),
-                    headers: {'Authorization': 'Bearer ' + useToken},
-                    dataType: 'json',
-                    data: {
-
-                        'latlngs': latlngs.toString(),
-                        'amount': litterAmount,
-                        'types': litterType.join(),
-                        'image_url': image_url,
-                        'tag': tags.join()
-                        // 'physical_length': physical_length,
-                        // 'amount_quantitative': amount_quantitative
-                    },
-
-                    success: function (data) {
-
-                      console.log('success data', data);
-                      alerts.showAlert(26, 'success', 1500);
-                      ui.sidebar.hide('slow');  
-                      features.loadLitters(); 
-                    },
-
-                    error: function (response) {
-
-                        alerts.showErrorType(response);
-                        ui.sidebar.hide();
-                        if (drawing.init.polylinelayer){
-                            map.removeLayer(drawing.init.polylineLayer);
-                          }
-                    }
-                });               
-            }, 200);
-        },
-        saveArea = function(e) {
-
-            $('.btn-draw').removeClass('disabled');    
-            e.preventDefault();
-
-            var that = this,
-                tags = [],
-                latlngs,
-                note,
-                secret,
-                max_players,
-                title,
-                contact,
-                game;
-
-            game = $( '.tile-game-check input:checked' ).length || 0;
-            console.log("game: ",game)
-            latlngs = $(this).find('.area-latlngs').val();
-            title = $(this).find('.area-title').val();
-            note = $(this).find('.area-note').val() || '';
-            secret = $(this).find('.area-secret').val() || '';
-            contact = $(this).find('.area-contact').val() || '';
-            max_players = $(this).find('.area-players').val() || '';
-            tags = $(this).find('.area-tags').tagsinput('items') || '';
-
-            function randomString(len) {
-
-                var randomStringValue = ' ',
-                    charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                for( var i=0; i < len; i++ ) {
-                    randomStringValue += charset.charAt(Math.floor(Math.random() * charset.length));
+        if (ft === 'garbage') {
+            
+            postrequest = $.ajax({
+                method: api.createTrash.method,
+                url: api.createTrash.url(),
+                headers: {
+                    'Authorization': 'Bearer ' + useToken
+                },                            
+                data: {
+                  'latlng': so.latlng,
+                  'amount': so.amount,
+                  'types': so.type,
+                  'todo': so.todo,
+                  'image_url': so.image,
+                  'tag': so.tags,
+                  // 'sizes': so.size,
+                  // 'embed': so.environ,
+                  'note': so.note                    
+                },
+                success: function(data) {
+                    features.loadGarbageMarkers();
+                },
+                error: function(response) {
+                    console.log(response);
                 }
-                return randomStringValue; 
-            }
+            });       
+        }
+
+        if (ft === 'cleaning') {
+          
+            console.log("saving cleaning form: ", fo);
+
+            postrequest= $.ajax({
+
+                method: api.createCleaning.method,
+                url: api.createCleaning.url(),
+                headers: {'Authorization': 'Bearer ' + useToken},
+                dataType: 'json',
+                data: {
+
+                    'latlng': so.latlng,
+                    'datetime': so.hour,
+                    'note': so.note,
+                    'recurrence': so.recurrence,
+                    'tag': so.tags
+                },
+                success: function (data) {
+                    features.loadCleaningMarkers();
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+          });          
+        }
+
+        if (ft === 'litter') {
+          
+            console.log("saving litter form: ", fo);
+          
+            postrequest = $.ajax({
+
+                method: api.createLitter.method,
+                url: api.createLitter.url(),
+                headers: {'Authorization': 'Bearer ' + useToken},
+                dataType: 'json',
+                data: {
+
+                    'latlngs': so.latlngs,
+                    'amount': so.amount,
+                    'types': so.type,
+                    'image_url': so.image,
+                    'tag': so.tags,
+                    'physical_length': so.lengthm,
+                    'amount_quantitative': so.quantitative
+                },
+                success: function (data) {
+                    console.log('success data', data);
+                    features.loadLitters(); 
+                },
+
+                error: function (response) {
+
+    
+                }
+            });               
+        }
+
+        if (ft === 'area') {
+          
+            console.log("saving area form: ", fo);
 
             // Generate a random id if the user didn't set a title
-            if (!title) {
-                title = randomString(12);
-                console.log('randomly generated area title', title);
+            if (so.title.length < 1) {
+                so.title = tools.randomString(12);
+                // console.log('randomly generated area title', so.title);
+                // console.log(so);
             }
 
-            setTimeout(function () {
+            postrequest = $.ajax({
 
-                var useToken = localStorage.getItem('token') || tools.token;
+                method: api.createArea.method,
+                url: api.createArea.url(),
+                headers: {'Authorization': 'Bearer ' + useToken},
+                dataType: 'json',
+                data: {
+                    'latlngs': so.latlngs,
+                    'note': so.note,
+                    'contact': so.contact,
+                    // 'secret': so.secret,
+                    'title': so.title,
+                    // 'tag': so.tags,
+                    // 'game' : so.game,
+                    'max_players': so.players
+                },
+                success: function (data) {
+                    console.log('success data', data);
+                    features.loadAreas(); 
+                },
+                error: function (response) {
 
-                $.ajax({
+                }
+          });
+          
+        }
+      
+        postrequest.done(function() {
+            if (ft === 'garbage' || ft === 'cleaning') {
+                maps.unsavedMarkersLayerGroup.clearLayers();
+            }
+            alerts.showAlert(25, 'success', 1500);
+            ui.sidebar.hide('slow');
+            // $('.btn-draw').removeClass('disabled');    
+        });
+      
+        postrequest.fail(function() {
+            alerts.showAlert(10, 'danger', 1500);
+            ui.sidebar.hide();
+            tools.resetIconStyle();
+            // TODO stop the drawing listeners if any
+        });          
+    },
+        _bindEvents = function(obj) {
 
-                    method: api.createArea.method,
-                    url: api.createArea.url(),
-                    headers: {'Authorization': 'Bearer ' + useToken},
-                    dataType: 'json',
-                    data: {
-                        'latlngs': latlngs,
-                        'note': note,
-                        'contact': contact,
-                        'secret': secret,
-                        'title': title,
-                        'tag': tags.join(),
-                        'game' : game
-                    },
+            console.log('current formobj: ', obj);
+            var currentform = obj;
+          
+            currentform.on('keyup change', function(e) {
+                currentform.validator('validate');
+            });
+          
+            currentform.validator().on('submit', function(e) {
 
-                    success: function (data) {
+                if (e.isDefaultPrevented()) {
+                    alerts.showAlert(30, 'danger', 2000);
+                    // FIXME if we call return here the validator exits/bugs?
+                    return;
+                }
 
-                        console.log('success data', data);
-                        alerts.showAlert(27, 'success', 1500);
-                        ui.sidebar.hide('slow');
-                        features.loadAreas(); 
-                    },
+                else {
+                  
+                    e.preventDefault();
+                    // Get the data from the form
+                    var formname = currentform[0].className,
+                        formobj = currentform.serializeObject();
 
-                    error: function (response) {
-                        alerts.showErrorType(response);
-                        ui.sidebar.hide();
-                        if (drawing.init.polygonlayer){
-                            map.removeLayer(drawing.init.polygonlayer);
-                        }
-                    }
-              });
-            }, 200);
+                    // extract the form type from the classname
+                    var formtype = formname.substr(formname.lastIndexOf('-') + 1);
+                    
+                    /*console.log('------------------------------');
+                    console.log('current form array: ', formobj);
+                    console.log('current form ype: ', formtype);
+                    console.log('------------------------------')*/;                                  
+                    // Save the data with ajax
+                    _saveFeature(formobj, formtype);                
+                }  
+            });
         },
-        checkForm = function() {
-            // Prevent form submit if validator is active - this doesn't work
-            // saving.checkForm();
-            /* if (event.isDefaultPrevented()) {
+        init = function() {
+          // empty the placeholder
+          this.form = null;
+          // Cache the current form
+          this.form = $('.form-feature');
+          _bindEvents(this.form);
+        }
 
-                showAlert('Please fill all required fields.', 'warning', 2000);
-
-                // event.stopPropagation();
-
-                return;
-
-            } else {*/
-        }; // FIXME
-    
     return {
-        saveGarbage: saveGarbage,
-        saveCleaning: saveCleaning,
-        saveLitter: saveLitter,
-        saveArea: saveArea
+        init: init,
     };
 }());

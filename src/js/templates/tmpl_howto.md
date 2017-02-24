@@ -22,4 +22,4 @@ tmpl()
 #  function in the same way as above add tmpl.min.js after 
 #  template.js in the body of your main html file.
 
-tmpl.js tmpl_feature_info.html tmpl_modal.html tmpl_modal_og.html tmpl_modal_cleaning.html tmpl_modal_garbage.html tmpl_form_garbage_type.html tmpl_social_links.html tmpl_credits.html tmpl_topbar_main.html tmpl_sidebar_main.html > tmpl.js
+tmpl.js tmpl_feature_info.html tmpl_modal.html tmpl_modal_og.html tmpl_modal_cleaning.html tmpl_modal_garbage.html tmpl_form_main.html tmpl_form_garbage_type.html tmpl_social_links.html tmpl_credits.html tmpl_topbar_main.html tmpl_sidebar_main.html > tmpl.js

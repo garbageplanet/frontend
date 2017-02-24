@@ -1,26 +1,24 @@
 # README #
 
 ### What is this repository for?
-Repository for the [garbagepla.net](https://www.garbagepla.net) frontend v. 0.3
+Repository for the [garbagepla.net](https://www.garbagepla.net) frontend v. 0.4
 
 ### How to get started?
 Just open /src/index.html in your browser. If you want to build for distribution just run `npm i` to install gulp and dependencies in the root directory and type `gulp`.
+To rebuild or new templates you need to install javascript-template `npm i blueimp-tmpl` then change directory to `/src/js/templates` and run the command found at the bottom of the file `tmpl_howto.html` in the same folder.
 
 ### Contributing
 All contributions are welcome. If you want to contribute to a specific todo below, the first thing you should do is open an issue and you'll be assigned to the issue.
 
 ### FIXME
-- [ ] remove unsaved marker icons once marker is saved
-- [ ] fix marker creation when multiple unsaved marker are present on map
-- [ ] bootstrap form validation - disallow submit button until ok (currently only adds class `disabled` to submit button)
 - [ ] taginputs reset deletes placeholder
 
 ### TODO
 - [ ] geotagged photo capability
+- [ ] reverse geocode address for cleanings
 - [ ] add geographical location to html scraping
-- [ ] add licensing info to minified code
-- [ ] rewrite bottombar css rule from ground up for portrait/panorama oritentation on mobile
-- [ ] make the edit system and build forms from templates
+- [ ] rewrite bottombar css rules from ground up for portrait/panorama oritentation on mobile
+- [ ] make the edit system
 - [ ] allow drawing shapes on mobile but hide the sidebar on draw:start and show it on draw:created
 
 #### Upgrade

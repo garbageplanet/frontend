@@ -3,131 +3,136 @@
 /**
 * User interfaces that don't happen directly on the map
 */
-var ui = (function(){
-        
-    var templates  = {
-            garbagetypes: [
-                {short:"plastic",long:"Plastic items"},
-                {short:"bags",long:"Plastic bags"},
-                {short:"foodpacks",long:"Plastic food containers"},
-                {short:"pet",long:"PET bottles"},
-                {short:"party",long:"Party leftovers"},
-                {short:"fastfood",long:"Fastfood garbage"},
-                {short:"poly",long:"Expanded plastic polymers"},
-                {short:"butts",long:"Cigarette butts"},
-                {short:"glassb",long:"Broken glass"},
-                {short:"glass",long:"Glass"},
-                {short:"bottles",long:"Glass bottles"},
-                {short:"metal",long:"Metal"},
-                {short:"tin",long:"Tin cans"},
-                {short:"alu",long:"Aluminium cans"},
-                {short:"wood",long:"Plywood and treated or painted wood"},
-                {short:"chemicals",long:"Chemicals"},
-                {short:"household",long:"Household garbage"},
-                {short:"clothes",long:"Shoes and clothes"},
-                {short:"fabric",long:"Carpets and fabrics"},
-                {short:"matress",long:"Matresses"},
-                {short:"tarp",long:"Tarps and other large covers"},
-                {short:"electronic",long:"Electronics"},
-                {short:"electric",long:"Electric appliances"},
-                {short:"batt", long:"Batteries"},
-                {short:"industrial",long:"Industrial wastes"},
-                {short:"construction",long:"Construction wastes"},
-                {short:"gas",long:"Gasoline and petroleum oil"},
-                {short:"crude",long:"Crude oil"},
-                {short:"vehicle",long:"Large vehicle"},
-                {short:"bicycle",long:"Bicycles"},
-                {short:"motorcyle",long:"Motorcycles"},
-                {short:"tyres",long:"Tyres"},
-                {short:"engine",long:"Engine parts"},
-                {short:"parts",long:"Vehicles parts"},
-                {short:"fishing",long:"Fishing gears"},
-                {short:"commercial",long:"Commercial fishing equipment"},
-                {short:"net",long:"Fishing net"},
-                {short:"lines",long:"Fishing line"},
-                {short:"boat",long:"Small boat"},
-                {short:"vessel",long:"Large boat or wreck"},
-                {short:"boating",long:"Boating equipment"},
-                {short:"buoy",long:"Buoys and floats"},
-                {short:"maritime",long:"Maritime equipment"},
-                {short:"sew",long:"Sewage"},
-                {short:"dogs",long:"Dog poop bags"},
-                {short:"stormwater",long:"Polluted stormwaters"},
-            ],
-            credits: [
-                {
-                    "title":"homepage",
-                    "linkurl":"http://home.garbagepla.net/",
-                    "text":"Project"
-                },
-                {
-                    "title":"Let's Encrypt",
-                    "linkurl":"https://letsencrypt.org/",
-                    "text":"Secured with"
-                },
-                {
-                    "title":"Mapbox",
-                    "linkurl":"https://www.mapbox.com/",
-                    "text":"Basemaps imagery ©"
-                },
-                {
-                    "title":"Openstreetmap and contributors",
-                    "linkurl":"http://www.openstreetmap.org/",
-                    "text":"Maps and underlying data ©"
-                },
-                {
-                    "title":"Overpass API",
-                    "linkurl":"http://www.overpass-api.de/",
-                    "text":"POIs retrieved using the"
-                },
-                {
-                    "title":"OpenCage Geocoder",
-                    "linkurl":"https://geocoder.opencagedata.com/",
-                    "text":"Address search and geocoding using"
-                },
-                {
-                    "title":"Leaflet 1.0",
-                    "linkurl":"https://leafletjs.com/",
-                    "text":"Mapping done with "
-                },
-                {
-                    "title":"FontAwesome",
-                    "linkurl":"http://fontawesome.io/",
-                    "text":"Icons by"
-                },
-                {
-                    "title":"Bootstrap 3",
-                    "linkurl":"http://getbootstrap.com/",
-                    "text":"Built with"
-                },
-                {
-                    "title":"JQuery",
-                    "linkurl":"https://jquery.com/",
-                    "text":"Runs on"
-                },
-                {
-                    "title":"Laravel 5.1",
-                    "linkurl":"https://laravel.com/",
-                    "text":"Backed by"
-                },
-                {
-                    "title":"JavaScript-Templates",
-                    "linkurl":"https://github.com/blueimp/JavaScript-Templates",
-                    "text":"Templating with"
-                },
-                {
-                    "title":"Github",
-                    "linkurl":"https://github.com/garbageplanet",
-                    "text":"Source code available on"
-                }
-            ],
-        },
+var ui = (function() {
+  
+    var templates = {
+              garbagetypes: [
+                  {short:"plastic",long:"Plastic items"},
+                  {short:"bags",long:"Plastic bags"},
+                  {short:"foodpacks",long:"Plastic food containers"},
+                  {short:"pet",long:"PET bottles"},
+                  {short:"party",long:"Party leftovers"},
+                  {short:"fastfood",long:"Fastfood garbage"},
+                  {short:"poly",long:"Expanded plastic polymers"},
+                  {short:"butts",long:"Cigarette butts"},
+                  {short:"glassb",long:"Broken glass"},
+                  {short:"glass",long:"Glass"},
+                  {short:"bottles",long:"Glass bottles"},
+                  {short:"metal",long:"Metal"},
+                  {short:"tin",long:"Tin cans"},
+                  {short:"alu",long:"Aluminium cans"},
+                  {short:"wood",long:"Plywood and treated or painted wood"},
+                  {short:"chemicals",long:"Chemicals"},
+                  {short:"household",long:"Household garbage"},
+                  {short:"clothes",long:"Shoes and clothes"},
+                  {short:"fabric",long:"Carpets and fabrics"},
+                  {short:"matress",long:"Matresses"},
+                  {short:"tarp",long:"Tarps and other large covers"},
+                  {short:"electronic",long:"Electronics"},
+                  {short:"electric",long:"Electric appliances"},
+                  {short:"batt", long:"Batteries"},
+                  {short:"industrial",long:"Industrial wastes"},
+                  {short:"construction",long:"Construction wastes"},
+                  {short:"gas",long:"Gasoline and petroleum oil"},
+                  {short:"crude",long:"Crude oil"},
+                  {short:"vehicle",long:"Large vehicle"},
+                  {short:"bicycle",long:"Bicycles"},
+                  {short:"motorcyle",long:"Motorcycles"},
+                  {short:"tyres",long:"Tyres"},
+                  {short:"engine",long:"Engine parts"},
+                  {short:"parts",long:"Vehicles parts"},
+                  {short:"fishing",long:"Fishing gears"},
+                  {short:"commercial",long:"Commercial fishing equipment"},
+                  {short:"net",long:"Fishing net"},
+                  {short:"lines",long:"Fishing line"},
+                  {short:"boat",long:"Small boat"},
+                  {short:"vessel",long:"Large boat or wreck"},
+                  {short:"boating",long:"Boating equipment"},
+                  {short:"buoy",long:"Buoys and floats"},
+                  {short:"maritime",long:"Maritime equipment"},
+                  {short:"sew",long:"Sewage"},
+                  {short:"dogs",long:"Dog poop bags"},
+                  {short:"stormwater",long:"Polluted stormwaters"},
+              ],
+              credits: [
+                  {
+                      "title":"homepage",
+                      "linkurl":"http://home.garbagepla.net/",
+                      "text":"Project"
+                  },
+                  {
+                      "title":"Let's Encrypt",
+                      "linkurl":"https://letsencrypt.org/",
+                      "text":"Secured with"
+                  },
+                  {
+                      "title":"Mapbox",
+                      "linkurl":"https://www.mapbox.com/",
+                      "text":"Basemaps imagery ©"
+                  },
+                  {
+                      "title":"Openstreetmap and contributors",
+                      "linkurl":"http://www.openstreetmap.org/",
+                      "text":"Maps and underlying data ©"
+                  },
+                  {
+                      "title":"Overpass API",
+                      "linkurl":"http://www.overpass-api.de/",
+                      "text":"POIs retrieved using the"
+                  },
+                  {
+                      "title":"OpenCage Geocoder",
+                      "linkurl":"https://geocoder.opencagedata.com/",
+                      "text":"Address search and geocoding using"
+                  },
+                  {
+                      "title":"Leaflet 1.0",
+                      "linkurl":"https://leafletjs.com/",
+                      "text":"Mapping done with "
+                  },
+                  {
+                      "title":"FontAwesome",
+                      "linkurl":"http://fontawesome.io/",
+                      "text":"Icons by"
+                  },
+                  {
+                      "title":"Bootstrap 3",
+                      "linkurl":"http://getbootstrap.com/",
+                      "text":"Built with"
+                  },
+                  {
+                      "title":"JQuery",
+                      "linkurl":"https://jquery.com/",
+                      "text":"Runs on"
+                  },
+                  {
+                      "title":"Laravel 5.1",
+                      "linkurl":"https://laravel.com/",
+                      "text":"Backed by"
+                  },
+                  {
+                      "title":"JavaScript-Templates",
+                      "linkurl":"https://github.com/blueimp/JavaScript-Templates",
+                      "text":"Templating with"
+                  },
+                  {
+                      "title":"Github",
+                      "linkurl":"https://github.com/garbageplanet",
+                      "text":"Source code available on"
+                  },
+                  {
+                    "title": "privacy policy",
+                    "linkurl": "#privacy-policy",
+                    "text": "Read our",
+                    "extraclass": "sidebar-link"
+                  }
+          ]},
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
-        pushDataToBottomPanel = function (obj){
-            
+        pushDataToBottomPanel = function(obj) {
+
             console.log("pushed data to bottom panel");
-            
+
             // load the data from the options of the object
             var feature = obj,
                 featuredata = obj.options,
@@ -140,7 +145,7 @@ var ui = (function(){
 
             // Fill the template data
             document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
-            
+
             // Set the vars after loading the template
             featureinfo = $('#feature-info');
 
@@ -153,18 +158,18 @@ var ui = (function(){
                 var image_url_insert = tools.insertString(featuredata.image_url, 26, 'b');
                 featureinfo.find('.feature-image').attr('src', image_url_insert);
             }
-            
+
             // Create the templateData.social data dynamically before calling the template
             // TODO only call these once share button is clicked
             social.shareThisFeature(featuredata);
             document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
-                         
+
             // Event listener for share button and social links
             $('.btn-social, fa-share-alt').popover({
                 trigger: 'focus',
                 html : true, 
                 container: 'body',
-                placement: function(pop){
+                placement: function(pop) {
                     if (window.innerWidth < 560) {
                         return 'top';
                     } else {
@@ -176,13 +181,13 @@ var ui = (function(){
                 },
                 template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
             });
-            
+
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
-            $('.btn-feature').on('click', function(e){
-                
+            $('.btn-feature').on('click', function(e) {
+
                 var ct = e.target.className;
                 console.log(ct);
-                
+
                 if(ct.match(/(cleaned|check)/)) {
                     actions.cleanedGarbage(featuredata);
                     return;
@@ -206,7 +211,7 @@ var ui = (function(){
                 }
                 if(ct.match(/(pencil|edit)/)) {
                     if (localStorage.getItem('token')) {
-                        
+
                         actions.editFeature(featuredata);
                         return;
 
@@ -219,10 +224,10 @@ var ui = (function(){
             });
         },
         makeModal = function(type, arr) {
-                  
+
             console.log('type of modal: ', type);
             console.log('value of array: ', arr);
-            
+
             var template,
                 typeobj,
                 modaltmplname,
@@ -241,11 +246,11 @@ var ui = (function(){
                 modaltmplname    = 'tmpl-modal-' + type,
                 modaltableid     = '#modal-'     + type + '-table',
                 modaltablebodyid = 'modal-'      + type + '-table-body';
-            
+
             // Build an object to pass to the templating engine
             var typeobj = {};
             typeobj[type] = type;
-          
+
             // Make the modal skeleton inside of which we'll load the templates
             template = '<div id="' + modalid + '" class="modal" role="dialog"></div>';
             $('body').append(template);
@@ -266,9 +271,15 @@ var ui = (function(){
                     var ogdata = tools.ogDotIoScraper(url);
                     // TODO do something with ogdata?
                 });
+
+                $('#modal-og-submit').on('click', function(e) {
+
+                    forms.makeForm(null, 'og');
+
+                });
                 return;
             }
-          
+
             // if it's a data modal check that the array contains data else warn user
             if (arr) {
                 if (arr.length < 1 && (type != 'game' || type != 'og')) {
@@ -303,7 +314,7 @@ var ui = (function(){
             }
         },    
         checkMobile = function() {
-            
+
             var mobiledialog = $('#mobile-menu-dialog'),
                 // swiperight = $(".swipe-area-right"),
                 // swipeleft = $(".swipe-area-left"),
@@ -312,7 +323,7 @@ var ui = (function(){
                 sidebarcontainer = $('#sidebar'),
                 bottombarcontainer = $('#bottombar'),
                 selects = $('.garbage-type-select, .litter-type-select');
-            
+
             // TODO append elements if mobile instead of removing if not mobile
             if (window.innerWidth >= 768) {
                 $('#mobile-menu-dialog').remove();
@@ -352,9 +363,9 @@ var ui = (function(){
                 // Hide the bottombar on down swipe
                 // For apple stuff
                 if (L.Browser.retina) {
-                    
+
                     $(".swipe-area-top").touchwipe({
-                        
+
                         wipeDown: function() {
                             bottombar.hide();
                         },
@@ -364,9 +375,9 @@ var ui = (function(){
                 }
                 // For all other browsers
                 if (!L.Browser.retina) {  
-                    
+
                     $(".swipe-area-top").touchwipe({
-                        
+
                         wipeUp: function() {
                             bottombar.hide();
                         },
@@ -376,9 +387,8 @@ var ui = (function(){
                 }
             }
         },
-        bindEvents = $(function() {
-            
-            // TODO cache all jQuery selectors below
+        bindEvents = function() {
+
             var sidebarlink = $('.sidebar-link'),
                 menubacklink = $('.menu-backlink'),
                 usertools = $('#user-tools'),
@@ -386,25 +396,21 @@ var ui = (function(){
                 modallink = $('.modal-link'),
                 panelcollapse = $('.panel-collapse'),
                 sidebarcontent = $('.sidebar-content');
-                
+
             // SIDEBAR ////////////////////////////////////////////////////
             // Navigation for sidebar links
             // TODO actual routing
+            // FIXME listeners not set when generating forms from templates
             $('.sidebar-link').click(function(e) {
+
                 e.preventDefault();
-                if(!ui.sidebar.isVisible()){
+
+                if(!ui.sidebar.isVisible()) {
                     ui.sidebar.show();
                 }
 
                 $(this.hash).fadeIn().siblings().hide();
                 $('#sidebar').scrollTop = 0;
-              
-                // FIXME can't call a tab like this without plugin?
-                if ($(this).hasClass('cookie-link')){
-                  // Activate link for this alert
-                  $('#user-info-privacy').tab('show');
-                  $('#user-info-privacy a:last').tab('show')
-                }
             });
 
             // Go back to the marker creation menu link
@@ -413,22 +419,27 @@ var ui = (function(){
                 panelcollapse.collapse('hide');
                 $('#sidebar').scrollTop = 0;
                 $(this.hash).fadeIn().siblings().hide();
+                return;
             });
 
             // Empty the sidebar on hide, reset accordion and reset scroll
              ui.sidebar.on('hide', function() {
 
                 $('.sidebar-content').hide();
-                $('.sidebar-container', '.sidebar-content').scrollTop = 0;
-                $('form').each(function() {this.reset();});
-                $('input').val('');
-                $('.selectpicker').selectpicker('render');
+                // $('.sidebar-container', '.sidebar-content').scrollTop = 0;
+                // $('form').each(function() {this.reset();});
+                // $('input').val('');
+                // $('.selectpicker').selectpicker('render');
                 $('.tab-default').tab('show');
                 $('.leaflet-draw-edit-edit').removeClass('visible');
                 $('.leaflet-draw-edit-remove').removeClass('visible');
                 // FIXME this removes the placeholder as well ?
-                $('.bootstrap-tagsinput').tagsinput('removeAll');
+                // $('.bootstrap-tagsinput').tagsinput('removeAll');
+               
+                // Delete any feature form from the DOM
+                $('.form-feature').remove();
             });
+
 
 
             // TOPBAR //////////////////////////////////////////////////////
@@ -444,12 +455,12 @@ var ui = (function(){
             });
 
             // Show nearby trashbins
-            trashbinbutton.on('click', function(){
+            trashbinbutton.on('click', function() {
                 if(maps.map.getZoom() < 15 ) {
-                    
+
                     alerts.showAlert(31, 'info', 2000);
                     return;
-                    
+
                 } else {
                     maps.trashBins();
                 }
@@ -463,29 +474,27 @@ var ui = (function(){
                 // reset any modals that was created
                 $('.modal').modal('hide').data('bs.modal', null);
             });
-            
+
             // Events to execute when the bottombat is shown
             // FIXME, need to use tools.checkOpenUiElement()
             ui.bottombar.on('show', function() {
-                
+
                 // hide the sidebar if it's visible
                 if (ui.sidebar.isVisible()) {
                     ui.sidebar.hide();
                 }
-                
+
                 if ($('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded')) {
                     maps.geocodercontrol._collapse();
                 }
             });
 
             // Set the event listeners for modals in the topbar or elsewhere
-            modallink.on('click', function(e){
-              
+            modallink.on('click', function(e) {
+
                 e.preventDefault();
 
-                console.log("value of this from modal-link clicked", this)
-
-                if ($(this).hasClass('modal-list-garbage')){
+                if ($(this).hasClass('modal-list-garbage')) {
                     // Passing the garbage array in the current screen to the function
                     ui.makeModal('garbage', features.garbageArray());
                 } 
@@ -493,43 +502,39 @@ var ui = (function(){
                 if ($(this).hasClass('modal-list-cleaning')) {
                     ui.makeModal('cleaning', features.cleaningArray());
                 }
-              
+
                 if ($(this).hasClass('modal-link-og')) {
                     console.log('OG clicked');
                     ui.makeModal('og', null);
                 }
-                
+
                 if ($(this).hasClass('btn-join-game')) {
-                    ui.makeModal('game', data);
+                    ui.makeModal('game', null);
                 }
-              
-                // TODO Hide any other open stuff 
-                tools.checkOpenUiElement();
             });
-          
+
             // Destroy modals upon hiding them
-            $('.modal').on('hidden.bs.modal', function () {
+            $('.modal').on('hidden.bs.modal', function() {
                 $(body).find('.modal').remove();
             });
 
-        }),
+        },
         init = function() {
-            
+
             // Add the Leaflet UI controls to the map
-            this.sidebar.addTo(maps.map);
-            this.bottombar.addTo(maps.map);
+            sidebar.addTo(maps.map);
+            bottombar.addTo(maps.map);
             // Fill the main topbar and sidebar template
+            // TODO don't build the top bar instead of deleting it
             document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', templates);
             document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
-
-            // Fill the multiselect templates in the forms
-            document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
-            document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', templates.garbagetypes);
             document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
             // check what ui to show
-            ui.checkMobile();
+            checkMobile();
             // custom alerts at startup
             alerts.showAlert(32, 'warning', 5000);
+
+            bindEvents();
        };
     
     return {
@@ -539,7 +544,6 @@ var ui = (function(){
         bottombar: bottombar,
         pushDataToBottomPanel: pushDataToBottomPanel,
         makeModal: makeModal,
-        checkMobile: checkMobile
     };    
 }());
 

@@ -64,6 +64,7 @@ var maps = (function (){
         }).addTo(map),
         litterLayerGroup = L.featureGroup().addTo(map),
         areaLayerGroup = L.featureGroup().addTo(map),
+        unsavedMarkersLayerGroup = L.featureGroup().addTo(map),
         allLayers = L.layerGroup([
                         garbageLayerGroup,
                         areaLayerGroup,
@@ -131,7 +132,8 @@ var maps = (function (){
                 cleaningMarker = mapmarker({className: 'map-marker marker-cleaning'}),
                 dieoffMarker   = mapmarker({className: 'map-marker marker-dieoff'}),
                 sewageMarker   = mapmarker({className: 'map-marker marker-sewage'}),
-                floatingMarker = mapmarker({className: 'map-marker marker-floating'});
+                floatingMarker = mapmarker({className: 'map-marker marker-floating'}),
+                linkMarker     = mapmarker({className: 'map-marker marker-link'});
 
             return {
                 genericMarker : genericMarker,
@@ -140,6 +142,8 @@ var maps = (function (){
                 dieoffMarker : dieoffMarker,
                 sewageMarker : sewageMarker,
                 floatingMarker : floatingMarker,
+                linkMarker: linkMarker
+                
             }
         })(),
         localTrashBins = function() {
@@ -168,6 +172,7 @@ var maps = (function (){
         areaLayerGroup: areaLayerGroup,
         litterLayerGroup: litterLayerGroup,
         cleaningLayerGroup: cleaningLayerGroup,
+        unsavedMarkersLayerGroup: unsavedMarkersLayerGroup,
         allLayers: allLayers,
         icons: icons
     };

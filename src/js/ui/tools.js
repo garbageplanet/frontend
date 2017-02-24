@@ -70,7 +70,7 @@ var tools = {
 
         throw 'Unknown layer, cannot clone this layer';  
     },
-    checkLayerContents: function(oldl, newl){
+    checkLayerContents: function(oldl, newl) {
         
         // FIXME, this doesn't work because markers lose their event listerners and icons
         
@@ -155,7 +155,7 @@ var tools = {
                     className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-map-marker',
                     href:'#create-garbage-dialog',
                     // className: 'icon-trashbag',
-                    // FIXME, if the link has the create-dialog classe, the shouldnt been need for event listernet function
+                    // FIXME, if the link has the create-dialog class, the shouldnt been needed for event listernet function
                     click: function (e) {
                         e.preventDefault();
                         ui.sidebar.show($('#create-garbage-dialog').show());
@@ -167,8 +167,6 @@ var tools = {
                     click: function (e) {
                         e.preventDefault();
                         ui.sidebar.show($('#create-cleaning-dialog').show());
-                        // FIXME how to access marker menu from here?
-                        // setTimeout(function () {marker.closeMenu();}, 400);
                     }
                 },
                 {   title: 'Mark litter',
@@ -190,25 +188,37 @@ var tools = {
                 }
             ],
         }),
-    clearTempMarkerStyle: function(id) {
+    resetIconStyle: function(id) {
+      
+        /*console.log('*******************');
+        console.log(actions.tempmarkers);
+        console.log('*******************');*/
                   
-        if (id || id !== undefined) {
-            
+        if (id > 0 && (id || typeof id != 'undefined')) {
+            // console.log('id from resetIconStyle: ', id)
             // var marker = maps.unsavedLayerGroup.getLayer(id);
-            var marker = actions.tempmarkers[id],
-                markericon = $(marker._icon);
+            var marker = actions.tempmarkers[id];
+            // console.log('marker obj: ', marker);
+            var markericon = $(marker._icon) || 'undefined';
 
-            markericon.removeClass('marker-garbage');
-            markericon.removeClass('marker-cleaning');
-            markericon.removeClass(function (index, css) {
-                return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
-            }).addClass('marker-generic');
-            markericon.addClass('marker-color-gray');
+            if (markericon || typeof markericon != 'undefined') {
+                markericon.removeClass('marker-garbage');
+                markericon.removeClass('marker-cleaning');
+                markericon.removeClass(function(index, css) {
+                    return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).addClass('marker-generic');
+                markericon.addClass('marker-color-gray');
+            }
+
             // Delete the marker on small screen else the mobile marker menu bugs
             if ($(window).width() <= 567) {
                 maps.map.removeLayer(marker);
             }
+          
+            return;
         }
+        // Return false if 
+        return false;
     },
     bindTempMarkerEvents: function(id) {
         
@@ -217,21 +227,25 @@ var tools = {
             cancelbutton = $('.btn-cancel');
         
         ui.sidebar.on ('hide', function() {
-            tools.clearTempMarkerStyle(id);
+            tools.resetIconStyle(id);
         });
 
         menubacklink.click(function(e) {
              e.preventDefault();
             // Remove the styling for temp markers
-            tools.clearTempMarkerStyle(id);
+            tools.resetIconStyle(id);
         });
         
         // Close sidebar if cancel button clicked
         cancelbutton.on('click', function (e){
             e.preventDefault();
             ui.sidebar.hide();
-            tools.clearTempMarkerStyle(id);
-            maps.map.removeLayer(marker);
+            if (id) {
+                tools.resetIconStyle(id);
+                maps.map.removeLayer(marker);
+            }
+            else { maps.unsavedMarkersLayerGroup.clearLayers() }
+
         }); 
     },
     checkOpenUiElement: function(map){
@@ -247,6 +261,7 @@ var tools = {
         }    
             
         if (ui.bottombar.isVisible()) {
+            // TODO check if we are drawing if unfinished, ask user if he wants to cancel
             ui.bottombar.hide();
             return;
         }       
@@ -276,7 +291,6 @@ var tools = {
             compactattributions.prop('checked', false);  
             return;
         }
-        
         // Check the current zoom level and warn the user
         if (map) {
                         
@@ -298,7 +312,7 @@ var tools = {
         return true;
     },
     version: function() {
-        return '0.3.0'
+        return '0.4.0'
     },
     coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
     token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw',
@@ -339,7 +353,7 @@ var tools = {
 
                     // TODO pass marker to forms with map.center() as coordinates
                     // build a new object from data
-                    // actions.passMarkerToForm(newobj);
+                    // saving.saveGarbage(newobj);
                 }
                 else { return; }
           });
@@ -349,5 +363,28 @@ var tools = {
             alerts.showAlert(5, "warning", 2000);
             return;
         }
+    },
+    randomString: function(len) {
+        var a = ' ',
+            b = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        for( var i=0; i < len; i++ ) {
+            a += b.charAt(Math.floor(Math.random() * b.length));
+        }
+        return a; 
     }
 };
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+}; 

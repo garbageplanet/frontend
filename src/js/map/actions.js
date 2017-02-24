@@ -5,131 +5,96 @@
 */
 
 var actions = (function() {
-    
+
     'use strict';
 
     var tempmarkers = [],
         mapClick = function(map) {
-          
-            // TODO split this function to make a makeMarker() function or something
-            
-            console.log("map clicked");
-            // map.originalEvent.preventDefault();
-                             
+
+            // console.log("map clicked");
+
             // Check that there's not already something else going on in the UI
             if (!tools.checkOpenUiElement(map)){
                 return;
             }
-                          
-            // Else place a marker on the map
-            // TODO one prototypes for these both actions.addMarker()
-            else {
-                var marker, markerid;
-                // Pan action for desktop and larger screens      
-                if ($(window).width() > 767) {
 
-                    // Make the actual marker
-                    marker = L.marker(map.latlng, {
-                      icon: maps.icons.genericMarker, 
-                      draggable: true, 
-                      feature_type: 'marker_generic'
-                    });
-                    marker.addTo(maps.map);
-                    markerid = marker._leaflet_id;
-                    actions.tempmarkers[markerid] = marker;
-                    maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset()); 
+            // Else place a marker on the map
+            else {
+              
+                // Make the actual marker
+                var marker = L.marker(map.latlng, {
+                    icon: maps.icons.genericMarker,
+                    draggable: false,
+                    feature_type: 'marker_generic'
+                });
+              
+              
+                marker.addTo(maps.unsavedMarkersLayerGroup);
+                var markerid = marker._leaflet_id;
+
+                actions.tempmarkers[markerid] = marker;
+              
+                // This passes the marker obj directly to unsavedMarkerClick as an obj
+                marker.on('click', function() {
+                    unsavedMarkerClick(marker);
+                });
+              
+                // Set listeners in the case the marker isn't saved
+                tools.bindTempMarkerEvents(markerid);
+              
+                // Pan action for desktop and larger screens
+                if ($(window).width() > 767) {
+                  
+                    maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
                     $('.sidebar-content').hide();
                     $('#sidebar').scrollTop = 0;
                     ui.sidebar.show($("#create-marker-dialog").show());
-                    marker.on('click', actions.unsavedMarkerClick);
-                    // Get new coordinates after drag
-                    marker.on("dragend", function (event){
-                                            var newPos = event.target.getLatLng();
-                                            $('.marker-latlng').val(newPos.lat + ", " + newPos.lng);
-                                        }
-                    );
 
-                    // Set the event listener for unsaved markers
-                    marker.on('click', actions.unsavedMarkerClick);
                     // Send the marker to the forms
-                    actions.passMarkerToForm(markerid); 
-                    // Set listeners if the marker isn't saved
-                    tools.bindTempMarkerEvents(markerid);
-                    return;
+                    forms.passMarkerToForm(markerid);
                 }
 
                 // Pan action for mobile and small screens
                 if ($(window).width() < 768) {
                     // FIXME use the private method _isOpened() for checking visibility
                     if (!$('.leaflet-marker-menu').is(':visible')) {
-                    // if (!marker._menu || !marker._menu.isOpened) {
 
-                        // Make an non-draggable marker on mobile
-                        marker = L.marker(map.latlng, {
-                                                        icon: maps.icons.genericMarker, 
-                                                        draggable: false, 
-                                                        feature_type: 'marker_generic'
-                                                        });
-                        marker.addTo(maps.map);
-                        markerid = marker._leaflet_id;
-                        actions.tempmarkers[markerid] = marker;
-                        // marker.setMenu(tools.mobileMarkerMenu({markerid: markerid}));
                         marker.setMenu(tools.mobileMarkerMenu);
+                        // FIXME - we can also simply pan to map.latlng...
                         maps.map.panTo(marker.getLatLng());
 
-                        // Set the event listener for unsaved markers
-                        marker.on('click', actions.unsavedMarkerClick);
-
-                        // Setlisteners if the marker isn't saved
-                        tools.bindTempMarkerEvents(markerid);
                         // Open the mobile menu
                         if (!marker._menu._isOpened) {
                             marker.setZIndexOffset(1000);
                             marker.openMenu();
                             // Send the marker to the forms after the menu is created else the event listeners don't work
-                            actions.passMarkerToForm(markerid);
-                            return;
+                            forms.passMarkerToForm(markerid);
                         }
-                        return;
                     }
                 }
             }
         },
-        unsavedMarkerClick = function() {
-                 
-            "use strict";
-
-            var markerid = this._leaflet_id,
-                marker = actions.tempmarkers[markerid],
-                latlng = marker.getLatLng(),
-                menu = this._menu;
+        unsavedMarkerClick = function(m) {
+            
+            // Clear all the marker icon styles when clicking on a marker when user is doing sthg
+            // inside a form for another marker else it's possible to modify a new marker with
+            // another marker not cleared nor saved
+            actions.tempmarkers.forEach(function(index){
+                // console.log('index from unsavedMarkerClick loop: ', index._leaflet_id);
+                tools.resetIconStyle(index._leaflet_id);
+            });
+                              
+            var marker = m,
+                markerid = m._leaflet_id,
+                // marker = actions.tempmarkers[markerid],
+                latlng = marker.getLatLng();                
 
             console.log("unsaved marker id from unsavedMarkerClick: ", markerid);
             console.log("unsaved marker obj from unsavedMarkerClick: ", marker);
 
-            actions.passMarkerToForm(markerid);
+            forms.passMarkerToForm(markerid);
             ui.bottombar.hide();
-
-            // Mobile behavior
-            // Toggle the mobile menu, the listeners are already set with setMenu()
-            if ($(window).width() <= 768) {
-
-                if (menu) {
-
-                    // maps.map.panTo(marker.getLatLng());
-                    marker.setZIndexOffset(500);
-                    return;
-                }
-
-                if (!menu) {
-
-                    marker.setMenu(actions.mobileMarkerMenu);
-                    maps.map.panTo(marker.getLatLng());
-                    marker.openMenu();
-                    return;
-                }
-            }
-
+          
             // Behavior for large screens
             if ($(window).width() > 768) {
 
@@ -137,22 +102,35 @@ var actions = (function() {
                 $('#sidebar').scrollTop = 0;
                 $('.sidebar-content').hide();
                 ui.sidebar.show($("#create-marker-dialog").fadeIn());
+            }
+          
+            // Mobile behavior
+            // Toggle the mobile menu, the click listeners are already set with setMenu()
+            if ($(window).width() <= 768) {
 
-                marker.on("dragend", function(event){
-                    var newpos = event.target.getLatLng();
-                    $('.marker-latlng').val(newpos.lat + ", " + newpos.lng); 
-                });
+                if (m._menu) {
+                    // maps.map.panTo(marker.getLatLng());
+                    marker.setZIndexOffset(500);
+                    // return;
+                }
+
+                if (!m._menu) {
+                    marker.setMenu(actions.mobileMarkerMenu);
+                    maps.map.panTo(marker.getLatLng());
+                    marker.openMenu();
+                    // return;
+                }
             }
         },
         featureClick = function(e, obj) {
-            
+
             console.log("map feature clicked: ", obj);
             console.log("map feature clicked event: ", e);
-                        
+
             L.DomEvent.stopPropagation(e);
 
             if (obj.options) {
-                
+
                 // check if the feature is a shape
                 if (obj.options.shape) {
 
@@ -171,7 +149,7 @@ var actions = (function() {
                     ui.pushDataToBottomPanel(obj);
                 }
                 // then load data into bottom panel and show it
-                
+
             }
         },
         editFeature = function(e) {
@@ -186,6 +164,8 @@ var actions = (function() {
                 ui.bottombar.hide();
                 // TEMPORARY warning about edit system
                 alerts.showAlert(11, "warning", 3000);
+              
+                // TODO pass marker data to form templates and feed value="..."
 
                 if (e.feature_type === 'marker_garbage') {
                     ui.sidebar.show($('#create-garbage-dialog').fadeIn());
@@ -208,7 +188,7 @@ var actions = (function() {
 
                 alerts.showAlert(9, "danger", 3000);
                 return;
-            }   
+            }
         },
         confirmGarbage = function(e) {
 
@@ -219,7 +199,7 @@ var actions = (function() {
             } else {
 
                 var callurl = null;
-                
+
                 if (e.feature_type === 'marker_garbage') {
                     callurl = api.confirmTrash.url(e.id);
                 }
@@ -251,7 +231,7 @@ var actions = (function() {
                             // else update trash markers to reflect new data
                             else {
                                 features.loadGarbageMarkers();
-                            }                 
+                            }
                         },
 
                         error: function (err) {
@@ -355,7 +335,7 @@ var actions = (function() {
                             features.loadCleaningMarkers();
                         },
                         error: function (err) {
-                            alerts.showAlert(10, "info", 2000);                
+                            alerts.showAlert(10, "info", 2000);
                         }
                     });
                 }, 100);
@@ -388,7 +368,7 @@ var actions = (function() {
                         url: api.editTrash.url(),
                         headers: {"Authorization": "Bearer" + useToken},
                         data: {
-                            'clean': 1 
+                            'clean': 1
                         },
                         success: function(data) {
                             // TODO reload the markers and bottombar to display change
@@ -401,56 +381,11 @@ var actions = (function() {
                   });
                 }, 100);
             }
-        },
-        passMarkerToForm = function(id) {
-
-            "use strict";
-
-            var id = id;
-            // FIXME, this isn't working how it should, the event listeners shouldn't be set here.
-            // do something like passMarkerToForm(id, type){...}
-            $('.create-dialog').on('click', function(e) {
-
-                e.preventDefault();
-
-                if (e.target && id){
-
-                    // console.log($(this));
-
-                    var ct = $(this).attr('href').toString();
-
-                    // console.log(ct);
-
-                    if (ct.indexOf('garbage') !== -1){
-                        forms.makeGarbageForm(id);
-                        return;
-                    }
-                    if (ct.indexOf('cleaning') !== -1){
-                        forms.makeCleaningForm(id);
-                        return;
-                    }
-                    if (ct.indexOf('wastewater') !== -1){
-                        forms.makeWastewaterForm(id);
-                        return;
-                    }
-                    if (ct.indexOf('dieoff') !== -1){
-                        forms.makeDieoffForm(id);
-                        return;
-                    }
-                    if (ct.indexOf('floating') !== -1){
-                        forms.makeFloatingForm(id);
-                        return;
-                    }
-                    if (ct.indexOf('area') !== -1 || ct.indexOf('litter') !== -1) {
-                        return
-                    }
-                }
-            });
         };
-    
+
     return {
         mapClick: mapClick,
-        unsavedMarkerClick: unsavedMarkerClick,
+        // unsavedMarkerClick: unsavedMarkerClick,
         featureClick: featureClick,
         editFeature: editFeature,
         confirmGarbage: confirmGarbage,
@@ -458,9 +393,8 @@ var actions = (function() {
         attendCleaning: attendCleaning,
         joinGame: joinGame,
         cleanedGarbage: cleanedGarbage,
-        passMarkerToForm: passMarkerToForm,
         tempmarkers: tempmarkers
-        };    
+        };
 }());
 
 maps.map.on('click', actions.mapClick);

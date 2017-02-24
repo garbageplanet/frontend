@@ -8,9 +8,9 @@
 * Logins, logouts, account deletion and glome pairing
 */
 
-var session = (function () {
+var session = (function() {
     
-    var switchSession = function(sessionStatus) {
+    var switchSession = function(sessionStatus) { 
 
         var classicSessionType = localStorage.getItem('classic');
 
@@ -123,56 +123,56 @@ var session = (function () {
     },
         login = function(e) {
 
-            e.preventDefault();
+                e.preventDefault();
 
-            var email = $('#login-email').val();
-            var password = $('#login-password').val();
+                var email = $('#login-email').val();
+                var password = $('#login-password').val();
 
-            $.ajax({
+                $.ajax({
 
-                type: api.createLogin.method,
-                url: api.createLogin.url(),
-                data: {
-                    'email': email,
-                    'password': password
-                },
+                    type: api.createLogin.method,
+                    url: api.createLogin.url(),
+                    data: {
+                        'email': email,
+                        'password': password
+                    },
 
-                success: function (response) {
+                    success: function (response) {
 
-                    localStorage.setItem('token', response.token);
+                        localStorage.setItem('token', response.token);
 
-                    $.ajax({
+                        $.ajax({
 
-                        method: api.readUser.method,
-                        url: api.readUser.url(),
-                        headers: {'Authorization': 'Bearer ' + response.token},
-                        success: function (data) {
+                            method: api.readUser.method,
+                            url: api.readUser.url(),
+                            headers: {'Authorization': 'Bearer ' + response.token},
+                            success: function (data) {
 
-                            $('#user-login-dialog').hide();
+                                $('#user-login-dialog').hide();
 
-                            // Push the data into localStorage
-                            localStorage.setItem('classic', 'true');
-                            localStorage.setItem('username', data.user.name);
-                            localStorage.setItem('userid', data.user.id);
-                            localStorage.setItem('useremail', data.user.email);
-                            console.log('session type is classic', localStorage.getItem('classic'));
-                            console.log('username value: ', localStorage.getItem('username'));
-                            switchSession('login');
-                            alerts.showAlert(13, 'success', 1500);
-                        }
-                    });
-                },
+                                // Push the data into localStorage
+                                localStorage.setItem('classic', 'true');
+                                localStorage.setItem('username', data.user.name);
+                                localStorage.setItem('userid', data.user.id);
+                                localStorage.setItem('useremail', data.user.email);
+                                console.log('session type is classic', localStorage.getItem('classic'));
+                                console.log('username value: ', localStorage.getItem('username'));
+                                switchSession('login');
+                                alerts.showAlert(13, 'success', 1500);
+                            }
+                        });
+                    },
 
-                error: function (response) {
+                    error: function (response) {
 
-                    console.log(response);
-                    alerts.showAlert(24, 'danger', 2000);
-                    localStorage.removeItem('token');
-                }
-            });
-        },
+                        console.log(response);
+                        alerts.showAlert(24, 'danger', 2000);
+                        localStorage.removeItem('token');
+                    }
+                });
+            },
         checkLogin = function() {
-        
+
             // TODO checklogin for glome key as well
             var useToken = localStorage.getItem('token') || tools.token;
 
@@ -204,242 +204,242 @@ var session = (function () {
             });
         },
         logout = function() {
-            // FIXME serverside logout backend replies 401
-            if (!localStorage.token) {
-                alerts.showAlert(23, 'info', 2000);
-                localStorage.clear();
-            }
+                // FIXME serverside logout backend replies 401
+                if (!localStorage.token) {
+                    alerts.showAlert(23, 'info', 2000);
+                    localStorage.clear();
+                }
 
-            else {
+                else {
 
-                var useToken = localStorage.getItem('token') || tools.token;
+                    var useToken = localStorage.getItem('token') || tools.token;
 
-                $.ajax({
+                    $.ajax({
 
-                    method: api.logoutUser.method,
-                    url: api.logoutUser.url(),
-                    headers: {'Authorization': 'Bearer ' + useToken},
-                    success: function () {
+                        method: api.logoutUser.method,
+                        url: api.logoutUser.url(),
+                        headers: {'Authorization': 'Bearer ' + useToken},
+                        success: function () {
 
-                        switchSession('logout');
-                        alerts.showAlert(22, 'info', 2000);
-                        localStorage.clear();
+                            switchSession('logout');
+                            alerts.showAlert(22, 'info', 2000);
+                            localStorage.clear();
 
-                        if (ui.sidebar.isVisible()) {
-                            ui.sidebar.hide();
-                        } 
-                    },
+                            if (ui.sidebar.isVisible()) {
+                                ui.sidebar.hide();
+                            } 
+                        },
 
-                    error: function () {
-                        alerts.showAlert(10, 'danger', 2000);
-                    }
-                });
-            }
-        },
+                        error: function () {
+                            alerts.showAlert(10, 'danger', 2000);
+                        }
+                    });
+                }
+            },
         register = function(e) {
-
-            e.preventDefault();
-
-            var email = $('#register-email').val();
-            var name = $('#register-name').val();
-            var password = $('#register-password').val();
-
-            $.ajax({
-
-                type: api.createUser.method,
-                url: api.createUser.url(),
-                data: {
-                    'email': email,
-                    'password': password,
-                    'name': name
-                },
-                success: function (response) {
-
-                    localStorage.setItem('token', response.token);
-                    $('#create-account-dialog').hide();
-
-                    $.ajax({
-
-                        method: api.readUser.method,
-                        url: api.readUser.url(),
-                        headers: {'Authorization': 'Bearer ' + response.token},
-                        success: function (data) {
-
-                            console.log(data);
-                            // Push the data into localStorage
-                            localStorage.setItem('classic', 'true');
-                            localStorage.setItem('username', data.user.name);
-                            localStorage.setItem('userid', data.user.id);
-                            localStorage.setItem('useremail', data.user.email);
-                            switchSession('login');
-                            alerts.showAlert(13, 'success', 2000);
-                        }
-
-                    });
-
-                },
-
-                error: function (response) {
-
-                    alerts.showAlert(1, 'danger', 3500);
-                    localStorage.removeItem('token');
-                }
-
-            });
-
-        },
-        glomeGo = function() {
-    
-            console.log('glomego clicked');
-
-            // e.preventDefault();
-            $.ajax({
-
-                type: api.createSoftAccount.method,
-                url: api.createSoftAccount.url(),
-                dataType: 'json',
-                success: function (response) {
-
-                    var glomeid = response.user.name,
-                        authUser = response.user,
-                        token = response.token;
-
-                    if (!glomeid || typeof glomeid === 'undefined') {
-
-                        alerts.showAlert(12, 'warning', 3000);
-                        return;
-                    }
-
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('glomekey', glomeid);
-                    localStorage.setItem('userid', response.user.id);
-                    $('#user-login-dialog').hide();
-
-                    $.ajax({
-                        method: api.readSoftAccount.method,
-                        url: api.readSoftAccount.url(glomeid),
-                        headers: {'Authorization': 'Bearer ' + token},
-                        dataType: 'json',
-                        success: function (data) {
-
-                            console.log('glome softaccount read: ', data);
-
-                            if (!data || typeof data === 'undefined') {
-                                return;
-                            }
-
-                            if (typeof authUser !== 'undefined') {
-
-                              localStorage.setItem('classic', 'false');
-                              switchSession('login');
-                              alerts.showAlert(13, 'success', 2000);
-                            }
-                        }
-                    });
-                },
-
-                error: function (response) {
-
-                    console.log(response);
-                    alerts.showAlert(12, 'warning', 3000);
-                    localStorage.removeItem('token');
-                }
-            });
-        },
-        deleteAccount = function(e) {
-            // FIXME backend replies 405 method not allowed
-            var classicSessionType = localStorage.getItem('classic');
-
-            if (classicSessionType === 'true') {
-
-                console.log('DELETING ACCOUNT');
 
                 e.preventDefault();
 
-                var useToken = localStorage.getItem('token'),
-                    email = localStorage.getItem('useremail'),           
-                    password = $('#delete-password').val();
+                var email = $('#register-email').val();
+                var name = $('#register-name').val();
+                var password = $('#register-password').val();
 
                 $.ajax({
 
-                    method: api.removeUser.method,
-                    url: api.removeUser.url(/*userid*/),
-                    headers: {'Authorization': 'Bearer ' + useToken},
+                    type: api.createUser.method,
+                    url: api.createUser.url(),
                     data: {
                         'email': email,
-                        'password': password
+                        'password': password,
+                        'name': name
+                    },
+                    success: function (response) {
+
+                        localStorage.setItem('token', response.token);
+                        $('#create-account-dialog').hide();
+
+                        $.ajax({
+
+                            method: api.readUser.method,
+                            url: api.readUser.url(),
+                            headers: {'Authorization': 'Bearer ' + response.token},
+                            success: function (data) {
+
+                                console.log(data);
+                                // Push the data into localStorage
+                                localStorage.setItem('classic', 'true');
+                                localStorage.setItem('username', data.user.name);
+                                localStorage.setItem('userid', data.user.id);
+                                localStorage.setItem('useremail', data.user.email);
+                                switchSession('login');
+                                alerts.showAlert(13, 'success', 2000);
+                            }
+
+                        });
+
                     },
 
-                    success: function () {
-                        switchSession('logout');
-                        alerts.showAlert(17, 'success', 2000);
-                        localStorage.clear();
-                    },
+                    error: function (response) {
 
-                    error: function () {
-                        ui.sidebar.hide();
-                        alerts.showAlert(10, 'danger', 2000);
+                        alerts.showAlert(1, 'danger', 3500);
+                        localStorage.removeItem('token');
                     }
 
                 });
 
-            } else {
-                alerts.showAlert(18, 'warning', 2000);
-            }
+            },
+        glomeGo = function() {
 
-        },
-        sendKey = function (e) {
-    
-            e.preventDefault();
+                console.log('glomego clicked');
 
-            // TODO parse the field
-            var glomeKey = $('#glome-key').val();
+                // e.preventDefault();
+                $.ajax({
 
-            $.ajax({
+                    type: api.createSoftAccount.method,
+                    url: api.createSoftAccount.url(),
+                    dataType: 'json',
+                    success: function (response) {
 
-                type: api.checkGlomeKey.method,
-                url: api.receiveGlomeKey.url(),
-                data: {
-                    'key': glomeKey
-                },
+                        var glomeid = response.user.name,
+                            authUser = response.user,
+                            token = response.token;
 
-                success: function (response) {
+                        if (!glomeid || typeof glomeid === 'undefined') {
 
-                    localStorage.setItem('token', response.token);
-                    console.log('registered and logged in with glome');
-                    $('#create-account-dialog').hide();
-                    switchSession('login');
-                    alerts.showAlert(20, 'success', 2000);
+                            alerts.showAlert(12, 'warning', 3000);
+                            return;
+                        }
+
+                        localStorage.setItem('token', token);
+                        localStorage.setItem('glomekey', glomeid);
+                        localStorage.setItem('userid', response.user.id);
+                        $('#user-login-dialog').hide();
+
+                        $.ajax({
+                            method: api.readSoftAccount.method,
+                            url: api.readSoftAccount.url(glomeid),
+                            headers: {'Authorization': 'Bearer ' + token},
+                            dataType: 'json',
+                            success: function (data) {
+
+                                console.log('glome softaccount read: ', data);
+
+                                if (!data || typeof data === 'undefined') {
+                                    return;
+                                }
+
+                                if (typeof authUser !== 'undefined') {
+
+                                  localStorage.setItem('classic', 'false');
+                                  switchSession('login');
+                                  alerts.showAlert(13, 'success', 2000);
+                                }
+                            }
+                        });
+                    },
+
+                    error: function (response) {
+
+                        console.log(response);
+                        alerts.showAlert(12, 'warning', 3000);
+                        localStorage.removeItem('token');
+                    }
+                });
+            },
+        deleteAccount = function(e) {
+                // FIXME backend replies 405 method not allowed
+                var classicSessionType = localStorage.getItem('classic');
+
+                if (classicSessionType === 'true') {
+
+                    console.log('DELETING ACCOUNT');
+
+                    e.preventDefault();
+
+                    var useToken = localStorage.getItem('token'),
+                        email = localStorage.getItem('useremail'),           
+                        password = $('#delete-password').val();
 
                     $.ajax({
 
-                        method: 'get',
-                        url: 'http://api.garbagepla.net/api/authenticate/glome',
-                        headers: {'Authorization': 'Bearer ' + response.token},
-                        success: function (data) {
+                        method: api.removeUser.method,
+                        url: api.removeUser.url(/*userid*/),
+                        headers: {'Authorization': 'Bearer ' + useToken},
+                        data: {
+                            'email': email,
+                            'password': password
+                        },
 
-                            console.log('succee data', data);
-                            $('#account-info').find('.user-glome-key p').html(data.user.key);
-                            $('#account-info').find('.user-email').addClass('hidden');
-                            $('#account-info').find('.created-at').html(data.user.created_at);
-                            $('#account-info').find('.updated-at').html(data.user.updated_at);
-                            $('#account-info').show();
+                        success: function () {
+                            switchSession('logout');
+                            alerts.showAlert(17, 'success', 2000);
+                            localStorage.clear();
+                        },
+
+                        error: function () {
+                            ui.sidebar.hide();
+                            alerts.showAlert(10, 'danger', 2000);
                         }
 
                     });
 
-                },
-
-                error: function (response) {
-
-                    console.log(response);
-                    alerts.showAlert(19, 'danger', 3000);
-                    localStorage.removeItem('token');
+                } else {
+                    alerts.showAlert(18, 'warning', 2000);
                 }
 
-            });
+            },
+        sendKey = function(e) {
 
-        }, 
+                e.preventDefault();
+
+                // TODO parse the field
+                var glomeKey = $('#glome-key').val();
+
+                $.ajax({
+
+                    type: api.checkGlomeKey.method,
+                    url: api.receiveGlomeKey.url(),
+                    data: {
+                        'key': glomeKey
+                    },
+
+                    success: function (response) {
+
+                        localStorage.setItem('token', response.token);
+                        console.log('registered and logged in with glome');
+                        $('#create-account-dialog').hide();
+                        switchSession('login');
+                        alerts.showAlert(20, 'success', 2000);
+
+                        $.ajax({
+
+                            method: 'get',
+                            url: 'http://api.garbagepla.net/api/authenticate/glome',
+                            headers: {'Authorization': 'Bearer ' + response.token},
+                            success: function (data) {
+
+                                console.log('succee data', data);
+                                $('#account-info').find('.user-glome-key p').html(data.user.key);
+                                $('#account-info').find('.user-email').addClass('hidden');
+                                $('#account-info').find('.created-at').html(data.user.created_at);
+                                $('#account-info').find('.updated-at').html(data.user.updated_at);
+                                $('#account-info').show();
+                            }
+
+                        });
+
+                    },
+
+                    error: function (response) {
+
+                        console.log(response);
+                        alerts.showAlert(19, 'danger', 3000);
+                        localStorage.removeItem('token');
+                    }
+
+                });
+
+            }, 
         bindEvents = $(function(){
             // logout, there are two places where user can click to logout ('button' and 'a')
             $('.btn-logout').on('click', session.logout);

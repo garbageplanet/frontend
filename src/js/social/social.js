@@ -4,7 +4,7 @@
 * Sharing map features from the bottom panel
 */
 
-var social = (function () {
+var social = (function() {
 
     var network = [
           {
@@ -56,7 +56,7 @@ var social = (function () {
             'targeturl': ''
           }
         ],
-        shareThisFeature = function (obj) {
+        shareThisFeature = function(obj) {
 
             var encoded_url = encodeURIComponent(window.location),
                 feature_image_url,
@@ -83,7 +83,7 @@ var social = (function () {
         },
         game = function() {
 
-            var getPlayers = function (e) {
+            var getPlayers = function(e) {
 
                 // TODO make one get players and one getdata method for zones/tiles
                 if (!localStorage.getItem('token')){
@@ -112,17 +112,17 @@ var social = (function () {
                     }, 100);
                 }
             },
-                printGameData = function () {console.log(this)};
+            printGameData = function () {console.log(this)};
 
-            return { getPlayers: getPlayers,
-                     printGameData: printGameData
+            return { 
+                getPlayers: getPlayers,
+                printGameData: printGameData
             }
         };
 
     return {
         network: network,
-        shareThisFeature : shareThisFeature,
+        shareThisFeature: shareThisFeature,
         game: game
     }
-
-})();
+}());
