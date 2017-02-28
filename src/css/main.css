@@ -599,7 +599,6 @@ a.menu-backlink:hover {
     color: #FFF;
 }
 
-
 /* Fix inconsistencies between form elements  */
 .form-group {
   margin-bottom: 10px !important;
@@ -814,6 +813,7 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
     box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
 }
 
+/* Mobile marker menu style */
 .fa-marker-menu {
     line-height: 50px !important;
 }

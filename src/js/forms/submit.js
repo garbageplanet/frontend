@@ -169,8 +169,14 @@
             // $('.btn-draw').removeClass('disabled');    
         });
       
-        postrequest.fail(function() {
-            alerts.showAlert(10, 'danger', 1500);
+        postrequest.fail(function(response) {
+            console.log(response);
+            if (response.responseText.indexOf('token_invalid')) {
+                alerts.showAlert(3, 'warning', 2000);
+            }
+          
+            else { alerts.showAlert(10, 'danger', 1500); }
+            
             ui.sidebar.hide();
             tools.resetIconStyle();
             // TODO stop the drawing listeners if any

@@ -65,7 +65,7 @@ var drawing = (function() {
                 $('.leaflet-draw-edit-remove').addClass('visible');
 
 
-                if ($(window).width() <= 567) {
+                if (window.isMobile) {
 
                     ui.sidebar.hide();
                     showAlert(14, 'warning', 3500);
@@ -78,7 +78,7 @@ var drawing = (function() {
                 polygonListener.enable();
                 $('.leaflet-draw-edit-remove').addClass('visible');
 
-                if ($(window).width() <= 567) {
+                if (window.isMobile) {
                         ui.sidebar.hide();
                         showAlert(14, 'warning', 3500);  
                 }
@@ -157,7 +157,7 @@ var drawing = (function() {
                 if (e.layerType === 'polyline') {
 
                     // Show the sidebar again on mobile
-                    if ($(window).width() <= 567) {
+                    if (window.isMobile) {
 
                         ui.sidebar.show($("#create-litter-dialog").show());
                     }
@@ -183,7 +183,7 @@ var drawing = (function() {
                 if( e.layerType === 'polygon') {
 
                     // Show the sidebar again on mobile    
-                    if ($(window).width() <= 567) {
+                    if (window.isMobile) {
 
                         ui.sidebar.show($("#create-area-dialog").show());
                     }

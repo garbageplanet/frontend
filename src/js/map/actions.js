@@ -11,8 +11,7 @@ var actions = (function() {
     var tempmarkers = [],
         mapClick = function(map) {
 
-            // console.log("map clicked");
-
+            // This function is ugly
             // Check that there's not already something else going on in the UI
             if (!tools.checkOpenUiElement(map)){
                 return;
@@ -34,16 +33,16 @@ var actions = (function() {
 
                 actions.tempmarkers[markerid] = marker;
               
-                // This passes the marker obj directly to unsavedMarkerClick as an obj
-                marker.on('click', function() {
-                    unsavedMarkerClick(marker);
-                });
-              
                 // Set listeners in the case the marker isn't saved
                 tools.bindTempMarkerEvents(markerid);
               
                 // Pan action for desktop and larger screens
-                if ($(window).width() > 767) {
+                if (!window.isMobile) {
+                  
+                    // This passes the marker obj directly to unsavedMarkerClick as an obj
+                    marker.on('click', function() {
+                        unsavedMarkerClick(marker);
+                    });
                   
                     maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
                     $('.sidebar-content').hide();
@@ -55,20 +54,45 @@ var actions = (function() {
                 }
 
                 // Pan action for mobile and small screens
-                if ($(window).width() < 768) {
-                    // FIXME use the private method _isOpened() for checking visibility
+                if (window.isMobile) {
+                  
+                // FIXME this is still very buggy
+                  
+                    // Check that there isn't already another marker menu visible on the screen
                     if (!$('.leaflet-marker-menu').is(':visible')) {
+                      
+                        // Make sure the marker doesn't already have a menu
+                        // Don't allow creation of more than one temp marker on mobile
+                        if (!marker._menu) {
 
-                        marker.setMenu(tools.mobileMarkerMenu);
-                        // FIXME - we can also simply pan to map.latlng...
-                        maps.map.panTo(marker.getLatLng());
+                            marker.setMenu(tools.mobileMarkerMenu);
+                            maps.map.panTo(marker.getLatLng());
+                          
+                            // debugger;
 
-                        // Open the mobile menu
-                        if (!marker._menu._isOpened) {
-                            marker.setZIndexOffset(1000);
-                            marker.openMenu();
-                            // Send the marker to the forms after the menu is created else the event listeners don't work
-                            forms.passMarkerToForm(markerid);
+                            // Open the mobile menu if it's not already open
+                            if (!marker._menu._isOpened) {
+                                marker.setZIndexOffset(1000);
+                                marker.openMenu();
+                                // Stop the map click listener
+                                maps.map.off('click', mapClick);
+                                // Send the marker to the forms after the menu is created else the event listeners don't work
+                                forms.passMarkerToForm(markerid);
+                              
+                                // Manually close the marker menu after selecting a menu item
+                                $('.fa-marker-menu').on('click', function() {
+                                  
+                                    console.log('mobile marker menu item clicked');
+
+                                    setTimeout(function() {
+                                        if(marker) {
+                                            if (marker._menu._isOpened) {
+                                                marker.closeMenu();  
+                                            }
+                                        }
+                                    }, 500);
+                                });
+                            }
                         }
                     }
                 }
@@ -79,10 +103,12 @@ var actions = (function() {
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
             // inside a form for another marker else it's possible to modify a new marker with
             // another marker not cleared nor saved
-            actions.tempmarkers.forEach(function(index){
-                // console.log('index from unsavedMarkerClick loop: ', index._leaflet_id);
-                tools.resetIconStyle(index._leaflet_id);
-            });
+            if (!window.mobile) {
+                actions.tempmarkers.forEach(function(index){
+                    // console.log('index from unsavedMarkerClick loop: ', index._leaflet_id);
+                    tools.resetIconStyle(index._leaflet_id);
+                });
+            }
                               
             var marker = m,
                 markerid = m._leaflet_id,
@@ -93,10 +119,9 @@ var actions = (function() {
             console.log("unsaved marker obj from unsavedMarkerClick: ", marker);
 
             forms.passMarkerToForm(markerid);
-            ui.bottombar.hide();
           
             // Behavior for large screens
-            if ($(window).width() > 768) {
+            if (!window.isMobile) {
 
                 maps.map.panToOffset(latlng, tools.getHorizontalOffset());
                 $('#sidebar').scrollTop = 0;
@@ -105,22 +130,21 @@ var actions = (function() {
             }
           
             // Mobile behavior
-            // Toggle the mobile menu, the click listeners are already set with setMenu()
-            if ($(window).width() <= 768) {
+            // Disabled this for now because it's too buggy
+            /*if (window.isMobile) {
 
-                if (m._menu) {
+                if (marker._menu) {
                     // maps.map.panTo(marker.getLatLng());
+                    // Toggle the mobile menu, the click listeners are already set with L.Marker.Menu.setMenu()
                     marker.setZIndexOffset(500);
-                    // return;
                 }
 
-                if (!m._menu) {
+                if (!marker._menu) {
                     marker.setMenu(actions.mobileMarkerMenu);
                     maps.map.panTo(marker.getLatLng());
-                    marker.openMenu();
-                    // return;
+                    marker.openMenu();                  
                 }
-            }
+            }*/
         },
         featureClick = function(e, obj) {
 
@@ -158,34 +182,33 @@ var actions = (function() {
             // TODO Push the data to the form on .btn-edit click (requires to build all forms with templates)
             var userid = localStorage.getItem('userid'),
                 useridmatch = e.created_by;
+                // id = marker._leaflet_id;
 
             if (userid == useridmatch) {
 
-                ui.bottombar.hide();
+                // ui.bottombar.hide();
                 // TEMPORARY warning about edit system
                 alerts.showAlert(11, "warning", 3000);
               
-                // TODO pass marker data to form templates and feed value="..."
-
-                if (e.feature_type === 'marker_garbage') {
-                    ui.sidebar.show($('#create-garbage-dialog').fadeIn());
+                /*if (e.feature_type === 'marker_garbage') {
+                    ui.sidebar.show($('#create-garbage-dialog'))
+                    forms.passMarkerToForm(id);
                 }
-
                 if (e.feature_type === 'marker_cleaning') {
-                    ui.sidebar.show($('#create-cleaning-dialog').fadeIn());
+                    ui.sidebar.show($('#create-cleaning-dialog'))
+                    forms.passMarkerToForm(id);
                 }
-
                 if (e.feature_type === 'polyline_litter') {
-                    ui.sidebar.show($('#create-litter-dialog').fadeIn());
+                    ui.sidebar.show($('#create-litter-dialog'))
+                    forms.passMarkerToForm(id);
                 }
-
                 if (e.feature_type === 'polygon_area') {
-                    ui.sidebar.show($('#create-area-dialog').fadeIn());
-                }
+                    ui.sidebar.show($('#create-area-dialog'))
+                    forms.passMarkerToForm(id);
+                }*/
             }
 
             else {
-
                 alerts.showAlert(9, "danger", 3000);
                 return;
             }
@@ -381,8 +404,23 @@ var actions = (function() {
                   });
                 }, 100);
             }
+        },
+        bindEvents = function() {
+          
+            maps.map.on('click', mapClick);
+          
+        },
+        init = function() {
+          
+            // Check the map obj is available
+            if (maps.map) {
+                bindEvents();
+            }
+          
         };
-
+  
+        init();
+  
     return {
         mapClick: mapClick,
         // unsavedMarkerClick: unsavedMarkerClick,
@@ -396,5 +434,3 @@ var actions = (function() {
         tempmarkers: tempmarkers
         };
 }());
-
-maps.map.on('click', actions.mapClick);

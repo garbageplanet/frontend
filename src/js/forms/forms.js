@@ -57,6 +57,7 @@ var forms = (function() {
             saving.init();
         },
         _formDispatcher = function(id, targetLinkClass) {
+          
             console.log("id from form dispatcher: ", id);
             console.log("link class from form dispatcher: ", targetLinkClass );
 
@@ -66,14 +67,14 @@ var forms = (function() {
                           'dieoff': 'dieoff',
                           'floating': 'floating',
                           'area': 'area',
-                          'litter': 'litter',
+                          'litter': 'litter'
                         };
 
             for (var key in types) {
 
-              if (targetLinkClass.indexOf(key) !== -1) {
-                    forms.makeForm(id, types[key]);
-                }      
+                if (targetLinkClass.indexOf(key) !== -1) {
+                      forms.makeForm(id, types[key]);
+                  }      
             } // adapted from http://stackoverflow.com/a/22277556/2842348
         },
         passMarkerToForm = function(id) {
@@ -86,6 +87,7 @@ var forms = (function() {
 
                 e.preventDefault();
                 var ct = $(this).attr('href').toString();  
+                console.log(ct);
                 _formDispatcher(id, ct);
             });
         },
@@ -94,7 +96,7 @@ var forms = (function() {
             // Build an object to pass to the templating engine
             var typeobj = {};
             typeobj[type] = type;
-
+            console.log('typeobj', typeobj);
 
             // Opengraph scraper
             // TODO finish this
@@ -109,8 +111,8 @@ var forms = (function() {
             else {
 
                 var typeid = 'create-' + type + '-dialog';
-                console.log(typeobj);
                 console.log(typeid);
+              
                 // Fill the templates
                 document.getElementById(typeid).innerHTML = tmpl('tmpl-form-main', typeobj);
 

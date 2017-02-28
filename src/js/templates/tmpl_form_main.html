@@ -42,11 +42,11 @@
                   title="What kind?"
                   data-selected-text-format="count"
                   data-width="100%"
-                  data-live-search="true"
                   data-max-options="20"
-                  data-actions-box="true"
                   name="type"
                   required
+                  width="fit"
+                  mobile="true"
                   multiple>
                   </select>
       <div class="help-block with-errors"></div>
@@ -57,6 +57,8 @@
                   title="What to do here?"
                   data-width="100%"
                   name="todo"
+                  width="fit"
+                  mobile="true"
                   required>
               <option value="" disabled="disabled"></option>
               <option value="1">It's been cleaned up already</option>
@@ -93,11 +95,13 @@
                     data-selected-text-format="count"
                     data-width="100%"
                     name="size"
+                    width="fit"
+                    mobile="true"
                     multiple >
                 <option value="1">Too big to carry alone</option>
                 <option value="2">Large pieces</option>
                 <option value="3">Easily visible</option>
-                <option value="4">Small enough to escape the eye</option>
+                <option value="4">Easily missed</option>
                 <option value="5">Too small to pick up by hand</option>
                 <option value="6">Can't see it</option>
             </select>
@@ -206,12 +210,13 @@
           <input type="hidden" name="hour" class="event-date-time-hidden">
 
             <!-- Date and time picker for events -->
-          <div class="lead">Starts at ...</div>
           <div class="container from-group" style="width:100%">
             <div class="row">
                 <div class="form-group">
                     <div class="input-group date" id="event-date-time-picker">
-                        <input type="datetime" class="form-control">
+                        <input type="datetime" 
+                               class="form-control"
+                                placeholder ="Starting date and time">
                         <input type="hidden" id="date-time-value">
                         <span class="input-group-addon">
                         <span class="fa fa-fw fa-clock-o"></span>
@@ -226,6 +231,8 @@
                           title="Set event recurrence"
                           data-width="100%"
                           name="recurrence"
+                          width="fit"
+                          mobile="true"
                           required>
                       <option value=""></option>
                       <option value="daily">None</option>
@@ -337,6 +344,8 @@
                 data-max-options="10"
                 data-width="100%"
                 required
+                width="fit"
+                mobile="true"
                 id="litter-select"></select>
     <div class="help-block with-errors"></div>
     </div><!-- Select the type of trash -->

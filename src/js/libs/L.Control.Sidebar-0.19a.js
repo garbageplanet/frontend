@@ -34,24 +34,12 @@ L.Control.Sidebar = L.Control.extend({
         container.appendChild(content);
 
         // Create close button and attach it if configured for given panel
+        var closeclass= 'close-panel close-' + this.options.position;
         if (this.options.closeButton) {
             
-            if (this.options.position === 'right') {
-                
-                var close = this._closeButton =
-                L.DomUtil.create('div', 'close-panel close-right', container);
-                close.innerHTML = '<a class ="fa fa-2x fa-fw fa-chevron-right"></a>';
-                
-            }
-            
-            if (this.options.position === 'bottom') {
-                
-                var close = this._closeButton =
-                L.DomUtil.create('div', 'close-panel close-bottom', container);
-                close.innerHTML = '<a class ="fa fa-2x fa-fw fa-chevron-down"></a>';
-                
-            }
-            
+            var close = this._closeButton = L.DomUtil.create('div', closeclass, container);
+            // close.innerHTML = '<span>x</span>';   
+            close.innerHTML = 'x';            
         }
     },
 

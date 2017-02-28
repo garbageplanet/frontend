@@ -204,57 +204,40 @@
 
 /* Style the close buttons */
 .close-panel {
+    height: 50px;
+    width: 50px;
     position: absolute;
     cursor: pointer;
-    background-color: rgba(255, 44, 8, 0.6);
-}
-
-.close-panel:hover, .close-panel:active {
-    background-color: rgba(255, 44, 8, 1);
-}
-
-.close-panel a {
-    text-decoration: none;
-    color: #FFF;
+    vertical-align: middle;
+    font-size: 45px;
+    font-weight: 100;
+    line-height: 40px;
+    background-color: #EEE;
+    text-align: center;
+    border-radius: 50%;
 }
 
 .close-right {
-    z-index: 10;
-    left: -30px;
-    top: 35px;
-    width: 30px;
-    height: 45px;
-    border-top-left-radius: 18px;
-    border-bottom-left-radius: 18px;
-}
-
-.close-right > a {
-  height:45px;
-  line-height:45px;
+    z-index: 1000;
+    left: 25px;
+    bottom: 10px;
 }
 
 .close-bottom {
     position: absolute;
-    z-index: 10;
-    right: 35px;
-    top: -30px;
-    width: 45px;
-    height: 30px;
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-}
-
-.close-bottom > a {
+    z-index: 1000;
+    right: 20px;
     top: 10px;
-    width: 45px;
 }
 
 @media (max-width: 568px) {
-    
     .close-right {
-        top: 75%
+        top: 85%;
     }
-    
+  
+  .close-bottom {
+      top: 75%;
+  }
 }
 
 .leaflet-bottom {

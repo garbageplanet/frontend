@@ -109,7 +109,7 @@ var tools = {
         var vOffset = [0, 0];
         // TODO take in account the topbar for offsetting on larger screens
         // TODO do this dynamically
-        if (window.innerWidth > 767) { 
+        if (!window.isMobile) { 
             vOffset[1] = - $(window).height() / 4 + 20; 
         }
 
@@ -145,49 +145,55 @@ var tools = {
         console.log(allMarkersObjArray);
     },
     mobileMarkerMenu: L.markerMenu({
-            // Context menu for mobile / small screens
-            radius: 100,
-            size: [50, 50],                    
-            animate: true,                     
-            duration: 200,                    
-            items: [
-                {   title: 'Mark garbage',
-                    className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-map-marker',
-                    href:'#create-garbage-dialog',
-                    // className: 'icon-trashbag',
-                    // FIXME, if the link has the create-dialog class, the shouldnt been needed for event listernet function
-                    click: function (e) {
-                        e.preventDefault();
-                        ui.sidebar.show($('#create-garbage-dialog').show());
-                    }
-                },
-                {   title: 'Create a cleaning event',
-                    className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-calendar-o',
-                    href:'create-cleaning-dialog',
-                    click: function (e) {
-                        e.preventDefault();
-                        ui.sidebar.show($('#create-cleaning-dialog').show());
-                    }
-                },
-                {   title: 'Mark litter',
-                    className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h',
-                    href:'create-litter-dialog',
-                    click: function (e) {
-                        e.preventDefault();
-                        // ui.sidebar.show($('#create-litter-dialog').show());
-                        // setTimeout(function () {marker.closeMenu();}, 400);
-                    }
-                },
-                {   title: 'Fetch from link',
-                    className: 'modal-link modal-link-og fa fa-fw fa-2x fa-marker-menu fa-link',
-                    href:'',
-                    click: function (e) {
-                        e.preventDefault();
-                        $('.modal-link-og').click();
-                    }
+        // Marker context menu for mobile
+        radius: 100,
+        size: [50, 50],                    
+        animate: true,                     
+        duration: 200,                    
+        items: [
+            {   title: 'Mark garbage',
+                className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-map-marker',
+                href:'create-garbage-dialog',
+                click: function (e) {
+                    e.preventDefault();
+                    ui.sidebar.show($('#create-garbage-dialog').show());
+                    // Restore main map click event listener
+                    maps.map.on('click', actions.mapClick);
                 }
-            ],
-        }),
+            },
+            {   title: 'Create a cleaning event',
+                className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-calendar-o',
+                href:'create-cleaning-dialog',
+                click: function (e) {
+                    e.preventDefault();
+                    ui.sidebar.show($('#create-cleaning-dialog').show());
+                    // Restore main map click event listener
+                    maps.map.on('click', actions.mapClick);
+                }
+            },
+            {   title: 'Mark litter',
+                className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h',
+                href:'create-litter-dialog',
+                click: function (e) {
+                    e.preventDefault();
+                    ui.sidebar.show($('#create-litter-dialog').show());
+                    // Restore main map click event listener
+                    maps.map.on('click', actions.mapClick);
+                }
+            },
+            {   title: 'Fetch from link',
+                className: 'modal-link modal-link-og fa fa-fw fa-2x fa-marker-menu fa-link',
+                href:'',
+                click: function (e) {
+                    e.preventDefault();
+                    // Simulate click on modal link
+                    $('.modal-link-og').click();
+                    // Restore main map click event listener
+                    maps.map.on('click', actions.mapClick);
+                }
+            }
+        ],
+    }),
     resetIconStyle: function(id) {
       
         /*console.log('*******************');
@@ -211,8 +217,19 @@ var tools = {
             }
 
             // Delete the marker on small screen else the mobile marker menu bugs
-            if ($(window).width() <= 567) {
-                maps.map.removeLayer(marker);
+            if (window.isMobile) {
+              
+                if (marker._menu) {
+                  
+                    marker.closeMenu();
+                  
+                }
+              
+                // Check that the marker is still here
+                // Drawing form delete the marker right away
+                if (marker) {
+                    maps.map.removeLayer(marker);
+                }
             }
           
             return;
@@ -311,9 +328,6 @@ var tools = {
         
         return true;
     },
-    version: function() {
-        return '0.4.0'
-    },
     coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
     token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw',
     ogDotIoScraper: function(url) {
@@ -371,6 +385,17 @@ var tools = {
             a += b.charAt(Math.floor(Math.random() * b.length));
         }
         return a; 
+    },
+    mobileCheck: function(){
+      
+        var mobilecheck = L.Browser.mobile;
+
+        if (mobilecheck) {
+            return true;
+        }
+        if (!mobilecheck) {
+            return false;
+        }      
     }
 };
 $.fn.serializeObject = function() {
@@ -387,4 +412,6 @@ $.fn.serializeObject = function() {
         }
     });
     return o;
-}; 
+};
+window.isMobile = tools.mobileCheck();
+console.log("On mobile device: ", window.isMobile);

@@ -96,7 +96,7 @@ var maps = (function (){
             geocodercontrol.addTo(maps.map);
 
             // Add a glome anonymous login button on mobile and small screens
-            if (window.innerWidth < 768) {
+            if (window.isMobile) {
                 if (!maps.map.glomelogincontrol) {
                     maps.glomelogincontrol.addTo(map);
                 }
@@ -105,7 +105,7 @@ var maps = (function (){
             // Set custom icons for map controls
             $('.leaflet-control-layers-toggle').append("<span class='fa fa-fw fa-globe'></span>");
             
-            if (window.innerWidth >= 768) {
+            if (!window.isMobile) {
                 $('.leaflet-control-zoom-in').append('<span class="fa fa-fw fa-plus"></span>');
                 $('.leaflet-control-zoom-out').append('<span class="fa fa-fw fa-minus"></span>');
             }

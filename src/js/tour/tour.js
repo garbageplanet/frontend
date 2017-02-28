@@ -4,7 +4,7 @@ var touring = (function(){
     
     var devTour = new Tour({
             name: "dev-tour",
-            template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>X&nbsp</a></div></div>",
+            template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
             // template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div></div>",
             steps: [
               {
@@ -16,7 +16,7 @@ var touring = (function(){
         }),
         mobileTour = new Tour({
             name: "mobile-tour",
-            template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>X&nbsp</a></div></div>",
+            template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
             steps: [
               {
                 element: ".swipe-area-right",
@@ -41,7 +41,7 @@ var touring = (function(){
           
             setTimeout(function(){
 
-                if($(window).width() >= 768){
+                if(!window.isMobile){
 
                     if (!localStorage.getItem('token')) {
                         devTour.init();
@@ -49,7 +49,7 @@ var touring = (function(){
                     }
                 }
 
-                if($(window).width() < 768){
+                if(window.isMobile){
                     mobileTour.init();
                     mobileTour.start(true);
                 }
