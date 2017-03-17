@@ -1,7 +1,6 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global maps locating*/
 // Set the map
-
-var maps = (function (){
+var maps = (function() {
     
     var baselayer = {
     
@@ -83,7 +82,7 @@ var maps = (function (){
         layerscontrol = L.control.layers(baselayer, overlayGroups, {position: 'topleft'}),
         geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
-        activate = function() {
+        init = function() {
         
             baselayer['Mapbox Outdoors'].addTo(maps.map);
             //Disable doubleclick to zoom as it might interfer with other map functions
@@ -113,7 +112,7 @@ var maps = (function (){
             maps.map.on('locationerror', locating.onLocationError);
             maps.map.on('locationfound', locating.onLocationFound);
         },
-        icons = (function (){
+        icons = (function(){
 
             var mapMarker = L.DivIcon.extend({
                     options: {
@@ -159,7 +158,7 @@ var maps = (function (){
         };
     
     return {
-        init: activate,
+        init: init,
         map: map,
         hash: hash,
         trashBins: localTrashBins,

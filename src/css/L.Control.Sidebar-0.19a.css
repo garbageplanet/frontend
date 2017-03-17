@@ -3,7 +3,6 @@
 // modified by: adriennn jan-2016
 // License: MIT 
 // version 0.19a **/
-
 .leaflet-sidebar {
     position: absolute;
     height: 100%;
@@ -79,7 +78,7 @@
     }
     
     .leaflet-sidebar.right {
-        width: 90%;
+        width: 100%;
         padding: 0;
         right: -110%; 
       }
@@ -128,7 +127,8 @@
     
     
     .leaflet-sidebar {
-      width: 305px; 
+      /*width: 305px;*/
+      width: 100vw;
       }
     
     .leaflet-sidebar.bottom {

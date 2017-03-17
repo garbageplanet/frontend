@@ -1,3 +1,4 @@
+/*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global tools */
 // Tools and utilities
 var tools = {
     makeEllipsis: function(obj, n) {

@@ -1,4 +1,4 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+/* jslint browser: true, white: true, sloppy: true, maxerr:1000 global: actions*/
 
 /**
 * User actions on the map and on features that are already present
