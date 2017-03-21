@@ -212,7 +212,8 @@
                     /*console.log('------------------------------');
                     console.log('current form array: ', formobj);
                     console.log('current form ype: ', formtype);
-                    console.log('------------------------------')*/;                                  
+                    console.log('------------------------------')*/;    
+                  
                     // Save the data with ajax
                     _saveFeature(formobj, formtype);                
                 }  

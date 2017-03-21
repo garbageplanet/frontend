@@ -8,10 +8,11 @@ var actions = (function() {
 
     'use strict';
 
-    var tempmarkers = [],
+    var tempmarkers = [],        
         mapClick = function(map) {
 
             // This function is ugly
+            // build a dedicated function
             // Check that there's not already something else going on in the UI
             if (!tools.checkOpenUiElement(map)){
                 return;
@@ -26,7 +27,6 @@ var actions = (function() {
                     draggable: false,
                     feature_type: 'marker_generic'
                 });
-              
               
                 marker.addTo(maps.unsavedMarkersLayerGroup);
                 var markerid = marker._leaflet_id;
@@ -71,11 +71,13 @@ var actions = (function() {
                             // debugger;
 
                             // Open the mobile menu if it's not already open
+                            // TODO prevent feature click when mobile marker menu is open
                             if (!marker._menu._isOpened) {
+                                
+                                maps.map.off('click', mapClick);
                                 marker.setZIndexOffset(1000);
                                 marker.openMenu();
                                 // Stop the map click listener
-                                maps.map.off('click', mapClick);
                                 // Send the marker to the forms after the menu is created else the event listeners don't work
                                 forms.passMarkerToForm(markerid);
                               
@@ -150,6 +152,11 @@ var actions = (function() {
 
             console.log("map feature clicked: ", obj);
             console.log("map feature clicked event: ", e);
+          
+            // Check that there's not already something else going on in the UI
+            if (!tools.checkOpenUiElement()){
+                return;
+            }
 
             L.DomEvent.stopPropagation(e);
 
@@ -172,8 +179,6 @@ var actions = (function() {
                     maps.map.panToOffset(obj.getLatLng(), tools.getVerticalOffset());
                     ui.pushDataToBottomPanel(obj);
                 }
-                // then load data into bottom panel and show it
-
             }
         },
         editFeature = function(e) {

@@ -273,7 +273,7 @@ var tools = {
             dropdown = $('.dropdown'),
             layerscontrol = $('.leaflet-control-layers');
         
-        if (ui.sidebar.isVisible() ){
+        if (ui.sidebar.isVisible()) {
             ui.sidebar.hide();
             return;
         }    
@@ -311,19 +311,24 @@ var tools = {
         }
         // Check the current zoom level and warn the user
         if (map) {
-                        
             // If the map itself isn't the target it means a marker cluster was clicked
             if (!map.target) {
                 if (map._zoom < 15) {
                     return;
                 }
             }
-            
             if (map.target) {
                 if (map.target.getZoom() < 15) {
                     alerts.showAlert(15, 'info', 1200);
                     return;
                 }
+            }
+        }
+        // Check if there's any marker visible on mobile map
+        if (window.isMobile) {
+            if (maps.unsavedMarkersLayerGroup.length > 0) {
+                maps.map.clearLayers(maps.unsavedMarkersLayerGroup);
+                return;
             }
         }
         
@@ -399,6 +404,7 @@ var tools = {
         }      
     }
 };
+// the serializeObject function is used to collect data from the forms and pass them forward as an obj
 $.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
@@ -414,5 +420,6 @@ $.fn.serializeObject = function() {
     });
     return o;
 };
+// Check if mobile device on load
 window.isMobile = tools.mobileCheck();
 console.log("On mobile device: ", window.isMobile);

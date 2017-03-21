@@ -294,7 +294,7 @@ Modifired by:adriennn, 2016
                 return;
             }
 
-            console.log("OPENING MENU!!");
+            console.log("****************Opening menu");
             
             this._menu.setLatLng(this._latlng);
             this._menu._isOpened = true;
@@ -310,7 +310,7 @@ Modifired by:adriennn, 2016
             if (!this._menu) {
                 return;
             }
-            console.log("CLOSING MENU!!");
+            console.log("****************Closing menu");
             this._map.removeLayer(this._menu);
             this._menu._isOpened = false;
         },
@@ -320,7 +320,7 @@ Modifired by:adriennn, 2016
                 return;
             }
 
-            console.log("TOGGLING MENU!!");
+            console.log("*****************Toggling menu");
             if (this._menu._isOpened) {
                 this.closeMenu();
             } else {

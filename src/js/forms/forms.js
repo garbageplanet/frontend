@@ -110,16 +110,14 @@ var forms = (function() {
 
             else {
               
-                // hide the close button in the sidebar
-                if (!$('.close-panel').hasClass('hidden')) {
-                  $('.close-panel').addClass('hidden');
-                }
-
                 var typeid = 'create-' + type + '-dialog';
                 console.log(typeid);
               
                 // Fill the templates
                 document.getElementById(typeid).innerHTML = tmpl('tmpl-form-main', typeobj);
+              
+                // Hide the close button in the sidebar when we show forms because they have a cancel button
+                $('.close-panel').addClass('hidden');
 
                 // Forms for shapes
                 if (type === "litter" || type === "area") {
