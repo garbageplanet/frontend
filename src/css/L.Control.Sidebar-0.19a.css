@@ -63,16 +63,7 @@
 }
 
   @media (max-width: 567px){
-    
-    .leaflet-sidebar > .leaflet-control {
-
-        padding: 4px 5px;
-        -webkit-box-shadow: -40px 0px 40px 0px rgba(112,112,112,0.3 ) !important;
-           -moz-box-shadow: -40px 0px 40px 0px rgba(112,112,112,0.3) !important;
-                box-shadow: -40px 0px 40px 0px rgba(112,112,112,0.3) !important;  
         
-    }
-    
     .leaflet-sidebar > .leaflet-control::-webkit-scrollbar {  
         display: none; 
     }
@@ -111,10 +102,14 @@
       }
       
       .leaflet-sidebar > .leaflet-control {
-        box-shadow: none;
-        -webkit-border-radius: 0;
-        border-radius: 0; }
-        .leaflet-touch .leaflet-sidebar > .leaflet-control {
+        padding: 4px 5px;
+                box-shadow: none;
+        -webkit-box-shadow: none !important;
+           -moz-box-shadow: none !important;
+          -webkit-border-radius: 0;
+          border-radius: 0; }
+    
+      .leaflet-touch .leaflet-sidebar > .leaflet-control {
           border: 0; } 
 }
 

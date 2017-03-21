@@ -109,6 +109,11 @@ var forms = (function() {
             }
 
             else {
+              
+                // hide the close button in the sidebar
+                if (!$('.close-panel').hasClass('hidden')) {
+                  $('.close-panel').addClass('hidden');
+                }
 
                 var typeid = 'create-' + type + '-dialog';
                 console.log(typeid);
