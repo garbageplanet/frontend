@@ -212,9 +212,14 @@
     border-radius: 50%;
 }
 
+.close-panel:hover {
+  background-color: #5f5f5f;
+  color: #FFF;
+}
+
 .close-right {
     z-index: 1000;
-    left: 25px;
+    right: 25px;
     bottom: 10px;
 }
 
@@ -226,9 +231,9 @@
 }
 
 @media (max-width: 568px) {
-    .close-right {
+  .close-right {
         top: 85%;
-    }
+  }
   
   .close-bottom {
       top: 75%;

@@ -120,7 +120,7 @@ var forms = (function() {
                 // Hide the close button in the sidebar when we show forms because they have a cancel button
                 $('.close-panel').addClass('hidden');
 
-                // Forms for shapes
+                // Forms for shapes (polylines and areas)
                 if (type === "litter" || type === "area") {
 
                     // Delete any unsaved marker
@@ -128,9 +128,7 @@ var forms = (function() {
 
                     if (type === "litter") {
                         console.log('litter form');
-
                         document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', ui.templates.garbagetypes);
-
                     }
                     if (type === "area") {
                         console.log('area form');
@@ -140,10 +138,10 @@ var forms = (function() {
 
                 else {
 
+                    // Forms for single point markers
                     var marker = actions.tempmarkers[id];              
                     var latlng = marker.getLatLng();
 
-                    // Forms for single point markers
                     if (type === "garbage") {
 
                         console.log('garbage form');
@@ -163,7 +161,6 @@ var forms = (function() {
 
                             // Change the class to the corresponding value
                             $(marker._icon).removeClass(function (index, css) {
-
                                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                             }).addClass(tools.setMarkerClassColor(selectedValue));
                         });

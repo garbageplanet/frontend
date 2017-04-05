@@ -128,7 +128,7 @@ gulp.task('scripts:app', ['trimHTML'], function() {
 // Minify body scripts, replace strings and concat them in order
 gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function() {
   
-    env({file: ".env.json"});
+    env({file: "env.json"});
   
     return gulp.src([
         './temp/jquery.min.js',

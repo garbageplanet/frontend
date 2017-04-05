@@ -4,7 +4,6 @@
 * Saving forms data to the backend
 */
 
-
 // Save features on the map
  var saving = (function() {
   
@@ -15,7 +14,7 @@
         var useToken = localStorage.getItem('token') || tools.token;
         var postrequest;
       
-        // Prepare an object to submit by checking if it has any arrayed keys
+        // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
         var so = {};
 
         console.log("fo: ", fo);
@@ -30,6 +29,11 @@
             else {
                 so[k] = fo[k];
             }
+        }
+      
+        // Default to mid value
+        if (so.amount === '' || !so.amount) {
+            so.amount = 3;
         }
                    
         console.log('------------------------------')
