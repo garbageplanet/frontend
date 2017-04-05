@@ -428,7 +428,6 @@ var actions = (function() {
   
     return {
         mapClick: mapClick,
-        // unsavedMarkerClick: unsavedMarkerClick,
         featureClick: featureClick,
         editFeature: editFeature,
         confirmGarbage: confirmGarbage,
@@ -437,5 +436,5 @@ var actions = (function() {
         joinGame: joinGame,
         cleanedGarbage: cleanedGarbage,
         tempmarkers: tempmarkers
-        };
+    };
 }());

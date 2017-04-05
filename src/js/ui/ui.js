@@ -121,13 +121,18 @@ var ui = (function() {
                     "text":"Source code available on"
                 },
                 {
+                    "title":"Imgur",
+                    "linkurl":"https://imgur.com",
+                    "text":"Image storage courtesy of"
+                },
+                {
                   "title": "privacy policy",
                   "linkurl": "#privacy-policy",
                   "text": "Read our",
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.4.0'
+            version: '0.5.0'
     },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
@@ -316,7 +321,7 @@ var ui = (function() {
                 }
             }
         },    
-        activateMobileUi = function() {
+        _activateMobileUi = function() {
 
             var mobiledialog = $('#mobile-menu-dialog'),
                 // swiperight = $(".swipe-area-right"),
@@ -390,7 +395,7 @@ var ui = (function() {
                 }
             }
         },
-        bindEvents = function() {
+        _bindEvents = function() {
 
             var sidebarlink = $('.sidebar-link'),
                 menubacklink = $('.menu-backlink'),
@@ -550,12 +555,12 @@ var ui = (function() {
           
             // Check what ui to show
             if (window.isMobile) {
-                activateMobileUi();
+                _activateMobileUi();
             }
-            // custom alerts at startup
+            // custom alerts at startup for cookies
             alerts.showAlert(32, 'warning', 5000);
 
-            bindEvents();
+            _bindEvents();
        };
     
     return {

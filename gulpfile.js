@@ -11,14 +11,11 @@ var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     del = require('del'),
     replace = require('gulp-replace-task'),
-    // replace = require('gulp-string-replace'),
-    gutil = require('gulp-util');
-    // env = require('./env.json'); // contains token and app ids
-
-// var csp = '<meta http-equiv="Content-Security-Policy" content="default-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net; connect-src http://garbageplanet.dist https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://opengraph.io https://api.imgur.com/3/upload; script-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com 'self'; style-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src http://garbageplanet.dist https://api.tiles.mapbox.com https://api.mapbox.com https://garbagepla.net https://*.garbagepla.net http://i.imgur.com data:; object-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://opengraph.io">'
+    gutil = require('gulp-util'),
+    env = require('gulp-env');
 
 // Remove the local src scripts and styles from the head of the html
-gulp.task('trimHTML', function () {
+gulp.task('trimHTML', function() {
   return gulp.src('./src/index.html')
    .pipe(deleteLines({
       'filters': [/<script\s+type=["']text\/javascript["']\s+src=/i]
@@ -28,36 +25,6 @@ gulp.task('trimHTML', function () {
     }))
   .pipe(gulp.dest('./temp/'));
 });
-
-// Replace hardcoded tokens and keys for build
-/*gulp.task('replaceTokens', ['trimHTML'], function () {
-  gulp.src(['./src/js/map/map.js', './src/js/forms/uploader.js', './src/js/forms/form-submit.js', './src/js/social/share.js'])
-    .pipe(replace({
-      patterns: [
-        {
-          match: 'mapboxToken',
-          replacement: env.mapbox.token
-        },
-        {
-          match: 'imgurToken',
-          replacement: env.imgur.token
-        },
-        {
-          match: 'windowToken',
-          replacement: env.tools.token
-        },
-        {
-          match: 'facebookToken',
-          replacement: env.facebook.token
-        },
-        {
-          match: 'opengraphioToken',
-          replacement: env.opengraph.token
-        }
-      ]
-    }))
-    .pipe(gulp.dest('./temp/'));
-});*/
 
 // Minify the styleshseets and concat them in orde
 gulp.task('styles', ['trimHTML'], function() {
@@ -114,7 +81,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
 gulp.task('scripts:jquery', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/libs/pace.js',
-                    // './src/js/ui/init.js',
+                    // './src/js/ui/base.js',
                     './src/js/libs/jquery-2.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',
@@ -158,13 +125,40 @@ gulp.task('scripts:app', ['trimHTML'], function() {
     .pipe(gulp.dest('./temp/'));
 });
 
-// Minify body scripts and concat them in order
+// Minify body scripts, replace strings and concat them in order
 gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function() {
-  return gulp.src([
-                    './temp/jquery.min.js',
-                    './temp/leaflet.min.js',
-                    './temp/app.min.js',
-                  ])
+  
+    env({file: ".env.json"});
+  
+    return gulp.src([
+        './temp/jquery.min.js',
+        './temp/leaflet.min.js',
+        './temp/app.min.js',
+    ])
+    .pipe(replace({
+      patterns: [
+        {
+          match: 'mapboxtoken',
+          replacement: process.env.MAPBOX_TOKEN
+        },
+        {
+          match: 'imgurtoken',
+          replacement: process.env.IMGUR_TOKEN
+        },
+        {
+          match: 'windowtoken',
+          replacement: process.env.WINDOW_TOKEN
+        },
+        /*{
+          match: 'facebooktoken',
+          replacement: process.env.FB_token
+        },*/
+        {
+          match: 'opengraphiotoken',
+          replacement: process.env.OG_TOKEN
+        }
+      ]
+    }))
     .pipe(concat('app.js').on('error', gutil.log))
     .pipe(gulp.dest('dist/'));
 });
@@ -175,10 +169,7 @@ gulp.task('injectFiles', ['scripts:all', 'styles'], function() {
   // inject styles
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
   // Inject scripts
-  // FIXME GA can't work with current CSP
     .pipe(inject(gulp.src('./dist/app.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
-    // .pipe(injectStr.before('<link', "<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-88740066-1', 'auto');ga('send', 'pageview');</script>"))
-    // .pipe(injectStr.before('<meta', csp))
     .pipe(gulp.dest('temp1/'));
 });
 
@@ -191,17 +182,17 @@ gulp.task('minifyHTML', ['injectFiles'], function() {
 
 gulp.task('clean:start', function() {
     return del([
-                'dist/',
-                'temp',
-                'temp1'
-               ]);
+        'dist/',
+        'temp',
+        'temp1'
+    ]);
 });
 
 gulp.task('clean:end', ['minifyHTML'], function() {
     return del([
-                'temp',
-                'temp1'
-               ]);
+        'temp',
+        'temp1'
+    ]);
 });
 
 gulp.task('copy:fonts', ['clean:end'], function() {
@@ -225,5 +216,5 @@ gulp.task('copy:manifest', ['clean:end'], function() {
 });
 
 gulp.task('default', ['clean:start'], function() {
-    gulp.start('trimHTML', /*'replaceTokens',*/ 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'scripts:all' , 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon', 'copy:manifest');
+    gulp.start('trimHTML', 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'scripts:all' , 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon', 'copy:manifest');
 });

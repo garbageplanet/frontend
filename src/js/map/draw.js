@@ -264,6 +264,7 @@ var drawing = (function() {
             // TODO change to "once" handlers so that only one shape can be drawn before saving
         },
         init = function() {
+            // drawing apabilities are only called when the forms are loaded in /js/forms.js
             maps.map.addControl(drawControl);
             _bindEvents();
         };

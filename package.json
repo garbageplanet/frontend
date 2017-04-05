@@ -1,11 +1,8 @@
 {
   "name": "garbageplanet-frontend",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "Dependancies for building (gulp) the minified version of the garbagepla.net frontend.",
   "main": "gulpfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/garbageplanet/web-ui.git"
@@ -23,6 +20,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "^2.1.1",
     "gulp-delete-lines": "0.0.7",
+    "gulp-env": "^0.4.0",
     "gulp-htmlmin": "^1.3.0",
     "gulp-inject": "^3.0.0",
     "gulp-inject-string": "^1.1.0",

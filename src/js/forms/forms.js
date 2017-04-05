@@ -2,7 +2,6 @@
 * Forms elements that requires js activations and settings
 */
 
-// TODO make a prototype function makeForm.makeGarbage, makeForm.makeLitter...
 var forms = (function() {
   
     var _bindEvents = function() {
@@ -74,8 +73,10 @@ var forms = (function() {
 
                 if (targetLinkClass.indexOf(key) !== -1) {
                       forms.makeForm(id, types[key]);
-                  }      
+                }      
             } // adapted from http://stackoverflow.com/a/22277556/2842348
+          
+          // TODO catch error
         },
         passMarkerToForm = function(id) {
 
@@ -207,7 +208,8 @@ var forms = (function() {
 
             imageuploader.fileupload({
 
-                headers: {'Authorization': 'Client-ID 6f050e213f46ba9'},
+                // headers: {'Authorization': 'Client-ID 6f050e213f46ba9'},
+                headers: {'Authorization': 'Client-ID @@imgurtoken'},
                 type: 'POST',
                 url: 'https://api.imgur.com/3/upload',
                 dataType: 'json',

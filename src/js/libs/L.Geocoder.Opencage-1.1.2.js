@@ -254,10 +254,11 @@
 		},
 
 		_clearResults: function () {
-            console.log("CLEARING RESULTS!!!!!!");
+            console.log("CLEARING RESULTS");
             L.DomUtil.addClass(this._alts, 'leaflet-control-ocd-search-alternatives-minimized');
 			this._selection = null;
 			L.DomUtil.removeClass(this._errorElement, 'leaflet-control-ocd-search-error');
+            // TODO delete the list node from DOM
 		},
 
 		_createAlt: function(result, index) {

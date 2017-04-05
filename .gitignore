@@ -1,4 +1,4 @@
 .git
-env.json
+.env.json
 node_modules
 /dist/.well-known

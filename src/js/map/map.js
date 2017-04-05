@@ -4,8 +4,10 @@ var maps = (function() {
     
     var baselayer = {
     
+        // TODO simplify this
         "Mapbox Outdoors": 
-            L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
+            // L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
+            L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
                 { 
                     maxZoom: 18,
                     minZoom: 2,
@@ -15,7 +17,8 @@ var maps = (function() {
                 }),
 
         "Mapbox Satellite Street": 
-            L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qz5tn00002qry747yh58p/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
+            // L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qz5tn00002qry747yh58p/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
+            L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qz5tn00002qry747yh58p/tiles/256/{z}/{x}/{y}?access_token=@@mapboxtoken',
                 {
                     maxZoom: 18,
                     minZoom: 2,
@@ -24,7 +27,8 @@ var maps = (function() {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
                 }),
         "Mapbox Dark": 
-            L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qtrg900072pqrevagx9hv/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
+            // L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qtrg900072pqrevagx9hv/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
+            L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qtrg900072pqrevagx9hv/tiles/256/{z}/{x}/{y}?access_token=@@mapboxtoken',
                 {
                     maxZoom: 18,
                     minZoom: 2,
@@ -80,39 +84,36 @@ var maps = (function() {
         locationcontrol = L.control.locate({position: 'topleft'}),
         scalecontrol = L.control.scale({metric: true, imperial: false}),
         layerscontrol = L.control.layers(baselayer, overlayGroups, {position: 'topleft'}),
-        geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
+        // geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
+        geocodercontrol = L.Control.openCageSearch({key: '@@opengraphiotoken', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
-        init = function() {
-        
-            baselayer['Mapbox Outdoors'].addTo(maps.map);
-            //Disable doubleclick to zoom as it might interfer with other map functions
-            maps.map.doubleClickZoom.disable();
-            // Add zoom controls if not mobile / small screen
-            zoomcontrol.addTo(maps.map);
-            locationcontrol.addTo(maps.map);
-            scalecontrol.addTo(maps.map);
-            layerscontrol.addTo(maps.map);
-            geocodercontrol.addTo(maps.map);
+        locating = (function() {
 
-            // Add a glome anonymous login button on mobile and small screens
-            if (window.isMobile) {
-                if (!maps.map.glomelogincontrol) {
-                    maps.glomelogincontrol.addTo(map);
+            var onLocationFound = function(e) {
+                console.log('location found');
+                maps.map.setView(e.latlng, 18);
+            };
+          
+            var onLocationError = function(e) {
+
+                alerts.showAlert(16, "warning", 2000);
+                // If we are currently trying to locate the user and it fails and the maps is already set, just stop the control
+                if (tools.coordsinhrf) {
+                    maps.locationcontrol.stop();
                 }
+                // Show the world if geolocalization fail
+                else {
+                    maps.locationcontrol.stop();
+                    maps.map.setView([0, 0], 2);
+                }
+            };
+
+            return {
+                onLocationError: onLocationError,
+                onLocationFound: onLocationFound
             }
-        
-            // Set custom icons for map controls
-            $('.leaflet-control-layers-toggle').append("<span class='fa fa-fw fa-globe'></span>");
-            
-            if (!window.isMobile) {
-                $('.leaflet-control-zoom-in').append('<span class="fa fa-fw fa-plus"></span>');
-                $('.leaflet-control-zoom-out').append('<span class="fa fa-fw fa-minus"></span>');
-            }
-            
-            maps.map.on('locationerror', locating.onLocationError);
-            maps.map.on('locationfound', locating.onLocationFound);
-        },
-        icons = (function(){
+        }()),
+        icons = (function() {
 
             var mapMarker = L.DivIcon.extend({
                     options: {
@@ -155,12 +156,49 @@ var maps = (function() {
             maps.map.addLayer(osmTrashbinLayer);
             // TODO stop the function call on map move
             // add event on trashbins icon click
+        },
+        init = function() {
+        
+            baselayer['Mapbox Outdoors'].addTo(maps.map);
+            //Disable doubleclick to zoom as it might interfer with other map functions
+            maps.map.doubleClickZoom.disable();
+            // Add zoom controls if not mobile / small screen
+            zoomcontrol.addTo(maps.map);
+            locationcontrol.addTo(maps.map);
+            scalecontrol.addTo(maps.map);
+            layerscontrol.addTo(maps.map);
+            geocodercontrol.addTo(maps.map);
+                  
+            // Set custom icons for map controls
+            $('.leaflet-control-layers-toggle').append("<span class='fa fa-fw fa-globe'></span>");
+            
+            // Add a glome anonymous login button on mobile and small screens
+            if (window.isMobile) {
+                if (!maps.map.glomelogincontrol) {
+                    maps.glomelogincontrol.addTo(map);
+                }
+            }
+            // Add zoom controls on desktop
+            if (!window.isMobile) {
+                $('.leaflet-control-zoom-in').append('<span class="fa fa-fw fa-plus"></span>');
+                $('.leaflet-control-zoom-out').append('<span class="fa fa-fw fa-minus"></span>');
+            }            
+          
+            // Start geolocalization
+            maps.map.on('locationerror', maps.locating.onLocationError);
+            maps.map.on('locationfound', maps.locating.onLocationFound);
+          
+            if (!tools.coordsinhrf || tools.coordsinhrf == 'undefined') {
+                console.log('starting to geolocate');
+                maps.locationcontrol.start();
+            }
         };
     
     return {
         init: init,
         map: map,
         hash: hash,
+        locating: locating,
         trashBins: localTrashBins,
         locationcontrol: locationcontrol,
         glomelogincontrol: glomelogincontrol,
@@ -175,44 +213,6 @@ var maps = (function() {
         allLayers: allLayers,
         icons: icons
     };
-    
-}());
-
-var locating = (function() {
-    
-    var checkHref = function() {
-            if (!tools.coordsinhrf || tools.coordsinhrf == 'undefined') {
-                console.log('no coords in href calling locationcontrol.start');
-                maps.locationcontrol.start();
-            }   
-        },
-        onLocationFound = function (e) {
-            maps.map.setView(e.latlng, 18);
-        },
-        onLocationError = function (e) {
-
-            alerts.showAlert(16, "warning", 2000);
-
-            if (tools.coordsinhrf) {
-                console.log('catching coors in href');
-                maps.locationcontrol.stop();
-            }
-            // Show the world on localization fail
-            else {
-                maps.locationcontrol.stop();
-                maps.map.setView([0, 0], 2);
-                // shortcut but ugly:
-                // maps.map.fitWorld();
-            }
-        };
-
-    return {
-        checkHref: checkHref,
-        onLocationError: onLocationError,
-        onLocationFound: onLocationFound
-    }
 }());
 
 maps.init();
-// Start geolocalizing
-locating.checkHref();
