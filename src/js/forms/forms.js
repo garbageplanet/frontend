@@ -205,7 +205,6 @@ var forms = (function() {
 
             imageuploader.fileupload({
 
-                // headers: {'Authorization': 'Client-ID 6f050e213f46ba9'},
                 headers: {'Authorization': 'Client-ID @@imgurtoken'},
                 type: 'POST',
                 url: 'https://api.imgur.com/3/upload',
@@ -256,14 +255,15 @@ var forms = (function() {
             });
 
             imageuploaderbutton.on('click', function() {
-
+                            
                 // TODO this needs to be more secure with checkLogin(checkonly)
+                // but how to catch the promise?
                 if (localStorage.getItem('token')) {
-                    // if (checklogin()) {}
+                  
+                    console.log('we got check')
                     $(this).next().trigger('click');
-                }
-
-                else {
+                  
+                  } else {
                     alerts.showAlert(3, 'warning', 2000);
                     return;
                 }

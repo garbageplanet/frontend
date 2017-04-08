@@ -6,7 +6,6 @@ var maps = (function() {
     
         // TODO simplify this
         "Mapbox Outdoors": 
-            // L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
             L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
                 { 
                     maxZoom: 18,
@@ -17,7 +16,6 @@ var maps = (function() {
                 }),
 
         "Mapbox Satellite Street": 
-            // L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qz5tn00002qry747yh58p/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
             L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qz5tn00002qry747yh58p/tiles/256/{z}/{x}/{y}?access_token=@@mapboxtoken',
                 {
                     maxZoom: 18,
@@ -27,7 +25,6 @@ var maps = (function() {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
                 }),
         "Mapbox Dark": 
-            // L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qtrg900072pqrevagx9hv/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
             L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qtrg900072pqrevagx9hv/tiles/256/{z}/{x}/{y}?access_token=@@mapboxtoken',
                 {
                     maxZoom: 18,
@@ -84,8 +81,7 @@ var maps = (function() {
         locationcontrol = L.control.locate({position: 'topleft'}),
         scalecontrol = L.control.scale({metric: true, imperial: false}),
         layerscontrol = L.control.layers(baselayer, overlayGroups, {position: 'topleft'}),
-        // geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
-        geocodercontrol = L.Control.openCageSearch({key: '@@opengraphiotoken', limit: 5, position: 'topleft'}),
+        geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
         locating = (function() {
 

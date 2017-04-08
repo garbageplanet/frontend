@@ -26,7 +26,7 @@ gulp.task('trimHTML', function() {
   .pipe(gulp.dest('./temp/'));
 });
 
-// Minify the styleshseets and concat them in orde
+// Minify the styleshseets and concat them in order
 gulp.task('styles', ['trimHTML'], function() {
   return gulp.src([
                     './src/css/pace.css',
@@ -82,7 +82,8 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/libs/pace.js',
                     // './src/js/ui/base.js',
-                    './src/js/libs/jquery-2.2.0.js',
+                    './src/js/libs/jquery-2.2.4.js',
+                    // './src/js/libs/jquery-3.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',
                     './src/js/libs/bootstrap-datetimepicker-4.17.37.js',
@@ -153,6 +154,10 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
           match: 'facebooktoken',
           replacement: process.env.FB_token
         },*/
+        {
+          match: 'opencagetoken',
+          replacement: process.env.OC_TOKEN
+        },
         {
           match: 'opengraphiotoken',
           replacement: process.env.OG_TOKEN

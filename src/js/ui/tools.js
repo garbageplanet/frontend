@@ -1,9 +1,29 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global tools */
-// Tools and utilities
+
+/**
+ * Tools an utilities.
+ * @namespace tools
+ * @name tools
+ * @type {Object}
+ * @returns 
+ * @method
+ * @param {string} title - The title of the book.
+ * @param {string} author - The author of the book.
+ * @see 
+ */
+
 var tools = {
+    /**
+   * @namespace tools.makeEllipsis
+   * @method makeEllipsis()
+   * @param {obj} object - The string to shorten.
+   * @param {n} n - The length of the final shortened string.
+   * @returns {string} shortened string - returns an inputed string with ellipsis (...)
+   * @see http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
+   */
     makeEllipsis: function(obj, n) {
-              return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
-    }, // credit: http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
+        return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
+    },
     insertString: function(obj, index, string) {
         
         if (index > 0) {
@@ -335,11 +355,13 @@ var tools = {
         return true;
     },
     coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
-    // token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjYsImlzcyI6Imh0dHA6XC9cL2FwaS5nYXJiYWdlcGxhLm5ldFwvYXBpXC9hdXRoZW50aWNhdGUiLCJpYXQiOiIxNDQ2OTAxNTcxIiwiZXhwIjoiMTQ0NjkwNTE3MSIsIm5iZiI6IjE0NDY5MDE1NzEiLCJqdGkiOiJhMzljOTg1ZDZmNWNjNmU4MGNlMmQzOWZjODg5NWM1YSJ9.R28VF7VI1S3-PpvaG6cjpyxpygvQCB0JXF5oQ27TxCw',
+   /**
+   * @namespace tools.token - the base token to talk to the api endpoints
+   */
     token: '@@windowtoken',
     ogDotIoScraper: function(url) {
 
-        var ogdotiotoken = '5899e0ad4c09780e001df53b';
+        var ogdotiotoken = '@@opengraphiotoken';
 
         if (url) {
             var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);
@@ -385,6 +407,13 @@ var tools = {
             return;
         }
     },
+ /**
+   * @namespace tools.randomString
+   * @method randomString()
+   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length
+   * @param {string} len - Length of the string to be returned
+   * @requires Leaflet
+   */
     randomString: function(len) {
         var a = ' ',
             b = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -393,6 +422,12 @@ var tools = {
         }
         return a; 
     },
+ /**
+   * @namespace tools.mobileCheck
+   * @method mobileCheck()
+   * @returns {boolean} true - Returns true if the device on which the site is loaded passes the L.Browser leaflet mobile check.
+   * @requires Leaflet
+   */
     mobileCheck: function(){
       
         var mobilecheck = L.Browser.mobile;
@@ -405,7 +440,13 @@ var tools = {
         }      
     }
 };
-// the serializeObject function is used to collect data from the forms and pass them forward as an obj
+/**
+  * @namespace jQuery.fn.serializeObject
+  * @method serializeObject()
+  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes become keys and value attributes become values.
+  * @see https://gist.github.com/dshaw/449041
+  * @requires jQuery
+  */
 $.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
@@ -421,6 +462,7 @@ $.fn.serializeObject = function() {
     });
     return o;
 };
+
 // Check if mobile device on load
 window.isMobile = tools.mobileCheck();
 console.log("On mobile device: ", window.isMobile);

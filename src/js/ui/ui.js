@@ -60,11 +60,11 @@ var ui = (function() {
                     "linkurl":"http://home.garbagepla.net/",
                     "text":"Project"
                 },
-                {
+                /*{
                     "title":"Let's Encrypt",
                     "linkurl":"https://letsencrypt.org/",
                     "text":"Secured with"
-                },
+                },*/
                 {
                     "title":"Mapbox",
                     "linkurl":"https://www.mapbox.com/",
@@ -116,14 +116,14 @@ var ui = (function() {
                     "text":"Templating with"
                 },
                 {
-                    "title":"Github",
-                    "linkurl":"https://github.com/garbageplanet",
-                    "text":"Source code available on"
-                },
-                {
                     "title":"Imgur",
                     "linkurl":"https://imgur.com",
                     "text":"Image storage courtesy of"
+                },
+                {
+                    "title":"Github",
+                    "linkurl":"https://github.com/garbageplanet",
+                    "text":"Source code available on"
                 },
                 {
                   "title": "privacy policy",

@@ -10,7 +10,7 @@
 
 var session = (function() {
     
-    var switchSession = function(obj) { 
+    var _switchSession = function(obj) { 
 
         var classicSessionType = localStorage.getItem('classic');
 
@@ -47,7 +47,7 @@ var session = (function() {
             // Reset the event listener for the modified button
             $("#session-status").on('click', '#btn-logout', function() {
                 // change the UI
-                switchSession("logout");
+                _switchSession("logout");
                 // server-side logout
                 logout();
             });
@@ -164,7 +164,7 @@ var session = (function() {
                             localStorage.setItem('useremail', data.user.email);
                             console.log('session type is classic', localStorage.getItem('classic'));
                             console.log('username value: ', localStorage.getItem('username'));
-                            switchSession('login');
+                            _switchSession('login');
                             alerts.showAlert(13, 'success', 1500);
                         }
                     });
@@ -174,8 +174,10 @@ var session = (function() {
                     localStorage.removeItem('token');
                 });
             },
-        checkLogin = function() {
-
+        checkLogin = function(d) {
+          
+            var tokeh = d;
+          
             // TODO checklogin for glome key as well
             var useToken = localStorage.getItem('token') || tools.token;
 
@@ -194,14 +196,32 @@ var session = (function() {
             });
           
             checklogincall.done(function() {
-                switchSession('login');
+              
+                if (!tokeh || tokeh !== 1) {
+                  _switchSession('login');
+                } else if (tokeh === 1) { 
+                  console.log('login check');
+                  return true
+                }
             });
+          
             checklogincall.fail(function() {
+              
                 alerts.showAlert(21, 'danger', 2000);
-                switchSession('logout');
-                localStorage.clear();
-                ui.sidebar.show($('#user-login-dialog').show().siblings().hide());
+
+                if (!tokeh || tokeh!== 1) {
+                    _switchSession('logout');
+                    localStorage.clear();
+                    ui.sidebar.show($('#user-login-dialog').show().siblings().hide());
+                } else if (tokeh === 1) { 
+                  alert('CHCK FAILED');
+                  return false
+                }
             });
+          
+            return {
+              checklogincall: checklogincall
+            }
         },
         logout = function() {
                 // FIXME serverside logout backend replies 401
@@ -229,7 +249,7 @@ var session = (function() {
                     });
                   
                     logoutcall.done(function() {
-                        switchSession('logout');
+                        _switchSession('logout');
                         alerts.showAlert(22, 'info', 2000);
                         localStorage.clear();
 
@@ -283,7 +303,7 @@ var session = (function() {
                             localStorage.setItem('username', data.user.name);
                             localStorage.setItem('userid', data.user.id);
                             localStorage.setItem('useremail', data.user.email);
-                            switchSession('login');
+                            _switchSession('login');
                             alerts.showAlert(13, 'success', 2000);
                         }
                     });
@@ -342,7 +362,7 @@ var session = (function() {
 
                             if (typeof authUser !== 'undefined') {
                               localStorage.setItem('classic', 'false');
-                              switchSession('login');
+                              _switchSession('login');
                               alerts.showAlert(13, 'success', 2000);
                             }
                         }
@@ -387,7 +407,7 @@ var session = (function() {
                     });
                   
                     deleteaccountcall.done(function() {
-                        switchSession('logout');
+                        _switchSession('logout');
                         alerts.showAlert(17, 'success', 2000);
                         localStorage.clear();
                     });
@@ -428,7 +448,7 @@ var session = (function() {
                     localStorage.setItem('token', response.token);
                     console.log('registered and logged in with glome');
                     $('#create-account-dialog').hide();
-                    switchSession('login');
+                    _switchSession('login');
                     alerts.showAlert(20, 'success', 2000);
 
                     $.ajax({

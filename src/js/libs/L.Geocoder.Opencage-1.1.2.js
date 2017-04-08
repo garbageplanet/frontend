@@ -210,7 +210,7 @@
 		},
 
 		_toggle: function() {
-            console.log("ToGGLING!!!!!!");
+            console.log("toggling geocode");
 			if (this._container.className.indexOf('leaflet-control-ocd-search-expanded') >= 0) {
 				this._collapse();
 			}
@@ -221,7 +221,7 @@
 		},
 
 		_expand: function () {
-            console.log("EXPANDING!!!!!!");
+            console.log("expanding geocode");
 			L.DomUtil.addClass(this._container, 'leaflet-control-ocd-search-expanded');
             
             // CUSTOM added three lines
