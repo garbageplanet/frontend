@@ -668,26 +668,22 @@ a.menu-backlink:hover {
 }
 
 /* Remove rounded corners from other elements */
-input {
+input, button, .from-control, .progress, .input-group-addon, .bootstrap-datetimepicker-widget.dropdown-menu  {
  border-radius: 0 !important;
 }
-button {
- border-radius: 0 !important;
-}
-.from-control {
+/*button {
  border-radius: 0 !important;
 }
 .input-group-addon {
  border-radius: 0 !important;
-}
+}*/
 textarea {
  border-radius: 0 !important;
  resize: none;
 }
-
-.progress {
+/*.progress {
     border-radius: 0 !important;
-}
+}*/
 
 h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, button, .page-name, .navbar .nav-pills > li > a {
   font-family: 'Work Sans', sans-serif;

@@ -71,7 +71,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
                     './src/js/libs/L.Geocoder.Opencage-1.1.2.js',
                     './src/js/libs/L.Control.Login.js'
                   ])
-    .pipe(stripDebug())
+    // .pipe(stripDebug())
     .pipe(concat('leaflet.min.js'))
     .pipe(uglify({mangle: false, compress: false}))
     .pipe(gulp.dest('./temp/'));
@@ -82,12 +82,13 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
   return gulp.src([
                     './src/js/libs/pace.js',
                     // './src/js/ui/base.js',
-                    './src/js/libs/jquery-2.2.4.js',
-                    // './src/js/libs/jquery-3.2.0.js',
+                    // './src/js/libs/jquery-2.2.4.js',
+                    './src/js/libs/jquery-3.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',
-                    './src/js/libs/bootstrap-datetimepicker-4.17.37.js',
-                    './src/js/libs/bootstrap-3.3.6.js',
+                    // './src/js/libs/bootstrap-3.3.6.js',
+                    './src/js/libs/bootstrap-3.3.7.js',
+                    './src/js/libs/bootstrap-datetimepicker-4.17.47.js',
                     './src/js/libs/bootstrap-select-1.9.4.js',
                     './src/js/libs/bootstrap-validator-0.9.0.js',
                     './src/js/libs/bootstrap-tour-0.10.1.js',
@@ -96,7 +97,7 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
                     './src/js/libs/bootstrap-datatables-1.10.11.js',
                     './src/js/libs/jquery-touchwipe-1.1.1.js'
                   ])
-    .pipe(stripDebug())
+    // .pipe(stripDebug())
     .pipe(concat('jquery.min.js'))
     .pipe(uglify({mangle: false, compress: false}))
     .pipe(gulp.dest('./temp/'));
@@ -120,7 +121,7 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/map/draw.js',
                     './src/js/social/social.js'
                   ])
-    .pipe(stripDebug())
+    // .pipe(stripDebug())
     .pipe(uglify({mangle: false, compress: false}).on('error', gutil.log))
     .pipe(concat('app.min.js').on('error', gutil.log))
     .pipe(gulp.dest('./temp/'));

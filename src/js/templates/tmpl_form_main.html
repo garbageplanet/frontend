@@ -48,8 +48,8 @@
                   width="fit"
                   mobile="true"
                   multiple>
-                  </select>
-      <div class="help-block with-errors"></div>
+          </select>
+          <div class="help-block with-errors"></div>
       </div>
 
       <div class="dropdown">
@@ -226,22 +226,23 @@
             </div>
           </div>
 
-          <div class="dropdown form-group">
-                  <select class="selectpicker cleaning-recurrent-select"
-                          title="Set event recurrence"
-                          data-width="100%"
-                          name="recurrence"
-                          width="fit"
-                          mobile="true"
-                          required>
-                      <option value=""></option>
-                      <option value="daily">None</option>
-                      <option value="daily">Daily</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                      <option value="yearly">Yearly</option>
-                  </select>
-          </div>
+          <div class="dropdown">
+              <select class="selectpicker form-control cleaning-recurrent-select"
+                      title="Set event recurrence"
+                      data-width="100%"
+                      name="recurrence"
+                      width="fit"
+                      mobile="true"
+                      required>
+                  <option value="" disabled="disabled"></option>
+                  <option value="none">None</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="yearly">Yearly</option>
+              </select>
+              <div class="help-block with-errors"></div>
+          </div>         
 
           <div class="form-group form-group-lg" style="width:100%">
             <textarea class="cleaning-note form-control"

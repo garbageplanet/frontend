@@ -260,9 +260,9 @@ var tools = {
     },
     bindTempMarkerEvents: function(id) {
         
-        var marker = actions.tempmarkers[id],
-            menubacklink = $('.menu-backlink'),
-            cancelbutton = $('.btn-cancel');
+        var marker = actions.tempmarkers[id];
+        var menubacklink = $('.menu-backlink');
+        var cancelbutton = $('.btn-cancel');
         
         ui.sidebar.on ('hide', function() {
             tools.resetIconStyle(id);
