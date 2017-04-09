@@ -34,7 +34,7 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/google-work-sans.css',
                     './src/css/trashbag.css',
                     './src/css/bootstrap-3.3.6.css',
-                    './src/css/bootstrap-datetimepicker-4.17.37.css',
+                    './src/css/bootstrap-datetimepicker-4.17.47.css',
                     './src/css/bootstrap-select-1.9.4.css',
                     './src/css/bootstrap-tagsinput-0.4.3.css',
                     './src/css/bootstrap-horizon.css',
@@ -71,7 +71,7 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
                     './src/js/libs/L.Geocoder.Opencage-1.1.2.js',
                     './src/js/libs/L.Control.Login.js'
                   ])
-    // .pipe(stripDebug())
+    .pipe(stripDebug())
     .pipe(concat('leaflet.min.js'))
     .pipe(uglify({mangle: false, compress: false}))
     .pipe(gulp.dest('./temp/'));
@@ -97,7 +97,7 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
                     './src/js/libs/bootstrap-datatables-1.10.11.js',
                     './src/js/libs/jquery-touchwipe-1.1.1.js'
                   ])
-    // .pipe(stripDebug())
+    .pipe(stripDebug())
     .pipe(concat('jquery.min.js'))
     .pipe(uglify({mangle: false, compress: false}))
     .pipe(gulp.dest('./temp/'));
@@ -121,7 +121,7 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/map/draw.js',
                     './src/js/social/social.js'
                   ])
-    // .pipe(stripDebug())
+    .pipe(stripDebug())
     .pipe(uglify({mangle: false, compress: false}).on('error', gutil.log))
     .pipe(concat('app.min.js').on('error', gutil.log))
     .pipe(gulp.dest('./temp/'));
