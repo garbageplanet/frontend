@@ -15,13 +15,13 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] taginputs reset deletes placeholder
 
 ### TODO
+- [ ] serve Leaflet, jQuery, FontAwesome and Bootstrap via CDN
 - [ ] geotagged photo capability
 - [ ] upoad to imgur as user
-- [ ] reverse geocode address for cleanings
+- [ ] reverse geocode addresses for cleanings
 - [ ] add geographical location capability to html scraping
 - [ ] make the edit system
 - [ ] documentation
-- [ ] serve Leaflet, jQuery, FontAwesome and Bootstrap via CDN
 
 ### Licence
 This code is available under the ISC licence but some parts have a different license information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).
