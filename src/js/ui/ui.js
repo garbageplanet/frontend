@@ -340,8 +340,6 @@ var ui = (function() {
             if (window.isMobile) {
                 // Remove menu bar div
                 topbar.remove();
-                // Delete the zoom keys from map
-                maps.map.removeControl(maps.zoomcontrol);
                 // Add swipe areas
                 $('body').append('<div class="swipe-area swipe-area-right"></div>');
                 sidebarcontainer.append('<div class="swipe-area swipe-area-left"></div>');

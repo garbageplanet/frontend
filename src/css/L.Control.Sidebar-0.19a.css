@@ -1,8 +1,9 @@
 /** author: Tobias Bieniek (Turbo87)
-// https://github.com/Turbo87/leaflet-sidebar/
-// modified by: adriennn jan-2016
-// License: MIT 
-// version 0.19a **/
+  * https://github.com/Turbo87/leaflet-sidebar/
+  * modified by: adriennn jan-2016
+  * License: MIT 
+  * version 0.19a 
+  **/
 .leaflet-sidebar {
     position: absolute;
     height: 100%;
@@ -20,7 +21,6 @@
        -moz-transition: bottom 0.5s, height 0.5s;
          -o-transition: bottom 0.5s, height 0.5s;
     padding-bottom: 0; 
-/*overflow: hidden */
 }
 
 .leaflet-sidebar.bottom.visible {
@@ -122,7 +122,6 @@
     
     
     .leaflet-sidebar {
-      /*width: 305px;*/
       width: 100vw;
       }
     
@@ -197,24 +196,31 @@
         bottom: 300px; } 
 }
 
-/* Style the close buttons */
-.close-panel {
+/* Style the close buttons of panels */
+.close-button {
     height: 50px;
     width: 50px;
     position: absolute;
     cursor: pointer;
     vertical-align: middle;
-    font-size: 45px;
-    font-weight: 100;
-    line-height: 40px;
-    background-color: #EEE;
+    background-color: #ededed;
     text-align: center;
     border-radius: 50%;
 }
 
-.close-panel:hover {
+.close-button > .close {
+    display: table-cell;
+    position: relative;
+    left: -11.5px;
+    top: -4px;
+    font-family: 'Work Sans', sans-serif !important;
+    font-size: 50px;
+    font-weight: 100 !important;
+    line-height: 50px;
+}
+
+.close-button:hover, .close-button:active  {
   background-color: #5f5f5f;
-  color: #FFF;
 }
 
 .close-right {

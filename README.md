@@ -15,12 +15,13 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] taginputs reset deletes placeholder
 
 ### TODO
+- [ ] add backend controllers and geographical location capability to html scraping
 - [ ] serve Leaflet, jQuery, FontAwesome and Bootstrap via CDN
 - [ ] geotagged photo capability
 - [ ] upoad to imgur as user
 - [ ] reverse geocode addresses for cleanings
-- [ ] add geographical location capability to html scraping
 - [ ] make the edit system
+- [ ] put the licenses in the minified files
 - [ ] documentation
 
 ### Licence

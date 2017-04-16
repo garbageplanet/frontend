@@ -1,5 +1,5 @@
 .git
 .env.json
-dist
+dist/
 node_modules
 /dist/.well-known

@@ -553,6 +553,9 @@ a.menu-backlink:hover {
 
 /* Custom bootstrap styles */
 
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-top: 10px !important;
+}
 /* Override the default bootstrap btn-success, error, danger, info */
 .btn-danger {
     border-color: #d9534f;

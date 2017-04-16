@@ -11,17 +11,14 @@ var actions = (function() {
     var tempmarkers = [],        
         mapClick = function(map) {
 
-            // This function is ugly
-            // build a dedicated function
             // Check that there's not already something else going on in the UI
             if (!tools.checkOpenUiElement(map)){
                 return;
             }
-
             // Else place a marker on the map
             else {
               
-                // Make the actual marker
+                // Make the actual marker and add it to the map
                 var marker = L.marker(map.latlng, {
                     icon: maps.icons.genericMarker,
                     draggable: false,
@@ -30,73 +27,43 @@ var actions = (function() {
               
                 marker.addTo(maps.unsavedMarkersLayerGroup);
                 var markerid = marker._leaflet_id;
-
+                // Save the temp marker into an array
                 actions.tempmarkers[markerid] = marker;
+                
+                // Send the marker id to the forms so we can retrive the object
+                // TODO better way to keep the marker in the same context so we don't need to bother with that
+                forms.passMarkerToForm(markerid);
               
-                // Set listeners in the case the marker isn't saved
-                tools.bindTempMarkerEvents(markerid);
+                
+
+                // Show the menu with a delay on mobile
+                if (window.isMobile) {
+                    // Pan the map to center the marker  
+                    maps.map.panTo(marker.getLatLng());
+                  
+                    console.log('showing sidebar with a delay')
+                    setTimeout( function(){
+                        ui.sidebar.show($("#create-marker-dialog").show());
+                    }, 1000);
+                }
               
-                // Pan action for desktop and larger screens
-                if (!window.isMobile) {
+                // On desktop,we keep the marker available event if not saved
+                else if (!window.isMobile) {
+                  
+                    // Pan the map to center the marker
+                    maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
                   
                     // This passes the marker obj directly to unsavedMarkerClick as an obj
                     marker.on('click', function() {
                         unsavedMarkerClick(marker);
                     });
                   
-                    maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
+                    // Set listeners in the case the marker isn't saved
+                    tools.bindTempMarkerEvents(markerid);
+                    // Reset the sidebar contents
                     $('.sidebar-content').hide();
                     $('#sidebar').scrollTop = 0;
                     ui.sidebar.show($("#create-marker-dialog").show());
-
-                    // Send the marker to the forms
-                    forms.passMarkerToForm(markerid);
-                }
-
-                // Pan action for mobile and small screens
-                if (window.isMobile) {
-                  
-                // FIXME this is still very buggy
-                  
-                    // Check that there isn't already another marker menu visible on the screen
-                    if (!$('.leaflet-marker-menu').is(':visible')) {
-                      
-                        // Make sure the marker doesn't already have a menu
-                        // Don't allow creation of more than one temp marker on mobile
-                        if (!marker._menu) {
-
-                            marker.setMenu(tools.mobileMarkerMenu);
-                            maps.map.panTo(marker.getLatLng());
-                          
-                            // debugger;
-
-                            // Open the mobile menu if it's not already open
-                            // TODO prevent feature click when mobile marker menu is open
-                            if (!marker._menu._isOpened) {
-                                
-                                maps.map.off('click', mapClick);
-                                marker.setZIndexOffset(1000);
-                                marker.openMenu();
-                                // Stop the map click listener
-                                // Send the marker to the forms after the menu is created else the event listeners don't work
-                                forms.passMarkerToForm(markerid);
-                              
-                                // Manually close the marker menu after selecting a menu item
-                                $('.fa-marker-menu').on('click', function() {
-                                  
-                                    console.log('mobile marker menu item clicked');
-
-                                    setTimeout(function() {
-                                        if(marker) {
-                                            if (marker._menu._isOpened) {
-                                                marker.closeMenu();  
-                                            }
-                                        }
-                                    }, 500);
-                                });
-                            }
-                        }
-                    }
                 }
             }
         },
@@ -130,23 +97,6 @@ var actions = (function() {
                 $('.sidebar-content').hide();
                 ui.sidebar.show($("#create-marker-dialog").fadeIn());
             }
-          
-            // Mobile behavior
-            // Disabled this for now because it's too buggy
-            /*if (window.isMobile) {
-
-                if (marker._menu) {
-                    // maps.map.panTo(marker.getLatLng());
-                    // Toggle the mobile menu, the click listeners are already set with L.Marker.Menu.setMenu()
-                    marker.setZIndexOffset(500);
-                }
-
-                if (!marker._menu) {
-                    marker.setMenu(actions.mobileMarkerMenu);
-                    maps.map.panTo(marker.getLatLng());
-                    marker.openMenu();                  
-                }
-            }*/
         },
         featureClick = function(e, obj) {
 

@@ -8,8 +8,7 @@ var maps = (function() {
         "Mapbox Outdoors": 
             // L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
             L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
-
-              { 
+                { 
                     maxZoom: 18,
                     minZoom: 2,
                     reuseTiles: true,
@@ -64,6 +63,25 @@ var maps = (function() {
                 });
             }
         }).addTo(map),
+        linkLayerGroup = L.markerClusterGroup({
+            spiderfyOnMaxZoom: false,
+            maxClusterRadius: 80,
+            disableClusteringAtZoom: 15,
+            showCoverageOnHover: false,
+            // FIXME singleMarkerMode doesn't work with iConCreateFunction enabled
+            singleMarkerMode: true,
+            iconCreateFunction:  function (cluster) {
+                
+                var childCountText = cluster.getChildCount();
+
+                return L.divIcon({
+                    html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-link">' + childCountText + 
+                            '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-link"></i></div>', 
+                    className: 'leaflet-marker-cluster leaflet-marker-cluster-link',
+                    iconSize: [40,40]
+                });
+            }
+        }).addTo(map),
         litterLayerGroup = L.featureGroup().addTo(map),
         areaLayerGroup = L.featureGroup().addTo(map),
         unsavedMarkersLayerGroup = L.featureGroup().addTo(map),
@@ -79,11 +97,16 @@ var maps = (function() {
             "Littered coasts and roads": litterLayerGroup,
             "Tiles and areas": areaLayerGroup
         },
-        zoomcontrol = L.control.zoom({position: 'topleft'}),
         locationcontrol = L.control.locate({position: 'topleft'}),
         scalecontrol = L.control.scale({metric: true, imperial: false}),
-        layerscontrol = L.control.layers(baselayer, overlayGroups, {position: 'topleft'}),
-        geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
+        // THe custom icon 'linkText' is set for the layers in Leaflet source code 
+        // in L.Control.Layers.__initLayout()
+        layerscontrol = L.control.layers(baselayer, overlayGroups, {
+            position: 'topleft',
+            linkText: '<span class="fa fa-fw fa-globe"></span>'
+        }),
+        // geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
+        geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
         locating = (function() {
 
@@ -160,28 +183,26 @@ var maps = (function() {
             baselayer['Mapbox Outdoors'].addTo(maps.map);
             //Disable doubleclick to zoom as it might interfer with other map functions
             maps.map.doubleClickZoom.disable();
-            // Add zoom controls if not mobile / small screen
-            zoomcontrol.addTo(maps.map);
+
+            // Add zoom controls on desktop
+            if (!window.isMobile) {
+                var zoomcontrol = L.control.zoom({position: 'topleft'});
+                zoomcontrol.options.zoomInText = '<span class="fa fa-fw fa-plus"></span>';
+                zoomcontrol.options.zoomOutText = '<span class="fa fa-fw fa-minus"></span>';
+                zoomcontrol.addTo(maps.map);
+            }
+          
             locationcontrol.addTo(maps.map);
             scalecontrol.addTo(maps.map);
             layerscontrol.addTo(maps.map);
             geocodercontrol.addTo(maps.map);
-                  
-            // Set custom icons for map controls
-            $('.leaflet-control-layers-toggle').append("<span class='fa fa-fw fa-globe'></span>");
-            
+          
             // Add a glome anonymous login button on mobile and small screens
             if (window.isMobile) {
                 if (!maps.map.glomelogincontrol) {
                     maps.glomelogincontrol.addTo(map);
                 }
             }
-            // Add zoom controls on desktop
-            if (!window.isMobile) {
-                $('.leaflet-control-zoom-in').append('<span class="fa fa-fw fa-plus"></span>');
-                $('.leaflet-control-zoom-out').append('<span class="fa fa-fw fa-minus"></span>');
-            }            
-          
             // Start geolocalization
             maps.map.on('locationerror', maps.locating.onLocationError);
             maps.map.on('locationfound', maps.locating.onLocationFound);
@@ -202,7 +223,6 @@ var maps = (function() {
         glomelogincontrol: glomelogincontrol,
         layerscontrol: layerscontrol,
         geocodercontrol: geocodercontrol,
-        zoomcontrol: zoomcontrol,
         garbageLayerGroup: garbageLayerGroup,
         areaLayerGroup: areaLayerGroup,
         litterLayerGroup: litterLayerGroup,

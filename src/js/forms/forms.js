@@ -80,7 +80,6 @@ var forms = (function() {
         },
         passMarkerToForm = function(id) {
 
-            // FIXME there's a circular reference somehwere here?
             "use strict";
 
             var id = id;
@@ -94,6 +93,7 @@ var forms = (function() {
         },
         makeForm = function(id, type) {
 
+            // TODO make a switch statement
             // Build an object to pass to the templating engine
             var typeobj = {};
             typeobj[type] = type;
@@ -256,7 +256,7 @@ var forms = (function() {
 
             imageuploaderbutton.on('click', function() {
                             
-                // TODO this needs to be more secure with checkLogin(checkonly)
+                // TODO this needs to be more secure with session.checkLogin(checkonly)
                 // but how to catch the promise?
                 if (localStorage.getItem('token')) {
                   

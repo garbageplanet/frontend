@@ -1,31 +1,90 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global tools */
 
 /**
- * Tools an utilities.
- * @namespace tools
- * @name tools
- * @type {Object}
- * @returns 
- * @method
- * @param {string} title - The title of the book.
- * @param {string} author - The author of the book.
- * @see 
- */
+  * @namespace jQuery.fn.serializeObject
+  * @method serializeObject()
+  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes become keys and value attributes become values.
+  * @see https://gist.github.com/dshaw/449041
+  * @requires jQuery
+  */
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+/**
+  * @namespace Leaflet.LatLngBounds.prototype.toBBoxStringInverse
+  * @method toBBoxStringInverse()
+  * @returns {object} string object - the bounding box coordinates returned by default by Leaflet 
+                      are not in the order expected for making postGRE bounding box requests in the backend.
+  * @requires Leaflet
+  */
+L.LatLngBounds.prototype.toBBoxStringInverse = function() {
+    return [this.getSouth(), this.getWest(), this.getNorth(), this.getEast()].join(',');
+};
+/**
+  * @namespace Leaflet.Map.prototype.panToOffset
+  * @method panToOffset()
+  * @returns {object} coordinate string object
+  * @param {object} latlng - [lat, lng] Leaflet coordinates object or array 
+  * @param {array} offset - [x, y] offset by which the map should be moved
+  * @param {string} zoom - level to use
+  * @param {object} options - leaflet options to pass to the function
+  * @requires Leaflet
+  * @author louh@github
+  * @copyright Copyright (c) 2013, Code for America
+  * @see LICENSE.md
+  */
+L.Map.prototype.panToOffset = function(latlng, offset, zoom, options) {
 
+    var x = this.latLngToContainerPoint(latlng).x - offset[0],
+        y = this.latLngToContainerPoint(latlng).y - offset[1],
+        point = this.containerPointToLatLng([x, y]);
+
+    if (zoom) {
+        return this.setView(point, zoom, {pan: options});
+    } else {
+        return this.setView(point, this._zoom, {pan: options});
+    }
+};
+
+/**
+  * Tools an utilities.
+  * @namespace tools
+  * @name tools
+  * @type {Object} 
+  */
 var tools = {
-    /**
-   * @namespace tools.makeEllipsis
-   * @method makeEllipsis()
-   * @param {obj} object - The string to shorten.
-   * @param {n} n - The length of the final shortened string.
-   * @returns {string} shortened string - returns an inputed string with ellipsis (...)
-   * @see http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
-   */
+/**
+  * @namespace tools.makeEllipsis
+  * @method makeEllipsis()
+  * @param {obj} object - the string to shorten.
+  * @param {n} integer - the length of the final shortened string.
+  * @returns {string} shortened string - returns an inputed string with ellipsis (...)
+  * @see http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
+  */
     makeEllipsis: function(obj, n) {
         return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
     },
+ /**
+   * @namespace tools.insertString
+   * @method insertString()
+   * @param {obj} object - the string to modify.
+   * @param {index} integer - the position in the string where a character is to be inserted.
+   * @param {string} string - the string to be added to the original string.
+   * @returns {string} modified string - returns the inputed string with added string.
+   */
     insertString: function(obj, index, string) {
-        
         if (index > 0) {
             return obj.substring(0, index) + string + obj.substring(index, obj.length);
         } else {
@@ -40,14 +99,6 @@ var tools = {
                c === 4  ? 'marker-color-red'        :
                           'marker-color-violet'     ;
     },
-    setTodoFullText: function(t) {
-
-        return t == 1  ? ' it has been cleaned up already'  :
-               t == 2  ? ' need help to clean it up'        :
-               t == 3  ? ' full bags need to be collected'  :
-               t == 4  ? ' a cleaning needs to be organized':
-                         ' tell the local authorities'      ;
-    },
     setPolylineColor: function(c) {
 
         return c === 1  ? '#ccff66' :
@@ -56,15 +107,25 @@ var tools = {
                c === 4  ? '#ff1a1a' :
                           '#e60073' ;
     },
+    setTodoFullText: function(t) {
+
+        return t == 1  ? ' it has been cleaned up already'  :
+               t == 2  ? ' need help to clean it up'        :
+               t == 3  ? ' full bags need to be collected'  :
+               t == 4  ? ' a cleaning needs to be organized':
+                         ' tell the local authorities'      ;
+    },
     getCurrentBounds: function() {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         return bounds;
     },
     cloneLayer: function(layer) {
         
-        // stripped down version of original function by @jieter
-        // github.com/jieter/leaflet-clonelayer
-        // unlicensed
+        /** 
+        * stripped down version of original function by @jieter
+        * @see github.com/jieter/leaflet-clonelayer
+        * @note unlicensed
+        */
         var options = layer.options;
 
         // Marker layers
@@ -93,8 +154,7 @@ var tools = {
     },
     checkLayerContents: function(oldl, newl) {
         
-        // FIXME, this doesn't work because markers lose their event listerners and icons
-        
+        // FIXME this doesn't work because markers lose their event listerners and icons
         // If the non-temp layer is empty get the fetched data into it
         if (oldl.getLayers().length < 1){
                         
@@ -165,56 +225,6 @@ var tools = {
 
         console.log(allMarkersObjArray);
     },
-    mobileMarkerMenu: L.markerMenu({
-        // Marker context menu for mobile
-        radius: 100,
-        size: [50, 50],                    
-        animate: true,                     
-        duration: 200,                    
-        items: [
-            {   title: 'Mark garbage',
-                className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-map-marker',
-                href:'create-garbage-dialog',
-                click: function (e) {
-                    e.preventDefault();
-                    ui.sidebar.show($('#create-garbage-dialog').show());
-                    // Restore main map click event listener
-                    maps.map.on('click', actions.mapClick);
-                }
-            },
-            {   title: 'Create a cleaning event',
-                className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-calendar-o',
-                href:'create-cleaning-dialog',
-                click: function (e) {
-                    e.preventDefault();
-                    ui.sidebar.show($('#create-cleaning-dialog').show());
-                    // Restore main map click event listener
-                    maps.map.on('click', actions.mapClick);
-                }
-            },
-            {   title: 'Mark litter',
-                className: 'create-dialog fa fa-fw fa-2x fa-marker-menu fa-ellipsis-h',
-                href:'create-litter-dialog',
-                click: function (e) {
-                    e.preventDefault();
-                    ui.sidebar.show($('#create-litter-dialog').show());
-                    // Restore main map click event listener
-                    maps.map.on('click', actions.mapClick);
-                }
-            },
-            {   title: 'Fetch from link',
-                className: 'modal-link modal-link-og fa fa-fw fa-2x fa-marker-menu fa-link',
-                href:'',
-                click: function (e) {
-                    e.preventDefault();
-                    // Simulate click on modal link
-                    $('.modal-link-og').click();
-                    // Restore main map click event listener
-                    maps.map.on('click', actions.mapClick);
-                }
-            }
-        ],
-    }),
     resetIconStyle: function(id) {
       
         /*console.log('*******************');
@@ -261,14 +271,13 @@ var tools = {
     bindTempMarkerEvents: function(id) {
         
         var marker = actions.tempmarkers[id];
-        var menubacklink = $('.menu-backlink');
         var cancelbutton = $('.btn-cancel');
         
         ui.sidebar.on ('hide', function() {
             tools.resetIconStyle(id);
         });
 
-        menubacklink.click(function(e) {
+        $('.menu-backlink').click(function(e) {
              e.preventDefault();
             // Remove the styling for temp markers
             tools.resetIconStyle(id);
@@ -288,10 +297,12 @@ var tools = {
     },
     checkOpenUiElement: function(map){
         
+        // TODO can we make the same function with a switch statement?
+        // that would require to set states in the UI
         var compactattributions = $('.leaflet-compact-attribution-toggle'),
             ocdsearch = $('.leaflet-control-ocd-search'),
             dropdown = $('.dropdown'),
-            layerscontrol = $('.leaflet-control-layers');
+            layerscontrolbutton = $('.leaflet-control-layers');
         
         if (ui.sidebar.isVisible()) {
             ui.sidebar.hide();
@@ -308,7 +319,8 @@ var tools = {
             return;
         } 
         // Custom code added in leaflet (edited out in L.Control.Layers), so the map click is bound here here
-        if (!maps.layerscontrol.options.collapsed || layerscontrol.hasClass('leaflet-control-layers-expanded')) {
+        if ( !maps.layerscontrol.options.iscollapsed || $(layerscontrolbutton).hasClass('leaflet-control-layers-expanded')) {
+            console.log('layers control collapsing from ui check open elements');
             maps.layerscontrol.collapse();
             return;
         }
@@ -354,21 +366,28 @@ var tools = {
         
         return true;
     },
+ /**
+   * @namespace tools.coordsinhrf - regex to check if
+   * @see http://stackoverflow.com/a/18690202/2842348
+   * @author Iain Fraser
+   * @license MIT
+   */
     coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
    /**
-   * @namespace tools.token - the base token to talk to the api endpoints
+   * @namespace tools.token - the app token to talk to the backend.
    */
     token: '@@windowtoken',
     ogDotIoScraper: function(url) {
 
-        var ogdotiotoken = '@@opengraphiotoken';
+        // var token = '@@opengraphiotoken'; 
+        var ogdotiotoken = '5899e0ad4c09780e001df53b';
 
         if (url) {
             var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);
             var request = $.ajax({
                 method: 'GET',
                 url: callurl,
-                data: jQuery.param({'app_id': ogdotiotoken}),
+                data: jQuery.param({'app_id': token}),
                 success: function(data) {
                     console.log('ajax call pass', data);
                     if (data.error) {
@@ -395,8 +414,8 @@ var tools = {
                     $('#modal-og-submit').removeClass('hidden');
 
                     // TODO pass marker to forms with map.center() as coordinates
-                    // build a new object from data
-                    // saving.saveGarbage(newobj);
+                    console.log(data);
+                    saving.saveOpenGraph(data);
                 }
                 else { return; }
           });
@@ -428,41 +447,8 @@ var tools = {
    * @returns {boolean} true - Returns true if the device on which the site is loaded passes the L.Browser leaflet mobile check.
    * @requires Leaflet
    */
-    mobileCheck: function(){
-      
-        var mobilecheck = L.Browser.mobile;
-
-        if (mobilecheck) {
-            return true;
-        }
-        if (!mobilecheck) {
-            return false;
-        }      
-    }
-};
-/**
-  * @namespace jQuery.fn.serializeObject
-  * @method serializeObject()
-  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes become keys and value attributes become values.
-  * @see https://gist.github.com/dshaw/449041
-  * @requires jQuery
-  */
-$.fn.serializeObject = function() {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name]) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
 };
 
 // Check if mobile device on load
-window.isMobile = tools.mobileCheck();
+window.isMobile = L.Browser.mobile;
 console.log("On mobile device: ", window.isMobile);

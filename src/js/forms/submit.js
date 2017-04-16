@@ -11,7 +11,9 @@
     var _saveFeature = function(fo, ft) {
 
         // NOTE ft = formtype, fo = formobj
+      
         var useToken = localStorage.getItem('token') || tools.token;
+        var auth = 'Bearer ' + useToken;
         var postrequest;
       
         // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
@@ -31,7 +33,7 @@
             }
         }
       
-        // Default to mid value
+        // Default to mid value for garbage amounts
         if (so.amount === '' || !so.amount) {
             so.amount = 3;
         }
@@ -39,14 +41,20 @@
         console.log('------------------------------')
         console.log('prepared submission obj: ', so);
             
+        /*switch() {
+          case 'garbage':;
+          case '':;
+          case '':;
+          case '':;
+          default: alerts.showAlert(10, 'warning', 1000);
+        }*/
+      
         if (ft === 'garbage') {
             
             postrequest = $.ajax({
                 method: api.createTrash.method,
                 url: api.createTrash.url(),
-                headers: {
-                    'Authorization': 'Bearer ' + useToken
-                },                            
+                headers: { 'Authorization': auth},                            
                 data: {
                   'latlng': so.latlng,
                   'amount': so.amount,
@@ -66,7 +74,6 @@
                 }
             });       
         }
-
         if (ft === 'cleaning') {
           
             console.log("saving cleaning form: ", fo);
@@ -75,7 +82,7 @@
 
                 method: api.createCleaning.method,
                 url: api.createCleaning.url(),
-                headers: {'Authorization': 'Bearer ' + useToken},
+                headers: {'Authorization': auth },
                 dataType: 'json',
                 data: {
 
@@ -93,7 +100,6 @@
                 }
           });          
         }
-
         if (ft === 'litter') {
           
             console.log("saving litter form: ", fo);
@@ -102,7 +108,7 @@
 
                 method: api.createLitter.method,
                 url: api.createLitter.url(),
-                headers: {'Authorization': 'Bearer ' + useToken},
+                headers: {'Authorization': auth},
                 dataType: 'json',
                 data: {
 
@@ -125,7 +131,6 @@
                 }
             });               
         }
-
         if (ft === 'area') {
           
             console.log("saving area form: ", fo);
@@ -141,7 +146,7 @@
 
                 method: api.createArea.method,
                 url: api.createArea.url(),
-                headers: {'Authorization': 'Bearer ' + useToken},
+                headers: {'Authorization': auth },
                 dataType: 'json',
                 data: {
                     'latlngs': so.latlngs,
@@ -162,6 +167,30 @@
                 }
           });
           
+        }
+        if (ft === 'og') {
+            // TODO finish this and implement in backend + db
+            console.log("saving opengraph datapoint: ", fo);
+          
+            var latlng = maps.map.getCenter().toString
+          
+            postrequest = $.ajax({
+
+                method: 'POST',
+                url: api.server + '/og',
+                headers: {'Authorization': auth},
+                dataType: 'json',
+                data: {
+                    'latlng': latlng,
+                    'link' : fo.link
+                },
+                success: function (data) {
+                    console.log('success data', data);
+                    features.loadAreas(); 
+                },
+                error: function (response) {
+                }
+          });
         }
       
         postrequest.done(function() {
@@ -185,7 +214,10 @@
             tools.resetIconStyle();
             // TODO stop the drawing listeners if any
         });          
-    },
+      },
+        saveOpenGraph = function(obj) {
+          _saveFeature(obj, 'og');
+        },
         _bindEvents = function(obj) {
 
             console.log('current formobj: ', obj);
@@ -233,5 +265,6 @@
 
     return {
         init: init,
+        saveOpenGraph: saveOpenGraph
     };
 }());
