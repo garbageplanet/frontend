@@ -268,6 +268,11 @@ var tools = {
         // Return false if 
         return false;
     },
+ /**
+   * @namespace tools.bindTempMarkerEvents - this function set event listeners for a marker when this particular marker is te focus of the current form
+   * @method bindTempMarkerEvents()
+   * @param {string} map marker id - the id of the marker to which the events need to be bound
+   */
     bindTempMarkerEvents: function(id) {
         
         var marker = actions.tempmarkers[id];
@@ -295,6 +300,11 @@ var tools = {
 
         }); 
     },
+ /**
+   * @namespace tools.checkOpenUiElement - a helper function to check the UI for what's currently going on so that one map widget closes or stops when another one is called
+   * @method checkOpenUiElement()
+   * @param {object} map object - the main map object, only needed to be able to identify clicks on cluser markers
+   */
     checkOpenUiElement: function(map){
         
         // TODO can we make the same function with a switch statement?
@@ -367,7 +377,7 @@ var tools = {
         return true;
     },
  /**
-   * @namespace tools.coordsinhrf - regex to check if
+   * @namespace tools.coordsinhrf - regex to check if the address barof the browser contains coordinates, needed when we gelocate at startup so we don't override geographic locations in inbound urls
    * @see http://stackoverflow.com/a/18690202/2842348
    * @author Iain Fraser
    * @license MIT
@@ -377,6 +387,11 @@ var tools = {
    * @namespace tools.token - the app token to talk to the backend.
    */
     token: '@@windowtoken',
+ /**
+   * @namespace tools.ogDotIoScraper - opengraph data scraper
+   * @method randomString()
+   * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API, used in the 'link' marker creation to enable users to add map marker with content tretived from external webpages.
+   */
     ogDotIoScraper: function(url) {
 
         // var token = '@@opengraphiotoken'; 
@@ -429,7 +444,7 @@ var tools = {
  /**
    * @namespace tools.randomString
    * @method randomString()
-   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length
+   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length, used when creating a game tile and the user didn't give a title to the tile.
    * @param {string} len - Length of the string to be returned
    * @requires Leaflet
    */

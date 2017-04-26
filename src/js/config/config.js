@@ -1,6 +1,6 @@
 /**
   * The necessary configurations that are used by the UI
-  * TODO group routes and add middleware to cut the amount of routes
+  * TODO group routes and add middleware functions in the backend to cut the amount of routes
   */
 
 var api = {
