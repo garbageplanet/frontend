@@ -235,6 +235,7 @@ var forms = (function() {
                     $(e.target).parent().next().val(data.result.data.link);
                     progressdiv.addClass('hidden').delay(200);
 
+                // TODO use promises here 
                     /*$.ajax({
 
                         method: "PUT",

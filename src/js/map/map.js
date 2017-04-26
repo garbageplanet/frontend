@@ -6,8 +6,8 @@ var maps = (function() {
     
         // TODO simplify this
         "Mapbox Outdoors": 
-            // L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
-            L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
+            L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
+            //L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
                 { 
                     maxZoom: 18,
                     minZoom: 2,
@@ -68,7 +68,6 @@ var maps = (function() {
             maxClusterRadius: 80,
             disableClusteringAtZoom: 15,
             showCoverageOnHover: false,
-            // FIXME singleMarkerMode doesn't work with iConCreateFunction enabled
             singleMarkerMode: true,
             iconCreateFunction:  function (cluster) {
                 
@@ -105,8 +104,8 @@ var maps = (function() {
             position: 'topleft',
             linkText: '<span class="fa fa-fw fa-globe"></span>'
         }),
-        // geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
-        geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
+        geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
+        // geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
         locating = (function() {
 
@@ -122,7 +121,7 @@ var maps = (function() {
                 if (tools.coordsinhrf) {
                     maps.locationcontrol.stop();
                 }
-                // Show the world if geolocalization fail
+                // Show the world without borders if geolocalization fail
                 else {
                     maps.locationcontrol.stop();
                     maps.map.setView([0, 0], 2);
@@ -164,7 +163,6 @@ var maps = (function() {
                 sewageMarker : sewageMarker,
                 floatingMarker : floatingMarker,
                 linkMarker: linkMarker
-                
             }
         })(),
         localTrashBins = function() {

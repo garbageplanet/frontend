@@ -132,7 +132,7 @@ var ui = (function() {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.0'
+            version: '0.5.1'
     },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),

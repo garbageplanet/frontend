@@ -3,7 +3,8 @@
 /**
   * @namespace jQuery.fn.serializeObject
   * @method serializeObject()
-  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes become keys and value attributes become values.
+  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes 
+                      become keys and value attributes become values. Need to collect form data and send it to the backend
   * @see https://gist.github.com/dshaw/449041
   * @requires jQuery
   */
@@ -57,7 +58,6 @@ L.Map.prototype.panToOffset = function(latlng, offset, zoom, options) {
         return this.setView(point, this._zoom, {pan: options});
     }
 };
-
 /**
   * Tools an utilities.
   * @namespace tools
@@ -269,7 +269,8 @@ var tools = {
         return false;
     },
  /**
-   * @namespace tools.bindTempMarkerEvents - this function set event listeners for a marker when this particular marker is te focus of the current form
+   * @namespace tools.bindTempMarkerEvents - this function set event listeners for a marker when this particular marker is 
+                                             the focus of the current form
    * @method bindTempMarkerEvents()
    * @param {string} map marker id - the id of the marker to which the events need to be bound
    */
@@ -301,7 +302,8 @@ var tools = {
         }); 
     },
  /**
-   * @namespace tools.checkOpenUiElement - a helper function to check the UI for what's currently going on so that one map widget closes or stops when another one is called
+   * @namespace tools.checkOpenUiElement - a helper function to check the UI for what's currently going on so that one map 
+                                           widget closes or stops when another one is called
    * @method checkOpenUiElement()
    * @param {object} map object - the main map object, only needed to be able to identify clicks on cluser markers
    */
@@ -377,20 +379,23 @@ var tools = {
         return true;
     },
  /**
-   * @namespace tools.coordsinhrf - regex to check if the address barof the browser contains coordinates, needed when we gelocate at startup so we don't override geographic locations in inbound urls
+   * @namespace tools.coordsinhrf - regex to check if the address barof the browser contains coordinates, needed when we 
+                                    gelocate at startup so we don't override geographic locations in inbound urls
    * @see http://stackoverflow.com/a/18690202/2842348
    * @author Iain Fraser
    * @license MIT
    */
     coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
-   /**
+ /**
    * @namespace tools.token - the app token to talk to the backend.
    */
     token: '@@windowtoken',
  /**
    * @namespace tools.ogDotIoScraper - opengraph data scraper
    * @method randomString()
-   * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API, used in the 'link' marker creation to enable users to add map marker with content tretived from external webpages.
+   * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API, 
+                           used in the 'link' marker creation to enable users to add map marker with content tretived from 
+                           external webpages.
    */
     ogDotIoScraper: function(url) {
 
@@ -444,7 +449,8 @@ var tools = {
  /**
    * @namespace tools.randomString
    * @method randomString()
-   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length, used when creating a game tile and the user didn't give a title to the tile.
+   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length, used when 
+                       creating a game tile and the user didn't give a title to the tile.
    * @param {string} len - Length of the string to be returned
    * @requires Leaflet
    */

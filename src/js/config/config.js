@@ -5,8 +5,8 @@
 
 var api = {
     // Backend
-    // server: '@@server',
-    server: 'https://garbagepla.net:8443/api',
+    server: '@@server',
+    // server: 'https://garbagepla.net:8443/api',
     // server: 'http://garbageplanet.dist/api',  
     createUser: {
         method: 'POST',
