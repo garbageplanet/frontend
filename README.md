@@ -21,7 +21,7 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] upoad to imgur as user
 - [ ] reverse geocode addresses for cleanings
 - [ ] make the edit system
-- [ ] put the licenses in the minified files
+- [ ] keep the licenses in the minified files
 - [ ] documentation
 
 ### Licence
