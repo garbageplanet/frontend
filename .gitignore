@@ -1,5 +1,5 @@
 .git
-.env.json
-dist/
-node_modules
+env.json
+/dist
+/node_modules
 /dist/.well-known
