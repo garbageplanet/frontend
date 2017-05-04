@@ -115,17 +115,24 @@ var tools = {
                t == 4  ? ' a cleaning needs to be organized':
                          ' tell the local authorities'      ;
     },
+    setMarkerIcon: function(i, t, d) {
+        if (!d) {
+          // TODO instead of having a new marker class, simply replace the icon in the css
+          // because this code is really slow and bugs L.Markercluster
+          return i == 'undefined'          ? maps.icons.garbageMarker:
+                 t != '1'                  ? maps.icons.garbageMarker:
+                                             maps.icons.cleanedMarker;
+        } else {
+            
+            return (new Date(d) < new Date()) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
+        }
+    },
     getCurrentBounds: function() {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         return bounds;
     },
-    cloneLayer: function(layer) {
+    /*cloneLayer: function(layer) {
         
-        /** 
-        * stripped down version of original function by @jieter
-        * @see github.com/jieter/leaflet-clonelayer
-        * @note unlicensed
-        */
         var options = layer.options;
 
         // Marker layers
@@ -151,8 +158,8 @@ var tools = {
         }
 
         throw 'Unknown layer, cannot clone this layer';  
-    },
-    checkLayerContents: function(oldl, newl) {
+    },*/
+    /*checkLayerContents: function(oldl, newl) {
         
         // FIXME this doesn't work because markers lose their event listerners and icons
         // If the non-temp layer is empty get the fetched data into it
@@ -184,7 +191,7 @@ var tools = {
                 return;
             }
         }
-    },
+    },*/
     getVerticalOffset: function() {
     
         var vOffset = [0, 0];

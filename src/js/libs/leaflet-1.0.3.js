@@ -1,7 +1,7 @@
-/*
- Leaflet 1.0.3+ed36a04, a JS library for interactive maps. http://leafletjs.com
- (c) 2010-2016 Vladimir Agafonkin, (c) 2010-2011 CloudMade
-*/
+/*!
+ * Leaflet 1.0.3+ed36a04, a JS library for interactive maps. http://leafletjs.com
+ * (c) 2010-2016 Vladimir Agafonkin, (c) 2010-2011 CloudMade
+ */
 (function (window, document, undefined) {
 var L = {
 	version: "1.0.3+ed36a04"

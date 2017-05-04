@@ -1,5 +1,10 @@
-// Use a compact attribution control for small map container widths
 
+/*!
+ * @author areichman
+ * @see https://github.com/areichman/leaflet-responsive-attribution
+ */
+
+// Use a compact attribution control for small map container widths
 L.Control.Attribution.prototype._addTo = L.Control.Attribution.prototype.addTo;
 
 L.Control.Attribution.prototype.addTo = function(map) {

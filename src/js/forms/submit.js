@@ -11,17 +11,12 @@
     var _saveFeature = function(fo, ft) {
 
         // NOTE ft = formtype, fo = formobj
-      
         var useToken = localStorage.getItem('token') || tools.token;
         var auth = 'Bearer ' + useToken;
-        var postrequest;
       
         // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
         var so = {};
 
-        console.log("fo: ", fo);
-        console.log("ft: ", ft);
-  
         for(var k in fo) {
             var o = fo[k];
             
@@ -32,7 +27,6 @@
                 so[k] = fo[k];
             }
         }
-      
         // Default to mid value for garbage amounts
         if (so.amount === '' || !so.amount) {
             so.amount = 3;
@@ -40,78 +34,54 @@
                    
         console.log('------------------------------')
         console.log('prepared submission obj: ', so);
-            
-        /*switch() {
-          case 'garbage':;
-          case '':;
-          case '':;
-          case '':;
-          default: alerts.showAlert(10, 'warning', 1000);
-        }*/
+        console.log('form type: ', ft);
+        console.log("form object: ", fo);
       
         if (ft === 'garbage') {
-            
-            postrequest = $.ajax({
+                      
+            var postrequest = $.ajax({
                 method: api.createTrash.method,
                 url: api.createTrash.url(),
-                headers: { 'Authorization': auth},                            
-                data: {
-                  'latlng': so.latlng,
-                  'amount': so.amount,
-                  'types': so.type,
-                  'todo': so.todo,
-                  'image_url': so.image,
-                  'tag': so.tags,
-                  // 'sizes': so.size,
-                  // 'embed': so.environ,
-                  'note': so.note                    
-                },
-                success: function(data) {
-                    features.loadGarbageMarkers();
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });       
-        }
-        if (ft === 'cleaning') {
-          
-            console.log("saving cleaning form: ", fo);
-
-            postrequest= $.ajax({
-
-                method: api.createCleaning.method,
-                url: api.createCleaning.url(),
-                headers: {'Authorization': auth },
+                headers: {'Authorization': auth},
                 dataType: 'json',
                 data: {
-
                     'latlng': so.latlng,
-                    'datetime': so.hour,
+                    'amount': so.amount,
+                    'types': so.type,
+                    'todo': so.todo,
+                    'image_url': so.image,
+                    'tag': so.tags,
+                    // 'sizes': so.size,
+                    // 'embed': so.environ,
+                    'note': so.note                    
+                  }
+            });       
+        }
+        else if (ft = 'cleaning') {
+            // FIXME === string equality fails for 'cleaning'
+            var postrequest = $.ajax({
+                method: api.createCleaning.method,
+                url: api.createCleaning.url(),
+                headers: {'Authorization': auth},
+                dataType: 'json',
+                data: {
+                    'latlng': so.latlng,
+                    'datetime': so.datetime,
                     'note': so.note,
                     'recurrence': so.recurrence,
                     'tag': so.tags
-                },
-                success: function (data) {
-                    features.loadCleaningMarkers();
-                },
-                error: function (response) {
-                    console.log(response);
                 }
           });          
-        }
-        if (ft === 'litter') {
-          
-            console.log("saving litter form: ", fo);
-          
-            postrequest = $.ajax({
+        } 
+        else if (ft === 'litter') {
+                    
+            var postrequest = $.ajax({
 
                 method: api.createLitter.method,
                 url: api.createLitter.url(),
                 headers: {'Authorization': auth},
                 dataType: 'json',
                 data: {
-
                     'latlngs': so.latlngs,
                     'amount': so.amount,
                     'types': so.type,
@@ -120,21 +90,13 @@
                     'physical_length': so.lengthm,
                     'amount_quantitative': so.quantitative
                 },
-                success: function (data) {
-                    console.log('success data', data);
-                    features.loadLitters(); 
-                },
-
-                error: function (response) {
-
-    
-                }
+                error: function(data) {
+                  console.log('Error submitting litter data', data);
+                } 
             });               
         }
-        if (ft === 'area') {
+        else if (ft === 'area') {
           
-            console.log("saving area form: ", fo);
-
             // Generate a random id if the user didn't set a title
             if (so.title.length < 1) {
                 so.title = tools.randomString(12);
@@ -142,7 +104,7 @@
                 // console.log(so);
             }
 
-            postrequest = $.ajax({
+            var postrequest = $.ajax({
 
                 method: api.createArea.method,
                 url: api.createArea.url(),
@@ -157,58 +119,54 @@
                     // 'tag': so.tags,
                     // 'game' : so.game,
                     'max_players': so.players
-                },
-                success: function (data) {
-                    console.log('success data', data);
-                    features.loadAreas(); 
-                },
-                error: function (response) {
-
                 }
           });
           
         }
-        if (ft === 'og') {
-            // TODO finish this and implement in backend + db
-            console.log("saving opengraph datapoint: ", fo);
+        else if (ft === 'og') {
           
+            // TODO finish this and implement in backend + db
             var latlng = maps.map.getCenter().toString
           
-            postrequest = $.ajax({
+            var postrequest = $.ajax({
 
                 method: 'POST',
                 url: api.server + '/og',
                 headers: {'Authorization': auth},
                 dataType: 'json',
                 data: {
-                    'latlng': latlng,
+                    'latlng': so.latlng,
                     'link' : fo.link
-                },
-                success: function (data) {
-                    console.log('success data', data);
-                    features.loadAreas(); 
-                },
-                error: function (response) {
                 }
           });
         }
       
-        postrequest.done(function() {
+        postrequest.done(function(data) {
+          
+            console.log(data);
             if (ft === 'garbage' || ft === 'cleaning') {
                 maps.unsavedMarkersLayerGroup.clearLayers();
             }
+          
+            switch(ft) {
+                case 'garbage'  : features.loadGarbageMarkers();
+                case 'cleaning' : features.loadCleaningMarkers();
+                case 'litter'   : features.loadLitters();
+                case 'area'     : features.loadAreas();
+                // case 'og': features.loadLinks;
+            }
+            
             alerts.showAlert(25, 'success', 1500);
             ui.sidebar.hide('slow');
             // $('.btn-draw').removeClass('disabled');    
         });
-      
-        postrequest.fail(function(response) {
-            console.log(response);
-            if (response.responseText.indexOf('token_invalid')) {
+        postrequest.fail(function(data) {
+            console.log(data);
+            if (data.responseText.indexOf('token_invalid')) {
                 alerts.showAlert(3, 'warning', 2000);
+            } else { 
+                alerts.showAlert(10, 'danger', 1500);
             }
-          
-            else { alerts.showAlert(10, 'danger', 1500); }
             
             ui.sidebar.hide();
             tools.resetIconStyle();
@@ -247,8 +205,9 @@
                     
                     /*console.log('------------------------------');
                     console.log('current form array: ', formobj);
-                    console.log('current form ype: ', formtype);
-                    console.log('------------------------------')*/;    
+                    console.log('current form type:', formtype);
+                    console.log('current form type: ', formtype);
+                    console.log('------------------------------');*/    
                   
                     // Save the data with ajax
                     _saveFeature(formobj, formtype);                

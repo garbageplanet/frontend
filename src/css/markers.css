@@ -31,9 +31,7 @@
  font-family: 'trashbag';
  content: '\e600';
 }
-.map-marker.marker-cleaning:before{
- content: '\f133';
-}
+
 .map-marker.marker-dieoff:before{
  content: '\0e7';
 }
@@ -46,6 +44,12 @@
 .map-marker.marker-link:before{
  content: '\f0c1';
 }
+.map-marker.marker-cleaned:before{
+ content: '\f00c';
+}
+.map-marker.marker-cleaned{
+ opacity: 0.5;
+}
 .map-marker.marker-deflated:before{
  content: '\f24d';
 }
@@ -55,9 +59,11 @@
       -o-filter: drop-shadow(0 rgba(0,0,0,0));
 }
 
-/*Marker color for past events */
-.map-marker.marker-cleaning-past {
-  background-color: chartreuse;
+/* Marker color for cleaning events */
+.map-marker.marker-cleaning:before{
+ content: '\f133';
+}
+.map-marker.marker-cleaning-past:before{
   content: '\f274';
 }
 
@@ -222,7 +228,9 @@
 }
 
 .z17 .map-marker,
-.z18 .map-marker {
+.z18 .map-marker,
+.z19 .map-marker,
+.z20 .map-marker{
   font-size:21px;
   width:38px !important;
   height:38px !important;

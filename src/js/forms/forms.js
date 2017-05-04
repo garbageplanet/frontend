@@ -81,7 +81,7 @@ var forms = (function() {
         passMarkerToForm = function(id) {
 
             "use strict";
-
+            // the id of the map feature (for markers)
             var id = id;
             $('.create-dialog').on('click', function(e) {
 
@@ -118,7 +118,7 @@ var forms = (function() {
                 document.getElementById(typeid).innerHTML = tmpl('tmpl-form-main', typeobj);
               
                 // Hide the close button in the sidebar when we show forms because they have a cancel button
-                $('.close-panel').addClass('hidden');
+                $('.close-right').addClass('hidden');
 
                 // Forms for shapes (polylines and areas)
                 if (type === "litter" || type === "area") {
@@ -167,12 +167,9 @@ var forms = (function() {
                     }
 
                     if (type === "cleaning") {
-
-                        console.log('cleaning form');
-
+                        console.log('loading cleaning form');
                         // TODO Pass the latlng as an object once templates are in place
                         $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
-
                         // Set the options on the time and date selects
                         $('#event-date-time-picker')
                             .datetimepicker({
@@ -183,11 +180,9 @@ var forms = (function() {
                                 toolbarPlacement: 'top'
                         });
 
-                        $('#event-date-time-picker').on('dp.change', function (e) {
-
+                        $('#event-date-time-picker').on('dp.change', function(e) {
                             var eventDateTime = e.date.format('YYYY-MM-DD HH:MM:SS');
                             $('#date-time-value').val(eventDateTime);
-
                             // Change the icon of the marker if a time is set
                             $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
                         });

@@ -68,7 +68,7 @@ var drawing = (function() {
                 if (window.isMobile) {
 
                     ui.sidebar.hide();
-                    showAlert(14, 'warning', 3500);
+                    alerts.showAlert(14, 'warning', 3500);
                 }
             });
             buttonDrawPolygon.on('click', function() {
@@ -80,7 +80,7 @@ var drawing = (function() {
 
                 if (window.isMobile) {
                         ui.sidebar.hide();
-                        showAlert(14, 'warning', 3500);  
+                        alerts.showAlert(14, 'warning', 3500);  
                 }
             });
           

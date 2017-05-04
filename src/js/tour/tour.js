@@ -66,5 +66,6 @@ var touring = (function(){
     }
     
 }());
+
 // Only launch the tour once Pace has finished
-Pace.on('done', touring.startTour);
+window.Pace.on('done', touring.startTour);

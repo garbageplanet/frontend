@@ -1,3 +1,9 @@
+
+/*! Bootstrap tagsinput
+ * MIT
+ * @authors cfhttps://github.com/bootstrap-tagsinput/bootstrap-tagsinput/
+ */
+
 (function ($) {
   "use strict";
 

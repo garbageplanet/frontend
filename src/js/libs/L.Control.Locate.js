@@ -1,8 +1,6 @@
 /*!
-Copyright (c) 2016 Dominik Moritz
-
-This file is part of the leaflet locate control. It is licensed under the MIT license.
-You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
+* Copyright (c) 2016 Dominik Moritz
+* This file is part of the leaflet locate control. It is licensed under the MIT license. You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
 */
 (function (factory, window) {
      // see https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md#module-loaders

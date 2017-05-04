@@ -1,9 +1,9 @@
-/*
-  Leaflet.ZoomCSS
-  Copyright (c) 2014, Dag Jomar Mersland, dagjomar@gmail.com, @dagjomar
-  https://github.com/dagjomar/Leaflet.ZoomCSS
-*/
-
+/*!
+ * @license
+ * Leaflet.ZoomCSS
+ * Copyright (c) 2014, Dag Jomar Mersland, dagjomar@gmail.com, @dagjomar
+ * https://github.com/dagjomar/Leaflet.ZoomCSS
+ */
 L.Map.mergeOptions({
   zoomCss: true
 });
@@ -24,10 +24,7 @@ L.Map.ZoomCSS = L.Handler.extend({
         container = map.getContainer();
 
     container.className = container.className.replace( /z[0-9]{1,2}/g, '' ) + ' z' + zoom;
-
   }
-
-
 });
 
 L.Map.addInitHook('addHandler', 'zoomCss', L.Map.ZoomCSS);

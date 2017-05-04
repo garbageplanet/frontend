@@ -4,256 +4,239 @@
 */
 
 // TODO make a prototype for getting data from api instead of four different functions
-// gbpn.features =
-var features =  (function(){
+// TODO use promises instead of error, success in api calls
+var features =  (function() {
     
     "use strict";
     
-    // TODO, get all the markers in current view like this: http://stackoverflow.com/a/24342585
-    // TODO make prototype and build the function from there instead of rewriting everything
     var garbageArray = [],
         cleaningArray = [],
+        useToken = localStorage.getItem('token') || tools.token,
         loadGarbageMarkers = function() {
 
-            // Empty the current arrayfor storing markers
             garbageArray = [];
+            var fetchGarbage = $.ajax({
+                type: api.readTrashWithinBounds.method,
+                url: api.readTrashWithinBounds.url(tools.getCurrentBounds()),
+                headers: {"Authorization": 'Bearer ' + useToken},
+                success: function (data) {
+                    console.log('Success getting garbage marker data', data);
+                },
+                error: function(data) {
+                    console.log('Error getting garbage marker data', data);
+                }
+            });
+            fetchGarbage.done(function(data) {
+                
+                maps.garbageLayerGroup.clearLayers();
 
-            setTimeout(function () {
+                $(data).each(function(i, o) {
+                  
+                    console.log('value of ob.cleaned: ', o.cleaned);
 
-                // Store the current data into a new object
-                var useToken = localStorage.getItem('token') || tools.token;
+                    garbageArray.push(o);
 
-                $.ajax({
-
-                    type: api.readTrashWithinBounds.method,
-                    url: api.readTrashWithinBounds.url(tools.getCurrentBounds()),
-                    success: function (data) {
-
-                        maps.garbageLayerGroup.clearLayers();
-
-                        $(data).each(function (index, obj) {
-
-                            garbageArray.push(obj);
-
-                            // Need to parse the string from the db because LatLngs are now stored as single key:value pair
-                            // FIXME, not sure what's going on, L.latlng doesn't want the latlng string passed directly
-                            // because the comma inside the string is not recognized
-                            var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
-                            var marker = L.marker(L.latLng(latlng[0],latlng[1]),
-                                {
-                                    icon: maps.icons.garbageMarker,
-                                    id: obj.id,
-                                    amount: obj.amount,
-                                    types: obj.types.join(', '),
-                                    image_url: obj.image_url,
-                                    latlng: obj.latlng,
-                                    confirms: obj.confirms,
-                                    todo: tools.setTodoFullText(obj.todo),
-                                    tags: obj.tag,
-                                    note: obj.note,
-                                    feature_type: 'marker_garbage',
-                                    size: obj.size,
-                                    embed: obj.embed,
-                                    created_by: obj.marked_by,
-                                    created_at: obj.created_at,
-                                    modified_at: obj.updated_at,
-                                    cleaned: obj.cleaned,
-                                    cleaned_by: obj.cleaned_by,
-                                    cleaned_date: obj.cleaned_date
-                                });
-
-                            marker.addTo(maps.garbageLayerGroup);
-                            $(marker._icon).addClass(tools.setMarkerClassColor(obj.amount));
-                            
-                            // TODO add the click listener on the L.featuregroup and
-                            // use getLayerId to find the id and pass it to featureClick
-                            marker.on('click', function(e) {
-                                actions.featureClick(e, this)
-                            });
+                    // Need to parse the string from the db because LatLngs are now stored as single key:value pair
+                    var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
+                    var marker = L.marker(L.latLng(latlng[0],latlng[1]),
+                        {
+                          amount:       o.amount,  
+                          cleaned:      o.cleaned,
+                          cleaned_by:   o.cleaned_by,
+                          cleaned_date: o.cleaned_date,
+                          confirms:     o.confirms,
+                          created_at:   o.created_at,
+                          created_by:   o.marked_by,
+                          embed:        o.embed,
+                          id:           o.id,
+                          image_url:    o.image_url,
+                          modified_at:  o.updated_at,
+                          latlng:       o.latlng,
+                          note:         o.note,
+                          size:         o.size,
+                          tags:         o.tag,
+                          types:        o.types.join(', '),
+                      
+                          icon: tools.setMarkerIcon(o.cleaned, o.todo, null),
+                          todo: tools.setTodoFullText(o.todo),
+                          
+                          feature_type: 'marker_garbage'
                         });
-                        // Add layer to map
-                        // Only reload the new layer if it's different from current data
-                        // TODO do this with contains(<LatLng> latlng) http://leafletjs.com/reference-1.0.0.html#latlngbounds-contains
-                        // tools.checkLayerContents(garbageLayerGroup, tempGarbageLayerGroup);
-                    },
-                    error: function(data) {
-                        console.log('Error getting garbage marker data', data);
-                        alerts.showAlert(10, 'warning', 1500);
-                    }
+
+                    marker.addTo(maps.garbageLayerGroup);
+                    // Set the class for the marker color
+                    $(marker._icon).addClass(tools.setMarkerClassColor(o.amount));
+
+                    marker.on('click', function(e) {
+                        actions.featureClick(e, this)
+                    });
                 });
-            }, 100);
-    },
+            });
+        },
         loadCleaningMarkers = function() {
         
             cleaningArray = [];
+          
+            var fetchCleaning = $.ajax({
+                type: api.readCleaningWithinBounds.method,
+                url: api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
+                headers: {"Authorization": 'Bearer ' + useToken},
+                success: function(data) {
+                    console.log('Success getting cleaning event (marker) data', data);
+                },
+                error: function(data) {
+                  console.log('Error getting cleaning event (marker) data', data);
+                }
+            });
+            fetchCleaning.done(function(data){
+                maps.cleaningLayerGroup.clearLayers();
 
-            setTimeout(function () {
+                    $(data).each(function(i, o) {
 
-                var useToken = localStorage.getItem('token') || tools.token;
+                        cleaningArray.push(o);
 
-                $.ajax({
-
-                    type: api.readCleaningWithinBounds.method,
-                    url: api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
-                    success: function(data) {
-
-                        maps.cleaningLayerGroup.clearLayers();
-                        // $.extend(cleaningMarkers, data);
-
-                        $(data).each(function(index, obj) {
-
-                            cleaningArray.push(obj);
-
-                            var latlng = obj.latlng.toString().replace(/,/g , "").split(' ');
-                            var marker = L.marker(L.latLng(latlng[0], latlng[1]),
-                                {
-                                    icon:maps.icons.cleaningMarker,
-                                    id: obj.id,
-                                    datetime: obj.datetime,
-                                    latlng: obj.latlng,
-                                    feature_type: 'marker_cleaning',
-                                    attends: obj.attends,
-                                    recurrence: obj.recurrence,
-                                    created_by: obj.created_by,
-                                    created_at: obj.created_at,
-                                    modified_at: obj.updated_at
-                                });
-
-                            marker.addTo(maps.cleaningLayerGroup);
-                            
-                            // TODO add logic to change marker color if date is before today
-                            $(marker._icon).addClass('marker-color-blue');
-                            
-                            marker.on('click', function(e) {
-                                // Bind click listener
-                                actions.featureClick(e, this);
+                        var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
+                        var marker = L.marker(L.latLng(latlng[0], latlng[1]),
+                            {
+                                attends:     o.attends, 
+                                created_at:  o.created_at,
+                                created_by:  o.created_by,
+                                datetime:    o.datetime,
+                                id:          o.id,
+                                latlng:      o.latlng,
+                                modified_at: o.updated_at,
+                                recurrence:  o.recurrence,
+                                
+                                icon:        tools.setMarkerIcon(null, null, o.datetime),
+                                feature_type: 'marker_cleaning',
                             });
+                                 
+                        marker.addTo(maps.cleaningLayerGroup);
+                        marker.on('click', function(e) {
+                            // Bind click listener
+                            actions.featureClick(e, this);
                         });
-                    },
-                    error: function(data) {
-                      console.log('Error getting cleaning event (marker) data', data);
-                    }
-                });
-            }, 200);
+                    });
+            });
+            /* fetchCleaning.fail(function(data){
+                alerts.showAlert(10, 'warning', 1500);
+            });*/
         },
         loadAreas = function() {
         
-            setTimeout(function () {
+            var fetchArea = $.ajax({
+                type: api.readAreaWithinBounds.method,
+                url: api.readAreaWithinBounds.url(tools.getCurrentBounds()),
+                headers: {"Authorization": 'Bearer ' + useToken},
+                success: function (data) {
+                    console.log('Success getting area data');
+                },
+                error: function (data) {
+                  console.log('Error getting area data');
+                }
+            });
+            fetchArea.done(function(data) {
+              
+                maps.areaLayerGroup.clearLayers();
 
-                var useToken = localStorage.getItem('token') || tools.token;
+                $(data).each(function(i, o) {
 
-                $.ajax({
+                    var latlngs = JSON.parse("[" + o.latlngs + "]");
+                    var polygonLayer = new L.Polygon(latlngs,
+                        {
+                          contact:      o.contact,
+                          created_by:   o.created_by,
+                          created_at:   o.created_at,
+                          curr_players: o.curr_players,
+                          id:           o.id,
+                          max_players:  o.max_players,
+                          note:         o.note,
+                          tags:         o.tag,
+                          title:        o.title,
+                          modified_at:  o.updated_at,
 
-                    type: api.readAreaWithinBounds.method,
-                    url: api.readAreaWithinBounds.url(tools.getCurrentBounds()),
-                    headers: {"Authorization": 'Bearer ' + useToken},
-                    success: function (data) {
+                          feature_type: 'polygon_area',
+                          shape:        true,
+                          color:        '#33cccc',
+                          weight:       5,
+                          opacity:      0.5,
+                          smoothFactor: 3
+                      });
 
-                        maps.areaLayerGroup.clearLayers();
-
-                        $(data).each(function(index, obj) {
-
-                            var latlngs = JSON.parse("[" + obj.latlngs + "]");
-                            var polygonLayer = new L.Polygon(latlngs,
-                                {
-                                    id: obj.id,
-                                    title: obj.title,
-                                    max_players: obj.max_players,
-                                    curr_players: obj.curr_players, // how many user have already confirmed participation
-                                    note: obj.note,
-                                    tags: obj.tag,
-                                    contact: obj.contact,
-                                    feature_type: 'polygon_area',
-                                    shape: true,
-                                    created_by: obj.created_by,
-                                    created_at: obj.created_at,
-                                    modified_at: obj.updated_at,
-                                    color: '#33cccc',
-                                    weight: 5,
-                                    opacity: 0.5,
-                                    smoothFactor: 3
-                                });
-
-                              maps.areaLayerGroup.addLayer(polygonLayer);
-                              // map.addLayer(areaLayerGroup);
-                              polygonLayer.on('click', function(e) {
-                                  // Bind click listener
-                                  actions.featureClick(e, polygonLayer);
-                              });
-                            }
-                        );
-                    },
-                    error: function (data) { console.log('Error getting area (polygon) data');}
-                });
-            }, 400);
+                      maps.areaLayerGroup.addLayer(polygonLayer);
+                      // map.addLayer(areaLayerGroup);
+                      polygonLayer.on('click', function(e) {
+                          // Bind click listener
+                          actions.featureClick(e, polygonLayer);
+                      });
+                    }
+                );
+            });
+            /* fetchArea.fail(function(data) {
+                alerts.showAlert(10, 'warning', 1500);
+            });*/
+          
         },
         loadLitters = function() {
-        
-            setTimeout(function () {
+            var fetchLitter = $.ajax({
+                type: api.readLitterWithinBounds.method,
+                url: api.readLitterWithinBounds.url(tools.getCurrentBounds()),
+                headers: {"Authorization": 'Bearer ' + useToken},
+                success: function (data) {
+                  console.log('Success getting litter (polyline) data', data);
+                },
+                error: function (data) {
+                  console.log('Error getting litter (polyline) data', data);
+                }
+            });
+            fetchLitter.done(function(data) {
+              
+                maps.litterLayerGroup.clearLayers();
 
-                var useToken = localStorage.getItem('token') || tools.token;
+                $(data).each(function(i, o) {
 
-                $.ajax({
+                    var latlngs = JSON.parse("[" + o.latlngs + "]");
+                    var polylineLayer = L.polyline(latlngs,
+                    {
+                        amount: o.amount,
+                        cleaned: o.cleaned,
+                        cleaned_by: o.cleaned_by,
+                        confirms: o.confirms,
+                        color: tools.setPolylineColor(o.amount),
+                        created_at: o.created_at,
+                        created_by: o.marked_by,
+                        id: o.id,
+                        image_url: o.image_url,
+                        modified_at: o.updated_at,
+                        physical_length: o.physical_length,
+                        tags: o.tag,
+                        types: o.types.join(', '),
 
-                    type: api.readLitterWithinBounds.method,
-                    url: api.readLitterWithinBounds.url(tools.getCurrentBounds()),
-                    headers: {"Authorization": 'Bearer ' + useToken},
-                    success: function (data) {
+                        shape: true,
+                        feature_type: 'polyline_litter',
+                        clickable: true,
+                        weight: 15, 
+                        opacity: 0.5,
+                        smoothFactor: 3,
+                    });
 
-                        maps.litterLayerGroup.clearLayers();
-
-                        $(data).each(function(index, obj) {
-
-                            var latlngs = JSON.parse("[" + obj.latlngs + "]");
-                            var polylineLayer = L.polyline(latlngs,
-                            {
-                                id: obj.id,
-                                amount: obj.amount,
-                                types: obj.types.join(', '),
-                                image_url: obj.image_url,
-                                tags: obj.tag,
-                                shape: true,
-                                feature_type: 'polyline_litter',
-                                created_by: obj.marked_by,
-                                cleaned: obj.cleaned,
-                                confirms: obj.confirms,
-                                cleaned_by: obj.cleaned_by,
-                                created_at: obj.created_at,
-                                modified_at: obj.updated_at,
-                                physical_length: obj.physical_length,
-                                weight: 15, 
-                                opacity: 0.5,
-                                smoothFactor: 3,
-                                color: tools.setPolylineColor(obj.amount),
-                                clickable: true,
-                            });
-
-                            maps.litterLayerGroup.addLayer(polylineLayer);
-                            // map.addLayer(litterLayerGroup);
-                            polylineLayer.on('click', function(e) {
-                                // Bind click listener
-                                actions.featureClick(e, polylineLayer);
-                            });
-                        });
-                    },
-                    error: function (data) {
-                      console.log('Error getting litter (polyline) data', data);
-                    }
+                    maps.litterLayerGroup.addLayer(polylineLayer);
+                    // map.addLayer(litterLayerGroup);
+                    polylineLayer.on('click', function(e) {
+                        // Bind click listener
+                        actions.featureClick(e, polylineLayer);
+                    });
                 });
-            }, 300);
+            });
+            /* fetchLitter.fail(function() {}); */
+          
         },
-        loadAllFeatures = function() {
+        _loadAllFeatures = function() {
             loadGarbageMarkers(); 
             loadCleaningMarkers(); 
             loadAreas();
             loadLitters();
-    }, 
-        naviguateFeatures = function(feature, direction) {
-            // TODO
-            // naviguate through the markers visible in currentView from the bottombar's  side buttons
-            // var coord = feature.latlng,
-                
-        };
+    };
     
     // Load everything on first load
     maps.map.addOneTimeEventListener('ready', function() {
@@ -261,7 +244,7 @@ var features =  (function(){
     });
     
     // then load markers conditionally
-    maps.map.on('dragend zoomend', function(e){
+    maps.map.on('dragend zoomend', function(e) {
         console.log("map move: ", e);
 
         if (e.type === 'zoomend') {
@@ -305,8 +288,5 @@ var features =  (function(){
         loadCleaningMarkers: loadCleaningMarkers,
         loadAreas: loadAreas,
         loadLitters: loadLitters,
-        loadAllFeatures: loadAllFeatures
     };
-    
 }());
-

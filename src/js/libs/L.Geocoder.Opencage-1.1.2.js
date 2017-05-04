@@ -1,13 +1,9 @@
-/* 
- * OpenCage Data Search Control v1.1.2 - 2015-08-31
- * Copyright (c) 2015, OpenCage Data 
- * info@opencagedata.com 
+
+/*! 
+ * OpenCage Data Search Control v1.1.2 - 2015-08-31 Copyright (c) 2015, OpenCage Data  info@opencagedata.com 
  * http://www.opencagedata.com 
  * modified by adriennn for www.garbagepla.net
- * 
- * Licensed under the BSD license. 
- * Demo: http://geocoder.opencagedata.com/code.html 
- * Source: git@github.com:opencagedata/leaflet-opencage-search.git 
+ * Licensed under the BSD license. Source: git@github.com:opencagedata/leaflet-opencage-search.git 
  */
 (function (factory) {
 	// Packaging/modules magic dance

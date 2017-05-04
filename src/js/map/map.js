@@ -9,7 +9,7 @@ var maps = (function() {
             L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
             //L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
                 { 
-                    maxZoom: 18,
+                    maxZoom: 20,
                     minZoom: 2,
                     reuseTiles: true,
                     updateWhenZooming: true,
@@ -19,7 +19,7 @@ var maps = (function() {
         "Mapbox Satellite Street": 
             L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qz5tn00002qry747yh58p/tiles/256/{z}/{x}/{y}?access_token=@@mapboxtoken',
                 {
-                    maxZoom: 18,
+                    maxZoom: 20,
                     minZoom: 2,
                     reuseTiles: true,
                     updateWhenZooming: false,
@@ -28,7 +28,7 @@ var maps = (function() {
         "Mapbox Dark": 
             L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qtrg900072pqrevagx9hv/tiles/256/{z}/{x}/{y}?access_token=@@mapboxtoken',
                 {
-                    maxZoom: 18,
+                    maxZoom: 20,
                     minZoom: 2,
                     reuseTiles: true,
                     updateWhenZooming: true,
@@ -98,14 +98,14 @@ var maps = (function() {
         },
         locationcontrol = L.control.locate({position: 'topleft'}),
         scalecontrol = L.control.scale({metric: true, imperial: false}),
-        // THe custom icon 'linkText' is set for the layers in Leaflet source code 
-        // in L.Control.Layers.__initLayout()
         layerscontrol = L.control.layers(baselayer, overlayGroups, {
+        /* The custom icon 'linkText' is set for the tilelayers in Leaflet source code 
+         * in L.Control.Layers.__initLayout()
+         */
             position: 'topleft',
             linkText: '<span class="fa fa-fw fa-globe"></span>'
         }),
         geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
-        // geocodercontrol = L.Control.openCageSearch({key: '2bb5bf0d3b9300eacceb225f3cf9cd7d', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
         locating = (function() {
 
@@ -120,6 +120,7 @@ var maps = (function() {
                 // If we are currently trying to locate the user and it fails and the maps is already set, just stop the control
                 if (tools.coordsinhrf) {
                     maps.locationcontrol.stop();
+                    return;
                 }
                 // Show the world without borders if geolocalization fail
                 else {
@@ -147,13 +148,15 @@ var maps = (function() {
                     return new mapMarker(options);
                 },
 
-                genericMarker  = mapmarker({className: 'map-marker marker-color-gray marker-generic'}),
-                garbageMarker  = mapmarker({className: 'map-marker marker-garbage'}),
-                cleaningMarker = mapmarker({className: 'map-marker marker-cleaning'}),
-                dieoffMarker   = mapmarker({className: 'map-marker marker-dieoff'}),
-                sewageMarker   = mapmarker({className: 'map-marker marker-sewage'}),
-                floatingMarker = mapmarker({className: 'map-marker marker-floating'}),
-                linkMarker     = mapmarker({className: 'map-marker marker-link'});
+                genericMarker      = mapmarker({className: 'map-marker marker-color-gray marker-generic'}),
+                garbageMarker      = mapmarker({className: 'map-marker marker-garbage'}),
+                cleaningMarker     = mapmarker({className: 'map-marker marker-cleaning marker-color-blue'}),
+                pastCleaningMarker = mapmarker({className: 'map-marker marker-cleaning-past marker-color-blue'}),
+                dieoffMarker       = mapmarker({className: 'map-marker marker-dieoff'}),
+                sewageMarker       = mapmarker({className: 'map-marker marker-sewage'}),
+                floatingMarker     = mapmarker({className: 'map-marker marker-floating'}),
+                linkMarker         = mapmarker({className: 'map-marker marker-link'}),
+                cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
 
             return {
                 genericMarker : genericMarker,
@@ -162,7 +165,9 @@ var maps = (function() {
                 dieoffMarker : dieoffMarker,
                 sewageMarker : sewageMarker,
                 floatingMarker : floatingMarker,
-                linkMarker: linkMarker
+                linkMarker: linkMarker,
+                cleanedMarker: cleanedMarker,
+                pastCleaningMarker: pastCleaningMarker
             }
         })(),
         localTrashBins = function() {

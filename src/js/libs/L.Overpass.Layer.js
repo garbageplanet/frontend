@@ -1,8 +1,9 @@
-// L.Overpass.Layer MIT
-// author Karsten Hinz
-// modified by Guillaume Amat
-// https://github.com/GuillaumeAmat/leaflet-overpass-layer
-// modified to take a divIcon by adriennn
+/*! L.Overpass.Layer MIT
+* @author Karsten Hinz
+* modified by Guillaume Amat
+* https://github.com/GuillaumeAmat/leaflet-overpass-layer
+* modified to take a divIcon by adriennn
+*/
 
 L.Control.MinZoomIndicator = L.Control.extend({
 

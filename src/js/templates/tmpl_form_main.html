@@ -6,7 +6,7 @@
 <form class="form-feature form-garbage" accept-charset="UTF-8" data-toggle="validator">
   
   <h3>
-  <span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span> 
+  <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>--> 
   Mark garbage
   </h3>
 
@@ -190,7 +190,7 @@
 <form class="form-feature form-cleaning " data-toggle="validator">
 
 <h3>
-  <span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>
+  <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>-->
   Add a cleaning event
 </h3>
   
@@ -207,7 +207,6 @@
         <div class="tab-pane active form-group form-group-lg" id="cleaning-main-tab" role="tabpanel">
 
           <input type="hidden" name="latlng" class="marker-latlng cleaning-latlng">
-          <input type="hidden" name="hour" class="event-date-time-hidden">
 
             <!-- Date and time picker for events -->
           <div class="container from-group" style="width:100%">
@@ -216,8 +215,10 @@
                     <div class="input-group date" id="event-date-time-picker">
                         <input type="datetime" 
                                class="form-control"
-                                placeholder ="Starting date and time">
-                        <input type="hidden" id="date-time-value">
+                               placeholder ="Starting date and time">
+                        <input type="hidden" 
+                               id="date-time-value"
+                               name="datetime">
                         <span class="input-group-addon">
                         <span class="fa fa-fw fa-clock-o"></span>
                         </span>
@@ -298,7 +299,7 @@
 <form class="form-feature form-litter" data-toggle="validator">
   
 <h3>
-  <span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>
+  <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>-->
   Mark litter
 </h3>
   
@@ -450,7 +451,7 @@
 <form class="form-feature form-area" data-toggle="validator">
   
 <h3>
-  <span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>
+  <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>-->
   Create an area
 </h3>
 

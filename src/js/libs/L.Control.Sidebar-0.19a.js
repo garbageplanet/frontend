@@ -1,9 +1,10 @@
-// author: Tobias Bieniek (Turbo87)
-// v.0.19
-// https://github.com/Turbo87/leaflet-sidebar/
-// modified by: adriennn jan-2016
-// License: MIT
 
+/*! copyright Tobias Bieniek (Turbo87)
+ * Leaflet Control Sidebarv.0.19a
+ * https://github.com/Turbo87/leaflet-sidebar/
+ * modified by: adriennn jan-2016
+ * License: MIT
+ */
 L.Control.Sidebar = L.Control.extend({
 
     includes: L.Mixin.Events,

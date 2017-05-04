@@ -447,9 +447,9 @@ var ui = (function() {
                
                 // Remove any unsaved marker on mobile else the mobile menu bugs
                 if (window.isMobile) {
-                    // Reset siebar close button visibility
-                    if ($('.close-panel').hasClass('hidden')) {
-                      $('.close-panel').removeClass('hidden');
+                    // Reset sidebar close button visibility
+                    if ($('.close-right').hasClass('hidden')) {
+                      $('.close-right').removeClass('hidden');
                     }
                     maps.unsavedMarkersLayerGroup.clearLayers();
                 }

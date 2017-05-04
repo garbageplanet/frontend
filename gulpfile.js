@@ -1,6 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 var gulp = require('gulp'),
-    Promise = require('es6-promise').Promise,
+    gulpif = require('gulp-if'),
     inject = require('gulp-inject'),
     injectStr = require('gulp-inject-string'),
     deleteLines = require('gulp-delete-lines'),
@@ -13,6 +13,8 @@ var gulp = require('gulp'),
     replace = require('gulp-replace-task'),
     gutil = require('gulp-util'),
     env = require('gulp-env');
+
+var production = process.env.PRODUCTION;
 
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function() {
@@ -29,7 +31,7 @@ gulp.task('trimHTML', function() {
 gulp.task('styles', ['trimHTML'], function() {
   return gulp.src([
                     './src/css/pace.css',
-                    './src/css/font-awesome-4.5.0.css',
+                    './src/css/font-awesome-4.7.0.css',
                     './src/css/google-work-sans.css',
                     './src/css/trashbag.css',
                     './src/css/bootstrap-3.3.6.css',
@@ -62,16 +64,15 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
                     './src/js/libs/L.zoomCSS.js',
                     './src/js/libs/L.Control.Locate.js',
                     './src/js/libs/L.Compact.Attributions.js',
-                    // './src/js/libs/L.Marker.Menu.js',
                     './src/js/libs/L.Control.Sidebar-0.19a.js',
                     './src/js/libs/L.Overpass.Layer.js',
                     './src/js/libs/L.Draw-0.2.4.js',
                     './src/js/libs/L.Geocoder.Opencage-1.1.2.js',
                     './src/js/libs/L.Control.Login.js'
                   ])
-    .pipe(stripDebug())
+    .pipe(gulpif(production, stripDebug()))
+    .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('leaflet.min.js'))
-    .pipe(uglify({mangle: false, compress: false}))
     .pipe(gulp.dest('./temp/'));
 });
 // Minify head scripts and concat them in order
@@ -92,9 +93,9 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
                     './src/js/libs/bootstrap-datatables-1.10.11.js',
                     './src/js/libs/jquery-touchwipe-1.1.1.js'
                   ])
-    .pipe(stripDebug())
+    .pipe(gulpif(production, stripDebug()))
+    .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('jquery.min.js'))
-    .pipe(uglify({mangle: false, compress: false}))
     .pipe(gulp.dest('./temp/'));
 });
 // Minify body scripts and concat them in order
@@ -115,8 +116,8 @@ gulp.task('scripts:app', ['trimHTML'], function() {
                     './src/js/map/draw.js',
                     './src/js/social/social.js'
                   ])
-    .pipe(stripDebug())
-    .pipe(uglify({mangle: false, compress: false}).on('error', gutil.log))
+    .pipe(gulpif(production, stripDebug()))
+    .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('app.min.js').on('error', gutil.log))
     .pipe(gulp.dest('./temp/'));
 });

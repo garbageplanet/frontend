@@ -7,6 +7,7 @@
 var actions = (function() {
 
     'use strict';
+    // TODO use promises in all the ajax calls
 
     var tempmarkers = [],        
         mapClick = function(map) {
@@ -104,17 +105,17 @@ var actions = (function() {
             console.log("map feature clicked event: ", e);
           
             // Check that there's not already something else going on in the UI
-            if (!tools.checkOpenUiElement()){
+            // TODO need to bypass the bottombar check because we just want to update its contents
+            // if it's already open with another marker data
+            /*if (!tools.checkOpenUiElement()){
                 return;
-            }
+            }*/
 
             L.DomEvent.stopPropagation(e);
 
             if (obj.options) {
-
                 // check if the feature is a shape
                 if (obj.options.shape) {
-
                     // setTimeout(function () {
                     maps.map.panToOffset(obj.getCenter(), tools.getVerticalOffset());
                     ui.pushDataToBottomPanel(obj);
@@ -264,7 +265,6 @@ var actions = (function() {
                             ui.bottombar.hide();
                             maps.map.removeLayer(o);
                             // in leaflet 1.0, we can do o.remove();
-                            // features.loadAllFeatures();
                             alerts.showAlert(7, "success", 1500);
                         },
 
@@ -319,11 +319,11 @@ var actions = (function() {
                 }, 100);
             }
         },
-        joinGame = function(e) {
+        /*joinGame = function(e) {
             // get the userid
             // check with backend if registered in area
             // allow to join
-        },
+        },*/
         cleanedGarbage = function(e) {
             // TODO Finish this
             // TODO make session-dependant and allow once per user per marker
@@ -383,7 +383,7 @@ var actions = (function() {
         confirmGarbage: confirmGarbage,
         deleteFeature: deleteFeature,
         attendCleaning: attendCleaning,
-        joinGame: joinGame,
+        /*joinGame: joinGame,*/
         cleanedGarbage: cleanedGarbage,
         tempmarkers: tempmarkers
     };

@@ -1,13 +1,8 @@
 /*
- * This combined file was created by the DataTables downloader builder:
- *   https://datatables.net/download
- *
+ * This combined file was created by the DataTables downloader builder: https://datatables.net/download
  * To rebuild or modify this file with the latest versions of the included
- * software please visit:
- *   https://datatables.net/download/#bs/dt-1.10.11,fh-3.1.1,r-2.0.2
- *
- * Included libraries:
- *   DataTables 1.10.11, FixedHeader 3.1.1, Responsive 2.0.2
+ * software please visit: https://datatables.net/download/#bs/dt-1.10.11,fh-3.1.1,r-2.0.2
+ * Included libraries:  DataTables 1.10.11, FixedHeader 3.1.1, Responsive 2.0.2
  */
 
 /*! DataTables 1.10.11

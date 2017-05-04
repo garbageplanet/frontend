@@ -64,11 +64,11 @@ var social = (function() {
                 feature_tags;
 
             obj.image_url ? feature_image_url = obj.image_url : feature_image_url =  '';
-            feature_image_url_encoded = encodeURIComponent(feature_image_url);
+            var feature_image_url_encoded = encodeURIComponent(feature_image_url);
             obj.note ? feature_note = obj.note : feature_note =  '';
-            feature_note_encoded = encodeURIComponent(feature_note);
+            var feature_note_encoded = encodeURIComponent(feature_note);
             obj.tags ? feature_tags = obj.tags : feature_tags =  '';
-            feature_tags_encoded = encodeURIComponent(feature_tags);
+            var feature_tags_encoded = encodeURIComponent(feature_tags);
 
             // Create the links in the templatedata object
             network[0].targeturl = 'https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=' + encoded_url + '&description=' + feature_note_encoded + '&link=' + encoded_url + '&picture=' + feature_image_url_encoded + '&name=Garbagepla.net&redirect_uri=https://garbagepla.net';
@@ -80,7 +80,7 @@ var social = (function() {
             network[6].targeturl = 'whatsapp://send?text=Shared%20from%20www.garbagepla.net';
             network[7].targeturl = 'http://share.renren.com/share/buttonshare.do?link=' + encoded_url +  '&title=Share from Garbagepla.net';
 
-        },
+        }/*,
         game = function() {
 
             var getPlayers = function(e) {
@@ -118,11 +118,11 @@ var social = (function() {
                 getPlayers: getPlayers,
                 printGameData: printGameData
             }
-        };
+        }*/;
 
     return {
         network: network,
         shareThisFeature: shareThisFeature,
-        game: game
+        /*game: game*/
     }
 }());
