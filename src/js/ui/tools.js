@@ -117,7 +117,6 @@ var tools = {
     },
     setMarkerIcon: function(c, d) {
         if (!d) {
-
             return (c == false) ? maps.icons.garbageMarker : maps.icons.cleanedMarker;
           
         } else {

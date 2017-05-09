@@ -80,7 +80,7 @@ var features =  (function() {
                           types:        o.types.join(', '),
                       
                           icon: tools.setMarkerIcon(o.cleaned, null),
-                          todo: (o.cleaned === true) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo),
+                          todo: (o.cleaned === true) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo), // FIXME this doesnt do what it should be doing
                           
                           feature_type: 'marker_garbage'
                         });
@@ -285,8 +285,8 @@ var features =  (function() {
 
                         // TODO we need a better way to load marker from the API
                         // for example we can pre-load from a larger area than current viewport bbox
-                        // and only check with the backend if the area moves out of the bound of the currently
-                        // loaded area, if it is we can reload more markers.
+                        // and only check with the backend if the viewport moves out of the bound of the currently
+                        // loaded area, if it is we can then reload more markers.
                         if (newZoom >= 2 && zoomDiff >= 1) {
                             loadGarbageMarkers();              
                             loadCleaningMarkers();

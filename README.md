@@ -11,9 +11,6 @@ Note that as of V. 0.5.3, if you do not have your own token for mapbox and such 
 ### Contributing
 All contributions are welcome. If you want to contribute to a specific todo below, the first thing you should do is open an issue. If you have another contribution PRs are also welcome!
 
-### FIXME
-- [ ] taginputs reset deletes placeholder
-
 ### TODO
 - [ ] reverse geocode addresses for cleanings
 - [ ] preload features from a larger area to avoid constant request to backend

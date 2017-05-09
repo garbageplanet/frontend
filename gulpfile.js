@@ -14,8 +14,6 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     env = require('gulp-env');
 
-var production = process.env.PRODUCTION;
-
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function() {
   return gulp.src('./src/index.html')
@@ -57,6 +55,11 @@ gulp.task('styles', ['trimHTML'], function() {
 });
 // Minify head scripts and concat them in order
 gulp.task('scripts:leaflet', ['trimHTML'], function() {
+  
+  env({file: "env.json"});
+  
+  var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
+  
   return gulp.src([
                     './src/js/libs/leaflet-1.0.3.js',
                     './src/js/libs/L.Markercluster-1.0.0.js',
@@ -77,6 +80,11 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
 });
 // Minify head scripts and concat them in order
 gulp.task('scripts:jquery', ['trimHTML'], function() {
+  
+  env({file: "env.json"});
+  
+  var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
+  
   return gulp.src([
                     './src/js/libs/pace.js',
                     // './src/js/ui/base.js',
@@ -100,6 +108,11 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
 });
 // Minify body scripts and concat them in order
 gulp.task('scripts:app', ['trimHTML'], function() {
+  
+  env({file: "env.json"});
+  
+  var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
+  
   return gulp.src([
                     './src/js/config/config.js',
                     './src/js/templates/tmpl.js',

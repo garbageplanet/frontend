@@ -12,14 +12,14 @@ var session = (function() {
   
     'use strict';
     
-    var _switchSession = function(obj) { 
+    var _switchSession = function(obj) {
 
         var classicSessionType = localStorage.getItem('classic');
 
         if (obj === "logout") {
 
             // Change display of custom login button on mobile
-            if (window.isMobile) { 
+            if (window.isMobile) {
                 // this is the leaflet plugin for the custom glome anonymous login button
                 maps.glomelogincontrol.logout();
             }
@@ -257,9 +257,9 @@ var session = (function() {
                         alerts.showAlert(22, 'info', 2000);
                         localStorage.clear();
 
-                        /*if (ui.sidebar.isVisible()) {
+                        if (ui.sidebar.isVisible()) {
                             ui.sidebar.hide();
-                        }*/ 
+                        }
                     });
                     logoutcall.fail(function(){
                         alerts.showAlert(10, 'danger', 2000);      
