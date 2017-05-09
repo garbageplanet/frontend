@@ -6,6 +6,8 @@
 */
 
 var drawing = (function() {
+  
+    'use strict';
     
     var drawControl = new L.Control.Draw({
     

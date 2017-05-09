@@ -1,8 +1,10 @@
 /*jshint maxerr: 1000*/
 // Touring the app
-var touring = (function(){
+var touring = (function() {
+  
+    'use strict';
     
-    var devTour = new Tour({
+    var _devTour = new Tour({
             name: "dev-tour",
             template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
             // template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div></div>",
@@ -14,7 +16,7 @@ var touring = (function(){
               }
             ]
         }),
-        mobileTour = new Tour({
+        _mobileTour = new Tour({
             name: "mobile-tour",
             template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
             steps: [
@@ -37,35 +39,35 @@ var touring = (function(){
               }
             ]
         }),
-        startTour = function() {
+        init = function() {
           
             setTimeout(function(){
 
                 if(!window.isMobile){
 
                     if (!localStorage.getItem('token')) {
-                        devTour.init();
-                        devTour.start(true);
+                        _devTour.init();
+                        _devTour.start(true);
                     }
                 }
 
                 if(window.isMobile){
-                    mobileTour.init();
-                    mobileTour.start(true);
+                    _mobileTour.init();
+                    _mobileTour.start(true);
                 }
             }, 1000)
         },
-        bindEvents = $(function() {
+        _bindEvents = (function() {
             $('.start-tour').on('click', function() {
-                setTimeout(touring.startTour, 2000)
+                setTimeout(touring.init, 2000)
             });
-        });
+        }());
     
     return {
-        startTour: startTour,
+        init: init,
     }
     
 }());
 
 // Only launch the tour once Pace has finished
-window.Pace.on('done', touring.startTour);
+window.Pace.on('done', touring.init);

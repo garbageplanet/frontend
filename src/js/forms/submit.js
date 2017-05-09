@@ -6,8 +6,9 @@
 
 // Save features on the map
  var saving = (function() {
+   
+    'use strict';
   
-    // TODO prototype and allow chaining to newmarker i.e something like newmarker.Save()   
     var _saveFeature = function(fo, ft) {
 
         // NOTE ft = formtype, fo = formobj
@@ -26,10 +27,6 @@
             else {
                 so[k] = fo[k];
             }
-        }
-        // Default to mid value for garbage amounts
-        if (so.amount === '' || !so.amount) {
-            so.amount = 3;
         }
                    
         console.log('------------------------------')
@@ -51,14 +48,14 @@
                     'todo': so.todo,
                     'image_url': so.image,
                     'tag': so.tags,
-                    // 'sizes': so.size,
-                    // 'embed': so.environ,
+                    'sizes': so.size,
+                    'embed': so.environ,
                     'note': so.note                    
                   }
             });       
         }
-        else if (ft = 'cleaning') {
-            // FIXME === string equality fails for 'cleaning'
+        else if (ft === 'cleaning') {
+
             var postrequest = $.ajax({
                 method: api.createCleaning.method,
                 url: api.createCleaning.url(),
@@ -71,7 +68,7 @@
                     'recurrence': so.recurrence,
                     'tag': so.tags
                 }
-          });          
+            });          
         } 
         else if (ft === 'litter') {
                     
@@ -98,10 +95,10 @@
         else if (ft === 'area') {
           
             // Generate a random id if the user didn't set a title
-            if (so.title.length < 1) {
+            if (!so.title) {
                 so.title = tools.randomString(12);
-                // console.log('randomly generated area title', so.title);
-                // console.log(so);
+                console.log('randomly generated area title', so.title);
+                console.log(so);
             }
 
             var postrequest = $.ajax({
@@ -114,11 +111,11 @@
                     'latlngs': so.latlngs,
                     'note': so.note,
                     'contact': so.contact,
-                    // 'secret': so.secret,
+                    'secret': so.secret,
                     'title': so.title,
-                    // 'tag': so.tags,
-                    // 'game' : so.game,
-                    'max_players': so.players
+                    'tag': so.tags,
+                    'game' : so.game,
+                    'max_players': !so.players ? 0 : so.players
                 }
           });
           
@@ -172,7 +169,7 @@
             tools.resetIconStyle();
             // TODO stop the drawing listeners if any
         });          
-      },
+        },
         saveOpenGraph = function(obj) {
           _saveFeature(obj, 'og');
         },
@@ -188,6 +185,7 @@
             currentform.validator().on('submit', function(e) {
 
                 if (e.isDefaultPrevented()) {
+                    // isDefaultPrevented is the way the validator plugin tells sthg is wrong with the form
                     alerts.showAlert(30, 'danger', 2000);
                     // FIXME if we call return here the validator exits/bugs?
                     return;
@@ -200,14 +198,14 @@
                     var formname = currentform[0].className,
                         formobj = currentform.serializeObject();
 
-                    // extract the form type from the classname
-                    var formtype = formname.substr(formname.lastIndexOf('-') + 1);
-                    
+                    // extract the form type from the classname and trim the string
+                    var formtype = formname.substr(formname.lastIndexOf('-') + 1).trim();
+                                      
                     /*console.log('------------------------------');
                     console.log('current form array: ', formobj);
                     console.log('current form type:', formtype);
                     console.log('current form type: ', formtype);
-                    console.log('------------------------------');*/    
+                    console.log('------------------------------');*/   
                   
                     // Save the data with ajax
                     _saveFeature(formobj, formtype);                
@@ -215,11 +213,12 @@
             });
         },
         init = function() {
-          // empty the placeholder
-          this.form = null;
-          // Cache the current form
-          this.form = $('.form-feature');
-          _bindEvents(this.form);
+            // we init this code only when a form is created in forms._bindEvents() in src/js/forms/forms.js
+            // empty the placeholder
+            this.form = null;
+            // Cache the current form, there's always only one .form-feature in the DOM
+            this.form = $('.form-feature');
+            _bindEvents(this.form);
         }
 
     return {

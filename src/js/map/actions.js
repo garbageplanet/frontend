@@ -7,7 +7,6 @@
 var actions = (function() {
 
     'use strict';
-    // TODO use promises in all the ajax calls
 
     var tempmarkers = [],        
         mapClick = function(map) {
@@ -180,45 +179,43 @@ var actions = (function() {
                 var callurl = null;
 
                 if (e.feature_type === 'marker_garbage') {
-                    callurl = api.confirmTrash.url(e.id);
+                    var callurl = api.confirmTrash.url(e.id);
                 }
 
                 else if (e.feature_type === 'polyline_litter') {
-                    callurl = api.confirmLitter.url(e.id);
+                    var callurl = api.confirmLitter.url(e.id);
                 }
 
-                setTimeout(function () {
+                var useToken = localStorage.getItem('token') || tools.token;
+                var confirmcall = $.ajax({
+                    method: 'PUT',
+                    url: callurl,
+                    headers: {"Authorization": "Bearer" + useToken},
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+              
+                confirmcall.done(function(response) {
 
-                    var useToken = localStorage.getItem('token') || tools.token;
+                    var message = response.data.message;
+                    ui.pushDataToBottomPanel(response.data.data);
 
-                    $.ajax({
-
-                        method: 'PUT',
-                        url: callurl,
-                        headers: {"Authorization": "Bearer" + useToken},
-                        success: function (response) {
-
-                            var message = response.data.message;
-                            ui.pushDataToBottomPanel(response.data.data);
-
-                            // TODO add the possibility to call loadFeatures() with an id to retrive only one marker
-
-                            // update litters if we confirmed litter
-                            if (message.indexOf('litter') === 0) {
-                                features.loadLitters();
-                            }
-                            // else update trash markers to reflect new data
-                            else {
-                                features.loadGarbageMarkers();
-                            }
-                        },
-
-                        error: function (err) {
-                          alerts.showAlert(10, "info", 2000);
-                        }
-                  });
-
-                }, 100);
+                    // update litters if we confirmed litter
+                    if (message.indexOf('litter') === 0) {
+                        features.loadLitters();
+                    }
+                    // else update trash markers to reflect new data
+                    else {
+                        features.loadGarbageMarkers();
+                    }
+                });
+                confirmcall.fail(function() {
+                    alerts.showAlert(2, "info", 2000);
+                });
             }
         },
         deleteFeature = function(o) {
@@ -256,22 +253,26 @@ var actions = (function() {
 
                 if ((o.options.marked_by || o.options.created_by)  == localStorage.getItem('userid')) {
 
-                    $.ajax({
+                    var deletecall = $.ajax({
 
                         type: deletemethod,
                         url: deleteurl,
                         headers: {"Authorization": "Bearer " + useToken},
                         success: function(response) {
-                            ui.bottombar.hide();
-                            maps.map.removeLayer(o);
-                            // in leaflet 1.0, we can do o.remove();
-                            alerts.showAlert(7, "success", 1500);
+                            console.log("delete success: ", response);
                         },
-
                         error: function(response) {
-                            console.log("DELETE ERROR: ", response);
-                            alerts.showAlert(6, "warning", 2000);
+                            console.log("delete error: ", response);
                         }
+                    });
+                  
+                    deletecall.done(function(response) {
+                        alerts.showAlert(7, "success", 1500);
+                        ui.bottombar.hide();
+                        maps.map.removeLayer(o);
+                    });
+                    deletecall.fail(function() {
+                        alerts.showAlert(6, "warning", 2000);
                     });
                 }
 
@@ -289,75 +290,83 @@ var actions = (function() {
         attendCleaning = function(e) {
              // TODO make session-dependant and allow once per user per marker
             if (!localStorage.getItem('token')){
-
                 alerts.showAlert(3, "info", 2000);
                 return;
             }
 
             else {
 
-                setTimeout(function () {
-
-                    var useToken = localStorage.getItem('token') || tools.token,
-                        id = e.id;
-
-                    $.ajax({
-
-                        method: 'PUT',
-                        url: api.attendCleaning.url(id),
-                        headers: {"Authorization": "Bearer" + useToken},
-                        success: function (response) {
-                            // push the new data to the bottom bar
-                            ui.pushDataToBottomPanel(response.data.data);
-
-                            features.loadCleaningMarkers();
-                        },
-                        error: function (err) {
-                            alerts.showAlert(10, "info", 2000);
-                        }
-                    });
-                }, 100);
+                var useToken = localStorage.getItem('token') || tools.token;
+                var id = e.id;
+                var attendcall = $.ajax({
+                    method: 'PUT',
+                    url: api.attendCleaning.url(id),
+                    headers: {"Authorization": "Bearer" + useToken},
+                    success: function (response) {
+                        console.log('success:', response);
+                    },
+                    error: function (err) {
+                        console.log('error: ', err);
+                    }
+                });
+                attendcall.done(function(response) {
+                    // push the new data to the bottom bar
+                    ui.pushDataToBottomPanel(response.data.data);
+                    features.loadCleaningMarkers();
+                });
+                attendcall.fail(function() {
+                    alerts.showAlert(10, "info", 2000);
+                });
             }
         },
-        /*joinGame = function(e) {
-            // get the userid
-            // check with backend if registered in area
-            // allow to join
-        },*/
-        cleanedGarbage = function(e) {
-            // TODO Finish this
-            // TODO make session-dependant and allow once per user per marker
-            // TODO change the value of the todo field to 'this has been cleaned already'
+        cleanGarbage = function(e) {
+          
             if (!localStorage.getItem('token')){
-
                 alerts.showAlert(3, "info", 2000);
                 return;
             }
 
             else {
+              
+                var callurl = null;
 
-                setTimeout(function () {
+                if (e.feature_type === 'marker_garbage') {
+                    var callurl = api.cleanTrash.url(e.id);
+                }
 
-                    var useToken = localStorage.getItem('token') || tools.token;
+                else if (e.feature_type === 'polyline_litter') {
+                    var callurl = api.cleanLitter.url(e.id);
+                }
 
-                    $.ajax({
+                var useToken = localStorage.getItem('token') || tools.token;
+                var cleancall = $.ajax({
 
-                        method: api.editTrash.method,
-                        url: api.editTrash.url(),
-                        headers: {"Authorization": "Bearer" + useToken},
-                        data: {
-                            'clean': 1
-                        },
-                        success: function(data) {
-                            // TODO reload the markers and bottombar to display change
-                            console.log('success data', data);
-                        },
-                        error: function(err) {
-                            alerts.showAlert(2, "info", 2000);
-                            console.log('err', err);
-                        }
-                  });
-                }, 100);
+                    method: 'PUT',
+                    url: callurl,
+                    headers: {"Authorization": "Bearer" + useToken},
+                    success: function(response) {
+                        console.log('success data', response);
+                    },
+                    error: function(err) {
+                        console.log('err', err);
+                    }
+              });
+              
+                cleancall.done(function(response) {
+
+                    var message = response.data.message;
+                    ui.pushDataToBottomPanel(response.data.data);
+
+                    if (message.indexOf('litter') === 0) {
+                        features.loadLitters();
+                    }
+                    else {
+                        features.loadGarbageMarkers();
+                    }
+                });
+                cleancall.fail(function() {
+                    alerts.showAlert(2, "info", 2000);
+                });
             }
         },
         bindEvents = function() {
@@ -383,8 +392,7 @@ var actions = (function() {
         confirmGarbage: confirmGarbage,
         deleteFeature: deleteFeature,
         attendCleaning: attendCleaning,
-        /*joinGame: joinGame,*/
-        cleanedGarbage: cleanedGarbage,
+        cleanGarbage: cleanGarbage,
         tempmarkers: tempmarkers
     };
 }());

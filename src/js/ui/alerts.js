@@ -1,8 +1,10 @@
 // Alerts built on the idea by lgal http://stackoverflow.com/a/33662720/2842348 license MIT
 
-var alerts = {
+var alerts = (function() {
     
-    strings : [
+    'use strict';
+    
+    var _strings = [
         // current items 0-32 add new fields at the end
         "You cannot delete features you did not create",
         "Sorry, something went wrong with the server",
@@ -38,44 +40,27 @@ var alerts = {
         'Zoom in closer to do that',
         'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies.'
     ],
-    // TODO merge showAlert and createAlertText so that Showalert is called with four params
-    showAlert: function(errorCode, errorType, closeDelay) {
+        showAlert = function(errorCode, errorType, closeDelay) {
 
-        // default to alert-info
-        if (!errorType || typeof errorType === 'undefined') {
-            var errorType = "info";
-        }
+            // default to alert-info
+            if (!errorType || typeof errorType === 'undefined') {
+                var errorType = "info";
+            }
 
-        var errorMessage = this.strings[errorCode];
-        var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
+            var errorMessage = _strings[errorCode];
+            var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
 
-        $(".alert-container").prepend(alertMessage);
+            $(".alert-container").prepend(alertMessage);
 
-        // if closeDelay was passed - set a timeout to close the alert
-        if (closeDelay) {
+            // if closeDelay was passed - set a timeout to close the alert
+            if (closeDelay) {
 
-            window.setTimeout(function() {alertMessage.alert("close");}, closeDelay);
-        }
+                window.setTimeout(function() {alertMessage.alert("close");}, closeDelay);
+            }
 
-    },
-    // Give a specific error in function of the http status
-    showErrorType:function(e) {
-
-        var errortype;
-
-        if (e.status === 200) {
-            errortype = this.showAlert(1, 'danger', 2500);
-
-        } else if (e.status === 'error') {
-            errortype = this.showAlert(2, 'danger', 2500);
-
-        } else if (e.status === 401 || e.status === 400) {
-            errortype = this.showAlert(3, 'danger', 2500);
-            
-        } else {
-            errortype = this.showAlert(4 + e.status, 'danger', 2500);
-        }
-
-        return errortype;
-    },
-};
+        };
+  
+    return {
+        showAlert : showAlert,
+    }
+}());

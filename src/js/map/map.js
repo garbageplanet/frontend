@@ -1,6 +1,8 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global maps locating*/
 // Set the map
 var maps = (function() {
+  
+    'use strict';
     
     var baselayer = {
     

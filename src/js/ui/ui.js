@@ -5,6 +5,8 @@
 */
 var ui = (function() {
   
+    'use strict';
+  
     var templates = {
             garbagetypes: [
                 {short:"plastic",long:"Plastic items"},
@@ -15,6 +17,7 @@ var ui = (function() {
                 {short:"fastfood",long:"Fastfood garbage"},
                 {short:"poly",long:"Expanded plastic polymers"},
                 {short:"butts",long:"Cigarette butts"},
+                {short:"syringe",long:"Syringes and needles"},
                 {short:"glassb",long:"Broken glass"},
                 {short:"glass",long:"Glass"},
                 {short:"bottles",long:"Glass bottles"},
@@ -23,6 +26,7 @@ var ui = (function() {
                 {short:"alu",long:"Aluminium cans"},
                 {short:"wood",long:"Recomposed wood"},
                 {short:"chemicals",long:"Chemicals"},
+                {short:"canister",long:"Oil canister"},
                 {short:"household",long:"Household garbage"},
                 {short:"clothes",long:"Shoes and clothes"},
                 {short:"fabric",long:"Carpets and fabrics"},
@@ -132,8 +136,8 @@ var ui = (function() {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.1'
-    },
+            version: '0.5.3'
+        },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
         pushDataToBottomPanel = function(obj) {
@@ -197,7 +201,7 @@ var ui = (function() {
                 console.log(ct);
 
                 if (ct.match(/(cleaned|check)/)) {
-                    actions.cleanedGarbage(featuredata);
+                    actions.cleanGarbage(featuredata);
                     return;
                 }
                 if (ct.match(/(confirm|binoculars)/)) {
@@ -570,4 +574,6 @@ var ui = (function() {
         makeModal: makeModal,
     };    
 }());
+// We can start initializing the UI once this code block is read
+// TODO wait for pace?
 ui.init();

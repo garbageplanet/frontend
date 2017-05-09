@@ -4,6 +4,8 @@
 
 var forms = (function() {
   
+    'use strict';
+  
     var _bindEvents = function() {
 
             // This function activate the widgets and init the form submission code in js/forms/submit.js
@@ -100,7 +102,7 @@ var forms = (function() {
             console.log('typeobj', typeobj);
 
             // Opengraph scraper
-            // TODO finish this
+            // TODO finish og form
             if (!id && type === 'og') {
 
                 console.log('og form');
@@ -167,13 +169,13 @@ var forms = (function() {
                     }
 
                     if (type === "cleaning") {
+                      
                         console.log('loading cleaning form');
                         // TODO Pass the latlng as an object once templates are in place
                         $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
                         // Set the options on the time and date selects
                         $('#event-date-time-picker')
                             .datetimepicker({
-                                minDate: new Date(2016, 04, 01),
                                 showClose: true,
                                 ignoreReadonly: true,
                                 focusOnShow: false,
@@ -181,7 +183,8 @@ var forms = (function() {
                         });
 
                         $('#event-date-time-picker').on('dp.change', function(e) {
-                            var eventDateTime = e.date.format('YYYY-MM-DD HH:MM:SS');
+                            var eventDateTime = e.date.format('YYYY-MM-DD HH:MM');
+                            console.log('-------------TIME----------', eventDateTime);
                             $('#date-time-value').val(eventDateTime);
                             // Change the icon of the marker if a time is set
                             $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');

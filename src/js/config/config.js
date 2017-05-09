@@ -4,9 +4,7 @@
   */
 
 var api = {
-    // Backend
     server: '@@server',
-    // server: 'http://garbageplanet.dist/api',  
     createUser: {
         method: 'POST',
         url: function() {
@@ -76,6 +74,11 @@ var api = {
     confirmTrash: {
         url: function(id) {
             return api.readTrash.url()+'/confirm/' + id;
+        }
+    },
+    cleanTrash: {
+        url: function(id) {
+            return api.readTrash.url()+'/clean/' + id;
         }
     },
     readTrashWithinBounds: {
@@ -152,6 +155,11 @@ var api = {
     confirmLitter: {
         url: function(id) {
             return api.readLitter.url()+'/confirm/' + id;
+        }
+    },
+    cleanLitter: {
+        url: function(id) {
+            return api.readLitter.url()+'/clean/' + id;
         }
     },
     readAreaWithinBounds: {

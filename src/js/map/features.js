@@ -3,23 +3,45 @@
 * Loading map features from the backend
 */
 
-// TODO make a prototype for getting data from api instead of four different functions
-// TODO use promises instead of error, success in api calls
 var features =  (function() {
     
-    "use strict";
+    'use strict';
     
     var garbageArray = [],
         cleaningArray = [],
         useToken = localStorage.getItem('token') || tools.token,
+        /*_load = function(type) {
+        // TODO finish this
+            type = type.trim();
+            switch (type) {
+                case 'garbage' :
+                // load 
+                break;
+                case 'cleaning' :
+                // load 
+                break;
+                case 'litter' :
+                // load 
+                break;
+                case 'areas' :
+                // load 
+                break;
+                case 'all' :
+                // 
+                break;
+            }
+        },*/
         loadGarbageMarkers = function() {
 
             garbageArray = [];
             var fetchGarbage = $.ajax({
                 type: api.readTrashWithinBounds.method,
                 url: api.readTrashWithinBounds.url(tools.getCurrentBounds()),
-                headers: {"Authorization": 'Bearer ' + useToken},
-                success: function (data) {
+                crossDomain: true,
+                headers: {
+                          "Authorization": 'Bearer ' + useToken
+                         },
+                success: function(data) {
                     console.log('Success getting garbage marker data', data);
                 },
                 error: function(data) {
@@ -57,14 +79,14 @@ var features =  (function() {
                           tags:         o.tag,
                           types:        o.types.join(', '),
                       
-                          icon: tools.setMarkerIcon(o.cleaned, o.todo, null),
-                          todo: tools.setTodoFullText(o.todo),
+                          icon: tools.setMarkerIcon(o.cleaned, null),
+                          todo: (o.cleaned === true) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo),
                           
                           feature_type: 'marker_garbage'
                         });
 
                     marker.addTo(maps.garbageLayerGroup);
-                    // Set the class for the marker color
+                    // Set the class for the marker color after the icon is loaded on the map
                     $(marker._icon).addClass(tools.setMarkerClassColor(o.amount));
 
                     marker.on('click', function(e) {
@@ -107,7 +129,7 @@ var features =  (function() {
                                 modified_at: o.updated_at,
                                 recurrence:  o.recurrence,
                                 
-                                icon:        tools.setMarkerIcon(null, null, o.datetime),
+                                icon:        tools.setMarkerIcon(null, o.datetime),
                                 feature_type: 'marker_cleaning',
                             });
                                  
@@ -236,50 +258,71 @@ var features =  (function() {
             loadCleaningMarkers(); 
             loadAreas();
             loadLitters();
-    };
-    
-    // Load everything on first load
-    maps.map.addOneTimeEventListener('ready', function() {
-        features.loadAllFeatures();
-    });
-    
-    // then load markers conditionally
-    maps.map.on('dragend zoomend', function(e) {
-        console.log("map move: ", e);
+            // features._load('all';)
+    },
+        _bindEvents = (function() {
 
-        if (e.type === 'zoomend') {
+            // Load features conditionally
+            maps.map.on('zoomstart dragend zoomend', function(e) {
+              
+                console.log("map move event: ", e);
+                var eventtype = e.type.trim();
+                var newZoom = e.target.getZoom();
+                var zoomDiff = Math.abs(newZoom - tools.currentZoom);
+                var lengthDiff = e.distance;
+                // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical draggin
+                var viewportRatio = window.innerWidth / 3;
 
-            if (e.target.getZoom() >= 2 ) {
-                loadGarbageMarkers();              
-                loadCleaningMarkers();
+                switch (eventtype) {
 
-                    if (e.target.getZoom() <= 16) {
-                        loadLitters();
-                        loadAreas();
-                    }
-            }
-            
-            if (e.target.getZoom() < 7) {
-                maps.areaLayerGroup.clearLayers;
-                maps.litterLayerGroup.clearLayers;
-            } 
-        }
+                    case 'zoomend':
 
-        if (e.type === 'dragend') {
-            if (e.distance >= window.innerWidth / 3) {
+                        console.log('zoomend event');
+                        
+                        console.log("fist zoom: ", tools.currentZoom);
+                        console.log("new zoom: ", newZoom);
+                        console.log("zoom difference: ", zoomDiff);
 
-                if (e.target.getZoom() >= 2 ) {  
-                    loadGarbageMarkers();
-                    loadCleaningMarkers();
+                        // TODO we need a better way to load marker from the API
+                        // for example we can pre-load from a larger area than current viewport bbox
+                        // and only check with the backend if the area moves out of the bound of the currently
+                        // loaded area, if it is we can reload more markers.
+                        if (newZoom >= 2 && zoomDiff >= 1) {
+                            loadGarbageMarkers();              
+                            loadCleaningMarkers();
 
-                    if (e.target.getZoom() >= 8 && e.target.getZoom() <= 16) {
-                        loadLitters();
-                        loadAreas();
-                    }
-                }
-            }
-        }
-    });
+                           if (newZoom <= 16) {
+                                loadLitters();
+                                loadAreas();
+                            }
+                          
+                        } else if (!zoomDiff) {
+                            // if there's no prior zoom value it means we're loading for the first time
+                            _loadAllFeatures();
+                        }
+
+                    break;
+                    case 'dragend':
+                        if (lengthDiff >= viewportRatio) {
+
+                            if (newZoom >= 2 ) {  
+                                loadGarbageMarkers();
+                                loadCleaningMarkers();
+
+                                if (newZoom >= 8 && newZoom <= 16) {
+                                    // We don't load large features if we're too close or too far
+                                    loadLitters();
+                                    loadAreas();
+                                }
+                            }
+                        }
+                    break;
+                    case 'zoomstart':
+                        tools.currentZoom = e.target.getZoom();
+                    break;
+                };
+            });
+        }());
     
     return {
         garbageArray: function() {return garbageArray},

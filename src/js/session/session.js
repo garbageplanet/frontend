@@ -9,6 +9,8 @@
 */
 
 var session = (function() {
+  
+    'use strict';
     
     var _switchSession = function(obj) { 
 
@@ -21,7 +23,8 @@ var session = (function() {
                 // this is the leaflet plugin for the custom glome anonymous login button
                 maps.glomelogincontrol.logout();
             }
-
+            
+            // TODO make this with templates
             $('#session-status a').text('Login').attr("href","#user-login-dialog");
             $('#session-status a').attr("id","");
             $('#session-status a').addClass('dropdown-link');
@@ -49,7 +52,7 @@ var session = (function() {
                 // change the UI
                 _switchSession("logout");
                 // server-side logout
-                logout();
+                _logout();
             });
 
             // Reset the event listeners
@@ -120,9 +123,12 @@ var session = (function() {
             }
         }
     },
-        login = function(e) {
-
-                e.preventDefault();
+        _login = function(e) {
+              console.log('calling login');
+              // NOTE _login can call _switchSession and not the other way around
+                if (e) {
+                    e.preventDefault();
+                }
 
                 // TODO get the values from the form
                 var email = $('#login-email').val();
@@ -174,13 +180,11 @@ var session = (function() {
                     localStorage.removeItem('token');
                 });
             },
-        checkLogin = function(d) {
-          
+        _checkLogin = function(d) {
+            console.log('checking login');
             var tokeh = d;
-          
             // TODO checklogin for glome key as well
             var useToken = localStorage.getItem('token') || tools.token;
-
             var checklogincall = $.ajax({
 
                 method: api.readUser.method,
@@ -194,17 +198,16 @@ var session = (function() {
                     console.log(response);
                 }
             });
-          
             checklogincall.done(function() {
               
                 if (!tokeh || tokeh !== 1) {
                   _switchSession('login');
+                  
                 } else if (tokeh === 1) { 
                   console.log('login check');
                   return true
                 }
             });
-          
             checklogincall.fail(function() {
               
                 alerts.showAlert(21, 'danger', 2000);
@@ -213,6 +216,7 @@ var session = (function() {
                     _switchSession('logout');
                     localStorage.clear();
                     ui.sidebar.show($('#user-login-dialog').show().siblings().hide());
+                  
                 } else if (tokeh === 1) { 
                   alert('CHCK FAILED');
                   return false
@@ -220,10 +224,10 @@ var session = (function() {
             });
           
             return {
-              checklogincall: checklogincall
+                checklogincall: checklogincall
             }
         },
-        logout = function() {
+        _logout = function() {
                 // FIXME serverside logout backend replies 401
                 if (!localStorage.token) {
                     alerts.showAlert(23, 'info', 2000);
@@ -253,16 +257,16 @@ var session = (function() {
                         alerts.showAlert(22, 'info', 2000);
                         localStorage.clear();
 
-                        if (ui.sidebar.isVisible()) {
+                        /*if (ui.sidebar.isVisible()) {
                             ui.sidebar.hide();
-                        } 
+                        }*/ 
                     });
                     logoutcall.fail(function(){
                         alerts.showAlert(10, 'danger', 2000);      
                     });
                 }
             },
-        register = function(e) {
+        _register = function(e) {
 
                 e.preventDefault();
 
@@ -286,7 +290,6 @@ var session = (function() {
                         console.log(response);
                     }
                 });
-          
                 registercall.done(function(response) {
                     localStorage.setItem('token', response.token);
                     $('#create-account-dialog').hide();
@@ -308,7 +311,6 @@ var session = (function() {
                         }
                     });
                 });
-          
                 registercall.fail(function() {
                     alerts.showAlert(1, 'danger', 3500);
                     localStorage.removeItem('token');
@@ -375,7 +377,7 @@ var session = (function() {
                 });
           
             },
-        deleteAccount = function(e) {
+        _deleteAccount = function(e) {
                 // FIXME backend replies 405 method not allowed
                 var classicSessionType = localStorage.getItem('classic');
 
@@ -422,85 +424,33 @@ var session = (function() {
                 }
 
             },
-        sendKey = function(e) {
-
-                e.preventDefault();
-
-                // TODO parse the field
-                var glomeKey = $('#glome-key').val();
-
-                var sendkeycall = $.ajax({
-
-                    type: api.checkGlomeKey.method,
-                    url: api.receiveGlomeKey.url(),
-                    data: {
-                        'key': glomeKey
-                    },
-                    success: function (response) {
-                        console.log(response); 
-                    },
-                    error: function (response) {
-                        console.log(response);
-                    }
-                });
-          
-                sendkeycall.done(function(response) {
-                    localStorage.setItem('token', response.token);
-                    console.log('registered and logged in with glome');
-                    $('#create-account-dialog').hide();
-                    _switchSession('login');
-                    alerts.showAlert(20, 'success', 2000);
-
-                    $.ajax({
-
-                        method: 'get',
-                        url: 'http://api.garbagepla.net/api/authenticate/glome',
-                        headers: {'Authorization': 'Bearer ' + response.token},
-                        success: function (data) {
-
-                            console.log('succee data', data);
-                            $('#account-info').find('.user-glome-key p').html(data.user.key);
-                            $('#account-info').find('.user-email').addClass('hidden');
-                            $('#account-info').find('.created-at').html(data.user.created_at);
-                            $('#account-info').find('.updated-at').html(data.user.updated_at);
-                            $('#account-info').show();
-                        }
-                    });
-                });
-                sendkeycall.fail(function() {
-                    alerts.showAlert(19, 'danger', 3000);
-                    localStorage.removeItem('token');
-                });
-
-            }, 
-        bindEvents = $(function(){
+        _bindEvents = function() {
             // logout, there are two places where user can click to logout ('button' and 'a')
-            $('.btn-logout').on('click', session.logout);
+            $('.btn-logout').on('click', _logout);
             // login
-            $('.btn-login').on('click', session.login);
+            $('.btn-login').on('click', _login);
             // register
-            $('#registration-form').submit(session.register);
+            $('#registration-form').submit(_register);
             // glome go
-            $('.btn-glome-go').on('click', session.glomego);
-            // TODO send glome key
-            $('.btn-glome-key-send').on('click', session.sendkey);
+            $('.btn-glome-go').on('click', glomeGo);
             // delete account
-            $('.btn-delete-account').one('click', session.deleteaccount);
-
-            // Check if the localStorage has token, if yes log the user in with data
+            $('.btn-delete-account').one('click', _deleteAccount);
+        },
+        init = function() {
+            _bindEvents();
+          
             if (localStorage.getItem('token')) {
                 // Check the current session with the backend
-                session.checklogin();
-            }
-        });
+                console.log('Pace done, calling _checklogin');
+                _checkLogin();
+            } else { console.log('no prior session found.') }
+        };
     
     return {
-        login: login,
-        checklogin:checkLogin,
-        logout: logout,
-        register: register,
-        glomego: glomeGo,
-        deleteaccount: deleteAccount,
-        sendkey: sendKey
+        init: init,
+        glomego: glomeGo
     };
 }());
+
+// Check if the localStorage has token, if yes try to log the user in with data
+window.Pace.on('done', session.init);

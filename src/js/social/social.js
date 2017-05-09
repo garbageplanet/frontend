@@ -5,6 +5,8 @@
 */
 
 var social = (function() {
+  
+    'use strict';
 
     var network = [
           {

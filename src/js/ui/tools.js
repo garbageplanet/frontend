@@ -115,13 +115,11 @@ var tools = {
                t == 4  ? ' a cleaning needs to be organized':
                          ' tell the local authorities'      ;
     },
-    setMarkerIcon: function(i, t, d) {
+    setMarkerIcon: function(c, d) {
         if (!d) {
-          // TODO instead of having a new marker class, simply replace the icon in the css
-          // because this code is really slow and bugs L.Markercluster
-          return i == 'undefined'          ? maps.icons.garbageMarker:
-                 t != '1'                  ? maps.icons.garbageMarker:
-                                             maps.icons.cleanedMarker;
+
+            return (c == false) ? maps.icons.garbageMarker : maps.icons.cleanedMarker;
+          
         } else {
             
             return (new Date(d) < new Date()) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
@@ -275,6 +273,7 @@ var tools = {
         // Return false if 
         return false;
     },
+    currentZoom: null,
  /**
    * @namespace tools.bindTempMarkerEvents - this function set event listeners for a marker when this particular marker is 
                                              the focus of the current form
@@ -462,7 +461,7 @@ var tools = {
    * @requires Leaflet
    */
     randomString: function(len) {
-        var a = ' ',
+        var a = '',
             b = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         for( var i=0; i < len; i++ ) {
             a += b.charAt(Math.floor(Math.random() * b.length));
