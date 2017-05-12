@@ -131,6 +131,32 @@ var actions = (function() {
                 }
             }
         },
+        /*act = function(t, o) {
+            // t = target, o = feature object
+
+            t = t.trim();
+            // credit mrhoo@sitepoint https://www.sitepoint.com/community/t/using-regexp-in-switch-case-statement/4880/3
+
+            var regX= /^((cleaned|check)|(confirm|binoculars)|(group|attend)|(join|play)|(times|delete)|(pencil|edit))$/i;;
+            var mt= regX.exec(t);
+            if(!mt) return false;
+
+            switch(mt[1]){
+                case mt[2]:'cleanGarbage(o)';
+                break;
+                case mt[3]:'confirmGarbage(o)';
+                break;
+                case mt[4]:'attendCleaning(o)';
+                break;
+                case mt[5]:'joinGame(o)';
+                break;
+                case mt[6]:'deleteFeature(o)';
+                break;
+                case mt[7]:'editFeature(o)';
+                break;
+                default: return false;
+            }
+        */
         editFeature = function(e) {
             // TODO fill the form templates with the current marker data
             // TODO more secure way to restrict edition, must match current session token with id in backend
@@ -369,21 +395,21 @@ var actions = (function() {
                 });
             }
         },
-        bindEvents = function() {
-          
+        _bindEvents = function() {
+            console.log('binding basic map action');
             maps.map.on('click', mapClick);
-          
         },
-        init = function() {
+        _init = (function() {
           
             // Check the map obj is available
             if (maps.map) {
-                bindEvents();
+                _bindEvents();
+            } else {
+                setTimeout(function() {
+                    maps.map.once('ready', _bindEvents)
+                }, 500); 
             }
-          
-        };
-  
-        init();
+        }());
   
     return {
         mapClick: mapClick,

@@ -53,6 +53,8 @@ var ui = (function() {
                 {short:"vessel",long:"Large boat or wreck"},
                 {short:"boating",long:"Boating equipment"},
                 {short:"buoy",long:"Buoys and floats"},
+                {short:"navigation",long:"Navigation aid buoy"},
+                {short:"pontoon",long:"Pontoon"},
                 {short:"maritime",long:"Maritime equipment"},
                 {short:"sew",long:"Sewage"},
                 {short:"dogs",long:"Dog poop bags"},
@@ -136,7 +138,7 @@ var ui = (function() {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.3'
+            version: '0.5.4'
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
@@ -196,9 +198,15 @@ var ui = (function() {
 
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
             $('.btn-feature').on('click', function(e) {
-
+              
                 var ct = e.target.className;
                 console.log(ct);
+              
+                // TODO use a dispatch function
+                // e.g
+                // actions.do(ct, featuredata);
+                // and then dispatch there instead of here so we don't need to
+                // make so many methods public
 
                 if (ct.match(/(cleaned|check)/)) {
                     actions.cleanGarbage(featuredata);

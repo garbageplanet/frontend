@@ -126,8 +126,16 @@ var tools = {
     },
     getCurrentBounds: function() {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
+        console.log
         return bounds;
     },
+    /*roundBounds: function(b) {
+    // TODO
+        var _NE_lat = o._northEast.lat,
+            _SW_lat = o._southWest.lat,
+            _NE_lng = o._northEast.lng,
+            _SW_lng = o._southWest.lng;
+    },*/
     /*cloneLayer: function(layer) {
         
         var options = layer.options;
@@ -272,7 +280,11 @@ var tools = {
         // Return false if 
         return false;
     },
-    currentZoom: null,
+    states : {
+      currentZoom: null,
+      initialBbox: [],
+      roundedBounds: null
+    },
  /**
    * @namespace tools.bindTempMarkerEvents - this function set event listeners for a marker when this particular marker is 
                                              the focus of the current form
@@ -404,8 +416,7 @@ var tools = {
    */
     ogDotIoScraper: function(url) {
 
-        // var token = '@@opengraphiotoken'; 
-        var ogdotiotoken = '5899e0ad4c09780e001df53b';
+        var token = '@@opengraphiotoken'; 
 
         if (url) {
             var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);

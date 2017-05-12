@@ -31,9 +31,9 @@ var features =  (function() {
                 break;
             }
         },*/
-        loadGarbageMarkers = function() {
+        loadGarbageMarkers = function loadGarbageMarkers() {
 
-            garbageArray = [];
+            // garbageArray = [];
             var fetchGarbage = $.ajax({
                 type: api.readTrashWithinBounds.method,
                 url: api.readTrashWithinBounds.url(tools.getCurrentBounds()),
@@ -56,7 +56,9 @@ var features =  (function() {
                   
                     console.log('value of ob.cleaned: ', o.cleaned);
 
-                    garbageArray.push(o);
+                    // garbageArray.push(o);
+                  
+                    garbageArray.indexOf(o) === -1 ? garbageArray.push(o) : console.log("This item already exists");
 
                     // Need to parse the string from the db because LatLngs are now stored as single key:value pair
                     var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
@@ -95,9 +97,9 @@ var features =  (function() {
                 });
             });
         },
-        loadCleaningMarkers = function() {
+        loadCleaningMarkers = function loadCleaningMarkers() {
         
-            cleaningArray = [];
+            // cleaningArray = [];
           
             var fetchCleaning = $.ajax({
                 type: api.readCleaningWithinBounds.method,
@@ -115,7 +117,8 @@ var features =  (function() {
 
                     $(data).each(function(i, o) {
 
-                        cleaningArray.push(o);
+                        // cleaningArray.push(o);
+                        cleaningArray.indexOf(o) === -1 ? cleaningArray.push(o) : console.log("This item already exists");
 
                         var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
                         var marker = L.marker(L.latLng(latlng[0], latlng[1]),
@@ -144,7 +147,7 @@ var features =  (function() {
                 alerts.showAlert(10, 'warning', 1500);
             });*/
         },
-        loadAreas = function() {
+        loadAreas = function loadAreas() {
         
             var fetchArea = $.ajax({
                 type: api.readAreaWithinBounds.method,
@@ -199,7 +202,7 @@ var features =  (function() {
             });*/
           
         },
-        loadLitters = function() {
+        loadLitters = function loadLitters() {
             var fetchLitter = $.ajax({
                 type: api.readLitterWithinBounds.method,
                 url: api.readLitterWithinBounds.url(tools.getCurrentBounds()),
@@ -253,22 +256,25 @@ var features =  (function() {
             /* fetchLitter.fail(function() {}); */
           
         },
-        _loadAllFeatures = function() {
-            loadGarbageMarkers(); 
+        _loadAllFeatures = function _loadAllfeatures() {
             loadCleaningMarkers(); 
             loadAreas();
             loadLitters();
+            loadGarbageMarkers(); 
             // features._load('all';)
     },
-        _bindEvents = (function() {
+        _bindEvents = (function _bindEvents() {
 
-            // Load features conditionally
-            maps.map.on('zoomstart dragend zoomend', function(e) {
+            console.log('Binding map self events.')
+            // Load features conditionally if the wider bbox is set
+            // if (tools.states.initialBbox.length !== 0) {
+                // if the map was already loaded we listen to specific events before fetching features
+                maps.map.on('zoomstart dragend zoomend', function(e) {
               
                 console.log("map move event: ", e);
                 var eventtype = e.type.trim();
                 var newZoom = e.target.getZoom();
-                var zoomDiff = Math.abs(newZoom - tools.currentZoom);
+                var zoomDiff = Math.abs(newZoom - tools.states.currentZoom);
                 var lengthDiff = e.distance;
                 // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical draggin
                 var viewportRatio = window.innerWidth / 3;
@@ -278,8 +284,7 @@ var features =  (function() {
                     case 'zoomend':
 
                         console.log('zoomend event');
-                        
-                        console.log("fist zoom: ", tools.currentZoom);
+                        console.log("fist zoom: ", tools.states.currentZoom);
                         console.log("new zoom: ", newZoom);
                         console.log("zoom difference: ", zoomDiff);
 
@@ -287,9 +292,11 @@ var features =  (function() {
                         // for example we can pre-load from a larger area than current viewport bbox
                         // and only check with the backend if the viewport moves out of the bound of the currently
                         // loaded area, if it is we can then reload more markers.
+                        // the only problem remains with the clusters, because when they are exploded
+                        // the single markers lose their styles
                         if (newZoom >= 2 && zoomDiff >= 1) {
-                            loadGarbageMarkers();              
                             loadCleaningMarkers();
+                            loadGarbageMarkers(); 
 
                            if (newZoom <= 16) {
                                 loadLitters();
@@ -305,9 +312,9 @@ var features =  (function() {
                     case 'dragend':
                         if (lengthDiff >= viewportRatio) {
 
-                            if (newZoom >= 2 ) {  
-                                loadGarbageMarkers();
+                            if (newZoom >= 2 ) {
                                 loadCleaningMarkers();
+                                loadGarbageMarkers();
 
                                 if (newZoom >= 8 && newZoom <= 16) {
                                     // We don't load large features if we're too close or too far
@@ -318,10 +325,22 @@ var features =  (function() {
                         }
                     break;
                     case 'zoomstart':
-                        tools.currentZoom = e.target.getZoom();
+                        tools.states.currentZoom = e.target.getZoom();
                     break;
                 };
             });
+            /*} else {
+                // else we load an area beyond the viewport to cache the features
+                var outerBbox = tools.getCurrentBounds();
+                console.log('value of outerBbox from features._bindEvents()', outerBbox);
+                tools.states.initialBbox = outerBbox;
+                maps.map.once('zoomend', function() {
+                    // var currentbounds = tools.roundBounds(maps.map.getBounds());
+                    tools.states.roundedBounds = null;
+                    console.log('bbox string: ', maps.map.getBounds());
+                    _loadAllFeatures();
+                });
+            }*/
         }());
     
     return {
