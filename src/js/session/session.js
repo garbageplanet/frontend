@@ -184,6 +184,7 @@ var session = (function () {
             console.log('checking login');
             var tokeh = d;
             // TODO checklogin for glome key as well
+            // TODO use $.when Promises in all user-performable actions to check logins?
             var useToken = localStorage.getItem('token') || tools.token;
             var checklogincall = $.ajax({
 

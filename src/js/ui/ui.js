@@ -3,7 +3,7 @@
 /**
 * User interfaces that don't happen directly on the map
 */
-var ui = (function() {
+var ui = (function () {
   
     'use strict';
   
@@ -138,7 +138,7 @@ var ui = (function() {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.4'
+            version: '0.5.5'
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
