@@ -71,7 +71,8 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
                     './src/js/libs/L.Overpass.Layer.js',
                     './src/js/libs/L.Draw-0.2.4.js',
                     './src/js/libs/L.Geocoder.Opencage-1.1.2.js',
-                    './src/js/libs/L.Control.Login.js'
+                    './src/js/libs/L.Control.Login.js',
+                    './src/js/libs/L.Control.Menu.js'
                   ])
     .pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
@@ -98,9 +99,8 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
                     './src/js/libs/bootstrap-tour-0.10.1.js',
                     './src/js/libs/jquery-ui-widget-1.11.4.js',
                     './src/js/libs/jquery-fileupload.js',
-                    './src/js/libs/bootstrap-datatables-1.10.11.js',
-                    './src/js/libs/jquery-touchwipe-1.1.1.js'
-                  ])
+                    './src/js/libs/bootstrap-datatables-1.10.11.js'
+  ])
     .pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('jquery.min.js'))

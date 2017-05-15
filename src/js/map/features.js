@@ -31,7 +31,7 @@ var features =  (function() {
                 break;
             }
         },*/
-        loadGarbageMarkers = function loadGarbageMarkers() {
+        loadGarbageMarkers = function loadGarbageMarkers () {
 
             // garbageArray = [];
             var fetchGarbage = $.ajax({
@@ -97,7 +97,7 @@ var features =  (function() {
                 });
             });
         },
-        loadCleaningMarkers = function loadCleaningMarkers() {
+        loadCleaningMarkers = function loadCleaningMarkers () {
         
             // cleaningArray = [];
           
@@ -131,7 +131,7 @@ var features =  (function() {
                                 latlng:      o.latlng,
                                 modified_at: o.updated_at,
                                 recurrence:  o.recurrence,
-                                
+                                note:        o.note,
                                 icon:        tools.setMarkerIcon(null, o.datetime),
                                 feature_type: 'marker_cleaning',
                             });
@@ -147,7 +147,7 @@ var features =  (function() {
                 alerts.showAlert(10, 'warning', 1500);
             });*/
         },
-        loadAreas = function loadAreas() {
+        loadAreas = function loadAreas () {
         
             var fetchArea = $.ajax({
                 type: api.readAreaWithinBounds.method,
@@ -202,7 +202,7 @@ var features =  (function() {
             });*/
           
         },
-        loadLitters = function loadLitters() {
+        loadLitters = function loadLitters () {
             var fetchLitter = $.ajax({
                 type: api.readLitterWithinBounds.method,
                 url: api.readLitterWithinBounds.url(tools.getCurrentBounds()),
@@ -256,14 +256,14 @@ var features =  (function() {
             /* fetchLitter.fail(function() {}); */
           
         },
-        _loadAllFeatures = function _loadAllfeatures() {
+        _loadAllFeatures = function _loadAllfeatures () {
             loadCleaningMarkers(); 
             loadAreas();
             loadLitters();
             loadGarbageMarkers(); 
             // features._load('all';)
     },
-        _bindEvents = (function _bindEvents() {
+        _bindEvents = (function _bindEvents () {
 
             console.log('Binding map self events.')
             // Load features conditionally if the wider bbox is set
@@ -343,12 +343,11 @@ var features =  (function() {
             }*/
         }());
     
-    return {
-        garbageArray: function() {return garbageArray},
-        cleaningArray: function() {return cleaningArray},
-        loadGarbageMarkers: loadGarbageMarkers,
-        loadCleaningMarkers: loadCleaningMarkers,
-        loadAreas: loadAreas,
-        loadLitters: loadLitters,
+    return { garbageArray: function () {return garbageArray},
+             cleaningArray: function () {return cleaningArray},
+             loadGarbageMarkers: loadGarbageMarkers,
+             loadCleaningMarkers: loadCleaningMarkers,
+             loadAreas: loadAreas,
+             loadLitters: loadLitters
     };
 }());

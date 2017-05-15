@@ -21,12 +21,6 @@ var touring = (function() {
             template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
             steps: [
               {
-                element: ".swipe-area-right",
-                placement: 'left',
-                content: "Access the main menu by swiping from the right border of the screen.",
-                duration: 3000
-              },
-              {
                 element: ".leaflet-control-login",
                 placement: 'right',
                 content: "One-click anonymous login!",

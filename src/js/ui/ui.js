@@ -142,7 +142,7 @@ var ui = (function() {
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
-        pushDataToBottomPanel = function(obj) {
+        pushDataToBottomPanel = function (obj) {
 
             // TODO get the leaflet_id of current marker as well
             console.log("pushed data to bottom panel");
@@ -243,7 +243,7 @@ var ui = (function() {
                 else return;
             });
         },
-        makeModal = function(type, arr) {
+        makeModal = function (type, arr) {
 
             console.log('type of modal: ', type);
             console.log('value of array: ', arr);
@@ -333,79 +333,7 @@ var ui = (function() {
                 }
             }
         },    
-        _activateMobileUi = function() {
-
-            var mobiledialog = $('#mobile-menu-dialog'),
-                // swiperight = $(".swipe-area-right"),
-                // swipeleft = $(".swipe-area-left"),
-                // swipetop = $(".swipe-area-top"),
-                topbar = $('#topbar'),
-                sidebarcontainer = $('#sidebar'),
-                bottombarcontainer = $('#bottombar'),
-                selects = $('.garbage-type-select, .litter-type-select');
-
-            // TODO append elements if mobile instead of removing if not mobile
-            if (!window.isMobile) {
-                $('#mobile-menu-dialog').remove();
-            }
-
-            if (window.isMobile) {
-                // Remove menu bar div
-                topbar.remove();
-                // Add swipe areas
-                $('body').append('<div class="swipe-area swipe-area-right"></div>');
-                sidebarcontainer.append('<div class="swipe-area swipe-area-left"></div>');
-                bottombarcontainer.prepend('<div class="swipe-area swipe-area-top"></div>');
-                // Remove the search field from multiselect else the softkeyboard shows up on mobile
-                selects.attr('data-live-search', 'false');
-                // Activate swipe on the right border to show the mobile menu
-                $(".swipe-area-right").touchwipe({
-
-                    wipeLeft: function() {
-                        sidebar.show($('#mobile-menu-dialog').show());
-                  },
-                    min_move_x: 15,
-                    preventDefaultEvents: true
-                });
-
-                // Hide the sidebar on right swipe from the left border
-                $(".swipe-area-left").touchwipe({
-
-                    wipeRight: function() {
-                        sidebar.hide();
-                    },
-                    min_move_x: 15,
-                    preventDefaultEvents: true
-                });
-
-                // Hide the bottombar on down swipe
-                // For apple stuff
-                if (L.Browser.retina) {
-
-                    $(".swipe-area-top").touchwipe({
-
-                        wipeDown: function() {
-                            bottombar.hide();
-                        },
-                        min_move_y: 20,
-                        preventDefaultEvents: true
-                    });
-                }
-                // For all other browsers
-                if (!L.Browser.retina) {  
-
-                    $(".swipe-area-top").touchwipe({
-
-                        wipeUp: function() {
-                            bottombar.hide();
-                        },
-                        min_move_y: 20,
-                        preventDefaultEvents: true
-                    });
-                }
-            }
-        },
-        _bindEvents = function() {
+        _bindEvents = function () {
 
             var sidebarlink = $('.sidebar-link'),
                 menubacklink = $('.menu-backlink'),
@@ -550,7 +478,7 @@ var ui = (function() {
             });
 
         },
-        init = function() {
+        init = function () {
 
             // Add the Leaflet UI controls to the map
             sidebar.addTo(maps.map);
@@ -563,23 +491,18 @@ var ui = (function() {
             document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
             document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
           
-            // Check what ui to show
-            if (window.isMobile) {
-                _activateMobileUi();
-            }
             // custom alerts at startup for cookies
             alerts.showAlert(32, 'warning', 5000);
 
             _bindEvents();
        };
     
-    return {
-        init: init,
-        sidebar: sidebar,
-        templates: templates,
-        bottombar: bottombar,
-        pushDataToBottomPanel: pushDataToBottomPanel,
-        makeModal: makeModal,
+    return { init: init,
+             sidebar: sidebar,
+             templates: templates,
+             bottombar: bottombar,
+             pushDataToBottomPanel: pushDataToBottomPanel,
+             makeModal: makeModal
     };    
 }());
 // We can start initializing the UI once this code block is read

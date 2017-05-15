@@ -446,6 +446,11 @@ a.menu-backlink:hover {
 }
 
 /* Color the button icons */
+
+.leaflet-control-menu > a {
+  border-radius: 50% !important;
+}
+
 .leaflet-control-layers-toggle .fa, .leaflet-control-zoom .fa {
     color: #444 !important;
 }

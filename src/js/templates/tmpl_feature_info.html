@@ -58,7 +58,7 @@
                 <div class="hidden" id="social-links"></div>
         </div>
         
-        <div class="card card-scroll card-data col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
+        <div class="card card-scroll card-data col-xl-3 col-lg-3 col-md-3 col-ms-3 col-sm-4 col-xs-6">
         <div><h3>Data</h3></div>
         <div class="feature-data-card">
         {% if (o.types) { %}
@@ -120,7 +120,7 @@
         {% if (o.tags) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">note:{%=o.tags%}</span>
+        <span class="pull-left">tags:{%=o.tags%}</span>
         <span class="feature-info feature-info-common feature-info-tags pull-left">
         {% for (var i=0; i<o.tags.length; i++) { %}
         <span class="label label-default">{%=o.tags[i]%}</span>
@@ -136,11 +136,17 @@
         <span class="feature-info feature-info-cleaning feature-info-time pull-left"></span>
         </div>
         </div>
+        <div class="panel panel-default">
+        <div class="panel-body">
+        <span class="pull-left">recurrence:{%=o.recurrence%}</span>
+        <span class="feature-info feature-info-cleaning feature-info-recurrence pull-left"></span>
+        </div>
+        </div>
         {% } %}
         {% if (o.datetime) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">location:</span>
+        <span class="pull-left">location:<!-- TODO fetch address from OpenCage API --> </span>
         <span class="feature-info feature-info-cleaning feature-info-location pull-left"></span>
         </div>
         </div>
@@ -183,7 +189,7 @@
             </div>
         {% } %}
             
-        <div class="card card-scroll card-track col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
+        <div class="card card-scroll card-track col-xl-3 col-lg-3 col-md-3 col-ms-3 col-sm-4 col-xs-6">
         
             <div><h3>Track changes</h3></div>
             
@@ -241,7 +247,7 @@
         </div>
             
         {% if (o.date) { %}
-            <div class="card card-minimap col-xl-2 col-lg-2 col-md-3 col-ms-3 col-sm-4 col-xs-6">
+            <div class="card card-minimap col-xl-3 col-lg-3 col-md-3 col-ms-3 col-sm-4 col-xs-6">
                 <div><h3>Access minimap</h3></div>
                 <div id ="minimap" class="cleaning-minimap-card"></div>
             </div>

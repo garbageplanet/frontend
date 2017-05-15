@@ -109,6 +109,7 @@ var maps = (function() {
         }),
         geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
+        menucontrol = L.control.menu(),
         locating = (function() {
 
             var onLocationFound = function(e) {
@@ -203,10 +204,12 @@ var maps = (function() {
             geocodercontrol.addTo(maps.map);
           
             // Add a glome anonymous login button on mobile and small screens
+            // TODO move this logic to ui.js
             if (window.isMobile) {
                 if (!maps.map.glomelogincontrol) {
                     maps.glomelogincontrol.addTo(map);
                 }
+                menucontrol.addTo(maps.map);
             }
             // Start geolocalization
             maps.map.on('locationerror', maps.locating.onLocationError);
