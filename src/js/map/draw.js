@@ -5,7 +5,7 @@
 * TODO only load if not mobile
 */
 
-var drawing = (function() {
+var drawing = (function () {
   
     'use strict';
     
@@ -18,7 +18,7 @@ var drawing = (function() {
                 marker: false 
             },
         }),
-        _bindEvents = function() {
+        _bindEvents = function () {
             var buttonDraw = $('.btn-draw'),
                 buttonCancel = $('.btn-cancel'),
                 buttonDrawEdit = $('.leaflet-draw-edit-edit'),
@@ -265,14 +265,13 @@ var drawing = (function() {
             // Own handlers for calling L.Draw
             // TODO change to "once" handlers so that only one shape can be drawn before saving
         },
-        init = function() {
+        init = function () {
             // drawing apabilities are only called when the forms are loaded in /js/forms.js
             maps.map.addControl(drawControl);
             _bindEvents();
         };
 
-    return {
-        init: init,
-        drawControl: drawControl
+    return { init: init,
+             drawControl: drawControl
     };
 }());

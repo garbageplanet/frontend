@@ -8,11 +8,11 @@
 * Logins, logouts, account deletion and glome pairing
 */
 
-var session = (function() {
+var session = (function () {
   
     'use strict';
     
-    var _switchSession = function(obj) {
+    var _switchSession = function (obj) {
 
         var classicSessionType = localStorage.getItem('classic');
 
@@ -123,7 +123,7 @@ var session = (function() {
             }
         }
     },
-        _login = function(e) {
+        _login = function (e) {
               console.log('calling login');
               // NOTE _login can call _switchSession and not the other way around
                 if (e) {
@@ -180,7 +180,7 @@ var session = (function() {
                     localStorage.removeItem('token');
                 });
             },
-        _checkLogin = function(d) {
+        _checkLogin = function (d) {
             console.log('checking login');
             var tokeh = d;
             // TODO checklogin for glome key as well
@@ -227,7 +227,7 @@ var session = (function() {
                 checklogincall: checklogincall
             }
         },
-        _logout = function() {
+        _logout = function () {
                 // FIXME serverside logout backend replies 401
                 if (!localStorage.token) {
                     alerts.showAlert(23, 'info', 2000);
@@ -266,7 +266,7 @@ var session = (function() {
                     });
                 }
             },
-        _register = function(e) {
+        _register = function (e) {
 
                 e.preventDefault();
 
@@ -317,7 +317,7 @@ var session = (function() {
                 });
 
             },
-        glomeGo = function() {
+        glomeGo = function () {
 
                 console.log('glomego clicked');
 
@@ -377,7 +377,7 @@ var session = (function() {
                 });
           
             },
-        _deleteAccount = function(e) {
+        _deleteAccount = function (e) {
                 // FIXME backend replies 405 method not allowed
                 var classicSessionType = localStorage.getItem('classic');
 
@@ -424,7 +424,7 @@ var session = (function() {
                 }
 
             },
-        _bindEvents = function() {
+        _bindEvents = function () {
             // logout, there are two places where user can click to logout ('button' and 'a')
             $('.btn-logout').on('click', _logout);
             // login
@@ -436,7 +436,7 @@ var session = (function() {
             // delete account
             $('.btn-delete-account').one('click', _deleteAccount);
         },
-        init = function() {
+        init = function () {
             _bindEvents();
           
             if (localStorage.getItem('token')) {
@@ -446,9 +446,8 @@ var session = (function() {
             } else { console.log('no prior session found.') }
         };
     
-    return {
-        init: init,
-        glomego: glomeGo
+    return { init: init,
+             glomego: glomeGo
     };
 }());
 

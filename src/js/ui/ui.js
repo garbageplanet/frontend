@@ -151,12 +151,14 @@ var ui = (function() {
             var feature = obj,
                 featuredata = obj.options,
                 featureinfo;
+          
+
 
             // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the direct object
             if (!featuredata) {
                 featuredata = obj;
             }
-
+          
             // Fill the template data
             document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
 
@@ -168,13 +170,23 @@ var ui = (function() {
 
             // Add an IMGUR api character to the url to fetch thumbnails only
             if (featuredata.image_url) {
-
                 var image_url_insert = tools.insertString(featuredata.image_url, 26, 'b');
                 featureinfo.find('.feature-image').attr('src', image_url_insert);
             }
+          
+            // if there's a datetime field it's a cleaning event, we fetch the address from the reverse geocoder
+            if (featuredata.datetime) {
+              
+                console.log('calling reverse geocoder');
+              
+                $.when(tools.reverseGeocode(featuredata.latlng)).then(function (data) {
+                    console.log('data from Promise resolved:', data.results[0].formatted);
+                    featureinfo.find('.feature-info-location').html(data.results[0].formatted);
+                });
+              
+            }
 
             // Create the templateData.social data dynamically before calling the template
-            // TODO only call these once share button is clicked
             social.shareThisFeature(featuredata);
             document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
 
@@ -206,7 +218,7 @@ var ui = (function() {
                 // e.g
                 // actions.do(ct, featuredata);
                 // and then dispatch there instead of here so we don't need to
-                // make so many methods public
+                // make so many methods public in src/js/map/actions.js
 
                 if (ct.match(/(cleaned|check)/)) {
                     actions.cleanGarbage(featuredata);

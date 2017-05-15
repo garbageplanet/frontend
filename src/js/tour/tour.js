@@ -1,6 +1,6 @@
 /*jshint maxerr: 1000*/
 // Touring the app
-var touring = (function() {
+var touring = (function () {
   
     'use strict';
     
@@ -33,7 +33,7 @@ var touring = (function() {
               }
             ]
         }),
-        init = function() {
+        init = function () {
           
             setTimeout(function(){
 
@@ -51,14 +51,13 @@ var touring = (function() {
                 }
             }, 1000)
         },
-        _bindEvents = (function() {
+        _bindEvents = (function () {
             $('.start-tour').on('click', function() {
                 setTimeout(touring.init, 2000)
             });
         }());
     
-    return {
-        init: init,
+    return { init: init
     }
     
 }());

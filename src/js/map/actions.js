@@ -4,12 +4,12 @@
 * User actions on the map and on features that are already present
 */
 
-var actions = (function() {
+var actions = (function () {
 
     'use strict';
 
     var tempmarkers = [],        
-        mapClick = function(map) {
+        mapClick = function (map) {
 
             // Check that there's not already something else going on in the UI
             if (!tools.checkOpenUiElement(map)){
@@ -67,7 +67,7 @@ var actions = (function() {
                 }
             }
         },
-        unsavedMarkerClick = function(m) {
+        unsavedMarkerClick = function (m) {
             
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
             // inside a form for another marker else it's possible to modify a new marker with
@@ -98,7 +98,7 @@ var actions = (function() {
                 ui.sidebar.show($("#create-marker-dialog").fadeIn());
             }
         },
-        featureClick = function(e, obj) {
+        featureClick = function (e, obj) {
 
             console.log("map feature clicked: ", obj);
             console.log("map feature clicked event: ", e);
@@ -157,7 +157,7 @@ var actions = (function() {
                 default: return false;
             }
         */
-        editFeature = function(e) {
+        editFeature = function (e) {
             // TODO fill the form templates with the current marker data
             // TODO more secure way to restrict edition, must match current session token with id in backend
             // TODO Push the data to the form on .btn-edit click (requires to build all forms with templates)
@@ -194,7 +194,7 @@ var actions = (function() {
                 return;
             }
         },
-        confirmGarbage = function(e) {
+        confirmGarbage = function (e) {
 
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
@@ -244,7 +244,7 @@ var actions = (function() {
                 });
             }
         },
-        deleteFeature = function(o) {
+        deleteFeature = function (o) {
 
             console.log("object passed to function: ", o);
             // debugger;
@@ -313,7 +313,7 @@ var actions = (function() {
                 return;
             }
         },
-        attendCleaning = function(e) {
+        attendCleaning = function (e) {
              // TODO make session-dependant and allow once per user per marker
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
@@ -345,7 +345,7 @@ var actions = (function() {
                 });
             }
         },
-        cleanGarbage = function(e) {
+        cleanGarbage = function (e) {
           
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
@@ -395,11 +395,11 @@ var actions = (function() {
                 });
             }
         },
-        _bindEvents = function() {
+        _bindEvents = function () {
             console.log('binding basic map action');
             maps.map.on('click', mapClick);
         },
-        _init = (function() {
+        _init = (function () {
           
             // Check the map obj is available
             if (maps.map) {
@@ -411,14 +411,13 @@ var actions = (function() {
             }
         }());
   
-    return {
-        mapClick: mapClick,
-        featureClick: featureClick,
-        editFeature: editFeature,
-        confirmGarbage: confirmGarbage,
-        deleteFeature: deleteFeature,
-        attendCleaning: attendCleaning,
-        cleanGarbage: cleanGarbage,
-        tempmarkers: tempmarkers
+    return { mapClick: mapClick,
+             featureClick: featureClick,
+             editFeature: editFeature,
+             confirmGarbage: confirmGarbage,
+             deleteFeature: deleteFeature,
+             attendCleaning: attendCleaning,
+             cleanGarbage: cleanGarbage,
+             tempmarkers: tempmarkers
     };
 }());

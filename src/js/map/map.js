@@ -1,6 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global maps locating*/
 // Set the map
-var maps = (function() {
+var maps = (function () {
   
     'use strict';
     
@@ -110,7 +110,7 @@ var maps = (function() {
         geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
         menucontrol = L.control.menu(),
-        locating = (function() {
+        locating = (function () {
 
             var onLocationFound = function(e) {
                 console.log('location found');
@@ -137,7 +137,7 @@ var maps = (function() {
                 onLocationFound: onLocationFound
             }
         }()),
-        icons = (function() {
+        icons = (function () {
 
             var mapMarker = L.DivIcon.extend({
                     options: {
@@ -173,7 +173,7 @@ var maps = (function() {
                 pastCleaningMarker: pastCleaningMarker
             }
         })(),
-        localTrashBins = function() {
+        localTrashBins = function () {
             // load trashbins icons on the map
             var binsquery = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
           
@@ -184,7 +184,7 @@ var maps = (function() {
             // TODO stop the function call on map move
             // add event on trashbins icon click
         },
-        init = function() {
+        init = function () {
         
             baselayer['Mapbox Outdoors'].addTo(maps.map);
             //Disable doubleclick to zoom as it might interfer with other map functions
@@ -221,23 +221,22 @@ var maps = (function() {
             }
         };
     
-    return {
-        init: init,
-        map: map,
-        hash: hash,
-        locating: locating,
-        trashBins: localTrashBins,
-        locationcontrol: locationcontrol,
-        glomelogincontrol: glomelogincontrol,
-        layerscontrol: layerscontrol,
-        geocodercontrol: geocodercontrol,
-        garbageLayerGroup: garbageLayerGroup,
-        areaLayerGroup: areaLayerGroup,
-        litterLayerGroup: litterLayerGroup,
-        cleaningLayerGroup: cleaningLayerGroup,
-        unsavedMarkersLayerGroup: unsavedMarkersLayerGroup,
-        allLayers: allLayers,
-        icons: icons
+    return { init: init,
+             map: map,
+             hash: hash,
+             locating: locating,
+             trashBins: localTrashBins,
+             locationcontrol: locationcontrol,
+             glomelogincontrol: glomelogincontrol,
+             layerscontrol: layerscontrol,
+             geocodercontrol: geocodercontrol,
+             garbageLayerGroup: garbageLayerGroup,
+             areaLayerGroup: areaLayerGroup,
+             litterLayerGroup: litterLayerGroup,
+             cleaningLayerGroup: cleaningLayerGroup,
+             unsavedMarkersLayerGroup: unsavedMarkersLayerGroup,
+             allLayers: allLayers,
+             icons: icons
     };
 }());
 

@@ -8,7 +8,7 @@
   * @see https://gist.github.com/dshaw/449041
   * @requires jQuery
   */
-$.fn.serializeObject = function() {
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function() {
@@ -30,7 +30,7 @@ $.fn.serializeObject = function() {
                       are not in the order expected for making postGRE bounding box requests in the backend.
   * @requires Leaflet
   */
-L.LatLngBounds.prototype.toBBoxStringInverse = function() {
+L.LatLngBounds.prototype.toBBoxStringInverse = function () {
     return [this.getSouth(), this.getWest(), this.getNorth(), this.getEast()].join(',');
 };
 /**
@@ -46,7 +46,7 @@ L.LatLngBounds.prototype.toBBoxStringInverse = function() {
   * @copyright Copyright (c) 2013, Code for America
   * @see LICENSE.md
   */
-L.Map.prototype.panToOffset = function(latlng, offset, zoom, options) {
+L.Map.prototype.panToOffset = function (latlng, offset, zoom, options) {
 
     var x = this.latLngToContainerPoint(latlng).x - offset[0],
         y = this.latLngToContainerPoint(latlng).y - offset[1],
@@ -73,7 +73,7 @@ var tools = {
   * @returns {string} shortened string - returns an inputed string with ellipsis (...)
   * @see http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
   */
-    makeEllipsis: function(obj, n) {
+    makeEllipsis: function (obj, n) {
         return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
     },
  /**
@@ -84,14 +84,32 @@ var tools = {
    * @param {string} string - the string to be added to the original string.
    * @returns {string} modified string - returns the inputed string with added string.
    */
-    insertString: function(obj, index, string) {
+    insertString: function( obj, index, string) {
         if (index > 0) {
             return obj.substring(0, index) + string + obj.substring(index, obj.length);
         } else {
             return string + obj;
         }
     },
-    setMarkerClassColor: function(c) {
+    reverseGeocode: function (o) {
+      
+      var latlng = o.replace(', ', '+');
+      console.log(latlng);
+      var token = '@@opencagetoken'; 
+
+        if (latlng) {
+          
+            var callurl = 'https://api.opencagedata.com/geocode/v1/json?q=' + latlng + '&limit=1&no_annotations=1&key=' + token;
+            var request = $.ajax({
+                method: 'GET',
+                url: callurl
+            });
+          
+            return request;
+          
+        } else { return; }
+    },
+    setMarkerClassColor: function( c) {
 
         return c === 1  ? 'marker-color-limegreen'  :
                c === 2  ? 'marker-color-yellow'     :
@@ -99,7 +117,7 @@ var tools = {
                c === 4  ? 'marker-color-red'        :
                           'marker-color-violet'     ;
     },
-    setPolylineColor: function(c) {
+    setPolylineColor: function (c) {
 
         return c === 1  ? '#ccff66' :
                c === 2  ? '#ffff00' :
@@ -107,7 +125,7 @@ var tools = {
                c === 4  ? '#ff1a1a' :
                           '#e60073' ;
     },
-    setTodoFullText: function(t) {
+    setTodoFullText: function (t) {
 
         return t == 1  ? ' it has been cleaned up already'  :
                t == 2  ? ' need help to clean it up'        :
@@ -115,7 +133,7 @@ var tools = {
                t == 4  ? ' a cleaning needs to be organized':
                          ' tell the local authorities'      ;
     },
-    setMarkerIcon: function(c, d) {
+    setMarkerIcon: function (c, d) {
         if (!d) {
             return (c == false) ? maps.icons.garbageMarker : maps.icons.cleanedMarker;
           
@@ -124,7 +142,7 @@ var tools = {
             return (new Date(d) < new Date()) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
         }
     },
-    getCurrentBounds: function() {
+    getCurrentBounds: function () {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         console.log
         return bounds;
@@ -197,7 +215,7 @@ var tools = {
             }
         }
     },*/
-    getVerticalOffset: function() {
+    getVerticalOffset: function () {
     
         var vOffset = [0, 0];
         // TODO take in account the topbar for offsetting on larger screens
@@ -213,13 +231,13 @@ var tools = {
 
         return vOffset;
     },
-    getHorizontalOffset: function() {
+    getHorizontalOffset: function () {
     
         var hOffset = [0, 0];
         hOffset[0] = - $(window).width() / 6;
         return hOffset;
     },
-    getAllFeatures: function() {
+    getAllFeatures: function () {
         // Credit to https://github.com/kedar2a
         // http://stackoverflow.com/a/24342585
 
@@ -237,7 +255,7 @@ var tools = {
 
         console.log(allMarkersObjArray);
     },
-    resetIconStyle: function(id) {
+    resetIconStyle: function (id) {
       
         /*console.log('*******************');
         console.log(actions.tempmarkers);
@@ -291,7 +309,7 @@ var tools = {
    * @method bindTempMarkerEvents()
    * @param {string} map marker id - the id of the marker to which the events need to be bound
    */
-    bindTempMarkerEvents: function(id) {
+    bindTempMarkerEvents: function (id) {
         
         var marker = actions.tempmarkers[id];
         var cancelbutton = $('.btn-cancel');
@@ -324,7 +342,7 @@ var tools = {
    * @method checkOpenUiElement()
    * @param {object} map object - the main map object, only needed to be able to identify clicks on cluser markers
    */
-    checkOpenUiElement: function(map){
+    checkOpenUiElement: function (map){
         
         // TODO can we make the same function with a switch statement?
         // that would require to set states in the UI
@@ -414,7 +432,7 @@ var tools = {
                            used in the 'link' marker creation to enable users to add map marker with content tretived from 
                            external webpages.
    */
-    ogDotIoScraper: function(url) {
+    ogDotIoScraper: function (url) {
 
         var token = '@@opengraphiotoken'; 
 
@@ -470,7 +488,7 @@ var tools = {
    * @param {string} len - Length of the string to be returned
    * @requires Leaflet
    */
-    randomString: function(len) {
+    randomString: function (len) {
         var a = '',
             b = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         for( var i=0; i < len; i++ ) {

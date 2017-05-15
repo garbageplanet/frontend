@@ -131,7 +131,7 @@ var features =  (function() {
                                 latlng:      o.latlng,
                                 modified_at: o.updated_at,
                                 recurrence:  o.recurrence,
-                                note:        o.note,
+                                ext_link:    o.note,
                                 icon:        tools.setMarkerIcon(null, o.datetime),
                                 feature_type: 'marker_cleaning',
                             });

@@ -1,6 +1,6 @@
 // Alerts built on the idea by lgal http://stackoverflow.com/a/33662720/2842348 license MIT
 
-var alerts = (function() {
+var alerts = (function () {
     
     'use strict';
     
@@ -40,7 +40,7 @@ var alerts = (function() {
         'Zoom in closer to do that',
         'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies.'
     ],
-        showAlert = function(errorCode, errorType, closeDelay) {
+        showAlert = function (errorCode, errorType, closeDelay) {
 
             // default to alert-info
             if (!errorType || typeof errorType === 'undefined') {
@@ -60,7 +60,5 @@ var alerts = (function() {
 
         };
   
-    return {
-        showAlert : showAlert,
-    }
+    return { showAlert : showAlert }
 }());

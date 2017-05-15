@@ -4,7 +4,7 @@
 * Sharing map features from the bottom panel
 */
 
-var social = (function() {
+var social = (function () {
   
     'use strict';
 
@@ -58,7 +58,7 @@ var social = (function() {
             'targeturl': ''
           }
         ],
-        shareThisFeature = function(obj) {
+        shareThisFeature = function (obj) {
 
             var encoded_url = encodeURIComponent(window.location),
                 feature_image_url,
@@ -82,8 +82,8 @@ var social = (function() {
             network[6].targeturl = 'whatsapp://send?text=Shared%20from%20www.garbagepla.net';
             network[7].targeturl = 'http://share.renren.com/share/buttonshare.do?link=' + encoded_url +  '&title=Share from Garbagepla.net';
 
-        }/*,
-        game = function() {
+        };
+        /* game = function() {
 
             var getPlayers = function(e) {
 
@@ -120,11 +120,9 @@ var social = (function() {
                 getPlayers: getPlayers,
                 printGameData: printGameData
             }
-        }*/;
+        }*/
 
-    return {
-        network: network,
-        shareThisFeature: shareThisFeature,
-        /*game: game*/
+    return { network: network,
+             shareThisFeature: shareThisFeature,
     }
 }());

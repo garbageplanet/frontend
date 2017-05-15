@@ -64,55 +64,55 @@
         {% if (o.types) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">type:{%=o.types%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-type pull-left"></span>
+        <span class="pull-left">type:</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-type pull-left">{%=o.types%}</span>
         </div>
         </div>
         {% } %}
         {% if (o.amount) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">amount:{%=o.amount%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-amount pull-left"></span>
+        <span class="pull-left">amount:</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-amount pull-left">{%=o.amount%}</span>
         </div>
         </div>
         {% } %}
         {% if (o.size) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">sizes:{%=o.size%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-size pull-left"></span>
+        <span class="pull-left">sizes:</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-size pull-left">{%=o.size%}</span>
         </div>
         </div>
         {% } %}
         {% if (o.embed) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">in:{%=o.embed%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-embed pull-left"></span>
+        <span class="pull-left">in:</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-garbage-embed pull-left">{%=o.embed%}</span>
         </div>
         </div>
         {% } %}
         {% if (o.physical_length) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">length:{%=o.physical_length%}</span>
-        <span class="feature-info feature-info-garbage feature-info-litter feature-info-litter-length pull-left"></span>
+        <span class="pull-left">length:</span>
+        <span class="feature-info feature-info-garbage feature-info-litter feature-info-litter-length pull-left">{%=o.physical_length%}</span>
         </div>
         </div>
         {% } %}
         {% if (o.todo) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">todo:{%=o.todo%}</span>
-        <span class="feature-info-garbage feature-info feature-info-todo pull-left"></span>
+        <span class="pull-left">todo:</span>
+        <span class="feature-info-garbage feature-info feature-info-todo pull-left">{%=o.todo%}</span>
         </div>
         </div>
         {% } %}
-        {% if (o.note) { %}
+        {% if (o.ext_link) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">note:{%=o.note%}</span>
+        <span class="pull-left">link:<a href="{%=o.ext_link%}" target="_blank"> Event</a></span>
         <span class="feature-info feature-info-common feature-info-note pull-left"></span>
         </div>
         </div>
@@ -120,7 +120,7 @@
         {% if (o.tags) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">tags:{%=o.tags%}</span>
+        <span class="pull-left">tags:</span>
         <span class="feature-info feature-info-common feature-info-tags pull-left">
         {% for (var i=0; i<o.tags.length; i++) { %}
         <span class="label label-default">{%=o.tags[i]%}</span>
@@ -132,21 +132,21 @@
         {% if (o.datetime) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">time:{%=o.datetime%}</span>
-        <span class="feature-info feature-info-cleaning feature-info-time pull-left"></span>
+        <span class="pull-left">time:</span>
+        <span class="feature-info feature-info-cleaning feature-info-time pull-left">{%=o.datetime%}</span>
         </div>
         </div>
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">recurrence:{%=o.recurrence%}</span>
-        <span class="feature-info feature-info-cleaning feature-info-recurrence pull-left"></span>
+        <span class="pull-left">recurrence:</span>
+        <span class="feature-info feature-info-cleaning feature-info-recurrence pull-left">{%=o.recurrence%}</span>
         </div>
         </div>
         {% } %}
         {% if (o.datetime) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">location:<!-- TODO fetch address from OpenCage API --> </span>
+        <span class="pull-left">location:</span>
         <span class="feature-info feature-info-cleaning feature-info-location pull-left"></span>
         </div>
         </div>
@@ -154,22 +154,22 @@
         {% if (o.title) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">name:{%=o.title%}</span>
-        <span class="feature-info feature-info-area feature-info-name pull-left"></span>
+        <span class="pull-left">name:</span>
+        <span class="feature-info feature-info-area feature-info-name pull-left">{%=o.title%}</span>
         </div>
         </div>
         {% } %}
         {% if (o.contact) { %}
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">contact:{%=o.contact%}</span>
-        <span class="feature-info feature-info-area feature-info-contact pull-left"></span>
+        <span class="pull-left">contact:</span>
+        <span class="feature-info feature-info-area feature-info-contact pull-left">{%=o.contact%}</span>
         </div>
         </div>
         <div class="panel panel-default">
         <div class="panel-body">
-        <span class="pull-left">players:{%=o.players%}</span>
-        <span class="feature-info feature-info-area feature-info-players pull-left"></span>
+        <span class="pull-left">players:</span>
+        <span class="feature-info feature-info-area feature-info-players pull-left">{%=o.players%}</span>
         </div>
         </div>
         <div class="panel panel-default">
@@ -195,37 +195,37 @@
             
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <span class="pull-left">creation date:{%=o.created_at %}</span>
-                    <span class="feature-info feature-info-created-at pull-left"></span>
+                    <span class="pull-left">creation date:</span>
+                    <span class="feature-info feature-info-created-at pull-left">{%=o.created_at %}</span>
                 </div>
             </div>
           
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <span class="pull-left">feature id:{%=o.id %}</span>
-                    <span class="feature-info feature-info-id pull-left"></span>
+                    <span class="pull-left">feature id:</span>
+                    <span class="feature-info feature-info-id pull-left">{%=o.id %}</span>
                 </div>
             </div>
             
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <span class="pull-left">created by:{%=o.created_by %}</span>
-                    <span class="feature-info feature-info-created-by pull-left"></span>
+                    <span class="pull-left">created by:</span>
+                    <span class="feature-info feature-info-created-by pull-left">{%=o.created_by %}</span>
                 </div>
             </div>
             
             {% if (o.modifided_by) { %}
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <span class="pull-left">modified by:{%=o.modifided_by %}</span>
-                        <span class="feature-info feature-info-modified-by pull-left"></span>
+                        <span class="pull-left">modified by:</span>
+                        <span class="feature-info feature-info-modified-by pull-left">{%=o.modifided_by %}</span>
                     </div>
                 </div>
             
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <span class="pull-left">modified at:{%=o.modifided_at %}</span>
-                        <span class="feature-info feature-info-modified-at pull-left"></span>
+                        <span class="pull-left">modified at:</span>
+                        <span class="feature-info feature-info-modified-at pull-left">{%=o.modifided_at %}</span>
                     </div>
                 </div>
             {% } %}
@@ -233,8 +233,8 @@
             {% if (o.cleaned_by) { %}
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <span class="pull-left">modified by:{%=o.cleaned_by %}</span>
-                        <span class="feature-info feature-info-cleaned-by pull-left"></span>
+                        <span class="pull-left">modified by:</span>
+                        <span class="feature-info feature-info-cleaned-by pull-left">{%=o.cleaned_by %}</span>
                     </div>
                 </div>
             {% } %}
