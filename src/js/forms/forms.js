@@ -2,15 +2,14 @@
 * Forms elements that requires js activations and settings
 */
 
-var forms = (function() {
+var forms = (function () {
   
     'use strict';
   
-    var _bindEvents = function() {
+    var _bindEvents = function _bindEvents (type) {
 
             // This function activate the widgets and init the form submission code in js/forms/submit.js
             var selectPickers = $('.selectpicker'),
-                tagInput = $('.feature-tags'),
                 currentForm = $(".form-feature"),
                 saveButton = $(".btn-save");
 
@@ -44,71 +43,75 @@ var forms = (function() {
             // all values are passed to the forms
 
             // initiate the uploader
-            // TODO only init if the form needs it
             _initUploader();
       
             // initiate drawing stuff
-            // TODO only do this if the form needs it
-            drawing.init();
-      
+            if (type === 'litter' || type === 'area') {
+                drawing.init();
+            }
             // Re-initialize some listeners
             tools.bindTempMarkerEvents();
       
             // activate the form
             saving.init();
         },
-        _formDispatcher = function(id, targetLinkClass) {
+        _formDispatcher = function _formDispatcher (id, targetLinkClass) {
           
             console.log("id from form dispatcher: ", id);
             console.log("link class from form dispatcher: ", targetLinkClass );
-
+            // TODO extract this logic to tools.dispatcher so we can dispatch any type of function with any callback
             var types = {
                           'garbage': 'garbage', 
                           'cleaning': 'cleaning',
                           'dieoff': 'dieoff',
                           'floating': 'floating',
                           'area': 'area',
-                          'litter': 'litter'
+                          'litter': 'litter',
+                          'opengraph' : 'opengraph'
                         };
 
             for (var key in types) {
 
                 if (targetLinkClass.indexOf(key) !== -1) {
-                      forms.makeForm(id, types[key]);
+                      _makeForm(id, types[key]);
                 }      
             } // adapted from http://stackoverflow.com/a/22277556/2842348
           
           // TODO catch error
         },
-        passMarkerToForm = function(id) {
+        passMarkerToForm = function passMarkerToForm  (id) {
 
             "use strict";
-            // the id of the map feature (for markers)
+            // the id of the map feature (for a single latlng marker)
             var id = id;
             $('.create-dialog').on('click', function(e) {
-
+                // this is a really lousy way to fetch the marker id, we could simply rely on latlng  hidden input
                 e.preventDefault();
                 var ct = $(this).attr('href').toString();  
                 console.log(ct);
                 _formDispatcher(id, ct);
             });
         },
-        makeForm = function(id, type) {
+        _makeForm = function _makeForm (id, type) {
+          
+            // var type = type.trim();
+            // TODO use switch statement
 
-            // TODO make a switch statement
-            // Build an object to pass to the templating engine
+            // Build a mock object to pass to the templating engine so we can use conditional blocks
             var typeobj = {};
             typeobj[type] = type;
             console.log('typeobj', typeobj);
 
-            // Opengraph scraper
-            // TODO finish og form
-            if (!id && type === 'og') {
-
-                console.log('og form');
-                var latlng = maps.map.getCenter();
+            // add a marker with data from a webpage scraped using the Opengraph scraper
+            if (type === 'opengraph') {
+              
+                ui.makeModal(type, null);
+              
+                console.log('opengraph form');
+                var marker = actions.tempmarkers[id];              
+                var latlng = marker.getLatLng();
                 $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
-                return;
+                // return;
             }
 
             else {
@@ -125,10 +128,12 @@ var forms = (function() {
                 // Forms for shapes (polylines and areas)
                 if (type === "litter" || type === "area") {
 
-                    // Delete any unsaved marker
+                    // Delete any unsaved marker icons before drawing shapes
                     maps.unsavedMarkersLayerGroup.clearLayers();
+                    actions.tempmarkers = [];
 
                     if (type === "litter") {
+                        // Fill the garbage type multiselect
                         console.log('litter form');
                         document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', ui.templates.garbagetypes);
                     }
@@ -193,10 +198,10 @@ var forms = (function() {
                 }
             }
             // init event listener and set forms widget options
-            _bindEvents();
+            _bindEvents(type);
         },
-        _initUploader = function() {
-
+        _initUploader = function _initUploader () {
+        // TODO find a jquery uploader that doesnt need widget but uses native html fileaccess
             var imageuploader = $('.image-uploader'),
                 imageuploaderbutton = $('.btn-image-uploader'),
                 progressdiv = $('.progress');
@@ -269,8 +274,5 @@ var forms = (function() {
             });
         };
     
-    return {
-        makeForm: makeForm,
-        passMarkerToForm: passMarkerToForm,
-    };
+    return { passMarkerToForm: passMarkerToForm };
 }());

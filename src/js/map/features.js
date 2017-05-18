@@ -11,7 +11,7 @@ var features =  (function() {
         cleaningArray = [],
         useToken = localStorage.getItem('token') || tools.token,
         /*_load = function(type) {
-        // TODO finish this
+        // TODO make a single load function so we dont need to publish so many as below
             type = type.trim();
             switch (type) {
                 case 'garbage' :
@@ -261,7 +261,7 @@ var features =  (function() {
             loadAreas();
             loadLitters();
             loadGarbageMarkers(); 
-            // features._load('all';)
+            // features.load('all';)
     },
         _bindEvents = (function _bindEvents () {
 
@@ -349,5 +349,6 @@ var features =  (function() {
              loadCleaningMarkers: loadCleaningMarkers,
              loadAreas: loadAreas,
              loadLitters: loadLitters
+              // load: load
     };
 }());

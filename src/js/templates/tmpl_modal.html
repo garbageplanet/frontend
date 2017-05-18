@@ -1,39 +1,47 @@
 <script type="text/x-tmpl" id="tmpl-modal">
 <!-- The template for the modal containers -->
-{% if (o.og) { %}
+{% if (o.opengraph) { %}
 <div class="modal-dialog">
+  <form class="form-feature form-opengraph" accept-charset="UTF-8" data-toggle="validator">
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close pull-right" data-dismiss="modal">x</button>
       <h4 class="modal-title">Get data from an external url</h4>
     </div>
-    <div class="modal-og-body modal-body">
+    
+    <div class="modal-opengraph-body modal-body">
       <div class="container-fluid">
         <div class="row">
-          <form>
+        
+          <input type="hidden" name="latlng" class="marker-latlng opengraph-latlng">
+            
           <div class="form-group form-group-lg">
             <div class="input-group input-group-lg">
-              <input id="og-url" type="url" class="form-control" placeholder="Paste or type in an url" required>
+              <input id="opengraph-url" 
+                     type="url" 
+                     name="url" 
+                     class="form-control" 
+                     placeholder="Paste or type in an url"
+                     required>
               <span class="input-group-btn">
-                <button class="btn btn-default btn-og-scrap" type="button">Fetch</button>
+                <button class="btn btn-default btn-opengraph-fetch" type="button">Fetch</button>
               </span>
-              <div class="help-block with-errors"></div>
             </div>
+            <div class="help-block with-errors"></div>
           </div>
-          </form>
         </div>
       </div>
-      <div id="og-content" class="container-fluid"></div>
+      <div id="opengraph-content" class="container-fluid"></div>
     </div>
+        
     <div class="modal-footer">
       <div class="form-group form-group-lg">
-        <form>
           <button type="button" data-dismiss="modal" class="btn btn-lg btn-danger pull-right ">Cancel</button>
-          <button id="modal-og-submit" type="button" class="hidden btn btn-lg btn-success pull-right ">(Save)</button>
-        </form>
+          <button id="opengraph-submit" type="submit" class="hidden btn btn-save btn-save-opengraph btn-lg btn-success pull-right ">Save</button>
       </div>
     </div>
   </div>
+  </form>
 </div>
 {% } %}
   
@@ -63,7 +71,7 @@
         <button type="button" class="close pull-right" data-dismiss="modal">X </button>
         <h4 class="modal-title">View and download data from garbagepla.net</h4></div>
       <div class="modal-body">
-        <table id="modal-garbage-table" class="table-striped table-condensed">
+        <table id="modal-garbage-table" class="table table-striped table-condensed">
           <thead>
             <tr>
               <th>Feature id</th>
@@ -91,7 +99,7 @@
         <button type="button" class="close pull-right" data-dismiss="modal">X </button>
         <h4 class="modal-title">Cleaning events calendar</h4></div>
       <div class="modal-body">
-        <table id="modal-cleaning-table" class="table-striped table-condensed">
+        <table id="modal-cleaning-table" class="table table-striped table-condensed">
           <thead>
             <tr>
               <th>Event id</th>

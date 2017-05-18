@@ -1,39 +1,29 @@
 <script type="text/x-tmpl" id="tmpl-sidebar-main">
     
     <div class="sidebar-content" id="mobile-menu-dialog">
-
         <div class="form-group form-group-lg mobile-menu">
-
             <a href="#create-account-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-user"></span> Register</a>
-
             <a href="#user-login-dialog" class="sidebar-link btn btn-default btn-lg btn-block session-link"><span class="fa fa-fw fa-key"></span> Login</a>
-
             <a href="#" class="btn btn-default btn-lg btn-block btn-glome-go session-link"><span class="fa fa-fw fa-user-secret"></span> Anon login</a>
-
             <a href="#search-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-search"></span> Search</a>
-
             <a href="#" class="sidebar-link btn btn-default btn-lg btn-block disabled"><span class="fa fa-fw fa-cloud"></span> Forecast</a>
-
             <a href="#credits-dialog" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-question"></span> About</a>
-
         </div>
-
-</div>
+    </div>
   
     <div class="sidebar-content" id="create-marker-dialog">
         <h2 class="actions-panel hidden-sm hidden-xs">Action for this location</h2>
-
         <ul class="nav nav-pills nav-stacked">
           <li role="presentation"><a class="create-dialog sidebar-link" href="#create-garbage-dialog">Mark garbage</a></li>
           <li role="presentation"><a class="create-dialog sidebar-link" href="#create-cleaning-dialog">Create a cleaning event</a></li>
           <li role="presentation"><a class="create-dialog sidebar-link" href="#create-litter-dialog">Add a littered segment</a></li>
           <li role="presentation"><a class="create-dialog sidebar-link" href="#create-area-dialog">Create an area</a></li>
-          <li role="presentation"><a class="modal-link modal-link-og">Fetch from a link</a></li>
+          <li role="presentation"><a class="create-dialog sidebar-link" href="#create-opengraph-dialog">Fetch data from a webpage</a></li>
           <li role="presentation" class="create-dialog disabled"><a class="sidebar-link" href="#create-floating-dialog">Mark floating garbage</a></li>
           <li role="presentation" class="create-dialog disabled"><a class="sidebar-link" href="#create-wastewater-dialog">Mark sewage discharge</a></li>
           <li role="presentation" class="create-dialog disabled"><a class="sidebar-link" href="#create-dieoff-dialog">Locate mass die off</a></li>
         </ul>
-</div>
+    </div>
 
     <div class="sidebar-content" id="create-cleaning-dialog"></div>
     <div class="sidebar-content" id="create-garbage-dialog"></div>
@@ -77,8 +67,9 @@
             </p>
         </div>
         <br>
-        </div>
-</div>
+      </div>
+    </div>
+              
     <div class="sidebar-content" id="account-info">
       <br class="hidden-lg hidden-xl">
       <div class="tab-view">
@@ -89,27 +80,20 @@
 
           <div class="tab-content">
             <br>
-
             <div class="tab-pane active form-group form-group-lg" id="user-info-main" role="tabpanel">
               <h3>Welcome, <span class="user-name"></span></h3>
               <h4>User id</h4><p class="user-id"></p>
-
               <div class="user-glome-key"><h4>Glome key value</h4><p></p></div>
-
               <div class="user-email"><h4>User email</h4><p></p></div>
-
               <br>
-
               <button type="button" class="btn btn-default btn-lg btn-block btn-logout">
                 <span class="fa fa-sign-out fa-fw"></span> Logout
               </button>
-
               <br>
-
               <div class="pull-left">
                 <p><a href="#delete-account-dialog" class="sidebar-link account-delete-link disabled">Delete</a> your account.</p>
                 <p><a href="#privacy-policy" class="sidebar-link">Privacy policy</a></p>
-                </div>
+              </div>
             </div>
 
             <div class="tab-pane form-group form-group-lg" id="user-info-terms" role="tabpanel">
@@ -120,73 +104,74 @@
             </div>
           </div>
         </div>
-</div>
+      </div>
+            
     <div class="sidebar-content" id="create-account-dialog">
-        <div id="regisration-div">
-             <div>
-                <h4>Create a new account.</h4>
-                 <p>Using an email to register can help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a> but will also allow you to create game tiles.</p>
+      <div id="regisration-div">
+         <div>
+            <h4>Create a new account.</h4>
+             <p>Using an email to register can help you <a class="sidebar-link" href="#recover-credentials">recover your credentials</a> but will also allow you to create game tiles.</p>
+        </div>
+        <!-- Registration form -->
+        <form id="registration-form"
+              class="form-group"
+              data-toggle="validator"
+              accept-charset="UTF-8">
+            <div class="form-group form-group-lg">
+                <input type="text"
+                       id="register-name"
+                       class="form-control"
+                       placeholder="Username (min 4 characters)"
+                       data-minlength="4"
+                       required>
+                <div class="help-block with-errors"></div>
             </div>
-            <!-- Registration form -->
-            <form id="registration-form"
-                  class="form-group"
-                  data-toggle="validator"
-                  accept-charset="UTF-8">
-                <div class="form-group form-group-lg">
-                    <input type="text"
-                           id="register-name"
+            <div class="form-group form-group-lg">
+                <input type="email"
+                       class="form-control"
+                       placeholder="Email address"
+                       id="register-email"
+                       data-minlength="6">
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group form-group-lg">
+                    <input id="register-password"
+                           type="password"
                            class="form-control"
-                           placeholder="Username (min 4 characters)"
-                           data-minlength="4"
+                           placeholder="Password min 6 characters"
+                           data-minlength="6"
                            required>
                     <div class="help-block with-errors"></div>
-                </div>
-                <div class="form-group form-group-lg">
-                    <input type="email"
+            </div>
+            <div class="form-group form-group-lg">
+                    <input id="register-password-confirm"
+                           type="password"
+                           data-match="#register-password"
                            class="form-control"
-                           placeholder="Email address"
-                           id="register-email"
-                           data-minlength="6">
+                           placeholder="Repeat password"
+                           data-minlength="6"
+                           data-match-error="Don't match"
+                           required>
                     <div class="help-block with-errors"></div>
+            </div>
+            <div class="btn-group btn-group-justified"
+                 role="group" >
+                <div class="btn-group btn-group-lg" role="group">
+                    <button type="submit" class="btn btn-success">
+                      <i class="fa fa-check fa-fw"></i><span class="hidden">Register</span>
+                    </button>
                 </div>
-                <div class="form-group form-group-lg">
-                        <input id="register-password"
-                               type="password"
-                               class="form-control"
-                               placeholder="Password min 6 characters"
-                               data-minlength="6"
-                               required>
-                        <div class="help-block with-errors"></div>
+                <div class="btn-group btn-group-lg" role="group">
+                    <button class="btn btn-danger btn-cancel">
+                      <i class="fa fa-times fa-fw"></i><span class="hidden">Cancel</span>
+                    </button>
                 </div>
-                <div class="form-group form-group-lg">
-                        <input id="register-password-confirm"
-                               type="password"
-                               data-match="#register-password"
-                               class="form-control"
-                               placeholder="Repeat password"
-                               data-minlength="6"
-                               data-match-error="Don't match"
-                               required>
-                        <div class="help-block with-errors"></div>
-                </div>
-                <div class="btn-group btn-group-justified"
-                     role="group" >
-                    <div class="btn-group btn-group-lg" role="group">
-                        <button type="submit" class="btn btn-success">
-                          <i class="fa fa-check fa-fw"></i><span class="hidden">Register</span>
-                        </button>
-                    </div>
-                    <div class="btn-group btn-group-lg" role="group">
-                        <button class="btn btn-danger btn-cancel">
-                          <i class="fa fa-times fa-fw"></i><span class="hidden">Cancel</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
+        </form>
       </div>
-</div>
+    </div>
+              
     <div class="sidebar-content" id="delete-account-dialog">
-
       <div><h3><span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left" href="#account-info"></a></span>Delete your account</h3></div>
       <p class="lead">All user data and references are removed but the features you have created are kept in the database.</p>
         <form id="delete-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
@@ -202,16 +187,13 @@
             </div>
           </div>
         </form>
-
-
-</div>
+    </div>
       
     <div class="sidebar-content" id="privacy-policy">
-
         <h3>Privacy policy and data protection</h3>
           <p>As a platform that allows users to submit sensitive information related to environmental pollution, we make certain that none of the information we collect and that could potentially identify a user are disclosed to any third party. Furthermore, the user retains the copyright to any uploaded file or image.</p>
           <p>Garbagepla.net uses both <a href="http://imgur.com/privacy">Imgur</a> and <a href="https://www.mapbox.com/privacy/">Mapbox</a> for saving and retrieving map and images data, by using the platform you agree to the use of cookies by these sites and to the terms of their privacy policies.</p>
-</div> 
+    </div> 
       
     <div class="sidebar-content" id="glome-dialog">
 

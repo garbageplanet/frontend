@@ -318,13 +318,13 @@ var tools = {
             tools.resetIconStyle(id);
         });
 
-        $('.menu-backlink').click(function(e) {
+        /*$('.menu-backlink').click(function(e) {
              e.preventDefault();
             // Remove the styling for temp markers
             tools.resetIconStyle(id);
-        });
+        });*/
         
-        // Close sidebar if cancel button clicked
+        // Close sidebar if cancel button clicked and delete unsaved markers
         cancelbutton.on('click', function (e){
             e.preventDefault();
             ui.sidebar.hide();
@@ -332,7 +332,10 @@ var tools = {
                 tools.resetIconStyle(id);
                 maps.map.removeLayer(marker);
             }
-            else { maps.unsavedMarkersLayerGroup.clearLayers() }
+            else { 
+              maps.unsavedMarkersLayerGroup.clearLayers();
+              actions.tempmarkers = [];
+            }
 
         }); 
     },
@@ -431,8 +434,9 @@ var tools = {
    * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API, 
                            used in the 'link' marker creation to enable users to add map marker with content tretived from 
                            external webpages.
+   * @return - Returns a Promise obj with scrapped data
    */
-    ogDotIoScraper: function (url) {
+    openGraphScraper: function (url) {
 
         var token = '@@opengraphiotoken'; 
 
@@ -442,7 +446,7 @@ var tools = {
                 method: 'GET',
                 url: callurl,
                 data: jQuery.param({'app_id': token}),
-                success: function(data) {
+                success: function (data) {
                     console.log('ajax call pass', data);
                     if (data.error) {
                         alerts.showAlert(5, "danger", 3000);
@@ -452,32 +456,18 @@ var tools = {
                         console.log('Successfully retrieved OG data');
                     }
                 },
-                error: function() {
+                error: function () {
                     console.log('Error fetching og data');
                     return;
                 }
             });
           
-            // Push the openg raph data to the modal
-            request.done(function(data) {
-              
-                console.log("request.done", data);
-                if (!data.error){
-                    // Load the data into the template
-                    var ogcontent = document.getElementById('og-content').innerHTML = tmpl('tmpl-modal-og', data);
-                    $('#modal-og-submit').removeClass('hidden');
-
-                    // TODO pass marker to forms with map.center() as coordinates
-                    console.log(data);
-                    saving.saveOpenGraph(data);
-                }
-                else { return; }
-          });
+            return request;
         }
       
         else {  
             alerts.showAlert(5, "warning", 2000);
-            return;
+            return
         }
     },
  /**

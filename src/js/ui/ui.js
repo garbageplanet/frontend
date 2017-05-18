@@ -18,7 +18,7 @@ var ui = (function () {
                 {short:"poly",long:"Expanded plastic polymers"},
                 {short:"butts",long:"Cigarette butts"},
                 {short:"syringe",long:"Syringes and needles"},
-                {short:"glassb",long:"Broken glass"},
+                {short:"glassbroken",long:"Broken glass"},
                 {short:"glass",long:"Glass"},
                 {short:"bottles",long:"Glass bottles"},
                 {short:"metal",long:"Metal"},
@@ -27,6 +27,7 @@ var ui = (function () {
                 {short:"wood",long:"Recomposed wood"},
                 {short:"chemicals",long:"Chemicals"},
                 {short:"canister",long:"Oil canister"},
+                {short:"barrel",long:"Barrel"},
                 {short:"household",long:"Household garbage"},
                 {short:"clothes",long:"Shoes and clothes"},
                 {short:"fabric",long:"Carpets and fabrics"},
@@ -34,7 +35,7 @@ var ui = (function () {
                 {short:"tarp",long:"Tarps and other large covers"},
                 {short:"electronic",long:"Electronics"},
                 {short:"electric",long:"Electric appliances"},
-                {short:"batt", long:"Batteries"},
+                {short:"battery", long:"Batteries"},
                 {short:"industrial",long:"Industrial wastes"},
                 {short:"construction",long:"Construction wastes"},
                 {short:"gas",long:"Gasoline and petroleum oil"},
@@ -44,7 +45,7 @@ var ui = (function () {
                 {short:"motorcyle",long:"Motorcycles"},
                 {short:"tyres",long:"Tyres"},
                 {short:"engine",long:"Engine parts"},
-                {short:"parts",long:"Vehicles parts"},
+                {short:"vehicleparts",long:"Vehicles parts"},
                 {short:"fishing",long:"Fishing gears"},
                 {short:"commercial",long:"Commercial fishing gears"},
                 {short:"net",long:"Fishing net"},
@@ -56,7 +57,7 @@ var ui = (function () {
                 {short:"navigation",long:"Navigation aid buoy"},
                 {short:"pontoon",long:"Pontoon"},
                 {short:"maritime",long:"Maritime equipment"},
-                {short:"sew",long:"Sewage"},
+                {short:"sewage",long:"Sewage"},
                 {short:"dogs",long:"Dog poop bags"},
                 {short:"stormwater",long:"Polluted stormwaters"},
             ],
@@ -287,42 +288,52 @@ var ui = (function () {
             template = '<div id="' + modalid + '" class="modal" role="dialog"></div>';
             $('body').append(template);
 
-            // Handle what happens for the Open Graph scraper or if no data is passed
+            // If there's no data passed to the function, we're making a modal for scraping an url
+            // handle what happens for the Open Graph scraper
             if (!arr) {
-                if (type.indexOf('og') > -1 ) {
+                if (type.indexOf('opengraph') > -1 ) {
                     document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);              
                     $('#' + modalid).modal('show');
                     $('#' + modalid).find('input').focus();
                 }
-
-                $('.btn-og-scrap').click(function() {
+                // Bind the action to launch the scraper
+                $('.btn-opengraph-fetch').click(function() {
                     // Retrieve the value of the url
-                    // TODO validate url
-                    // $(this).siblings('button').html('Loading...');
-                    var url = $('#modal-og').find('input').val();
-                    var ogdata = tools.ogDotIoScraper(url);
-                    // TODO do something with ogdata?
+                    var url = $('#opengraph-url').val();
+                  
+                    $('.btn-opengraph-fetch').text('...');
+                    $('.btn-opengraph-fetch').attr('disabled', 'disabled');
+                  
+                    $.when(tools.openGraphScraper(url)).then(function (data) {
+                        
+                        console.log('data from openGraph Promise resolved:', data);
+                      
+                        // Load the data into the template
+                        var ogcontent = document.getElementById('opengraph-content').innerHTML = tmpl('tmpl-modal-opengraph', data);
+                        // Remove input styles
+                        $('#opengraph-content input, #opengraph-content textarea').css('border','none').css('background','transparent').css('box-shadow', 'none');
+                        // TODO allow saving only if request return meaningful data
+                        $('.btn-save-opengraph').removeClass('hidden');
+                        // Replace button text and disable nutil request has finished
+                        $('.btn-opengraph-fetch').text('Fetch');
+                        $('.btn-opengraph-fetch').removeAttr('disabled');
+                    });
                 });
 
-                $('#modal-og-submit').on('click', function(e) {
-
-                    forms.makeForm(null, 'og');
-
-                });
                 return;
             }
 
             // if it's a data modal check that the array contains data else warn user
             if (arr) {
-                if (arr.length < 1 && (type != 'game' || type != 'og')) {
-                    alerts.showAlert(29, "warning", 2000);
+                if (arr.length < 1 && (type != 'game' || type != 'opengraph')) {
+                    alerts.showAlert(29, 'warning', 2000);
                     return;
                 }
                 else {
                     // Fill the template skeleton and the data
                     document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);              
                     document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
-                    // Activate the datatables
+                    // Activate the datatables in the modal
                     $(modaltableid).DataTable(datatableoptions);
 
                     // Show the modal
@@ -346,7 +357,7 @@ var ui = (function () {
             }
         },    
         _bindEvents = function () {
-
+        // TODO split into top, side and bottombar events
             var sidebarlink = $('.sidebar-link'),
                 menubacklink = $('.menu-backlink'),
                 usertools = $('#user-tools'),
@@ -404,6 +415,7 @@ var ui = (function () {
                       $('.close-right').removeClass('hidden');
                     }
                     maps.unsavedMarkersLayerGroup.clearLayers();
+                    actions.tempmarkers = [];
                 }
             });
 
@@ -472,11 +484,6 @@ var ui = (function () {
 
                 if ($(this).hasClass('modal-list-cleaning')) {
                     ui.makeModal('cleaning', features.cleaningArray());
-                }
-
-                if ($(this).hasClass('modal-link-og')) {
-                    console.log('OG clicked');
-                    ui.makeModal('og', null);
                 }
 
                 if ($(this).hasClass('btn-join-game')) {

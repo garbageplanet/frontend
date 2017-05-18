@@ -1,6 +1,15 @@
 /**
   * The necessary configurations that are used by the UI
   * TODO group routes and add middleware functions in the backend to cut the amount of routes
+  
+  api.create.trash
+  api.create.cleaning
+  api.create.litter ...
+  
+  api.read.['','','',''] ...
+  
+  build api object recursively from subobjects
+  
   */
 
 var api = {

@@ -1,34 +1,32 @@
-<script type="text/x-tmpl" id="tmpl-modal-og">
+<script type="text/x-tmpl" id="tmpl-modal-opengraph">
   
 <div class="row">
 
     <!-- open or hybrid Graph -->
     {% if (o.openGraph.site_name) { %}
-        <h2>{%=o.openGraph.site_name%}
-        <small class="text-muted">{%=o.openGraph.url%}</small>
-        </h2>
+        <input class="form-control" readonly name="site_name" value="{%=o.openGraph.site_name%}"/>
     {% } else { %}
-        <h2>{%=o.hybridGraph.site_name%}
-        <small class="text-muted">{%=o.hybridGraph.url%}</small>
-        </h2>
+        <input class="form-control" readonly name ="site_name" value="{%=o.hybridGraph.site_name%}"/>
     {% } %}
   
     {% if (o.openGraph.title) { %}
-        <h4>{%=o.openGraph.title%}</h4>
+        <input class="form-control" name="title" readonly value="{%=o.openGraph.title%}"/>
     {% } else { %}
-          <h4>{%=o.hybridGraph.title%}</h4>
+        <input class="form-control" name="title" readonly value="{%=o.hybridGraph.title%}"/>
     {% } %}
   
     {% if (o.openGraph.description) { %}
-        <p>{%=o.openGraph.description%}</p>
+    <textarea rows="3" class="form-control" name="description" readonly>{%=o.openGraph.description%}</textarea>
     {% } else { %}
-        <p>{%=o.hybridGraph.description%}</p>
+    <textarea rows="3" class="form-control" name="description" readonly>{%=o.hybridGraph.description%}</textarea>
     {% } %}
   
     {% if (o.openGraph.image) { %}
         <img src="{%=o.openGraph.image%}" width="200px">
+        <input class="form-control" name="image" type="hidden" readonly value="{%=o.openGraph.image%}"/>
     {% } else { %}
         <img src="{%=o.hybridGraph.image%}" width="200px">
+        <input class="form-control" name="image" type="hidden" readonly value="{%=o.hybridGraph.image%}"/>
     {% } %}
           
 </div>

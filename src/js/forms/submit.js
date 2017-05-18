@@ -5,11 +5,11 @@
 */
 
 // Save features on the map
- var saving = (function() {
+ var saving = (function () {
    
     'use strict';
   
-    var _saveFeature = function(fo, ft) {
+    var _saveFeature = function (fo, ft) {
 
         // NOTE ft = formtype, fo = formobj
         var useToken = localStorage.getItem('token') || tools.token;
@@ -120,22 +120,23 @@
           });
           
         }
-        else if (ft === 'og') {
-          
-            // TODO finish this and implement in backend + db
-            var latlng = maps.map.getCenter().toString
+        else if (ft === 'opengraph') {
           
             var postrequest = $.ajax({
 
-                method: 'POST',
-                url: api.server + '/og',
+                method: api.createOg.method,
+                url: api.createOg.url(),
                 headers: {'Authorization': auth},
                 dataType: 'json',
                 data: {
-                    'latlng': so.latlng,
-                    'link' : fo.link
+                    'latlng'      : so.latlng,
+                    'url'         : so.url,
+                    'site_name'   : so.site_name,
+                    'title'       : so.title,
+                    'description' : so.description,
+                    'image'       : so.image
                 }
-          });
+          });      
         }
       
         postrequest.done(function(data) {
@@ -143,6 +144,7 @@
             console.log(data);
             if (ft === 'garbage' || ft === 'cleaning') {
                 maps.unsavedMarkersLayerGroup.clearLayers();
+                actions.tempmarkers = [];
             }
           
             switch(ft) {
@@ -150,7 +152,7 @@
                 case 'cleaning' : features.loadCleaningMarkers();
                 case 'litter'   : features.loadLitters();
                 case 'area'     : features.loadAreas();
-                // case 'og': features.loadLinks;
+                // case 'opengraph': features.loadLinks;
             }
             
             alerts.showAlert(25, 'success', 1500);
@@ -170,18 +172,22 @@
             // TODO stop the drawing listeners if any
         });          
         },
-        saveOpenGraph = function(obj) {
-          _saveFeature(obj, 'og');
-        },
-        _bindEvents = function(obj) {
+        _bindEvents = function (obj) {
 
             console.log('current formobj: ', obj);
             var currentform = obj;
+          
+            // Hack to immediatley validate opengraph form
+            // FIXME really needed?
+            if (obj[0].className.indexOf('opengraph')) {
+                currentform.validator('validate');
+            }
           
             currentform.on('keyup change', function(e) {
                 currentform.validator('validate');
             });
           
+            // Form submission
             currentform.validator().on('submit', function(e) {
 
                 if (e.isDefaultPrevented()) {
@@ -212,17 +218,14 @@
                 }  
             });
         },
-        init = function() {
+        init = function () {
             // we init this code only when a form is created in forms._bindEvents() in src/js/forms/forms.js
             // empty the placeholder
             this.form = null;
             // Cache the current form, there's always only one .form-feature in the DOM
             this.form = $('.form-feature');
             _bindEvents(this.form);
-        }
+        };
 
-    return {
-        init: init,
-        saveOpenGraph: saveOpenGraph
-    };
+    return { init: init };
 }());
