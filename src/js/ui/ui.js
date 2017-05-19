@@ -14,14 +14,15 @@ var ui = (function () {
                 {short:"foodpacks",long:"Plastic food containers"},
                 {short:"pet",long:"PET bottles"},
                 {short:"party",long:"Party leftovers"},
-                {short:"fastfood",long:"Fastfood garbage"},
                 {short:"poly",long:"Expanded plastic polymers"},
                 {short:"butts",long:"Cigarette butts"},
+                {short:"toys",long:"Kids beach toys"},
                 {short:"syringe",long:"Syringes and needles"},
                 {short:"glassbroken",long:"Broken glass"},
                 {short:"glass",long:"Glass"},
                 {short:"bottles",long:"Glass bottles"},
                 {short:"metal",long:"Metal"},
+                {short:"fastfood",long:"Fastfood garbage"},
                 {short:"tin",long:"Tin cans"},
                 {short:"alu",long:"Aluminium cans"},
                 {short:"wood",long:"Recomposed wood"},
@@ -143,7 +144,7 @@ var ui = (function () {
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
-        pushDataToBottomPanel = function (obj) {
+        pushDataToBottomPanel = function pushDataToBottomPanel (obj) {
 
             // TODO get the leaflet_id of current marker as well
             console.log("pushed data to bottom panel");
@@ -256,7 +257,7 @@ var ui = (function () {
                 else return;
             });
         },
-        makeModal = function (type, arr) {
+        makeModal = function makeModal (type, arr) {
 
             console.log('type of modal: ', type);
             console.log('value of array: ', arr);
@@ -356,7 +357,7 @@ var ui = (function () {
                 }
             }
         },    
-        _bindEvents = function () {
+        _bindEvents = function _bindEvents () {
         // TODO split into top, side and bottombar events
             var sidebarlink = $('.sidebar-link'),
                 menubacklink = $('.menu-backlink'),
@@ -449,6 +450,26 @@ var ui = (function () {
                 }
             });
 
+          
+            // Set the event listeners for modals in the topbar or elsewhere
+            modallink.on('click', function(e) {
+
+                e.preventDefault();
+
+                if ($(this).hasClass('modal-list-garbage')) {
+                    // Passing the garbage array in the current screen to the function
+                    ui.makeModal('garbage', features.garbageArray());
+                } 
+
+                if ($(this).hasClass('modal-list-cleaning')) {
+                    ui.makeModal('cleaning', features.cleaningArray());
+                }
+
+                /*if ($(this).hasClass('btn-join-game')) {
+                    ui.makeModal('game', null);
+                }*/
+            });
+          
             // BOTTOMBAR //////////////////////////////////////////////////////////////////
             // Events to execute when the bottombar is hidden
             ui.bottombar.on('hide', function(e) {
@@ -472,32 +493,13 @@ var ui = (function () {
                 }
             });
 
-            // Set the event listeners for modals in the topbar or elsewhere
-            modallink.on('click', function(e) {
-
-                e.preventDefault();
-
-                if ($(this).hasClass('modal-list-garbage')) {
-                    // Passing the garbage array in the current screen to the function
-                    ui.makeModal('garbage', features.garbageArray());
-                } 
-
-                if ($(this).hasClass('modal-list-cleaning')) {
-                    ui.makeModal('cleaning', features.cleaningArray());
-                }
-
-                if ($(this).hasClass('btn-join-game')) {
-                    ui.makeModal('game', null);
-                }
-            });
-
             // Destroy modals upon hiding them
             $('.modal').on('hidden.bs.modal', function() {
                 $(body).find('.modal').remove();
             });
 
         },
-        init = function () {
+        init = function init () {
 
             // Add the Leaflet UI controls to the map
             sidebar.addTo(maps.map);

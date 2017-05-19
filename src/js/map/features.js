@@ -33,7 +33,6 @@ var features =  (function() {
         },*/
         loadGarbageMarkers = function loadGarbageMarkers () {
 
-            // garbageArray = [];
             var fetchGarbage = $.ajax({
                 type: api.readTrashWithinBounds.method,
                 url: api.readTrashWithinBounds.url(tools.getCurrentBounds()),
@@ -51,13 +50,15 @@ var features =  (function() {
             fetchGarbage.done(function(data) {
                 
                 maps.garbageLayerGroup.clearLayers();
+              
+                garbageArray = [];
 
                 $(data).each(function(i, o) {
                   
                     console.log('value of ob.cleaned: ', o.cleaned);
 
-                    // garbageArray.push(o);
-                  
+                    garbageArray.push(o);
+                    // FIXME this doesnt work
                     garbageArray.indexOf(o) === -1 ? garbageArray.push(o) : console.log("This item already exists");
 
                     // Need to parse the string from the db because LatLngs are now stored as single key:value pair
@@ -98,9 +99,7 @@ var features =  (function() {
             });
         },
         loadCleaningMarkers = function loadCleaningMarkers () {
-        
-            // cleaningArray = [];
-          
+                  
             var fetchCleaning = $.ajax({
                 type: api.readCleaningWithinBounds.method,
                 url: api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
@@ -113,12 +112,15 @@ var features =  (function() {
                 }
             });
             fetchCleaning.done(function(data){
+              
                 maps.cleaningLayerGroup.clearLayers();
+              
+                cleaningArray = [];
 
                     $(data).each(function(i, o) {
 
-                        // cleaningArray.push(o);
-                        cleaningArray.indexOf(o) === -1 ? cleaningArray.push(o) : console.log("This item already exists");
+                        cleaningArray.push(o);
+                        // cleaningArray.indexOf(o) === -1 ? cleaningArray.push(o) : console.log("This item already exists");
 
                         var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
                         var marker = L.marker(L.latLng(latlng[0], latlng[1]),
@@ -343,8 +345,8 @@ var features =  (function() {
             }*/
         }());
     
-    return { garbageArray: function () {return garbageArray},
-             cleaningArray: function () {return cleaningArray},
+    return { garbageArray: function () { return garbageArray },
+             cleaningArray: function () { return cleaningArray },
              loadGarbageMarkers: loadGarbageMarkers,
              loadCleaningMarkers: loadCleaningMarkers,
              loadAreas: loadAreas,
