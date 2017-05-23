@@ -13,52 +13,7 @@
   */
 
 var api = {
-    auth: {
-      create: {
-        method: 'POST',
-        user: {},
-        login: {}
-      },
-      delete: {
-        method: 'DELETE',
-        user: {}
-      },
-      read: {
-        method: 'GET',
-        user: {}
-      },
-      logout: {},
-    },
-    read: {
-    method: 'GET',
-    withinBounds: {},
-    trash: {},
-    litter: {},
-    area: {},
-    cleaning: {}
-  },
-    create: {
-    method: 'POST',
-    trash: {},
-    litter: {},
-    area: {},
-    cleaning: {},
-    attend: {},
-    confirm: {},
-    clean: {},
-    
-  },
-    delete: {
-    method : 'DELETE',
-    trash: {},
-    litter: {},
-    area: {},
-    cleaning: {}
-  },
     server: '@@server',
-  
-  
-  
     createUser: {
         method: 'POST',
         url: function() {
@@ -101,9 +56,6 @@ var api = {
             return api.server + '/glome/show/' + id;
         }
     },
-  
-  
-  
     createTrash: {
         method: 'POST',
         url: function(id) {
