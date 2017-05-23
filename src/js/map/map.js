@@ -237,8 +237,7 @@ var maps = (function () {
              cleaningLayerGroup: cleaningLayerGroup,
              unsavedMarkersLayerGroup: unsavedMarkersLayerGroup,
              allLayers: allLayers,
-             icons: icons
-    };
+             icons: icons };
 }());
 
 maps.init();

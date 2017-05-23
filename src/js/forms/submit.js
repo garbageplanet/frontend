@@ -9,7 +9,7 @@
    
     'use strict';
   
-    var _saveFeature = function (fo, ft) {
+    var _saveFeature = function _saveFeature (fo, ft) {
 
         // NOTE ft = formtype, fo = formobj
         var ft = ft.trim();
@@ -268,7 +268,7 @@
             // TODO stop the drawing listeners if any
         });          
         },
-        _bindEvents = function (obj) {
+        _bindEvents = function _bindEvents (obj) {
 
             console.log('current formobj: ', obj);
             var currentform = obj;
@@ -314,7 +314,7 @@
                 }  
             });
         },
-        init = function () {
+        init = function init () {
             // we init this code only when a form is created in forms._bindEvents() in src/js/forms/forms.js
             // empty the placeholder
             this.form = null;

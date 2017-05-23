@@ -88,7 +88,6 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
   
   return gulp.src([
                     './src/js/libs/pace.js',
-                    // './src/js/ui/base.js',
                     './src/js/libs/jquery-3.2.0.js',
                     './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',

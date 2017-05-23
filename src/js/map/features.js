@@ -354,6 +354,5 @@ var features =  (function () {
     
     return { garbageArray: function () { return garbageArray },
              cleaningArray: function () { return cleaningArray },
-             loadFeature: loadFeature
-    };
+             loadFeature: loadFeature };
 }());
