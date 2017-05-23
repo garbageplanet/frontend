@@ -1,6 +1,6 @@
 {
   "name": "garbageplanet-frontend",
-  "version": "0.5.0",
+  "version": "0.5.6",
   "description": "Dependancies for building (gulp) the minified version of the garbagepla.net frontend.",
   "main": "gulpfile.js",
   "repository": {

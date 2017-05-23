@@ -6,7 +6,7 @@
 var ui = (function () {
   
     'use strict';
-  
+    // TODO move versioning to package.json andadd during build
     var templates = {
             garbagetypes: [
                 {short:"plastic",long:"Plastic items"},
@@ -140,7 +140,7 @@ var ui = (function () {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.5'
+            version: '0.5.6'
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
