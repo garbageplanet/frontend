@@ -233,6 +233,7 @@ var maps = (function () {
              garbageLayerGroup: garbageLayerGroup,
              areaLayerGroup: areaLayerGroup,
              litterLayerGroup: litterLayerGroup,
+             linkLayerGroup: linkLayerGroup,
              cleaningLayerGroup: cleaningLayerGroup,
              unsavedMarkersLayerGroup: unsavedMarkersLayerGroup,
              allLayers: allLayers,

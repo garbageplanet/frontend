@@ -60,20 +60,18 @@ var forms = (function () {
             console.log("id from form dispatcher: ", id);
             console.log("link class from form dispatcher: ", targetLinkClass );
             // TODO extract this logic to tools.dispatcher so we can dispatch any type of function with any callback
-            var types = {
-                          'garbage': 'garbage', 
+            var types = { 'garbage': 'garbage', 
                           'cleaning': 'cleaning',
                           'dieoff': 'dieoff',
                           'floating': 'floating',
                           'area': 'area',
                           'litter': 'litter',
-                          'opengraph' : 'opengraph'
-                        };
+                          'opengraph' : 'opengraph'};
 
             for (var key in types) {
 
                 if (targetLinkClass.indexOf(key) !== -1) {
-                      _makeForm(id, types[key]);
+                    _makeForm(id, types[key]);
                 }      
             } // adapted from http://stackoverflow.com/a/22277556/2842348
           

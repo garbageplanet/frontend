@@ -3,35 +3,42 @@
 * Loading map features from the backend
 */
 
-var features =  (function() {
+var features =  (function () {
     
     'use strict';
     
     var garbageArray = [],
         cleaningArray = [],
         useToken = localStorage.getItem('token') || tools.token,
-        /*_load = function(type) {
-        // TODO make a single load function so we dont need to publish so many as below
-            type = type.trim();
+        loadFeature = function (type) {
+            var alltypes = ['garbage','cleaning','litter','area','opengraph'];
+            var type = type.trim();
             switch (type) {
-                case 'garbage' :
-                // load 
+                case 'garbage' : _loadGarbages();
                 break;
-                case 'cleaning' :
-                // load 
+                
+                case 'cleaning' : _loadCleanings();
                 break;
-                case 'litter' :
-                // load 
+                
+                case 'litter' : _loadLitters();
                 break;
-                case 'areas' :
-                // load 
+                
+                case 'areas' : _loadAreas();
                 break;
+                
                 case 'all' :
-                // 
+                    alltypes.forEach(function(item) {
+                        console.log('loading all features');
+                        console.log('item value from features.loadFeature(): ', item);
+                        features.loadFeature(item); 
+                    });
+                    break;
+                
+                case 'opengraph' : _loadOpengraph();
                 break;
             }
-        },*/
-        loadGarbageMarkers = function loadGarbageMarkers () {
+        },
+        _loadGarbages = function _loadGarbage () {
 
             var fetchGarbage = $.ajax({
                 type: api.readTrashWithinBounds.method,
@@ -58,8 +65,8 @@ var features =  (function() {
                     console.log('value of ob.cleaned: ', o.cleaned);
 
                     garbageArray.push(o);
-                    // FIXME this doesnt work
-                    garbageArray.indexOf(o) === -1 ? garbageArray.push(o) : console.log("This item already exists");
+                    // FIXME this doesnt work but would be preferable to emptying the array each time
+                    // garbageArray.indexOf(o) === -1 ? garbageArray.push(o) : console.log("This item already exists");
 
                     // Need to parse the string from the db because LatLngs are now stored as single key:value pair
                     var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
@@ -98,7 +105,7 @@ var features =  (function() {
                 });
             });
         },
-        loadCleaningMarkers = function loadCleaningMarkers () {
+        _loadCleanings = function _loadCleaning () {
                   
             var fetchCleaning = $.ajax({
                 type: api.readCleaningWithinBounds.method,
@@ -149,7 +156,7 @@ var features =  (function() {
                 alerts.showAlert(10, 'warning', 1500);
             });*/
         },
-        loadAreas = function loadAreas () {
+        _loadAreas = function _loadAreas () {
         
             var fetchArea = $.ajax({
                 type: api.readAreaWithinBounds.method,
@@ -204,7 +211,7 @@ var features =  (function() {
             });*/
           
         },
-        loadLitters = function loadLitters () {
+        _loadLitters = function _loadLitters () {
             var fetchLitter = $.ajax({
                 type: api.readLitterWithinBounds.method,
                 url: api.readLitterWithinBounds.url(tools.getCurrentBounds()),
@@ -258,13 +265,10 @@ var features =  (function() {
             /* fetchLitter.fail(function() {}); */
           
         },
-        _loadAllFeatures = function _loadAllfeatures () {
-            loadCleaningMarkers(); 
-            loadAreas();
-            loadLitters();
-            loadGarbageMarkers(); 
-            // features.load('all';)
-    },
+        _loadOpengraph = function _loadOpengraph () {
+            // TODO
+            return;
+        },
         _bindEvents = (function _bindEvents () {
 
             console.log('Binding map self events.')
@@ -297,17 +301,18 @@ var features =  (function() {
                         // the only problem remains with the clusters, because when they are exploded
                         // the single markers lose their styles
                         if (newZoom >= 2 && zoomDiff >= 1) {
-                            loadCleaningMarkers();
-                            loadGarbageMarkers(); 
+                            features.loadFeature('cleaning');
+                            features.loadFeature('garbage');
+                            features.loadFeature('opengraph');
 
                            if (newZoom <= 16) {
-                                loadLitters();
-                                loadAreas();
+                                features.loadFeature('litter');
+                                features.loadFeature('area');
                             }
                           
                         } else if (!zoomDiff) {
                             // if there's no prior zoom value it means we're loading for the first time
-                            _loadAllFeatures();
+                            features.loadFeature('all');
                         }
 
                     break;
@@ -315,13 +320,15 @@ var features =  (function() {
                         if (lengthDiff >= viewportRatio) {
 
                             if (newZoom >= 2 ) {
-                                loadCleaningMarkers();
-                                loadGarbageMarkers();
+                                features.loadFeature('cleaning');
+                                features.loadFeature('garbage');
+                                features.loadFeature('opengraph');
+
 
                                 if (newZoom >= 8 && newZoom <= 16) {
                                     // We don't load large features if we're too close or too far
-                                    loadLitters();
-                                    loadAreas();
+                                    features.loadFeature('litter');
+                                    features.loadFeature('area');
                                 }
                             }
                         }
@@ -347,10 +354,6 @@ var features =  (function() {
     
     return { garbageArray: function () { return garbageArray },
              cleaningArray: function () { return cleaningArray },
-             loadGarbageMarkers: loadGarbageMarkers,
-             loadCleaningMarkers: loadCleaningMarkers,
-             loadAreas: loadAreas,
-             loadLitters: loadLitters
-              // load: load
+             loadFeature: loadFeature
     };
 }());

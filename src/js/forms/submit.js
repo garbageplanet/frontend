@@ -12,8 +12,10 @@
     var _saveFeature = function (fo, ft) {
 
         // NOTE ft = formtype, fo = formobj
+        var ft = ft.trim();
         var useToken = localStorage.getItem('token') || tools.token;
         var auth = 'Bearer ' + useToken;
+        var postrequest;
       
         // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
         var so = {};
@@ -34,7 +36,109 @@
         console.log('form type: ', ft);
         console.log("form object: ", fo);
       
-        if (ft === 'garbage') {
+        switch (ft) {
+            
+            case 'garbage' :
+                postrequest = $.ajax({
+                    method: api.createTrash.method,
+                    url: api.createTrash.url(),
+                    headers: {'Authorization': auth},
+                    dataType: 'json',
+                    data: {
+                        'latlng': so.latlng,
+                        'amount': so.amount,
+                        'types': so.type,
+                        'todo': so.todo,
+                        'image_url': so.image,
+                        'tag': so.tags,
+                        'sizes': so.size,
+                        'embed': so.environ,
+                        'note': so.note                    
+                      }
+                }); 
+                break;
+            
+            case 'cleaning' :
+                postrequest = $.ajax({
+                    method: api.createCleaning.method,
+                    url: api.createCleaning.url(),
+                    headers: {'Authorization': auth},
+                    dataType: 'json',
+                    data: {
+                        'latlng': so.latlng,
+                        'datetime': so.datetime,
+                        'note': so.note,
+                        'recurrence': so.recurrence,
+                        'tag': so.tags
+                    }
+                }); 
+                break;
+            
+            case 'litter' :
+                postrequest = $.ajax({
+
+                    method: api.createLitter.method,
+                    url: api.createLitter.url(),
+                    headers: {'Authorization': auth},
+                    dataType: 'json',
+                    data: {
+                        'latlngs': so.latlngs,
+                        'amount': so.amount,
+                        'types': so.type,
+                        'image_url': so.image,
+                        'tag': so.tags,
+                        'physical_length': so.lengthm,
+                        'amount_quantitative': so.quantitative
+                    }
+                });
+                break;
+            
+            case 'area' :
+                // Generate a random id if the user didn't set a title
+                if (!so.title) {
+                    so.title = tools.randomString(12);
+                    console.log('randomly generated area title', so.title);
+                    console.log(so);
+                }
+
+                postrequest = $.ajax({
+                    method: api.createArea.method,
+                    url: api.createArea.url(),
+                    headers: {'Authorization': auth },
+                    dataType: 'json',
+                    data: {
+                        'latlngs': so.latlngs,
+                        'note': so.note,
+                        'contact': so.contact,
+                        'secret': so.secret,
+                        'title': so.title,
+                        'tag': so.tags,
+                        'game' : so.game,
+                        'max_players': !so.players ? 0 : so.players
+                    }
+                });
+                break;
+            
+            case 'opengraph' :
+                postrequest = $.ajax({
+
+                    method: api.createOg.method,
+                    url: api.createOg.url(),
+                    headers: {'Authorization': auth},
+                    dataType: 'json',
+                    data: {
+                        'latlng'      : so.latlng,
+                        'url'         : so.url,
+                        'site_name'   : so.site_name,
+                        'title'       : so.title,
+                        'description' : so.description,
+                        'image'       : so.image
+                    }
+                }); 
+                break;
+        };
+      
+        /*if (ft === 'garbage') {
                       
             var postrequest = $.ajax({
                 method: api.createTrash.method,
@@ -86,10 +190,7 @@
                     'tag': so.tags,
                     'physical_length': so.lengthm,
                     'amount_quantitative': so.quantitative
-                },
-                error: function(data) {
-                  console.log('Error submitting litter data', data);
-                } 
+                }
             });               
         }
         else if (ft === 'area') {
@@ -137,27 +238,22 @@
                     'image'       : so.image
                 }
           });      
-        }
+        }*/
       
         postrequest.done(function(data) {
           
             console.log(data);
+          
             if (ft === 'garbage' || ft === 'cleaning') {
                 maps.unsavedMarkersLayerGroup.clearLayers();
                 actions.tempmarkers = [];
             }
           
-            switch(ft) {
-                case 'garbage'  : features.loadGarbageMarkers();
-                case 'cleaning' : features.loadCleaningMarkers();
-                case 'litter'   : features.loadLitters();
-                case 'area'     : features.loadAreas();
-                // case 'opengraph': features.loadLinks;
-            }
+            // Reload map features after an item is saved
+            features.loadFeature(ft);
             
             alerts.showAlert(25, 'success', 1500);
             ui.sidebar.hide('slow');
-            // $('.btn-draw').removeClass('disabled');    
         });
         postrequest.fail(function(data) {
             console.log(data);

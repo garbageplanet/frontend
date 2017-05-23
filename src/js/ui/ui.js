@@ -154,8 +154,6 @@ var ui = (function () {
                 featuredata = obj.options,
                 featureinfo;
           
-
-
             // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the direct object
             if (!featuredata) {
                 featuredata = obj;
@@ -185,7 +183,6 @@ var ui = (function () {
                     console.log('data from Promise resolved:', data.results[0].formatted);
                     featureinfo.find('.feature-info-location').html(data.results[0].formatted);
                 });
-              
             }
 
             // Create the templateData.social data dynamically before calling the template
@@ -213,48 +210,11 @@ var ui = (function () {
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
             $('.btn-feature').on('click', function(e) {
               
-                var ct = e.target.className;
+                // var ct = e.target.className;
+                var ct = $(this).attr('name');
                 console.log(ct);
-              
-                // TODO use a dispatch function
-                // e.g
-                // actions.do(ct, featuredata);
-                // and then dispatch there instead of here so we don't need to
-                // make so many methods public in src/js/map/actions.js
-
-                if (ct.match(/(cleaned|check)/)) {
-                    actions.cleanGarbage(featuredata);
-                    return;
-                }
-                if (ct.match(/(confirm|binoculars)/)) {
-                    actions.confirmGarbage(featuredata);
-                    return;
-                }
-                if (ct.match(/(group|attend)/)) {
-                    actions.attendCleaning(featuredata);
-                    return;
-                }
-                if(ct.match(/(join|play)/)) {
-                    actions.joinGame(featuredata);
-                    return;
-                }
-                if (ct.match(/(times|delete)/)) {
-                    // Pass the full leaflet object to delete method
-                    actions.deleteFeature(feature);
-                    return;
-                }
-                if (ct.match(/(pencil|edit)/)) {
-                    if (localStorage.getItem('token')) {
-
-                        actions.editFeature(featuredata);
-                        return;
-
-                    } else {
-                        alerts.showAlert(3, "warning", 2000);
-                        return;
-                    }
-                }
-                else return;
+                // Send the full leaflet object to actions dispatch function
+                actions.act(ct, feature);
             });
         },
         makeModal = function makeModal (type, arr) {
@@ -523,8 +483,7 @@ var ui = (function () {
              templates: templates,
              bottombar: bottombar,
              pushDataToBottomPanel: pushDataToBottomPanel,
-             makeModal: makeModal
-    };    
+             makeModal: makeModal };    
 }());
 // We can start initializing the UI once this code block is read
 // TODO wait for pace?

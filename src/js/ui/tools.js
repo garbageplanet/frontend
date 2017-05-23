@@ -266,31 +266,20 @@ var tools = {
             // var marker = maps.unsavedLayerGroup.getLayer(id);
             var marker = actions.tempmarkers[id];
             // console.log('marker obj: ', marker);
-            var markericon = $(marker._icon) || 'undefined';
+            if (marker) {
+                var markericon = $(marker._icon) || 'undefined';
+            }
 
-            if (markericon || typeof markericon != 'undefined') {
+            if (markericon || typeof markericon != 'undefined' && marker) {
                 markericon.removeClass('marker-garbage');
                 markericon.removeClass('marker-cleaning');
                 markericon.removeClass(function(index, css) {
                     return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-generic');
                 markericon.addClass('marker-color-gray');
-            }
-
-            // Delete the marker on small screen else the mobile marker menu bugs
-            if (window.isMobile) {
+            } else {
               
-                if (marker._menu) {
-                  
-                    marker.closeMenu();
-                  
-                }
-              
-                // Check that the marker is still here
-                // Drawing form delete the marker right away
-                if (marker) {
-                    maps.map.removeLayer(marker);
-                }
+               return;
             }
           
             return;
@@ -469,6 +458,10 @@ var tools = {
             alerts.showAlert(5, "warning", 2000);
             return
         }
+    },
+    scrapeGeolocationFromText: function (o) {
+        // TODO
+        return;
     },
  /**
    * @namespace tools.randomString

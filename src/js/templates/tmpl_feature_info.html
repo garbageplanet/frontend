@@ -4,29 +4,29 @@
                 <div class="btn-group-vertical center-block" role="group">
                     
                     <div class="btn-group btn-group-lg" role="group">
-                        <button type="button" title="Edit this feature" class="btn btn-warning btn-edit btn-round sidebar-link btn-feature">
-                            <span class="fa fa-pencil"></span>
+                        <button name="edit" type="button" title="Edit this feature" class="btn btn-warning btn-edit btn-round sidebar-link btn-feature">
+                            <span name="edit" class="fa fa-pencil"></span>
                         </button>
                     </div>
                     
                     <div class="btn-group btn-group-lg hidden-xs" role="group">
-                        <button type="button" title="Delete this feature" class="btn btn-danger btn-round btn-delete btn-feature">
-                            <span class="fa fa-times"></span>
+                        <button name="delete" type="button" title="Delete this feature" class="btn btn-danger btn-round btn-delete btn-feature">
+                            <span name="delete" class="fa fa-times"></span>
                         </button>
                     </div>
                     
                     {% if (o.amount) { %}
                         <div class="btn-group btn-group-lg" role="group">
-                            <button type="button" title="The garbage has been cleaned" class="btn btn-round btn-success btn-cleaned btn-feature">
-                                <span class="fa fa-check"></span>
+                            <button name="cleaned" type="button" title="The garbage has been cleaned" class="btn btn-round btn-success btn-cleaned btn-feature">
+                                <span name="cleaned" class="fa fa-check"></span>
                             </button>
                         </div>
                     {% } %}
                     
                     {% if (o.amount) { %}
                         <div class="btn-group btn-group-lg" role="group">
-                            <button type="button" title="Confirm there is garbage here" class="btn btn-round btn-info btn-confirm-garbage btn-feature">
-                                <span class="fa fa-binoculars"></span>
+                            <button name="confirm" type="button" title="Confirm there is garbage here" class="btn btn-round btn-info btn-confirm-garbage btn-feature">
+                                <span name="confirm" class="fa fa-binoculars"></span>
                             </button>
                             <span class="badge badge-notify badge-notify-confirm">{%=o.confirms%}</span>
                         </div>
@@ -34,16 +34,16 @@
                     
                     {% if (o.datetime) { %}
                         <div class="btn-group btn-group-lg" role="group">
-                            <button type="button" title="Say you will help" class="btn btn-round btn-info btn-attend-cleaning btn-feature">
-                                <span class="fa fa-group"></span>
+                            <button name="attend" type="button" title="Say you will help" class="btn btn-round btn-info btn-attend-cleaning btn-feature">
+                                <span name="attend" class="fa fa-group"></span>
                             </button><span class="badge badge-notify badge-notify-attend">{%=o.attends%}</span>
                         </div>
                     {% } %}
                     
                     {% if (o.contact) { %}
                         <div class="btn-group btn-group-lg" role="group">
-                            <button type="button" title="Join game" class="btn btn-round btn-info btn-join-game modal-link btn-feature" btn-feature>
-                                <span class="fa fa-play"></span>
+                            <button name="join" type="button" title="Join game" class="btn btn-round btn-info btn-join-game modal-link btn-feature" btn-feature>
+                                <span name="join" class="fa fa-play"></span>
                             </button><span class="badge badge-notify badge-notify-join">{%=o.participants%}</span>
                         </div>
                     {% } %}

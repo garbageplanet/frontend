@@ -9,7 +9,7 @@ var actions = (function () {
     'use strict';
 
     var tempmarkers = [],        
-        mapClick = function (map) {
+        mapClick = function mapClick (map) {
 
             // Check that there's not already something else going on in the UI
             if (!tools.checkOpenUiElement(map)){
@@ -55,7 +55,7 @@ var actions = (function () {
                   
                     // This passes the marker obj directly to unsavedMarkerClick as an obj
                     marker.on('click', function() {
-                        unsavedMarkerClick(marker);
+                        _unsavedMarkerClick(marker);
                     });
                   
                     // Set listeners in the case the marker isn't saved
@@ -67,7 +67,7 @@ var actions = (function () {
                 }
             }
         },
-        unsavedMarkerClick = function (m) {
+        _unsavedMarkerClick = function _unsavedMarkerClick (m) {
             
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
             // inside a form for another marker else it's possible to modify a new marker with
@@ -98,7 +98,7 @@ var actions = (function () {
                 ui.sidebar.show($("#create-marker-dialog").fadeIn());
             }
         },
-        featureClick = function (e, obj) {
+        featureClick = function featureClick (e, obj) {
 
             console.log("map feature clicked: ", obj);
             console.log("map feature clicked event: ", e);
@@ -131,70 +131,85 @@ var actions = (function () {
                 }
             }
         },
-        /*act = function(t, o) {
-            // t = target, o = feature object
+        act = function act (t, o) {
+            // NOTE t = classname for click target, o = feature object
+            // we must check for both icon and button class because they can both catch clicks
+          
+            console.log('acting...');
+            console.log(o);
+            var t = t.trim();
+            // oo, options only
+            var oo = o.options;
+            console.log('trimmed value t: ', t);
 
-            t = t.trim();
-            // credit mrhoo@sitepoint https://www.sitepoint.com/community/t/using-regexp-in-switch-case-statement/4880/3
+            switch (t) {
+                                
+                case 'cleaned' : _cleanGarbage(oo);
+                break;
 
-            var regX= /^((cleaned|check)|(confirm|binoculars)|(group|attend)|(join|play)|(times|delete)|(pencil|edit))$/i;;
-            var mt= regX.exec(t);
-            if(!mt) return false;
+                case 'confirm' : _confirmGarbage(oo);
+                break;
 
-            switch(mt[1]){
-                case mt[2]:'cleanGarbage(o)';
+                case 'attend' : _attendCleaning(oo);
                 break;
-                case mt[3]:'confirmGarbage(o)';
-                break;
-                case mt[4]:'attendCleaning(o)';
-                break;
-                case mt[5]:'joinGame(o)';
-                break;
-                case mt[6]:'deleteFeature(o)';
-                break;
-                case mt[7]:'editFeature(o)';
-                break;
-                default: return false;
-            }
-        */
-        editFeature = function (e) {
-            // TODO fill the form templates with the current marker data
-            // TODO more secure way to restrict edition, must match current session token with id in backend
-            // TODO Push the data to the form on .btn-edit click (requires to build all forms with templates)
-            var userid = localStorage.getItem('userid'),
-                useridmatch = e.created_by;
-                // id = marker._leaflet_id;
 
-            if (userid == useridmatch) {
+                case 'join' : _joinGame(oo);
+                break;
+                // pass the full leaflet object to the delete method
+                case 'delete' : _deleteFeature(o);
+                break;
 
-                // ui.bottombar.hide();
-                // TEMPORARY warning about edit system
-                alerts.showAlert(11, "warning", 3000);
-              
-                /*if (e.feature_type === 'marker_garbage') {
-                    ui.sidebar.show($('#create-garbage-dialog'))
-                    forms.passMarkerToForm(id);
-                }
-                if (e.feature_type === 'marker_cleaning') {
-                    ui.sidebar.show($('#create-cleaning-dialog'))
-                    forms.passMarkerToForm(id);
-                }
-                if (e.feature_type === 'polyline_litter') {
-                    ui.sidebar.show($('#create-litter-dialog'))
-                    forms.passMarkerToForm(id);
-                }
-                if (e.feature_type === 'polygon_area') {
-                    ui.sidebar.show($('#create-area-dialog'))
-                    forms.passMarkerToForm(id);
-                }*/
-            }
-
-            else {
-                alerts.showAlert(9, "danger", 3000);
-                return;
+                case 'edit' : _editFeature(oo);
+                break;
+                
+                default: return;
             }
         },
-        confirmGarbage = function (e) {
+        _editFeature = function editFeature (e) {
+          
+            if (!localStorage.getItem('token')){
+                alerts.showAlert(3, "info", 2000);
+                return;
+
+            } else {
+                // TODO fill the form templates with the current marker data
+                // TODO more secure way to restrict edition, must match current session token with id in backend
+                // TODO Push the data to the form on .btn-edit click (requires to build all forms with templates)
+                var userid = localStorage.getItem('userid'),
+                    useridmatch = e.created_by;
+                    // id = marker._leaflet_id;
+
+                if (userid == useridmatch) {
+
+                    // ui.bottombar.hide();
+                    // TEMPORARY warning about edit system
+                    alerts.showAlert(11, "warning", 3000);
+
+                    /*if (e.feature_type === 'marker_garbage') {
+                        ui.sidebar.show($('#create-garbage-dialog'))
+                        forms.passMarkerToForm(id);
+                    }
+                    if (e.feature_type === 'marker_cleaning') {
+                        ui.sidebar.show($('#create-cleaning-dialog'))
+                        forms.passMarkerToForm(id);
+                    }
+                    if (e.feature_type === 'polyline_litter') {
+                        ui.sidebar.show($('#create-litter-dialog'))
+                        forms.passMarkerToForm(id);
+                    }
+                    if (e.feature_type === 'polygon_area') {
+                        ui.sidebar.show($('#create-area-dialog'))
+                        forms.passMarkerToForm(id);
+                    }*/
+                }
+
+                else {
+                    alerts.showAlert(9, "danger", 3000);
+                    return;
+                }
+            }
+        },
+        _confirmGarbage = function confirmGarbage (e) {
 
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
@@ -232,11 +247,13 @@ var actions = (function () {
 
                     // update litters if we confirmed litter
                     if (message.indexOf('litter') === 0) {
-                        features.loadLitters();
+                        // features.loadLitters();
+                        features.loadFeature('litter');
                     }
                     // else update trash markers to reflect new data
                     else {
-                        features.loadGarbageMarkers();
+                        // features.loadGarbageMarkers();
+                        features.loadFeature('garbage');
                     }
                 });
                 confirmcall.fail(function() {
@@ -244,59 +261,89 @@ var actions = (function () {
                 });
             }
         },
-        deleteFeature = function (o) {
+        _deleteFeature = function deleteFeature (o) {
 
             console.log("object passed to function: ", o);
             // debugger;
-
+            // cf, short for current feature
+            var cf = o.options;
             // Set the ajax type and url for deletion given the type of feature
-            if (o.options.feature_type) {
+            if (cf.feature_type) {
 
-                switch (o.options.feature_type) {
+                switch (cf.feature_type) {
 
                     case 'marker_cleaning':
                       var deletemethod = api.deleteCleaning.method;
-                      var deleteurl = api.deleteCleaning.url(o.options.id);
+                      var deleteurl = api.deleteCleaning.url(cf.id);
                       break;
 
                     case 'polyline_litter':
                       var deletemethod = api.deleteLitter.method;
-                      var deleteurl = api.deleteLitter.url(o.options.id);
+                      var deleteurl = api.deleteLitter.url(cf.id);
                       break;
 
                     case 'polygon_area':
                       var deletemethod = api.deleteArea.method;
-                      var deleteurl = api.deleteArea.url(o.options.id);
+                      var deleteurl = api.deleteArea.url(cf.id);
                       break;
 
                     case 'marker_garbage':
                       var deletemethod = api.deleteTrash.method;
-                      var deleteurl = api.deleteTrash.url(o.options.id);
+                      var deleteurl = api.deleteTrash.url(cf.id);
                       break;
+                    
+                    case 'link_marker':
+                      var deletemethod = api.deleteLink.method;
+                      var deleteurl = api.deleteLink.url(cf.id);
+                      break;
+                    
+                    default: console.log('error deleting item');
                 }
 
                 var useToken = localStorage.getItem('token') || tools.token;
 
-                if ((o.options.marked_by || o.options.created_by)  == localStorage.getItem('userid')) {
+                if ((cf.marked_by || cf.created_by)  == localStorage.getItem('userid')) {
 
                     var deletecall = $.ajax({
-
                         type: deletemethod,
                         url: deleteurl,
-                        headers: {"Authorization": "Bearer " + useToken},
-                        success: function(response) {
-                            console.log("delete success: ", response);
-                        },
-                        error: function(response) {
-                            console.log("delete error: ", response);
-                        }
+                        headers: {"Authorization": "Bearer " + useToken}
                     });
                   
                     deletecall.done(function(response) {
+                        // itd item to delete
+                        // var itd = null;
+                        maps.map.removeLayer(o);
                         alerts.showAlert(7, "success", 1500);
                         ui.bottombar.hide();
-                        maps.map.removeLayer(o);
+                      
+                        // Get the right map layer from which to delete the feature
+                        /*switch (o.feature_type) {
+                            
+                            case 'marker_cleaning':
+                              itd = maps.cleaningLayerGroup.getLayer(o.id);
+                              break;
+
+                            case 'polyline_litter':
+                              itd = maps.litterLayerGroup.getLayer(o.id);
+                              break;
+
+                            case 'polygon_area':
+                              itd = maps.areaLayerGroup.getLayer(o.id);
+                              break;
+
+                            case 'marker_garbage':
+                              itd = maps.garbageLayerGroup.getLayer(o.id);
+                              break;
+
+                            case 'link_marker':
+                              itd = maps.linkLayerGroup.getLayer(o.id);
+                              break;
+                        }*/
+                        
+                        
                     });
+                  
                     deletecall.fail(function() {
                         alerts.showAlert(6, "warning", 2000);
                     });
@@ -313,7 +360,7 @@ var actions = (function () {
                 return;
             }
         },
-        attendCleaning = function (e) {
+        _attendCleaning = function attendCleaning (e) {
              // TODO make session-dependant and allow once per user per marker
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
@@ -338,14 +385,15 @@ var actions = (function () {
                 attendcall.done(function(response) {
                     // push the new data to the bottom bar
                     ui.pushDataToBottomPanel(response.data.data);
-                    features.loadCleaningMarkers();
+                    // features.loadCleaningMarkers();
+                    features.loadFeature('cleaning');
                 });
                 attendcall.fail(function() {
                     alerts.showAlert(10, "info", 2000);
                 });
             }
         },
-        cleanGarbage = function (e) {
+        _cleanGarbage = function cleanGarbage (e) {
           
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
@@ -384,10 +432,12 @@ var actions = (function () {
                     ui.pushDataToBottomPanel(response.data.data);
 
                     if (message.indexOf('litter') === 0) {
-                        features.loadLitters();
+                        // features.loadLitters();
+                        features.loadFeature('litter');
                     }
                     else {
-                        features.loadGarbageMarkers();
+                        // features.loadGarbageMarkers();
+                        features.loadFeature('garbage');
                     }
                 });
                 cleancall.fail(function() {
@@ -395,7 +445,12 @@ var actions = (function () {
                 });
             }
         },
-        _bindEvents = function () {
+        _joinGame = function joinGame (e) {
+            console.log('game not implemented');
+            return;
+        },
+        _bindEvents = function _bindEvents () {
+            // NOTE the event listeners for most map feature actions are set in the ui/ui.js file in ui.pushDataToBottomPanel() because we need to bind the feature data for each action
             console.log('binding basic map action');
             maps.map.on('click', mapClick);
         },
@@ -413,11 +468,6 @@ var actions = (function () {
   
     return { mapClick: mapClick,
              featureClick: featureClick,
-             editFeature: editFeature,
-             confirmGarbage: confirmGarbage,
-             deleteFeature: deleteFeature,
-             attendCleaning: attendCleaning,
-             cleanGarbage: cleanGarbage,
-             tempmarkers: tempmarkers
-    };
+             tempmarkers: tempmarkers,
+             act: act };
 }());
