@@ -142,6 +142,13 @@ var tools = {
             return (new Date(d) < new Date()) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
         }
     },
+    getMarkerFromArray: function (arr, value) {
+
+        for (var i=0, len=arr.length; i<len; i++) {
+
+            if (arr[i]._leaflet_id == value) return arr[i];
+        }
+    },
     getCurrentBounds: function () {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         console.log
@@ -260,6 +267,8 @@ var tools = {
         /*console.log('*******************');
         console.log(actions.tempmarkers);
         console.log('*******************');*/
+
+        // FIXME with tools.getMarkerFromArray()
                   
         if (id > 0 && (id || typeof id != 'undefined')) {
             // console.log('id from resetIconStyle: ', id)
@@ -307,14 +316,8 @@ var tools = {
             tools.resetIconStyle(id);
         });
 
-        /*$('.menu-backlink').click(function(e) {
-             e.preventDefault();
-            // Remove the styling for temp markers
-            tools.resetIconStyle(id);
-        });*/
-        
         // Close sidebar if cancel button clicked and delete unsaved markers
-        cancelbutton.on('click', function (e){
+        cancelbutton.on('click', function (e) {
             e.preventDefault();
             ui.sidebar.hide();
             if (id) {
@@ -325,7 +328,6 @@ var tools = {
               maps.unsavedMarkersLayerGroup.clearLayers();
               actions.tempmarkers = [];
             }
-
         }); 
     },
  /**

@@ -9,13 +9,10 @@ var forms = (function () {
     var _bindEvents = function _bindEvents (type) {
 
             // This function activate the widgets and init the form submission code in js/forms/submit.js
-            var selectPickers = $('.selectpicker'),
-                currentForm = $(".form-feature"),
-                saveButton = $(".btn-save");
 
             // Force styling of multiselects
             // other options are already set in the html
-            selectPickers.selectpicker({ 
+            $('.selectpicker').selectpicker({ 
                 style: 'btn-lg btn-default text-center', 
                 size: 6
             });
@@ -34,7 +31,7 @@ var forms = (function () {
             $(".form-feature").bind("keypress", function(e) {
 
                 if (e.keyCode === 13) {
-                    saveButton.attr('type');
+                    $(".btn-save").attr('type');
                     e.preventDefault();
                 }
             });
@@ -42,7 +39,7 @@ var forms = (function () {
             // TODO uncheck siblings in the amount selector when clicking on the next one else
             // all values are passed to the forms
 
-            // initiate the uploader
+            // initiate the image uploader
             _initUploader();
       
             // initiate drawing stuff
@@ -57,8 +54,8 @@ var forms = (function () {
         },
         _formDispatcher = function _formDispatcher (id, targetLinkClass) {
           
-            console.log("id from form dispatcher: ", id);
-            console.log("link class from form dispatcher: ", targetLinkClass );
+            console.log("id from _formDispatcher: ", id);
+            console.log("link class from _formDispatcher(): ", targetLinkClass );
             // TODO extract this logic to tools.dispatcher so we can dispatch any type of function with any callback
             var types = { 'garbage': 'garbage', 
                           'cleaning': 'cleaning',
@@ -80,41 +77,48 @@ var forms = (function () {
         passMarkerToForm = function passMarkerToForm  (id) {
 
             "use strict";
-            // the id of the map feature (for a single latlng marker)
-            var id = id;
             $('.create-dialog').on('click', function(e) {
                 // this is a really lousy way to fetch the marker id, we could simply rely on latlng  hidden input
                 e.preventDefault();
                 var ct = $(this).attr('href').toString();  
                 console.log(ct);
+                console.log("id from passMarkerToForm(): ", id);
                 _formDispatcher(id, ct);
             });
         },
         _makeForm = function _makeForm (id, type) {
           
+            var typeobj = {};
+            var typeid = null;
+            var marker, latlng;
+          
             // var type = type.trim();
             // TODO use switch statement
 
             // Build a mock object to pass to the templating engine so we can use conditional blocks
-            var typeobj = {};
+            typeobj = {};
             typeobj[type] = type;
             console.log('typeobj', typeobj);
+            console.log("id from _makeForm(): ", id);
 
             // add a marker with data from a webpage scraped using the Opengraph scraper
+            // this form opens inside a modal
+            // TODO make a sidebar form?
             if (type === 'opengraph') {
               
                 ui.makeModal(type, null);
               
                 console.log('opengraph form');
-                var marker = actions.tempmarkers[id];              
-                var latlng = marker.getLatLng();
+                // marker = actions.tempmarkers[id]; 
+                marker = tools.getMarkerFromArray(actions.tempmarkers,id);
+                latlng = marker.getLatLng();
                 $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
                 // return;
             }
 
             else {
               
-                var typeid = 'create-' + type + '-dialog';
+                typeid = 'create-' + type + '-dialog';
                 console.log(typeid);
               
                 // Fill the templates
@@ -138,14 +142,20 @@ var forms = (function () {
                     if (type === "area") {
                         console.log('area form');
                     }
-                    //return;
                 }
 
                 else {
 
                     // Forms for single point markers
-                    var marker = actions.tempmarkers[id];              
-                    var latlng = marker.getLatLng();
+                    // marker = actions.tempmarkers[id];
+                  
+                    // FIXME
+                    marker = tools.getMarkerFromArray(actions.tempmarkers,id);
+                  
+                  
+                    console.log("marker obj from _makeForm()", marker);
+                    console.log("tempmarker obj from _makeForm()", actions.tempmarkers);
+                    latlng = marker.getLatLng();
 
                     if (type === "garbage") {
 
@@ -156,7 +166,7 @@ var forms = (function () {
                         // TODO Pass the latlng as an object once templates are in place
                         $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
 
-                        $('input[type=radio]').on('change', function() {
+                        $('input[type=radio]').on('change', function () {
 
                             // Remove the generic marker class
                             $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');

@@ -10,38 +10,36 @@ var actions = (function () {
 
     var tempmarkers = [],        
         mapClick = function mapClick (map) {
-
-            // Check that there's not already something else going on in the UI
-            if (!tools.checkOpenUiElement(map)){
+          
+            // this function needs to bepublic because we should be able to
+            // pause the listener (map.off('click')) from outside
+            var marker;
+          
+            // Check that there's not already something else going on in the UI and if yes then we don't do anything with the click
+            if (!tools.checkOpenUiElement(map)) {
                 return;
             }
             // Else place a marker on the map
             else {
               
                 // Make the actual marker and add it to the map
-                var marker = L.marker(map.latlng, {
-                    icon: maps.icons.genericMarker,
-                    draggable: false,
-                    feature_type: 'marker_generic'
-                });
-              
+                marker = L.marker(map.latlng, { icon: maps.icons.genericMarker, draggable: false, feature_type: 'marker_generic' });
                 marker.addTo(maps.unsavedMarkersLayerGroup);
-                var markerid = marker._leaflet_id;
-                // Save the temp marker into an array
-                actions.tempmarkers[markerid] = marker;
-                
-                // Send the marker id to the forms so we can retrive the object
-                // TODO better way to keep the marker in the same context so we don't need to bother with that
-                forms.passMarkerToForm(markerid);
               
+                // Save the temp marker into a temp array
+                // actions.tempmarkers[markerid] = marker;
+                // actions.tempmarkers.splice(marker._leaflet_id, 0, marker);
+                actions.tempmarkers.push(marker);
                 
-
+                // Send the marker id to the forms so we can retrieve the object
+                // TODO better way to keep the marker in the same context so we don't need to bother with that
+                forms.passMarkerToForm(marker._leaflet_id);
+              
                 // Show the menu with a delay on mobile
                 if (window.isMobile) {
                     // Pan the map to center the marker  
                     maps.map.panTo(marker.getLatLng());
                   
-                    console.log('showing sidebar with a delay')
                     setTimeout( function(){
                         ui.sidebar.show($("#create-marker-dialog").show());
                     }, 1000);
@@ -54,13 +52,18 @@ var actions = (function () {
                     maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
                   
                     // This passes the marker obj directly to unsavedMarkerClick as an obj
-                    marker.on('click', function() {
+                    /*marker.on('click', function () {
                         _unsavedMarkerClick(marker);
-                    });
+                    });*/
+                  
+                    // FIXME this or the one above?
+                    marker.on('click', _unsavedMarkerClick);
                   
                     // Set listeners in the case the marker isn't saved
-                    tools.bindTempMarkerEvents(markerid);
-                    // Reset the sidebar contents
+                    tools.bindTempMarkerEvents(marker._leaflet_id);
+                  
+                    // Reset the sidebar contents and show the form container
+                    // the form itself is built from template from the function forms.passMarkerToForm() above
                     $('.sidebar-content').hide();
                     $('#sidebar').scrollTop = 0;
                     ui.sidebar.show($("#create-marker-dialog").show());
@@ -68,40 +71,35 @@ var actions = (function () {
             }
         },
         _unsavedMarkerClick = function _unsavedMarkerClick (m) {
-            
+                      
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
             // inside a form for another marker else it's possible to modify a new marker with
             // another marker not cleared nor saved
             if (!window.mobile) {
-                actions.tempmarkers.forEach(function(index){
+                actions.tempmarkers.forEach(function (index) {
                     // console.log('index from unsavedMarkerClick loop: ', index._leaflet_id);
                     tools.resetIconStyle(index._leaflet_id);
                 });
             }
-                              
-            var marker = m,
-                markerid = m._leaflet_id,
-                // marker = actions.tempmarkers[markerid],
-                latlng = marker.getLatLng();                
+          
+            console.log("unsaved marker id from unsavedMarkerClick: ", m._leaflet_id);
+            console.log("unsaved marker obj from unsavedMarkerClick: ", m);
 
-            console.log("unsaved marker id from unsavedMarkerClick: ", markerid);
-            console.log("unsaved marker obj from unsavedMarkerClick: ", marker);
-
-            forms.passMarkerToForm(markerid);
+            forms.passMarkerToForm(m._leaflet_id);
           
             // Behavior for large screens
             if (!window.isMobile) {
 
-                maps.map.panToOffset(latlng, tools.getHorizontalOffset());
+                maps.map.panToOffset(m.getLatLng(), tools.getHorizontalOffset());
                 $('#sidebar').scrollTop = 0;
                 $('.sidebar-content').hide();
                 ui.sidebar.show($("#create-marker-dialog").fadeIn());
             }
         },
-        featureClick = function featureClick (e, obj) {
+        _featureClick = function featureClick (obj) {
 
-            console.log("map feature clicked: ", obj);
-            console.log("map feature clicked event: ", e);
+            console.log("map feature clicked obj: ", obj);
+            // console.log("map feature clicked event: ", e);
           
             // Check that there's not already something else going on in the UI
             // TODO need to bypass the bottombar check because we just want to update its contents
@@ -110,25 +108,27 @@ var actions = (function () {
                 return;
             }*/
 
-            L.DomEvent.stopPropagation(e);
+            // L.DomEvent.stopPropagation(e);
 
-            if (obj.options) {
+            if (obj.layer.options) {
                 // check if the feature is a shape
-                if (obj.options.shape) {
-                    // setTimeout(function () {
-                    maps.map.panToOffset(obj.getCenter(), tools.getVerticalOffset());
-                    ui.pushDataToBottomPanel(obj);
-                    //}, 100);
+                if (obj.layer.options.shape) {
+                  
+                    maps.map.panToOffset(obj.layer.getCenter(), tools.getVerticalOffset());
+                    ui.pushDataToBottomPanel(obj.layer);
                 }
 
                 // if not a shape clicked it's a marker, bring it to the map center with panToOffset()
-                if (!obj.options.shape) {
+                if (!obj.layer.options.shape) {
                     // Rise the marker to the top of others
-                    var currentZindex = obj._zIndex;
-                    obj.setZIndexOffset(currentZindex + 10000);
-                    maps.map.panToOffset(obj.getLatLng(), tools.getVerticalOffset());
-                    ui.pushDataToBottomPanel(obj);
+                    var currentZindex = obj.layer._zIndex;
+                    obj.layer.setZIndexOffset(currentZindex + 10000);
+                    maps.map.panToOffset(obj.layer.getLatLng(), tools.getVerticalOffset());
+                    ui.pushDataToBottomPanel(obj.layer);
                 }
+            } else { 
+              console.log('no options in the object');
+              return; 
             }
         },
         act = function act (t, o) {
@@ -450,9 +450,22 @@ var actions = (function () {
             return;
         },
         _bindEvents = function _bindEvents () {
-            // NOTE the event listeners for most map feature actions are set in the ui/ui.js file in ui.pushDataToBottomPanel() because we need to bind the feature data for each action
+          
+            // NOTE the event listeners for most map feature actions are set in the ui/ui.js file in ui.pushDataToBottomPanel() 
+            // because we need to bind the feature data for each action
             console.log('binding basic map action');
             maps.map.on('click', mapClick);
+          
+            // binding the 'click' on the L.clustermarkers only listen for click on actual markers, not the cluster markers
+            maps.garbageLayerGroup.on('click', _featureClick);
+            maps.litterLayerGroup.on('click', _featureClick);
+          
+            // Bind click on standard L.featureGroup
+            maps.cleaningLayerGroup.on('click', _featureClick);
+            maps.areaLayerGroup.on('click', _featureClick);
+          
+            // bind click to unsavedmarkers
+            maps.unsavedMarkersLayerGroup.on('click', _unsavedMarkerClick);
         },
         _init = (function () {
           
@@ -467,7 +480,6 @@ var actions = (function () {
         }());
   
     return { mapClick: mapClick,
-             featureClick: featureClick,
              tempmarkers: tempmarkers,
              act: act };
 }());

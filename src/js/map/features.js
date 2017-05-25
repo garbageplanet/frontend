@@ -99,9 +99,9 @@ var features =  (function () {
                     // Set the class for the marker color after the icon is loaded on the map
                     $(marker._icon).addClass(tools.setMarkerClassColor(o.amount));
 
-                    marker.on('click', function(e) {
+                    /*marker.on('click', function(e) {
                         actions.featureClick(e, this)
-                    });
+                    });*/
                 });
             });
         },
@@ -146,10 +146,10 @@ var features =  (function () {
                             });
                                  
                         marker.addTo(maps.cleaningLayerGroup);
-                        marker.on('click', function(e) {
+                        /*marker.on('click', function(e) {
                             // Bind click listener
                             actions.featureClick(e, this);
-                        });
+                        });*/
                     });
             });
             /* fetchCleaning.fail(function(data){
@@ -199,10 +199,10 @@ var features =  (function () {
 
                       maps.areaLayerGroup.addLayer(polygonLayer);
                       // map.addLayer(areaLayerGroup);
-                      polygonLayer.on('click', function(e) {
+                      /*polygonLayer.on('click', function(e) {
                           // Bind click listener
                           actions.featureClick(e, polygonLayer);
-                      });
+                      });*/
                     }
                 );
             });
@@ -256,10 +256,10 @@ var features =  (function () {
 
                     maps.litterLayerGroup.addLayer(polylineLayer);
                     // map.addLayer(litterLayerGroup);
-                    polylineLayer.on('click', function(e) {
+                    /*polylineLayer.on('click', function(e) {
                         // Bind click listener
                         actions.featureClick(e, polylineLayer);
-                    });
+                    });*/
                 });
             });
             /* fetchLitter.fail(function() {}); */
