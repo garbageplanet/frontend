@@ -142,13 +142,13 @@ var tools = {
             return (new Date(d) < new Date()) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
         }
     },
-    getMarkerFromArray: function (arr, value) {
+    /*getMarkerFromArray: function (arr, value) {
 
         for (var i=0, len=arr.length; i<len; i++) {
 
             if (arr[i]._leaflet_id == value) return arr[i];
         }
-    },
+    },*/
     getCurrentBounds: function () {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         console.log
@@ -263,38 +263,34 @@ var tools = {
         console.log(allMarkersObjArray);
     },
     resetIconStyle: function (id) {
-      
-        /*console.log('*******************');
-        console.log(actions.tempmarkers);
-        console.log('*******************');*/
-
-        // FIXME with tools.getMarkerFromArray()
                   
         if (id > 0 && (id || typeof id != 'undefined')) {
-            // console.log('id from resetIconStyle: ', id)
-            // var marker = maps.unsavedLayerGroup.getLayer(id);
-            var marker = actions.tempmarkers[id];
-            // console.log('marker obj: ', marker);
+          
+            console.log('id from resetIconStyle: ', id)
+            
+            var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
+
+            console.log('marker obj from resetIconStyle(): ', marker);
+          
             if (marker) {
                 var markericon = $(marker._icon) || 'undefined';
             }
 
             if (markericon || typeof markericon != 'undefined' && marker) {
-                markericon.removeClass('marker-garbage');
-                markericon.removeClass('marker-cleaning');
+              
+                markericon.removeClass('marker-garbage marker-cleaning');
+                // markericon.removeClass('marker-cleaning');
+              
+                // Remove any class color from the icon and add the generic marker class and color
                 markericon.removeClass(function(index, css) {
                     return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-generic');
+                
                 markericon.addClass('marker-color-gray');
-            } else {
               
-               return;
-            }
+            } else {  return; }
           
-            return;
-        }
-        // Return false if 
-        return false;
+        } else { return; }
     },
     states : {
       currentZoom: null,
@@ -302,14 +298,14 @@ var tools = {
       roundedBounds: null
     },
  /**
-   * @namespace tools.bindTempMarkerEvents - this function set event listeners for a marker when this particular marker is 
-                                             the focus of the current form
-   * @method bindTempMarkerEvents()
+   * @namespace tools - this function set event listeners for a marker when this particular marker is 
+                        the focus of the current form
+   * @method bindUnsavedMarkerEvents()
    * @param {string} map marker id - the id of the marker to which the events need to be bound
    */
-    bindTempMarkerEvents: function (id) {
+    bindUnsavedMarkerEvents: function (id) {
         
-        var marker = actions.tempmarkers[id];
+        var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
         var cancelbutton = $('.btn-cancel');
         
         ui.sidebar.on ('hide', function() {
@@ -326,7 +322,6 @@ var tools = {
             }
             else { 
               maps.unsavedMarkersLayerGroup.clearLayers();
-              actions.tempmarkers = [];
             }
         }); 
     },

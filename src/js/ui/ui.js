@@ -153,21 +153,22 @@ var ui = (function () {
             var feature = obj,
                 featuredata = obj.options,
                 featureinfo;
-          
-            // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the direct object
+            // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the obj var
             if (!featuredata) {
                 featuredata = obj;
             }
           
+            // FIXME the bottombar appareas and disappears immy when clicking on shapes
+            console.log('***********************************');
+            console.log('feature obj from pushDataToBottomPanel()',feature);
+            console.log('feature data from pushDataToBottomPanel()',featuredata);
+            console.log('***********************************');
             // Fill the template data
             document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
-
             // Set the vars after loading the template
             featureinfo = $('#feature-info');
-
             // TODO use bottombar.getContent() in conjunction with template creation above
             ui.bottombar.show(featureinfo.fadeIn());
-
             // Add an IMGUR api character to the url to fetch thumbnails only
             if (featuredata.image_url) {
                 var image_url_insert = tools.insertString(featuredata.image_url, 26, 'b');
@@ -194,25 +195,26 @@ var ui = (function () {
                 trigger: 'focus',
                 html : true, 
                 container: 'body',
-                placement: function(pop) {
+                placement: function (pop) {
                     if (window.isMobile) {
                         return 'top';
                     } else {
                         return 'right';
                     }
                 },
-                content: function() {
+                content: function () {
                     return $('#social-links').html();
                 },
                 template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
             });
 
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
-            $('.btn-feature').on('click', function(e) {
+            $('.btn-feature').on('click', function (e) {
               
                 // var ct = e.target.className;
                 var ct = $(this).attr('name');
                 console.log(ct);
+              
                 // Send the full leaflet object to actions dispatch function
                 actions.act(ct, feature);
             });
@@ -229,13 +231,12 @@ var ui = (function () {
                 modaltablebodyid,
                 modalid,
                 modalbodyid,
-                datatableoptions = {
-                    lengthMenu:     [[5, 10, 20, -1], [5, 10, 20, "All"]],
-                    scrollY:        '50vh',
-                    scrollCollapse: true,
-                    paging:         false,
-                    retrieve:       true
-                };
+                datatableoptions = { lengthMenu:     [[5, 10, 20, -1], [5, 10, 20, "All"]],
+                                     scrollY:        '50vh',
+                                     scrollCollapse: true,
+                                     paging:         false,
+                                     retrieve:       true };
+          
             var modalid          = 'modal-'      + type,
                 modaltmplname    = 'tmpl-modal-' + type,
                 modaltableid     = '#modal-'     + type + '-table',
@@ -258,7 +259,7 @@ var ui = (function () {
                     $('#' + modalid).find('input').focus();
                 }
                 // Bind the action to launch the scraper
-                $('.btn-opengraph-fetch').click(function() {
+                $('.btn-opengraph-fetch').click(function () {
                     // Retrieve the value of the url
                     var url = $('#opengraph-url').val();
                   
@@ -301,7 +302,7 @@ var ui = (function () {
                     $('#' + modalid).modal('show');   
 
                     // Attach events for buttons
-                    $('#modal-data-load-more').on('click', function() {
+                    $('#modal-data-load-more').on('click', function () {
                         maps.map.setZoom(maps.map.getZoom() - 1);
                         $('.modal-data-row').empty();
                         // TODO use the api to add row dymagically
@@ -309,7 +310,7 @@ var ui = (function () {
                         $(modaltableid).DataTable(datatableoptions);
                     });
 
-                    $('#modal-download').on('click', function(e) {
+                    $('#modal-download').on('click', function (e) {
                         e.preventDefault;
                         var stringdata = "text/json;charset=utf-8," + JSON.stringify(arr);
                         this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));            
@@ -331,7 +332,7 @@ var ui = (function () {
             // Navigation for sidebar links
             // TODO actual routing
             // FIXME listeners not set when generating forms from templates
-            $('.sidebar-link').click(function(e) {
+            $('.sidebar-link').click(function (e) {
 
                 e.preventDefault();
 
@@ -344,7 +345,7 @@ var ui = (function () {
             });
 
             // Go back to the marker creation menu link
-            menubacklink.click(function(e) {
+            menubacklink.click(function (e) {
                 e.preventDefault();
                 // panelcollapse.collapse('hide');
                 $('#sidebar').scrollTop = 0;
@@ -353,7 +354,7 @@ var ui = (function () {
             });
 
             // Empty the sidebar on hide, reset accordion and reset scroll
-             ui.sidebar.on('hide', function() {
+             ui.sidebar.on('hide', function () {
 
                 $('.sidebar-content').hide();
                 // $('.sidebar-container', '.sidebar-content').scrollTop = 0;
@@ -376,11 +377,10 @@ var ui = (function () {
                       $('.close-right').removeClass('hidden');
                     }
                     maps.unsavedMarkersLayerGroup.clearLayers();
-                    actions.tempmarkers = [];
                 }
             });
 
-            ui.sidebar.on('show', function() {
+            ui.sidebar.on('show', function () {
                 if (ui.bottombar.isVisible()) {
                     ui.bottombar.hide();
                 }
@@ -388,7 +388,7 @@ var ui = (function () {
 
             // TOPBAR //////////////////////////////////////////////////////
             // Activate dropdown menu links in topbar
-            usertools.on('click', 'a', function(e) {
+            usertools.on('click', 'a', function (e) {
 
                 if ($(this).hasClass('dropdown-link')) {
                     e.preventDefault();
@@ -399,7 +399,7 @@ var ui = (function () {
             });
 
             // Show nearby trashbins
-            trashbinbutton.on('click', function() {
+            trashbinbutton.on('click', function () {
                 if(maps.map.getZoom() < 15 ) {
 
                     alerts.showAlert(31, 'info', 2000);
@@ -412,7 +412,7 @@ var ui = (function () {
 
           
             // Set the event listeners for modals in the topbar or elsewhere
-            modallink.on('click', function(e) {
+            modallink.on('click', function (e) {
 
                 e.preventDefault();
 
@@ -432,16 +432,18 @@ var ui = (function () {
           
             // BOTTOMBAR //////////////////////////////////////////////////////////////////
             // Events to execute when the bottombar is hidden
-            ui.bottombar.on('hide', function(e) {
+            ui.bottombar.on('hide', function (e) {
                 // force destroy the popup which hangs on certain tablets (tested on samsung w/ android) 
                 $('.btn-social').popover('destroy');
                 // reset any modals that was created
                 $('.modal').modal('hide').data('bs.modal', null);
+                // empty any content
+                $('#feature-info').empty();
             });
 
             // Events to execute when the bottombat is shown
             // FIXME, need to use tools.checkOpenUiElement()
-            ui.bottombar.on('show', function() {
+            ui.bottombar.on('show', function () {
 
                 // hide the sidebar if it's visible
                 if (ui.sidebar.isVisible()) {
@@ -454,7 +456,7 @@ var ui = (function () {
             });
 
             // Destroy modals upon hiding them
-            $('.modal').on('hidden.bs.modal', function() {
+            $('.modal').on('hidden.bs.modal', function () {
                 $(body).find('.modal').remove();
             });
 

@@ -90,8 +90,6 @@ var drawing = (function () {
 
                 var type = e.layerType,
                     layer = e.layer;
-
-                console.log(actions.tempmarkers);
               
                 // Disable start drawing buttons
                 // TODO entirely disable handlers

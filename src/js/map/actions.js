@@ -8,12 +8,14 @@ var actions = (function () {
 
     'use strict';
 
-    var tempmarkers = [],        
-        mapClick = function mapClick (map) {
+    var mapClick = function mapClick (map) {
           
+            console.log('caught a click to map from actions.mapClick()');
+      
             // this function needs to bepublic because we should be able to
             // pause the listener (map.off('click')) from outside
-            var marker;
+            var marker = null, 
+                markerid = null;
           
             // Check that there's not already something else going on in the UI and if yes then we don't do anything with the click
             if (!tools.checkOpenUiElement(map)) {
@@ -24,16 +26,12 @@ var actions = (function () {
               
                 // Make the actual marker and add it to the map
                 marker = L.marker(map.latlng, { icon: maps.icons.genericMarker, draggable: false, feature_type: 'marker_generic' });
-                marker.addTo(maps.unsavedMarkersLayerGroup);
-              
-                // Save the temp marker into a temp array
-                // actions.tempmarkers[markerid] = marker;
-                // actions.tempmarkers.splice(marker._leaflet_id, 0, marker);
-                actions.tempmarkers.push(marker);
+                // marker.addTo(maps.unsavedMarkersLayerGroup);
+                maps.unsavedMarkersLayerGroup.addLayer(marker);
+                markerid = maps.unsavedMarkersLayerGroup.getLayerId(marker);
                 
-                // Send the marker id to the forms so we can retrieve the object
-                // TODO better way to keep the marker in the same context so we don't need to bother with that
-                forms.passMarkerToForm(marker._leaflet_id);
+                // Send the marker id to the forms so we can retrieve the object without sending it around
+                forms.passMarkerToForm(markerid);
               
                 // Show the menu with a delay on mobile
                 if (window.isMobile) {
@@ -50,17 +48,9 @@ var actions = (function () {
                   
                     // Pan the map to center the marker
                     maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
-                  
-                    // This passes the marker obj directly to unsavedMarkerClick as an obj
-                    /*marker.on('click', function () {
-                        _unsavedMarkerClick(marker);
-                    });*/
-                  
-                    // FIXME this or the one above?
-                    marker.on('click', _unsavedMarkerClick);
-                  
+                                    
                     // Set listeners in the case the marker isn't saved
-                    tools.bindTempMarkerEvents(marker._leaflet_id);
+                    tools.bindUnsavedMarkerEvents(markerid);
                   
                     // Reset the sidebar contents and show the form container
                     // the form itself is built from template from the function forms.passMarkerToForm() above
@@ -70,27 +60,34 @@ var actions = (function () {
                 }
             }
         },
-        _unsavedMarkerClick = function _unsavedMarkerClick (m) {
-                      
+        _unsavedMarkerClick = function _unsavedMarkerClick (obj) {
+                                
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
             // inside a form for another marker else it's possible to modify a new marker with
             // another marker not cleared nor saved
             if (!window.mobile) {
-                actions.tempmarkers.forEach(function (index) {
-                    // console.log('index from unsavedMarkerClick loop: ', index._leaflet_id);
-                    tools.resetIconStyle(index._leaflet_id);
-                });
+              
+                console.log('unsavedMarkersLayerGroup data: ', maps.unsavedMarkersLayerGroup);
+              
+                for (var i in maps.unsavedMarkersLayerGroup._layers) {
+
+                    if (maps.unsavedMarkersLayerGroup._layers.hasOwnProperty(i)) {   
+                        tools.resetIconStyle(i);
+                    }
+                }
             }
           
-            console.log("unsaved marker id from unsavedMarkerClick: ", m._leaflet_id);
-            console.log("unsaved marker obj from unsavedMarkerClick: ", m);
-
-            forms.passMarkerToForm(m._leaflet_id);
+            // console.log("unsaved marker id from unsavedMarkerClick: ", maps.unsavedMarkersLayerGroup.getLayerId(obj));
+            console.log("unsaved marker obj from unsavedMarkerClick: ", obj.layer);
+          
+            // forms.passMarkerToForm(obj.target._leaflet_id);
+            forms.passMarkerToForm(maps.unsavedMarkersLayerGroup.getLayerId(obj.layer));
+            // forms.passMarkerToForm(obj.target);
           
             // Behavior for large screens
             if (!window.isMobile) {
 
-                maps.map.panToOffset(m.getLatLng(), tools.getHorizontalOffset());
+                maps.map.panToOffset(obj.layer.getLatLng(), tools.getHorizontalOffset());
                 $('#sidebar').scrollTop = 0;
                 $('.sidebar-content').hide();
                 ui.sidebar.show($("#create-marker-dialog").fadeIn());
@@ -99,7 +96,11 @@ var actions = (function () {
         _featureClick = function featureClick (obj) {
 
             console.log("map feature clicked obj: ", obj);
-            // console.log("map feature clicked event: ", e);
+            
+            // We must stop the bubbling else the map catches click
+            // obj.originalEvent.preventDefault();
+            L.DomEvent.stopPropagation(obj);
+
           
             // Check that there's not already something else going on in the UI
             // TODO need to bypass the bottombar check because we just want to update its contents
@@ -110,23 +111,23 @@ var actions = (function () {
 
             // L.DomEvent.stopPropagation(e);
 
-            if (obj.layer.options) {
+            if ( obj.layer.options ) {
                 // check if the feature is a shape
-                if (obj.layer.options.shape) {
+                if ( obj.layer.options.shape ) {
                   
                     maps.map.panToOffset(obj.layer.getCenter(), tools.getVerticalOffset());
                     ui.pushDataToBottomPanel(obj.layer);
-                }
+                  
+                } else {
 
-                // if not a shape clicked it's a marker, bring it to the map center with panToOffset()
-                if (!obj.layer.options.shape) {
+                    // if not a shape clicked it's a marker, bring it to the map center with panToOffset()
                     // Rise the marker to the top of others
                     var currentZindex = obj.layer._zIndex;
                     obj.layer.setZIndexOffset(currentZindex + 10000);
                     maps.map.panToOffset(obj.layer.getLatLng(), tools.getVerticalOffset());
                     ui.pushDataToBottomPanel(obj.layer);
                 }
-            } else { 
+            } else {
               console.log('no options in the object');
               return; 
             }
@@ -135,7 +136,7 @@ var actions = (function () {
             // NOTE t = classname for click target, o = feature object
             // we must check for both icon and button class because they can both catch clicks
           
-            console.log('acting...');
+            console.log('acting type: ', t);
             console.log(o);
             var t = t.trim();
             // oo, options only
@@ -210,6 +211,8 @@ var actions = (function () {
             }
         },
         _confirmGarbage = function confirmGarbage (e) {
+          
+            console.log('event value object options from _confirm garbage: ', e);
 
             if (!localStorage.getItem('token')){
                 alerts.showAlert(3, "info", 2000);
@@ -480,6 +483,5 @@ var actions = (function () {
         }());
   
     return { mapClick: mapClick,
-             tempmarkers: tempmarkers,
              act: act };
 }());

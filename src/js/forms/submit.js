@@ -240,13 +240,14 @@
           });      
         }*/
       
-        postrequest.done(function(data) {
+        postrequest.done(function (data) {
           
             console.log(data);
           
             if (ft === 'garbage' || ft === 'cleaning') {
-                maps.unsavedMarkersLayerGroup.clearLayers();
-                actions.tempmarkers = [];
+                // BUG
+                // FIXME this causes a bug where the layreGroup becomes unaccessible
+                // maps.unsavedMarkersLayerGroup.clearLayers();
             }
           
             // Reload map features after an item is saved
@@ -255,19 +256,22 @@
             alerts.showAlert(25, 'success', 1500);
             ui.sidebar.hide('slow');
         });
-        postrequest.fail(function(data) {
+      
+        postrequest.fail(function (data) {
+          
             console.log(data);
+          
             if (data.responseText.indexOf('token_invalid')) {
                 alerts.showAlert(3, 'warning', 2000);
+              
             } else { 
                 alerts.showAlert(10, 'danger', 1500);
             }
             
             ui.sidebar.hide();
             tools.resetIconStyle();
-            // TODO stop the drawing listeners if any
         });          
-        },
+      },
         _bindEvents = function _bindEvents (obj) {
 
             console.log('current formobj: ', obj);

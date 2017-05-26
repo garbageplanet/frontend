@@ -47,7 +47,7 @@ var forms = (function () {
                 drawing.init();
             }
             // Re-initialize some listeners
-            tools.bindTempMarkerEvents();
+            tools.bindUnsavedMarkerEvents();
       
             // activate the form
             saving.init();
@@ -72,48 +72,46 @@ var forms = (function () {
                 }      
             } // adapted from http://stackoverflow.com/a/22277556/2842348
           
-          // TODO catch error
+          // TODO catch error?
         },
         passMarkerToForm = function passMarkerToForm  (id) {
 
-            "use strict";
-            $('.create-dialog').on('click', function(e) {
+            $('.create-dialog').on('click', function (e) {
                 // this is a really lousy way to fetch the marker id, we could simply rely on latlng  hidden input
                 e.preventDefault();
                 var ct = $(this).attr('href').toString();  
+              
                 console.log(ct);
                 console.log("id from passMarkerToForm(): ", id);
+              
                 _formDispatcher(id, ct);
             });
         },
         _makeForm = function _makeForm (id, type) {
           
-            var typeobj = {};
-            var typeid = null;
-            var marker, latlng;
+            var typeobj = {},
+                typeid = null,
+                marker = null, 
+                latlng = null;
           
-            // var type = type.trim();
-            // TODO use switch statement
-
             // Build a mock object to pass to the templating engine so we can use conditional blocks
             typeobj = {};
             typeobj[type] = type;
+          
             console.log('typeobj', typeobj);
             console.log("id from _makeForm(): ", id);
 
             // add a marker with data from a webpage scraped using the Opengraph scraper
             // this form opens inside a modal
-            // TODO make a sidebar form?
+            // TODO make this as a sidebar form?
             if (type === 'opengraph') {
               
                 ui.makeModal(type, null);
               
                 console.log('opengraph form');
-                // marker = actions.tempmarkers[id]; 
-                marker = tools.getMarkerFromArray(actions.tempmarkers,id);
+                marker = maps.unsavedMarkersLayerGroup.getLayer(id);
                 latlng = marker.getLatLng();
                 $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
-                // return;
             }
 
             else {
@@ -130,9 +128,10 @@ var forms = (function () {
                 // Forms for shapes (polylines and areas)
                 if (type === "litter" || type === "area") {
 
+                    // BUG
+                    // FIXME this causes a bug where the layreGroup becomes unaccessible
                     // Delete any unsaved marker icons before drawing shapes
-                    maps.unsavedMarkersLayerGroup.clearLayers();
-                    actions.tempmarkers = [];
+                    // maps.unsavedMarkersLayerGroup.clearLayers();
 
                     if (type === "litter") {
                         // Fill the garbage type multiselect
@@ -147,14 +146,12 @@ var forms = (function () {
                 else {
 
                     // Forms for single point markers
-                    // marker = actions.tempmarkers[id];
-                  
-                    // FIXME
-                    marker = tools.getMarkerFromArray(actions.tempmarkers,id);
-                  
-                  
+                    marker = maps.unsavedMarkersLayerGroup.getLayer(id);
+                    console.log('*****************************************')
                     console.log("marker obj from _makeForm()", marker);
-                    console.log("tempmarker obj from _makeForm()", actions.tempmarkers);
+                    console.log("unsavedMarkersLayerGroup from _makeForm()", maps.unsavedMarkersLayerGroup);
+                    console.log('*****************************************')
+                    
                     latlng = marker.getLatLng();
 
                     if (type === "garbage") {
@@ -188,12 +185,10 @@ var forms = (function () {
                         $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
                         // Set the options on the time and date selects
                         $('#event-date-time-picker')
-                            .datetimepicker({
-                                showClose: true,
-                                ignoreReadonly: true,
-                                focusOnShow: false,
-                                toolbarPlacement: 'top'
-                        });
+                            .datetimepicker({ showClose: true,
+                                              ignoreReadonly: true,
+                                              focusOnShow: false,
+                                              toolbarPlacement: 'top' });
 
                         $('#event-date-time-picker').on('dp.change', function(e) {
                             var eventDateTime = e.date.format('YYYY-MM-DD HH:MM');

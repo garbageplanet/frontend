@@ -23,7 +23,7 @@ var features =  (function () {
                 case 'litter' : _loadLitters();
                 break;
                 
-                case 'areas' : _loadAreas();
+                case 'area' : _loadAreas();
                 break;
                 
                 case 'all' :
@@ -169,11 +169,11 @@ var features =  (function () {
                   console.log('Error getting area data');
                 }
             });
-            fetchArea.done(function(data) {
+            fetchArea.done(function (data) {
               
                 maps.areaLayerGroup.clearLayers();
 
-                $(data).each(function(i, o) {
+                $(data).each(function (i, o) {
 
                     var latlngs = JSON.parse("[" + o.latlngs + "]");
                     var polygonLayer = new L.Polygon(latlngs,
@@ -206,10 +206,9 @@ var features =  (function () {
                     }
                 );
             });
-            /* fetchArea.fail(function(data) {
+            fetchArea.fail(function(data) {
                 alerts.showAlert(10, 'warning', 1500);
-            });*/
-          
+            });
         },
         _loadLitters = function _loadLitters () {
             var fetchLitter = $.ajax({

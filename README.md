@@ -15,6 +15,7 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] move to ES6 modules and build with rollupjs
 
 ### TODO
+- [ ] use leaflet builtin L.DomUtil.get('div_id') instead of jquery selectors
 - [ ] reverse geocode addresses for cleanings
 - [ ] add backend controllers and geographical location capability to html scraping
 - [ ] direct upload of geotagged photo capability
