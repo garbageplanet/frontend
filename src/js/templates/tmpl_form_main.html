@@ -1,12 +1,11 @@
 <script type="text/x-tmpl" id="tmpl-form-main">
-<!-- TODO extract the head and submit buttons from the if blocks
-  and add code for values for the edit system -->
+<!-- TODO extract the head and submit buttons from the if blocks and add code for values for the edit system -->
 {% if (o.garbage) { %}
 
 <form class="form-feature form-garbage" accept-charset="UTF-8" data-toggle="validator">
-  
+
   <h3>
-  <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>--> 
+  <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>-->
   Mark garbage
   </h3>
 
@@ -26,7 +25,7 @@
         <input type="hidden" name="latlng" class="marker-latlng garbage-latlng">
 
         <div class="form-group">
-          <p class="lead">Amount of garbage</p>              
+          <p class="lead">Amount of garbage</p>
           <div class="btn-group btn-group-justified btn-group-amount btn-group-amount-garbage" data-toggle="buttons">
             <label class="btn btn-lg btn-limegreen"><input type="radio" autocomplete="off" value="1" name="amount">1</label>
             <label class="btn btn-lg btn-yellow" ><input type="radio" autocomplete="off" value="2" name="amount">2</label>
@@ -61,8 +60,8 @@
                   mobile="true"
                   required>
               <option value="" disabled="disabled"></option>
-              <option value="1">It's been cleaned up already</option>
-              <option value="2">I need help to clean it up</option>
+              <option value="1">It has been cleaned up already</option>
+              <option value="2">Need help to clean it up</option>
               <option value="3">Need to pick up bags</option>
               <option value="4">Organize a cleaning</option>
               <option value="5">Tell local authorities</option>
@@ -142,8 +141,8 @@
               <span class="input-group-btn">
                   <button class="btn btn-default btn-image-uploader" type="button">
                   <span class="fa fa-fw fa-file-image-o"></span></button>
-                  <input class="image-uploader" 
-                         type="file" 
+                  <input class="image-uploader"
+                         type="file"
                          style="display:none;">
               </span>
 
@@ -184,7 +183,7 @@
 </div>
 </form>
 {% } %}
-        
+
 {% if (o.cleaning) { %}
 
 <form class="form-feature form-cleaning " data-toggle="validator">
@@ -193,7 +192,7 @@
   <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>-->
   Add a cleaning event
 </h3>
-  
+
   <div class="tab-view">
     <ul class="nav nav-tabs nav-justified" role="tablist">
       <li class="active"><a class="tab-default" href="#cleaning-main-tab" data-toggle="tab"><span class="fa fa-fw fa-calendar"></span></a></li>
@@ -213,10 +212,10 @@
             <div class="row">
                 <div class="form-group">
                     <div class="input-group date" id="event-date-time-picker">
-                        <input type="datetime" 
+                        <input type="datetime"
                                class="form-control"
                                placeholder ="Starting date and time">
-                        <input type="hidden" 
+                        <input type="hidden"
                                id="date-time-value"
                                name="datetime">
                         <span class="input-group-addon">
@@ -243,7 +242,7 @@
                   <option value="yearly">Yearly</option>
               </select>
               <div class="help-block with-errors"></div>
-          </div>         
+          </div>
 
           <div class="form-group form-group-lg" style="width:100%">
             <textarea class="cleaning-note form-control"
@@ -292,16 +291,16 @@
   </div><!-- Create the marker -->
 </form>
 {% } %}
-        
+
 {% if (o.litter) { %}
 
 <form class="form-feature form-litter" data-toggle="validator">
-  
+
 <h3>
   <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>-->
   Mark litter
 </h3>
-  
+
 <div class="tab-view">
   <ul class="nav nav-tabs nav-justified" role="tablist">
     <li class="active"><a class="tab-default" href="#litter-main" data-toggle="tab"><span class="fa fa-fw fa-map-marker"></span></a></li>
@@ -324,7 +323,7 @@
     <br>
 
       <div class="form-group">
-        <p class="lead">Amount of garbage</p>              
+        <p class="lead">Amount of garbage</p>
 
         <div class="btn-group btn-group-justified btn-group-amount btn-group-amount-litter" data-toggle="buttons">
           <label class="btn btn-lg btn-limegreen"><input type="radio" name="amount" value="1" autocomplete="off">1</label>
@@ -384,7 +383,7 @@
       <div class="progress hidden">
         <div class="progress-bar progress-bar-success" role="progressbar" style="width:%"></div>
       </div>
- 
+
     </div>
 
     <div class="form-group form-group-lg" style="width:100%">
@@ -397,7 +396,7 @@
     </div>
 
     <div class="form-group form-group-lg" style="width:100%">
-        <input id="litter-raw-length" 
+        <input id="litter-raw-length"
                class="form-control litter-path-length"
                placeholder="Length of the path"
                name="lengthm">
@@ -444,11 +443,11 @@
 <br>
 </form>
 {% } %}
-        
+
 {% if (o.area) { %}
 
 <form class="form-feature form-area" data-toggle="validator">
-  
+
 <h3>
   <!--<span><a class="menu-backlink fa fa-fw fa-chevron-circle-left pull-left hidden-xs" href="#create-marker-dialog"></a></span>-->
   Create an area
@@ -476,7 +475,7 @@
         <input type="hidden" name="latlngs" class="area-latlngs">
 
         <div class="form-group form-group-lg" style="width:100%">
-          <input class="form-control area-title" 
+          <input class="form-control area-title"
                  placeholder="Use a custom area name"
                  name="title"
                  data-maxlength="12"

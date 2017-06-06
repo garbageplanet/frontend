@@ -9,9 +9,9 @@
 */
 
 var session = (function () {
-  
+
     'use strict';
-    
+
     var _switchSession = function (obj) {
 
         var classicSessionType = localStorage.getItem('classic');
@@ -23,7 +23,7 @@ var session = (function () {
                 // this is the leaflet plugin for the custom glome anonymous login button
                 maps.glomelogincontrol.logout();
             }
-            
+
             // TODO make this with templates
             $('#session-status a').text('Login').attr("href","#user-login-dialog");
             $('#session-status a').attr("id","");
@@ -37,7 +37,7 @@ var session = (function () {
         }
 
         if (obj === "login") {
-            
+
             if (window.isMobile) {
                 // remove the anonymous login button
                 maps.glomelogincontrol.login();
@@ -46,7 +46,7 @@ var session = (function () {
             $("#session-status a").text("Logout").attr("href","#");
             $("#session-status a").attr("id","btn-logout");
             $("#session-status a").removeClass('dropdown-link');
-          
+
             // Reset the event listener for the modified button
             $("#session-status").on('click', '#btn-logout', function() {
                 // change the UI
@@ -98,7 +98,7 @@ var session = (function () {
 
             // Change html to reflect anon login
             if  (classicSessionType === "false") {
-                
+
                 if (window.isMobile) {
                     if (!map.glomelogincontrol) {
                         // Add a glome anonymous login button
@@ -149,11 +149,14 @@ var session = (function () {
                         console.log(response);
                     }
                 });
-          
-                logincall.done(function(response) {
-                  
-                    localStorage.setItem('token', response.token);
 
+                logincall.done(function(response) {
+
+                    console.log(response.token);
+
+                    localStorage.setItem('token', response.token.toString());
+
+                    // Get the user data after Authorization
                     $.ajax({
 
                         method: api.readUser.method,
@@ -200,30 +203,30 @@ var session = (function () {
                 }
             });
             checklogincall.done(function() {
-              
+
                 if (!tokeh || tokeh !== 1) {
                   _switchSession('login');
-                  
-                } else if (tokeh === 1) { 
+
+                } else if (tokeh === 1) {
                   console.log('login check');
                   return true
                 }
             });
             checklogincall.fail(function() {
-              
+
                 alerts.showAlert(21, 'danger', 2000);
 
                 if (!tokeh || tokeh!== 1) {
                     _switchSession('logout');
                     localStorage.clear();
                     ui.sidebar.show($('#user-login-dialog').show().siblings().hide());
-                  
-                } else if (tokeh === 1) { 
+
+                } else if (tokeh === 1) {
                   alert('CHCK FAILED');
                   return false
                 }
             });
-          
+
             return {
                 checklogincall: checklogincall
             }
@@ -252,8 +255,9 @@ var session = (function () {
                             console.log(response);
                         }
                     });
-                  
-                    logoutcall.done(function() {
+
+                    logoutcall.done(function(data) {
+                        console.log('logout resonse: ', data);
                         _switchSession('logout');
                         alerts.showAlert(22, 'info', 2000);
                         localStorage.clear();
@@ -263,7 +267,7 @@ var session = (function () {
                         }
                     });
                     logoutcall.fail(function(){
-                        alerts.showAlert(10, 'danger', 2000);      
+                        alerts.showAlert(10, 'danger', 2000);
                     });
                 }
             },
@@ -285,7 +289,7 @@ var session = (function () {
                         'name': name
                     },
                     success: function (response) {
-                        console.log(response); 
+                        console.log(response);
                     },
                     error: function (response) {
                         console.log(response);
@@ -334,7 +338,7 @@ var session = (function () {
                         console.log(response);
                     }
                 });
-          
+
                 glomecall.done(function(response) {
                     var glomeid = response.user.name,
                         authUser = response.user,
@@ -371,12 +375,12 @@ var session = (function () {
                         }
                     });
                 });
-          
+
                 glomecall.fail(function() {
                     alerts.showAlert(12, 'warning', 3000);
                     localStorage.removeItem('token');
                 });
-          
+
             },
         _deleteAccount = function (e) {
                 // FIXME backend replies 405 method not allowed
@@ -389,7 +393,7 @@ var session = (function () {
                     e.preventDefault();
 
                     var useToken = localStorage.getItem('token'),
-                        email = localStorage.getItem('useremail'),           
+                        email = localStorage.getItem('useremail'),
                         password = $('#delete-password').val();
 
                     var deleteaccountcall = $.ajax({
@@ -408,13 +412,13 @@ var session = (function () {
                             console.log(response);
                         }
                     });
-                  
+
                     deleteaccountcall.done(function() {
                         _switchSession('logout');
                         alerts.showAlert(17, 'success', 2000);
                         localStorage.clear();
                     });
-                  
+
                     deleteaccountcall.fail(function() {
                         ui.sidebar.hide();
                         alerts.showAlert(10, 'danger', 2000);
@@ -439,14 +443,14 @@ var session = (function () {
         },
         init = function () {
             _bindEvents();
-          
+
             if (localStorage.getItem('token')) {
                 // Check the current session with the backend
                 console.log('Pace done, calling _checklogin');
                 _checkLogin();
             } else { console.log('no prior session found.') }
         };
-    
+
     return { init: init,
              glomego: glomeGo
     };

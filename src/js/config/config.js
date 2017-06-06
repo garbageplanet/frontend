@@ -39,7 +39,7 @@ var api = {
         }
     },
     logoutUser: {
-        method: 'GET',
+        method: 'POST',
         url: function() {
             return api.createLogin.url() + '/logout';
         }

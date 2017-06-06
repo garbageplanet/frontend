@@ -3,17 +3,17 @@
 */
 
 var forms = (function () {
-  
+
     'use strict';
-  
+
     var _bindEvents = function _bindEvents (type) {
 
-            // This function activate the widgets and init the form submission code in js/forms/submit.js
+            // This function activates the widgets and init the form submission code in js/forms/submit.js
 
             // Force styling of multiselects
             // other options are already set in the html
-            $('.selectpicker').selectpicker({ 
-                style: 'btn-lg btn-default text-center', 
+            $('.selectpicker').selectpicker({
+                style: 'btn-lg btn-default text-center',
                 size: 6
             });
             // Separate tags by hitting space bar or right key
@@ -35,29 +35,26 @@ var forms = (function () {
                     e.preventDefault();
                 }
             });
-      
-            // TODO uncheck siblings in the amount selector when clicking on the next one else
-            // all values are passed to the forms
 
             // initiate the image uploader
             _initUploader();
-      
+
             // initiate drawing stuff
             if (type === 'litter' || type === 'area') {
                 drawing.init();
             }
             // Re-initialize some listeners
             tools.bindUnsavedMarkerEvents();
-      
+
             // activate the form
             saving.init();
         },
-        _formDispatcher = function _formDispatcher (id, targetLinkClass) {
-          
+        formDispatcher = function _formDispatcher (id, targetLinkClass) {
+
             console.log("id from _formDispatcher: ", id);
             console.log("link class from _formDispatcher(): ", targetLinkClass );
             // TODO extract this logic to tools.dispatcher so we can dispatch any type of function with any callback
-            var types = { 'garbage': 'garbage', 
+            var types = { 'garbage': 'garbage',
                           'cleaning': 'cleaning',
                           'dieoff': 'dieoff',
                           'floating': 'floating',
@@ -69,35 +66,22 @@ var forms = (function () {
 
                 if (targetLinkClass.indexOf(key) !== -1) {
                     _makeForm(id, types[key]);
-                }      
+                }
             } // adapted from http://stackoverflow.com/a/22277556/2842348
-          
+
           // TODO catch error?
         },
-        passMarkerToForm = function passMarkerToForm  (id) {
-
-            $('.create-dialog').on('click', function (e) {
-                // this is a really lousy way to fetch the marker id, we could simply rely on latlng  hidden input
-                e.preventDefault();
-                var ct = $(this).attr('href').toString();  
-              
-                console.log(ct);
-                console.log("id from passMarkerToForm(): ", id);
-              
-                _formDispatcher(id, ct);
-            });
-        },
         _makeForm = function _makeForm (id, type) {
-          
+
             var typeobj = {},
                 typeid = null,
-                marker = null, 
+                marker = null,
                 latlng = null;
-          
+
             // Build a mock object to pass to the templating engine so we can use conditional blocks
             typeobj = {};
             typeobj[type] = type;
-          
+
             console.log('typeobj', typeobj);
             console.log("id from _makeForm(): ", id);
 
@@ -105,9 +89,9 @@ var forms = (function () {
             // this form opens inside a modal
             // TODO make this as a sidebar form?
             if (type === 'opengraph') {
-              
+
                 ui.makeModal(type, null);
-              
+
                 console.log('opengraph form');
                 marker = maps.unsavedMarkersLayerGroup.getLayer(id);
                 latlng = marker.getLatLng();
@@ -115,13 +99,13 @@ var forms = (function () {
             }
 
             else {
-              
+
                 typeid = 'create-' + type + '-dialog';
                 console.log(typeid);
-              
+
                 // Fill the templates
                 document.getElementById(typeid).innerHTML = tmpl('tmpl-form-main', typeobj);
-              
+
                 // Hide the close button in the sidebar when we show forms because they have a cancel button
                 $('.close-right').addClass('hidden');
 
@@ -151,7 +135,7 @@ var forms = (function () {
                     console.log("marker obj from _makeForm()", marker);
                     console.log("unsavedMarkersLayerGroup from _makeForm()", maps.unsavedMarkersLayerGroup);
                     console.log('*****************************************')
-                    
+
                     latlng = marker.getLatLng();
 
                     if (type === "garbage") {
@@ -168,7 +152,7 @@ var forms = (function () {
                             // Remove the generic marker class
                             $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
 
-                            // Get the color value from the select options 
+                            // Get the color value from the select options
                             var selectedValue = parseInt($(this).attr('value'), 10);
 
                             // Change the class to the corresponding value
@@ -179,7 +163,7 @@ var forms = (function () {
                     }
 
                     if (type === "cleaning") {
-                      
+
                         console.log('loading cleaning form');
                         // TODO Pass the latlng as an object once templates are in place
                         $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
@@ -241,7 +225,7 @@ var forms = (function () {
                     $(e.target).parent().next().val(data.result.data.link);
                     progressdiv.addClass('hidden').delay(200);
 
-                // TODO use promises here 
+                // TODO use promises here
                     /*$.ajax({
 
                         method: "PUT",
@@ -262,20 +246,20 @@ var forms = (function () {
             });
 
             imageuploaderbutton.on('click', function() {
-                            
+
                 // TODO this needs to be more secure with session.checkLogin(checkonly)
                 // but how to catch the promise?
                 if (localStorage.getItem('token')) {
-                  
+
                     console.log('we got check')
                     $(this).next().trigger('click');
-                  
+
                   } else {
                     alerts.showAlert(3, 'warning', 2000);
                     return;
                 }
             });
         };
-    
-    return { passMarkerToForm: passMarkerToForm };
+
+    return { formDispatcher: formDispatcher };
 }());

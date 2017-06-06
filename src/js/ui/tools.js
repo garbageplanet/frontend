@@ -3,7 +3,7 @@
 /**
   * @namespace jQuery.fn.serializeObject
   * @method serializeObject()
-  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes 
+  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes
                       become keys and value attributes become values. Need to collect form data and send it to the backend
   * @see https://gist.github.com/dshaw/449041
   * @requires jQuery
@@ -26,7 +26,7 @@ $.fn.serializeObject = function () {
 /**
   * @namespace Leaflet.LatLngBounds.prototype.toBBoxStringInverse
   * @method toBBoxStringInverse()
-  * @returns {object} string object - the bounding box coordinates returned by default by Leaflet 
+  * @returns {object} string object - the bounding box coordinates returned by default by Leaflet
                       are not in the order expected for making postGRE bounding box requests in the backend.
   * @requires Leaflet
   */
@@ -37,7 +37,7 @@ L.LatLngBounds.prototype.toBBoxStringInverse = function () {
   * @namespace Leaflet.Map.prototype.panToOffset
   * @method panToOffset()
   * @returns {object} coordinate string object
-  * @param {object} latlng - [lat, lng] Leaflet coordinates object or array 
+  * @param {object} latlng - [lat, lng] Leaflet coordinates object or array
   * @param {array} offset - [x, y] offset by which the map should be moved
   * @param {string} zoom - level to use
   * @param {object} options - leaflet options to pass to the function
@@ -62,7 +62,7 @@ L.Map.prototype.panToOffset = function (latlng, offset, zoom, options) {
   * Tools an utilities.
   * @namespace tools
   * @name tools
-  * @type {Object} 
+  * @type {Object}
   */
 var tools = {
 /**
@@ -92,21 +92,21 @@ var tools = {
         }
     },
     reverseGeocode: function (o) {
-      
+
       var latlng = o.replace(', ', '+');
       console.log(latlng);
-      var token = '@@opencagetoken'; 
+      var token = '@@opencagetoken';
 
         if (latlng) {
-          
+
             var callurl = 'https://api.opencagedata.com/geocode/v1/json?q=' + latlng + '&limit=1&no_annotations=1&key=' + token;
             var request = $.ajax({
                 method: 'GET',
                 url: callurl
             });
-          
+
             return request;
-          
+
         } else { return; }
     },
     setMarkerClassColor: function( c) {
@@ -136,19 +136,12 @@ var tools = {
     setMarkerIcon: function (c, d) {
         if (!d) {
             return (c == false) ? maps.icons.garbageMarker : maps.icons.cleanedMarker;
-          
+
         } else {
-            
+
             return (new Date(d) < new Date()) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
         }
     },
-    /*getMarkerFromArray: function (arr, value) {
-
-        for (var i=0, len=arr.length; i<len; i++) {
-
-            if (arr[i]._leaflet_id == value) return arr[i];
-        }
-    },*/
     getCurrentBounds: function () {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         console.log
@@ -162,7 +155,7 @@ var tools = {
             _SW_lng = o._southWest.lng;
     },*/
     /*cloneLayer: function(layer) {
-        
+
         var options = layer.options;
 
         // Marker layers
@@ -187,18 +180,18 @@ var tools = {
             return layergroup;
         }
 
-        throw 'Unknown layer, cannot clone this layer';  
+        throw 'Unknown layer, cannot clone this layer';
     },*/
     /*checkLayerContents: function(oldl, newl) {
-        
+
         // FIXME this doesn't work because markers lose their event listerners and icons
         // If the non-temp layer is empty get the fetched data into it
         if (oldl.getLayers().length < 1){
-                        
+
             oldl.clearLayers();
             map.removeLayer(oldl);
             oldl = tools.cloneLayer(newl);
-            newl.clearLayers();            
+            newl.clearLayers();
             map.removeLayer(newl);
             oldl.addTo(map);
             return;
@@ -206,9 +199,9 @@ var tools = {
 
         // If the non-temp layer isn't empty, compare contents
         if (oldl.getLayers().length > 0) {
-            
+
             if (JSON.stringify(newl.getLayers()) !== JSON.stringify(oldl.getLayers())) {
-                
+
                 map.removeLayer(oldl);
                 oldl.clearLayers();
                 oldl = this.cloneLayer(newl);
@@ -216,19 +209,19 @@ var tools = {
                 map.removeLayer(newl);
                 newl.clearLayers();
                 return;
-                
+
             } else {
                 return;
             }
         }
     },*/
     getVerticalOffset: function () {
-    
+
         var vOffset = [0, 0];
         // TODO take in account the topbar for offsetting on larger screens
         // TODO do this dynamically
-        if (!window.isMobile) { 
-            vOffset[1] = - $(window).height() / 4 + 20; 
+        if (!window.isMobile) {
+            vOffset[1] = - $(window).height() / 4 + 20;
         }
 
         // not needed on mobile
@@ -239,7 +232,7 @@ var tools = {
         return vOffset;
     },
     getHorizontalOffset: function () {
-    
+
         var hOffset = [0, 0];
         hOffset[0] = - $(window).width() / 6;
         return hOffset;
@@ -263,51 +256,52 @@ var tools = {
         console.log(allMarkersObjArray);
     },
     resetIconStyle: function (id) {
-                  
+
         if (id > 0 && (id || typeof id != 'undefined')) {
-          
+
             console.log('id from resetIconStyle: ', id)
-            
+
             var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
 
             console.log('marker obj from resetIconStyle(): ', marker);
-          
+
             if (marker) {
                 var markericon = $(marker._icon) || 'undefined';
             }
 
             if (markericon || typeof markericon != 'undefined' && marker) {
-              
+
                 markericon.removeClass('marker-garbage marker-cleaning');
                 // markericon.removeClass('marker-cleaning');
-              
+
                 // Remove any class color from the icon and add the generic marker class and color
                 markericon.removeClass(function(index, css) {
                     return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
                 }).addClass('marker-generic');
-                
+
                 markericon.addClass('marker-color-gray');
-              
+
             } else {  return; }
-          
+
         } else { return; }
     },
     states : {
       currentZoom: null,
       initialBbox: [],
-      roundedBounds: null
+      roundedBounds: null,
+      currentFeatureId: null,
     },
  /**
-   * @namespace tools - this function set event listeners for a marker when this particular marker is 
+   * @namespace tools - this function set event listeners for a marker when this particular marker is
                         the focus of the current form
    * @method bindUnsavedMarkerEvents()
    * @param {string} map marker id - the id of the marker to which the events need to be bound
    */
     bindUnsavedMarkerEvents: function (id) {
-        
+
         var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
         var cancelbutton = $('.btn-cancel');
-        
+
         ui.sidebar.on ('hide', function() {
             tools.resetIconStyle(id);
         });
@@ -320,40 +314,40 @@ var tools = {
                 tools.resetIconStyle(id);
                 maps.map.removeLayer(marker);
             }
-            else { 
+            else {
               maps.unsavedMarkersLayerGroup.clearLayers();
             }
-        }); 
+        });
     },
  /**
-   * @namespace tools.checkOpenUiElement - a helper function to check the UI for what's currently going on so that one map 
+   * @namespace tools.checkOpenUiElement - a helper function to check the UI for what's currently going on so that one map
                                            widget closes or stops when another one is called
    * @method checkOpenUiElement()
    * @param {object} map object - the main map object, only needed to be able to identify clicks on cluser markers
    */
     checkOpenUiElement: function (map){
-        
+
         // TODO can we make the same function with a switch statement?
         // that would require to set states in the UI
         var compactattributions = $('.leaflet-compact-attribution-toggle'),
             ocdsearch = $('.leaflet-control-ocd-search'),
             dropdown = $('.dropdown'),
             layerscontrolbutton = $('.leaflet-control-layers');
-        
+
         if (ui.sidebar.isVisible()) {
             ui.sidebar.hide();
             return;
-        }    
-            
+        }
+
         if (ui.bottombar.isVisible()) {
             // TODO check if we are drawing if unfinished, ask user if he wants to cancel
             ui.bottombar.hide();
             return;
-        }       
+        }
         if (dropdown.hasClass('open')) {
             dropdown.removeClass('open');
             return;
-        } 
+        }
         // Custom code added in leaflet (edited out in L.Control.Layers), so the map click is bound here here
         if ( !maps.layerscontrol.options.iscollapsed || $(layerscontrolbutton).hasClass('leaflet-control-layers-expanded')) {
             console.log('layers control collapsing from ui check open elements');
@@ -374,7 +368,7 @@ var tools = {
             return;
         }
         if (compactattributions.is(':checked')) {
-            compactattributions.prop('checked', false);  
+            compactattributions.prop('checked', false);
             return;
         }
         // Check the current zoom level and warn the user
@@ -399,11 +393,11 @@ var tools = {
                 return;
             }
         }
-        
+
         return true;
     },
  /**
-   * @namespace tools.coordsinhrf - regex to check if the address barof the browser contains coordinates, needed when we 
+   * @namespace tools.coordsinhrf - regex to check if the address barof the browser contains coordinates, needed when we
                                     gelocate at startup so we don't override geographic locations in inbound urls
    * @see http://stackoverflow.com/a/18690202/2842348
    * @author Iain Fraser
@@ -417,14 +411,14 @@ var tools = {
  /**
    * @namespace tools.ogDotIoScraper - opengraph data scraper
    * @method randomString()
-   * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API, 
-                           used in the 'link' marker creation to enable users to add map marker with content tretived from 
+   * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API,
+                           used in the 'link' marker creation to enable users to add map marker with content tretived from
                            external webpages.
    * @return - Returns a Promise obj with scrapped data
    */
     openGraphScraper: function (url) {
 
-        var token = '@@opengraphiotoken'; 
+        var token = '@@opengraphiotoken';
 
         if (url) {
             var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);
@@ -447,11 +441,11 @@ var tools = {
                     return;
                 }
             });
-          
+
             return request;
         }
-      
-        else {  
+
+        else {
             alerts.showAlert(5, "warning", 2000);
             return
         }
@@ -463,7 +457,7 @@ var tools = {
  /**
    * @namespace tools.randomString
    * @method randomString()
-   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length, used when 
+   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length, used when
                        creating a game tile and the user didn't give a title to the tile.
    * @param {string} len - Length of the string to be returned
    * @requires Leaflet
@@ -474,7 +468,7 @@ var tools = {
         for( var i=0; i < len; i++ ) {
             a += b.charAt(Math.floor(Math.random() * b.length));
         }
-        return a; 
+        return a;
     },
  /**
    * @namespace tools.mobileCheck

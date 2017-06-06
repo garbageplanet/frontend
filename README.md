@@ -11,12 +11,8 @@ Note that if you do not have your own token for mapbox and other APIs you won't 
 ### Contributing
 All contributions are welcome. If you want to contribute to a specific todo below, the first thing you should do is open an issue. If you have another contribution PRs are also welcome!
 
-### Priority TODO
-- [ ] move to ES6 modules and build with rollupjs
-
 ### TODO
-- [ ] use leaflet builtin L.DomUtil.get('div_id') instead of jquery selectors
-- [ ] reverse geocode addresses for cleanings
+
 - [ ] add backend controllers and geographical location capability to html scraping
 - [ ] direct upload of geotagged photo capability
 - [ ] upoad to imgur as user
