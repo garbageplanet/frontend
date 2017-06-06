@@ -4,7 +4,7 @@
 * User interfaces that don't happen directly on the map
 */
 var ui = (function () {
-  
+
     'use strict';
     // TODO move versioning to package.json andadd during build
     var templates = {
@@ -140,7 +140,7 @@ var ui = (function () {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.6'
+            version: '0.5.61'
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
@@ -157,7 +157,7 @@ var ui = (function () {
             if (!featuredata) {
                 featuredata = obj;
             }
-          
+
             // FIXME the bottombar appareas and disappears immy when clicking on shapes
             console.log('***********************************');
             console.log('feature obj from pushDataToBottomPanel()',feature);
@@ -174,12 +174,12 @@ var ui = (function () {
                 var image_url_insert = tools.insertString(featuredata.image_url, 26, 'b');
                 featureinfo.find('.feature-image').attr('src', image_url_insert);
             }
-          
+
             // if there's a datetime field it's a cleaning event, we fetch the address from the reverse geocoder
             if (featuredata.datetime) {
-              
+
                 console.log('calling reverse geocoder');
-              
+
                 $.when(tools.reverseGeocode(featuredata.latlng)).then(function (data) {
                     console.log('data from Promise resolved:', data.results[0].formatted);
                     featureinfo.find('.feature-info-location').html(data.results[0].formatted);
@@ -193,7 +193,7 @@ var ui = (function () {
             // Event listener for share button and social links
             $('.btn-social, fa-share-alt').popover({
                 trigger: 'focus',
-                html : true, 
+                html : true,
                 container: 'body',
                 placement: function (pop) {
                     if (window.isMobile) {
@@ -210,11 +210,11 @@ var ui = (function () {
 
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
             $('.btn-feature').on('click', function (e) {
-              
+
                 // var ct = e.target.className;
                 var ct = $(this).attr('name');
                 console.log(ct);
-              
+
                 // Send the full leaflet object to actions dispatch function
                 actions.act(ct, feature);
             });
@@ -236,7 +236,7 @@ var ui = (function () {
                                      scrollCollapse: true,
                                      paging:         false,
                                      retrieve:       true };
-          
+
             var modalid          = 'modal-'      + type,
                 modaltmplname    = 'tmpl-modal-' + type,
                 modaltableid     = '#modal-'     + type + '-table',
@@ -254,7 +254,7 @@ var ui = (function () {
             // handle what happens for the Open Graph scraper
             if (!arr) {
                 if (type.indexOf('opengraph') > -1 ) {
-                    document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);              
+                    document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
                     $('#' + modalid).modal('show');
                     $('#' + modalid).find('input').focus();
                 }
@@ -262,14 +262,14 @@ var ui = (function () {
                 $('.btn-opengraph-fetch').click(function () {
                     // Retrieve the value of the url
                     var url = $('#opengraph-url').val();
-                  
+
                     $('.btn-opengraph-fetch').text('...');
                     $('.btn-opengraph-fetch').attr('disabled', 'disabled');
-                  
+
                     $.when(tools.openGraphScraper(url)).then(function (data) {
-                        
+
                         console.log('data from openGraph Promise resolved:', data);
-                      
+
                         // Load the data into the template
                         var ogcontent = document.getElementById('opengraph-content').innerHTML = tmpl('tmpl-modal-opengraph', data);
                         // Remove input styles
@@ -293,13 +293,13 @@ var ui = (function () {
                 }
                 else {
                     // Fill the template skeleton and the data
-                    document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);              
+                    document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
                     document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
                     // Activate the datatables in the modal
                     $(modaltableid).DataTable(datatableoptions);
 
                     // Show the modal
-                    $('#' + modalid).modal('show');   
+                    $('#' + modalid).modal('show');
 
                     // Attach events for buttons
                     $('#modal-data-load-more').on('click', function () {
@@ -313,11 +313,11 @@ var ui = (function () {
                     $('#modal-download').on('click', function (e) {
                         e.preventDefault;
                         var stringdata = "text/json;charset=utf-8," + JSON.stringify(arr);
-                        this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));            
+                        this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));
                     });
                 }
             }
-        },    
+        },
         _bindEvents = function _bindEvents () {
         // TODO split into top, side and bottombar events
             var sidebarlink = $('.sidebar-link'),
@@ -366,10 +366,10 @@ var ui = (function () {
                 $('.leaflet-draw-edit-remove').removeClass('visible');
                 // FIXME this removes the placeholder as well ?
                 // $('.bootstrap-tagsinput').tagsinput('removeAll');
-               
+
                 // Delete any feature form from the DOM
                 $('.form-feature').remove();
-               
+
                 // Remove any unsaved marker on mobile else the mobile menu bugs
                 if (window.isMobile) {
                     // Reset sidebar close button visibility
@@ -410,7 +410,7 @@ var ui = (function () {
                 }
             });
 
-          
+
             // Set the event listeners for modals in the topbar or elsewhere
             modallink.on('click', function (e) {
 
@@ -419,7 +419,7 @@ var ui = (function () {
                 if ($(this).hasClass('modal-list-garbage')) {
                     // Passing the garbage array in the current screen to the function
                     ui.makeModal('garbage', features.garbageArray());
-                } 
+                }
 
                 if ($(this).hasClass('modal-list-cleaning')) {
                     ui.makeModal('cleaning', features.cleaningArray());
@@ -429,11 +429,11 @@ var ui = (function () {
                     ui.makeModal('game', null);
                 }*/
             });
-          
+
             // BOTTOMBAR //////////////////////////////////////////////////////////////////
             // Events to execute when the bottombar is hidden
             ui.bottombar.on('hide', function (e) {
-                // force destroy the popup which hangs on certain tablets (tested on samsung w/ android) 
+                // force destroy the popup which hangs on certain tablets (tested on samsung w/ android)
                 $('.btn-social').popover('destroy');
                 // reset any modals that was created
                 $('.modal').modal('hide').data('bs.modal', null);
@@ -466,26 +466,26 @@ var ui = (function () {
             // Add the Leaflet UI controls to the map
             sidebar.addTo(maps.map);
             bottombar.addTo(maps.map);
-          
+
             // Fill the main topbar and sidebar template
             if (!window.isMobile) {
                 document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', templates);
             }
             document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
             document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
-          
+
             // custom alerts at startup for cookies
             alerts.showAlert(32, 'warning', 5000);
 
             _bindEvents();
        };
-    
+
     return { init: init,
              sidebar: sidebar,
              templates: templates,
              bottombar: bottombar,
              pushDataToBottomPanel: pushDataToBottomPanel,
-             makeModal: makeModal };    
+             makeModal: makeModal };
 }());
 // We can start initializing the UI once this code block is read
 // TODO wait for pace?
