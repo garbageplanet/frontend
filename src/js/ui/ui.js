@@ -153,30 +153,33 @@ var ui = (function () {
             var feature = obj,
                 featuredata = obj.options,
                 featureinfo;
+
             // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the obj var
-            if (!featuredata) {
+            if ( !featuredata ) {
                 featuredata = obj;
             }
 
-            // FIXME the bottombar appareas and disappears immy when clicking on shapes
-            console.log('***********************************');
             console.log('feature obj from pushDataToBottomPanel()',feature);
             console.log('feature data from pushDataToBottomPanel()',featuredata);
-            console.log('***********************************');
+
             // Fill the template data
             document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
             // Set the vars after loading the template
             featureinfo = $('#feature-info');
+            
             // TODO use bottombar.getContent() in conjunction with template creation above
             ui.bottombar.show(featureinfo.fadeIn());
-            // Add an IMGUR api character to the url to fetch thumbnails only
-            if (featuredata.image_url) {
-                var image_url_insert = tools.insertString(featuredata.image_url, 26, 'b');
-                featureinfo.find('.feature-image').attr('src', image_url_insert);
+
+            // Add an imgur api character to the url to fetch thumbnails only and change the link to https
+            if ( featuredata.image_url ) {
+
+                var img_api_char = tools.insertString(featuredata.image_url, 26, 'b');
+                var img_https = tools.insertString(img_api_char, 4, 's');
+                featureinfo.find('.feature-image').attr('src', img_https);
             }
 
             // if there's a datetime field it's a cleaning event, we fetch the address from the reverse geocoder
-            if (featuredata.datetime) {
+            if ( featuredata.datetime ) {
 
                 console.log('calling reverse geocoder');
 
@@ -223,7 +226,7 @@ var ui = (function () {
             // handle what happens for the Open Graph scraper
             // TODO move this to the sidebar
             if ( !arr ) {
-                if (type.indexOf('opengraph') > -1 ) {
+                if ( type.indexOf('opengraph') > -1 ) {
                     document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
                     $('#' + modalid).modal('show');
                     $('#' + modalid).find('input').focus();
@@ -256,7 +259,7 @@ var ui = (function () {
 
             // if it's a data modal check that the array contains data else warn user
             if ( arr ) {
-                if ( arr.length < 1 && (type != 'game' || type != 'opengraph') ) {
+                if ( arr.length < 1 && ( type != 'game' || type != 'opengraph' ) ) {
                     alerts.showAlert(29, 'warning', 2000);
                     return;
                 }
@@ -311,7 +314,7 @@ var ui = (function () {
 
                 e.preventDefault();
 
-                if(!ui.sidebar.isVisible()) {
+                if( !ui.sidebar.isVisible() ) {
                     ui.sidebar.show();
                 }
 
@@ -338,7 +341,7 @@ var ui = (function () {
                 $('.form-feature').remove();
 
                 // Remove any unsaved marker on mobile else the mobile menu bugs
-                if (window.isMobile) {
+                if ( window.isMobile ) {
                     // Reset sidebar close button visibility
                     if ($('.close-right').hasClass('hidden')) {
                       $('.close-right').removeClass('hidden');
@@ -348,7 +351,7 @@ var ui = (function () {
             });
 
             ui.sidebar.on('show', function () {
-                if (ui.bottombar.isVisible()) {
+                if ( ui.bottombar.isVisible() ) {
                     ui.bottombar.hide();
                 }
             });
@@ -370,11 +373,11 @@ var ui = (function () {
             ui.bottombar.on('show', function () {
 
                 // hide the sidebar if it's visible
-                if (ui.sidebar.isVisible()) {
+                if ( ui.sidebar.isVisible() ) {
                     ui.sidebar.hide();
                 }
 
-                if ($('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded')) {
+                if ( $('.leaflet-control-ocd-search').hasClass('leaflet-control-ocd-search-expanded') ) {
                     maps.geocodercontrol._collapse();
                 }
             });
@@ -393,7 +396,7 @@ var ui = (function () {
             // Activate dropdown menu links in topbar
             usertools.on('click', 'a', function (e) {
 
-                if ($(this).hasClass('dropdown-link')) {
+                if ( $(this).hasClass('dropdown-link') ) {
                     e.preventDefault();
                     ui.bottombar.hide();
                     ui.sidebar.show();
@@ -403,7 +406,7 @@ var ui = (function () {
 
             // Show nearby trashbins
             trashbinbutton.on('click', function () {
-                if(maps.map.getZoom() < 15 ) {
+                if( maps.map.getZoom() < 15 ) {
 
                     alerts.showAlert(31, 'info', 2000);
                     return;
@@ -434,7 +437,7 @@ var ui = (function () {
                 html : true,
                 container: 'body',
                 placement: function (pop) {
-                    if (window.isMobile) { return 'top'; } else { return 'right'; }
+                    if ( window.isMobile ) { return 'top'; } else { return 'right'; }
                 },
                 content: function () {
                     return $('#social-links').html();
