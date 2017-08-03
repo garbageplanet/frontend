@@ -176,8 +176,6 @@ var forms = (function () {
                             disableMobile: true,
                             onChange: function (selectedDates, dateStr, instance) {
                                 console.log(dateStr);
-                                // $('#date-time-value').val(dateStr.toString());
-                                // $('#event-date-time-picker').children().val(dateStr);
                                 // Change the icon of the marker if a time is set
                                 $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
                             }

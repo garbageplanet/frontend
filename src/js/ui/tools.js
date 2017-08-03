@@ -353,14 +353,6 @@ var tools = {
         return true;
     },
  /**
-   * @namespace tools.coordsinhrf - regex to check if the address barof the browser contains coordinates, needed when we
-                                    gelocate at startup so we don't override geographic locations in inbound urls
-   * @see http://stackoverflow.com/a/18690202/2842348
-   * @author Iain Fraser
-   * @license MIT
-   */
-    coordsinhrf: window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/),
- /**
    * @namespace tools.token - the app token to talk to the backend.
    */
     token: '@@windowtoken',
@@ -433,9 +425,9 @@ var tools = {
    * @requires Leaflet
    */
     listMarkersInView: function (type) {
-      
+
         var tempMarkers = [];
-      
+
         (type === 'garbage' ? maps.garbageLayerGroup : maps.cleaningLayerGroup).eachLayer( function (layer) {
 
             if ( maps.map.getBounds().contains(layer.getLatLng()) ) {
@@ -443,13 +435,13 @@ var tools = {
                 tempMarkers.push(layer);
             }
         });
-      
+
         console.log('Markers in temp array: ', tempMarkers);
 
         return tempMarkers;
     },
     downloadDataAsJSON: function (arr) {
-      
+
         // Extract the data from the 'options' key of the object
         var extractedoptions = [];
 
@@ -460,7 +452,7 @@ var tools = {
 
             extractedoptions.push(el.options);
         });
-      
+
         // https://stackoverflow.com/a/30800715/2842348 @volzo LIC MIT
         var datastr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(extractedoptions));
         var elem = document.getElementById('data-download-hidden');
