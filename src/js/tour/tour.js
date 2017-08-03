@@ -1,9 +1,9 @@
 /*jshint maxerr: 1000*/
 // Touring the app
 var touring = (function () {
-  
+
     'use strict';
-    
+
     var _devTour = new Tour({
             name: "dev-tour",
             template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
@@ -34,10 +34,10 @@ var touring = (function () {
             ]
         }),
         init = function () {
-          
-            setTimeout(function(){
 
-                if(!window.isMobile){
+            setTimeout(function () {
+
+                if (!window.isMobile) {
 
                     if (!localStorage.getItem('token')) {
                         _devTour.init();
@@ -45,21 +45,21 @@ var touring = (function () {
                     }
                 }
 
-                if(window.isMobile){
+                if (window.isMobile) {
                     _mobileTour.init();
                     _mobileTour.start(true);
                 }
             }, 1000)
         },
         _bindEvents = (function () {
-            $('.start-tour').on('click', function() {
+            $('.start-tour').on('click', function () {
                 setTimeout(touring.init, 2000)
             });
         }());
-    
+
     return { init: init
     }
-    
+
 }());
 
 // Only launch the tour once Pace has finished

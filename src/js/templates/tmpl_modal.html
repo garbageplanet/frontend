@@ -63,7 +63,7 @@
     </div>
   </div>
 {% } %}
-
+<!-- TODO merge both block below eith conditionals within them -->
 {% if (o.garbage) { %}
   <div class="modal-dialog">
     <div class="modal-content">
@@ -86,7 +86,12 @@
       <div class="modal-footer"><a class="disabled pull-left" href="#">Get the full data</a>
         <form>
           <button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button>
-          <button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form>
+          <button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button>
+          
+          <a id="data-download" href="#" type="button" class="btn btn-default pull-right">Download</a>
+          <a id="data-download-hidden" style="display:none"></a>
+          
+        </form>
       </div>
     </div>
   </div>
@@ -114,7 +119,12 @@
       <div class="modal-footer">
         <form>
           <button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button>
-          <button id="modal-cleaning-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button><a id="modal-download" href="" target="_blank" data-download="data.txt" type="button" class="btn btn-default pull-right">Download</a></form>
+          <button id="modal-cleaning-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button>
+          
+          <a id="data-download" href="#" type="button" class="btn btn-default pull-right">Download</a>
+          <a id="data-download-hidden" style="display:none"></a>
+        
+        </form>
       </div>
     </div>
   </div>

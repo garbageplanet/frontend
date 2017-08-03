@@ -102,7 +102,7 @@
                 <option value="3">Easily visible</option>
                 <option value="4">Easily missed</option>
                 <option value="5">Too small to pick up by hand</option>
-                <option value="6">Can't see it</option>
+                <option value="6">Cannot see it</option>
             </select>
         </div>
 
@@ -208,19 +208,16 @@
           <input type="hidden" name="latlng" class="marker-latlng cleaning-latlng">
 
           <!-- Date and time picker for events -->
-          <div class="container from-group" style="width:100%">
+          <div class="container" style="width:100%">
             <div class="row">
                 <div class="form-group">
-                    <div class="input-group date" id="event-date-time-picker">
+                    <div class="input-group" id="event-date-time-picker" style="width:100%">
                         <input type="datetime"
+                               id="event-date-time-input"
                                class="form-control"
-                               placeholder ="Starting date and time">
-                        <input type="hidden"
-                               id="date-time-value"
-                               name="datetime">
-                        <span class="input-group-addon">
-                        <span class="fa fa-fw fa-clock-o"></span>
-                        </span>
+                               placeholder="Starting date"
+                               name="datetime"
+                               required>
                     </div>
                 </div>
             </div>

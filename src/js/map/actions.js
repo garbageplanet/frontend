@@ -38,9 +38,10 @@ var actions = (function () {
                 tools.states.currentFeatureId = markerid;
 
                 // Set listeners in the case the marker isn't saved
-                tools.bindUnsavedMarkerEvents(markerid);
+                actions.bindUnsavedMarkerEvents(markerid);
 
                 // Show the menu with a delay on mobile
+                // TODO need a better marker creation flow
                 if (window.isMobile) {
                     // Pan the map to center the marker
                     maps.map.panTo(marker.getLatLng());
@@ -68,7 +69,7 @@ var actions = (function () {
 
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
             // inside a form for another marker else it's possible to modify a new marker with
-            // another marker not cleared nor saved
+            // another marker not cleared nor saved. This can only happen on desktop.
             if (!window.mobile) {
 
                 console.log('unsavedMarkersLayerGroup data: ', maps.unsavedMarkersLayerGroup);
@@ -135,7 +136,7 @@ var actions = (function () {
         },
         act = function act (t, o) {
             // NOTE t = classname for click target, o = feature object
-            // we must check for both icon and button class because they can both catch clicks
+            // FIXME we must check for both icon and button class because they can both catch clicks
 
             console.log('acting type: ', t);
             console.log(o);
@@ -438,7 +439,7 @@ var actions = (function () {
 
             // NOTE the event listeners for most map feature actions are set in the ui/ui.js file in ui.pushDataToBottomPanel()
             // because we need to bind the feature data for each action
-            console.log('binding basic map action');
+            console.log('binding basic map actions');
             maps.map.on('click', mapClick);
 
             // binding the 'click' on the L.clustermarkers only listen for click on actual markers, not the cluster markers
@@ -464,6 +465,28 @@ var actions = (function () {
                 forms.formDispatcher(tools.states.currentFeatureId, ct);
             });
         },
+        bindUnsavedMarkerEvents = function bindUnsavedMarkerEvents (id) {
+
+            var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
+            var cancelbutton = $('.btn-cancel');
+
+            ui.sidebar.on ('hide', function () {
+                tools.resetIconStyle(id);
+            });
+
+            // Close sidebar if cancel button clicked and delete unsaved markers
+            cancelbutton.on('click', function (e) {
+                e.preventDefault();
+                ui.sidebar.hide();
+                if (id) {
+                    tools.resetIconStyle(id);
+                    maps.map.removeLayer(marker);
+                }
+                else {
+                  maps.unsavedMarkersLayerGroup.clearLayers();
+                }
+        });
+    },
         _init = (function () {
 
             // Check the map obj is available
@@ -477,5 +500,6 @@ var actions = (function () {
         }());
 
     return { mapClick: mapClick,
-             act: act };
+             act: act,
+             bindUnsavedMarkerEvents: bindUnsavedMarkerEvents };
 }());

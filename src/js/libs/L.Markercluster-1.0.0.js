@@ -472,7 +472,7 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 	//Overrides LayerGroup.getLayer, WARNING: Really bad performance
 	getLayer: function (id) {
 		var result = null;
-		
+
 		id = parseInt(id, 10);
 
 		this.eachLayer(function (l) {
@@ -510,7 +510,7 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 	//Zoom down to show the given layer (spiderfying if necessary) then calls the callback
 	zoomToShowLayer: function (layer, callback) {
-		
+
 		if (typeof callback !== 'function') {
 			callback = function () {};
 		}
@@ -755,38 +755,53 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 	},
 
 	//Default functionality
-    // CUSTOM CODE
+  // CUSTOM CODE
 	_defaultIconCreateFunction: function (cluster) {
-		var childCount = cluster.getChildCount(),
-            childCountText;
 
-		var c = ' leaflet-marker-cluster-';
+		var childCount = cluster.getChildCount();
+
+		var c = ' leaflet-marker-cluster-',
+				clusterClassName;
+
 		if (childCount < 5) {
-			c += 'tiny';
+
+				c += 'tiny';
+
 		} else if (childCount < 10) {
-			c += 'small';
-        } else if (childCount < 50) {
-			c += 'medium';
-        } else if (childCount < 100) {
-			c += 'large';
+
+				c += 'small';
+
+    } else if (childCount < 50) {
+
+				c += 'medium';
+
+    } else if (childCount < 100) {
+
+				c += 'large';
+
 		} else {
-			c += 'huge';
+
+				c += 'huge';
 		}
-        
-        if (childCount > 99) {
-            childCountText = ":-(";
-        }
-        
-        if (childCount < 100 ) {
-            childCountText = childCount;
-        }
-        
+
+		clusterClassName = 'leaflet-marker-cluster leaflet-marker-cluster-garbage' + c;
+
+		var childCountText;
+
+    if (childCount > 99) {
+
+        childCountText = ":-(";
+
+    } else if (childCount < 100 ) {
+
+        childCountText = childCount;
+    }
+
 		return L.divIcon({
-            html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-garbage">' + childCountText + 
-                    '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-garbage"></i></div>', 
-            className: 'leaflet-marker-cluster leaflet-marker-cluster-garbage' + c,
-            iconSize: [40,40]
-        });
+    		html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-garbage"> ' + childCountText + ' </span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-garbage"></i></div>',
+				className: clusterClassName,
+    		iconSize: [40,40]
+    });
 	},
 
 	_bindEvents: function () {
@@ -797,11 +812,11 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 		//Zoom on cluster click or spiderfy if we are at the lowest level
 		if (spiderfyOnMaxZoom || zoomToBoundsOnClick) {
-                        
+
 			this.on('clusterclick', this._zoomOrSpiderfy, this);
-            
+
 		}
-        
+
 		//Show convex hull (boundary) polygon on mouse over
 		if (showCoverageOnHover) {
 			this.on('clustermouseover', this._showCoverage, this);
@@ -899,7 +914,7 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 		var maxZoom = this._map.getMaxZoom(),
 			radius = this.options.maxClusterRadius,
 			radiusFn = radius;
-	
+
 		//If we just set maxClusterRadius to a single number, we need to create
 		//a simple function to return that number. Otherwise, we just have to
 		//use the function we've passed in.
@@ -913,7 +928,7 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 		this._maxZoom = maxZoom;
 		this._gridClusters = {};
 		this._gridUnclustered = {};
-	
+
 		//Set up DistanceGrids for each zoom
 		for (var zoom = maxZoom; zoom >= 0; zoom--) {
 			this._gridClusters[zoom] = new L.DistanceGrid(radiusFn(zoom));
@@ -929,12 +944,12 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 		var gridClusters = this._gridClusters,
 		    gridUnclustered = this._gridUnclustered,
 		    markerPoint, z;
-        
+
 		if (this.options.singleMarkerMode) {
-            
+
 			this._overrideMarkerIcon(layer);
 		}
-        
+
 		layer.on('move', this._childMarkerMoved, this);
 
 		//Find the lowest zoom level to slot this one in
@@ -1126,9 +1141,9 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 	 * @private
 	 */
 	_overrideMarkerIcon: function (layer) {
-        
+
         if (this._map.getZoom() < 10) {
-            
+
             var icon = layer.options.icon = this.options.iconCreateFunction({
                 getChildCount: function () {
                     return 1;
@@ -1136,11 +1151,11 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
                 getAllChildMarkers: function () {
                     return [layer];
                 }
-		  });   
+		  });
         }
-        
+
         else { return; }
-        
+
 		return icon;
 	}
 });
@@ -1396,7 +1411,7 @@ L.MarkerCluster = L.Marker.extend({
 
 	//Zoom to the minimum of showing all of the child markers, or the extents of this cluster
 	zoomToBounds: function () {
-        
+
 		var childClusters = this._childClusters.slice(),
 			map = this._group._map,
 			boundsZoom = map.getBoundsZoom(this._bounds),
@@ -1421,11 +1436,11 @@ L.MarkerCluster = L.Marker.extend({
 		} else {
 			this._group._map.fitBounds(this._bounds);
 		}
-        
+
         // CUSTOM
         // Hide any UI stuff when cluster is clicked
         tools.checkOpenUiElement(this._group._map);
-        
+
 	},
 
 	getBounds: function () {
@@ -1757,26 +1772,26 @@ L.MarkerCluster = L.Marker.extend({
 
 /*
 * Extends L.Marker to include two extra methods: clusterHide and clusterShow.
-* 
+*
 * They work as setOpacity(0) and setOpacity(1) respectively, but
 * they will remember the marker's opacity when hiding and showing it again.
-* 
+*
 */
 
 
 L.Marker.include({
-	
+
 	clusterHide: function () {
 		this.options.opacityWhenUnclustered = this.options.opacity || 1;
 		return this.setOpacity(0);
 	},
-	
+
 	clusterShow: function () {
 		var ret = this.setOpacity(this.options.opacity || this.options.opacityWhenUnclustered);
 		delete this.options.opacityWhenUnclustered;
 		return ret;
 	}
-	
+
 });
 
 
@@ -2035,7 +2050,7 @@ Retrieved from: http://en.literateprograms.org/Quickhull_(Javascript)?oldid=1843
 					minLng = pt.lng;
 				}
 			}
-			
+
 			if (minLat !== maxLat) {
 				minPt = minLatPt;
 				maxPt = maxLatPt;
@@ -2300,7 +2315,7 @@ L.MarkerCluster.include({
 			if (m.clusterHide) {
 				m.clusterHide();
 			}
-			
+
 			// Vectors just get immediately added
 			fg.addLayer(m);
 
@@ -2320,7 +2335,7 @@ L.MarkerCluster.include({
 			//Move marker to new position
 			m._preSpiderfyLatlng = m._latlng;
 			m.setLatLng(newPos);
-			
+
 			if (m.clusterShow) {
 				m.clusterShow();
 			}

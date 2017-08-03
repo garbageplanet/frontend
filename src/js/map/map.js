@@ -4,7 +4,7 @@ var maps = (function () {
   
     'use strict';
     
-    var baselayer = {
+    var _tiles = {
     
         // TODO simplify this
         "Mapbox Outdoors": 
@@ -92,7 +92,7 @@ var maps = (function () {
                         cleaningLayerGroup,
                         litterLayerGroup
                     ]),
-        overlayGroups = {
+        _overlayGroups = {
             "Garbage markers": garbageLayerGroup,
             "Cleaning events": cleaningLayerGroup,
             "Littered coasts and roads": litterLayerGroup,
@@ -100,7 +100,7 @@ var maps = (function () {
         },
         locationcontrol = L.control.locate({position: 'topleft'}),
         scalecontrol = L.control.scale({metric: true, imperial: false}),
-        layerscontrol = L.control.layers(baselayer, overlayGroups, {
+        layerscontrol = L.control.layers(_tiles, _overlayGroups, {
         /* The custom icon 'linkText' is set for the tilelayers in Leaflet source code 
          * in L.Control.Layers.__initLayout()
          */
@@ -110,7 +110,7 @@ var maps = (function () {
         geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
         menucontrol = L.control.menu(),
-        locating = (function () {
+        _locating = function _locating () {
 
             var onLocationFound = function(e) {
                 console.log('location found');
@@ -136,9 +136,9 @@ var maps = (function () {
                 onLocationError: onLocationError,
                 onLocationFound: onLocationFound
             }
-        }()),
-        icons = (function () {
-
+        },
+        icons = (function icons () {
+            
             var mapMarker = L.DivIcon.extend({
                     options: {
                         iconSize: [30, 30],
@@ -172,21 +172,27 @@ var maps = (function () {
                 cleanedMarker: cleanedMarker,
                 pastCleaningMarker: pastCleaningMarker
             }
-        })(),
-        localTrashBins = function () {
+        }()),
+        getTrashBins = function  getTrashBins () {
             // load trashbins icons on the map
-            var binsquery = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
+            var query = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
           
             var osmTrashbinLayer = new L.OverPassLayer({
-                query: binsquery
+                query: query
             });
+          
             maps.map.addLayer(osmTrashbinLayer);
-            // TODO stop the function call on map move
-            // add event on trashbins icon click
+          
+            // Stop the function call on map move
+            // FIXME stop the call, don't remove the layer
+            /*maps.map.on('movestart', function (e) {
+                maps.map.removeLayer(osmTrashbinLayer);
+            });*/
         },
-        init = function () {
+        init = function init () {
         
-            baselayer['Mapbox Outdoors'].addTo(maps.map);
+            _tiles['Mapbox Outdoors'].addTo(maps.map);
+          
             //Disable doubleclick to zoom as it might interfer with other map functions
             maps.map.doubleClickZoom.disable();
 
@@ -204,7 +210,6 @@ var maps = (function () {
             geocodercontrol.addTo(maps.map);
           
             // Add a glome anonymous login button on mobile and small screens
-            // TODO move this logic to ui.js
             if (window.isMobile) {
                 if (!maps.map.glomelogincontrol) {
                     maps.glomelogincontrol.addTo(map);
@@ -212,20 +217,19 @@ var maps = (function () {
                 menucontrol.addTo(maps.map);
             }
             // Start geolocalization
-            maps.map.on('locationerror', maps.locating.onLocationError);
-            maps.map.on('locationfound', maps.locating.onLocationFound);
+            maps.map.on('locationerror', _locating.onLocationError);
+            maps.map.on('locationfound', _locating.onLocationFound);
           
             if (!tools.coordsinhrf || tools.coordsinhrf == 'undefined') {
                 console.log('starting to geolocate');
                 maps.locationcontrol.start();
-            }
+            } 
         };
     
     return { init: init,
              map: map,
              hash: hash,
-             locating: locating,
-             trashBins: localTrashBins,
+             getTrashBins: getTrashBins,
              locationcontrol: locationcontrol,
              glomelogincontrol: glomelogincontrol,
              layerscontrol: layerscontrol,

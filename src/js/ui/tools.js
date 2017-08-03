@@ -237,24 +237,6 @@ var tools = {
         hOffset[0] = - $(window).width() / 6;
         return hOffset;
     },
-    getAllFeatures: function () {
-        // Credit to https://github.com/kedar2a
-        // http://stackoverflow.com/a/24342585
-
-        var allMarkersObjArray = []; // for marker objects
-        var allMarkersGeoJsonArray = []; // for readable geoJson markers
-
-        $.each(maps.map._layers, function (ml) {
-
-            if (maps.map._layers[ml].feature) {
-
-                allMarkersObjArray.push(this)
-                allMarkersGeoJsonArray.push(JSON.stringify(this.toGeoJSON()))
-            }
-        });
-
-        console.log(allMarkersObjArray);
-    },
     resetIconStyle: function (id) {
 
         if (id > 0 && (id || typeof id != 'undefined')) {
@@ -285,39 +267,13 @@ var tools = {
 
         } else { return; }
     },
+    /* App states for keeping track of things TODO make these immutable*/
     states : {
       currentZoom: null,
       initialBbox: [],
       roundedBounds: null,
       currentFeatureId: null,
-    },
- /**
-   * @namespace tools - this function set event listeners for a marker when this particular marker is
-                        the focus of the current form
-   * @method bindUnsavedMarkerEvents()
-   * @param {string} map marker id - the id of the marker to which the events need to be bound
-   */
-    bindUnsavedMarkerEvents: function (id) {
-
-        var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
-        var cancelbutton = $('.btn-cancel');
-
-        ui.sidebar.on ('hide', function() {
-            tools.resetIconStyle(id);
-        });
-
-        // Close sidebar if cancel button clicked and delete unsaved markers
-        cancelbutton.on('click', function (e) {
-            e.preventDefault();
-            ui.sidebar.hide();
-            if (id) {
-                tools.resetIconStyle(id);
-                maps.map.removeLayer(marker);
-            }
-            else {
-              maps.unsavedMarkersLayerGroup.clearLayers();
-            }
-        });
+      login: null
     },
  /**
    * @namespace tools.checkOpenUiElement - a helper function to check the UI for what's currently going on so that one map
@@ -476,6 +432,42 @@ var tools = {
    * @returns {boolean} true - Returns true if the device on which the site is loaded passes the L.Browser leaflet mobile check.
    * @requires Leaflet
    */
+    listMarkersInView: function (type) {
+      
+        var tempMarkers = [];
+      
+        (type === 'garbage' ? maps.garbageLayerGroup : maps.cleaningLayerGroup).eachLayer( function (layer) {
+
+            if ( maps.map.getBounds().contains(layer.getLatLng()) ) {
+
+                tempMarkers.push(layer);
+            }
+        });
+      
+        console.log('Markers in temp array: ', tempMarkers);
+
+        return tempMarkers;
+    },
+    downloadDataAsJSON: function (arr) {
+      
+        // Extract the data from the 'options' key of the object
+        var extractedoptions = [];
+
+        arr.forEach( function (el) {
+            // Remove these two keys as they're not useful
+            delete el.options['icon'];
+            delete el.options['_initHooksCalled'];
+
+            extractedoptions.push(el.options);
+        });
+      
+        // https://stackoverflow.com/a/30800715/2842348 @volzo LIC MIT
+        var datastr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(extractedoptions));
+        var elem = document.getElementById('data-download-hidden');
+        elem.setAttribute("href", datastr);
+        elem.setAttribute("download", "data.json");
+        elem.click();
+    }
 };
 
 // Check if mobile device on load

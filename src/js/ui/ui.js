@@ -6,7 +6,7 @@
 var ui = (function () {
 
     'use strict';
-    // TODO move versioning to package.json andadd during build
+    // TODO move versioning to package.json and add during build
     var templates = {
             garbagetypes: [
                 {short:"plastic",long:"Plastic items"},
@@ -140,7 +140,7 @@ var ui = (function () {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.61'
+            version: '0.5.65'
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
@@ -188,41 +188,15 @@ var ui = (function () {
 
             // Create the templateData.social data dynamically before calling the template
             social.shareThisFeature(featuredata);
-            document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
+            // document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
+            _bindBottombarFeatureEvents(feature);
 
-            // Event listener for share button and social links
-            $('.btn-social, fa-share-alt').popover({
-                trigger: 'focus',
-                html : true,
-                container: 'body',
-                placement: function (pop) {
-                    if (window.isMobile) {
-                        return 'top';
-                    } else {
-                        return 'right';
-                    }
-                },
-                content: function () {
-                    return $('#social-links').html();
-                },
-                template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
-            });
-
-            // Event listener for actions buttons (edit, cleaned join, confirm, play)
-            $('.btn-feature').on('click', function (e) {
-
-                // var ct = e.target.className;
-                var ct = $(this).attr('name');
-                console.log(ct);
-
-                // Send the full leaflet object to actions dispatch function
-                actions.act(ct, feature);
-            });
         },
-        makeModal = function makeModal (type, arr) {
-
+        _makeModal = function _makeModal (type, arr) {
+            // TODO extract function to make the datatable
+            // TODO extract event listeners
             console.log('type of modal: ', type);
-            console.log('value of array: ', arr);
+            console.log('data for table: ', arr);
 
             var template,
                 typeobj,
@@ -230,12 +204,7 @@ var ui = (function () {
                 modaltableid,
                 modaltablebodyid,
                 modalid,
-                modalbodyid,
-                datatableoptions = { lengthMenu:     [[5, 10, 20, -1], [5, 10, 20, "All"]],
-                                     scrollY:        '50vh',
-                                     scrollCollapse: true,
-                                     paging:         false,
-                                     retrieve:       true };
+                modalbodyid;
 
             var modalid          = 'modal-'      + type,
                 modaltmplname    = 'tmpl-modal-' + type,
@@ -252,7 +221,8 @@ var ui = (function () {
 
             // If there's no data passed to the function, we're making a modal for scraping an url
             // handle what happens for the Open Graph scraper
-            if (!arr) {
+            // TODO move this to the sidebar
+            if ( !arr ) {
                 if (type.indexOf('opengraph') > -1 ) {
                     document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
                     $('#' + modalid).modal('show');
@@ -266,6 +236,7 @@ var ui = (function () {
                     $('.btn-opengraph-fetch').text('...');
                     $('.btn-opengraph-fetch').attr('disabled', 'disabled');
 
+                    // Start the scraper promise
                     $.when(tools.openGraphScraper(url)).then(function (data) {
 
                         console.log('data from openGraph Promise resolved:', data);
@@ -281,57 +252,61 @@ var ui = (function () {
                         $('.btn-opengraph-fetch').removeAttr('disabled');
                     });
                 });
-
-                return;
             }
 
             // if it's a data modal check that the array contains data else warn user
-            if (arr) {
-                if (arr.length < 1 && (type != 'game' || type != 'opengraph')) {
+            if ( arr ) {
+                if ( arr.length < 1 && (type != 'game' || type != 'opengraph') ) {
                     alerts.showAlert(29, 'warning', 2000);
                     return;
                 }
                 else {
+
+                   var datatableoptions = {  lengthMenu:     [[5, 10, 20, -1], [5, 10, 20, "All"]],
+                                             scrollY:        '50vh',
+                                             scrollCollapse: true,
+                                             paging:         false,
+                                             retrieve:       true,
+                                             bFilter:        false };
+
                     // Fill the template skeleton and the data
                     document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
                     document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
+
                     // Activate the datatables in the modal
                     $(modaltableid).DataTable(datatableoptions);
 
                     // Show the modal
                     $('#' + modalid).modal('show');
 
+                    // Force sort the columns to fix thead width bug
+                    $(modaltableid).DataTable().order([0, 'desc']).draw();
+
                     // Attach events for buttons
                     $('#modal-data-load-more').on('click', function () {
-                        maps.map.setZoom(maps.map.getZoom() - 1);
+
+                        maps.map.setZoom(tools.currentZoom - 1);
+
                         $('.modal-data-row').empty();
-                        // TODO use the api to add row dymagically
-                        document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
+
+                        var newmarkers = tools.listMarkersInView(type);
+
+                        document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, newmarkers);
                         $(modaltableid).DataTable(datatableoptions);
                     });
 
-                    $('#modal-download').on('click', function (e) {
+                    $('#data-download').on('click', function (e) {
+
+                        // FIXME event listener worksonly once?
                         e.preventDefault;
-                        var stringdata = "text/json;charset=utf-8," + JSON.stringify(arr);
-                        this.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(stringdata));
+                        tools.downloadDataAsJSON(arr);
+
                     });
                 }
             }
         },
-        _bindEvents = function _bindEvents () {
-        // TODO split into top, side and bottombar events
-            var sidebarlink = $('.sidebar-link'),
-                menubacklink = $('.menu-backlink'),
-                usertools = $('#user-tools'),
-                trashbinbutton = $('#btn-trashbins'),
-                modallink = $('.modal-link'),
-                // panelcollapse = $('.panel-collapse'),
-                sidebarcontent = $('.sidebar-content');
-
-            // SIDEBAR ////////////////////////////////////////////////////
+        _bindSidebarEvents = function _bindSidebarEvents () {
             // Navigation for sidebar links
-            // TODO actual routing
-            // FIXME listeners not set when generating forms from templates
             $('.sidebar-link').click(function (e) {
 
                 e.preventDefault();
@@ -344,24 +319,16 @@ var ui = (function () {
                 $('#sidebar').scrollTop = 0;
             });
 
-            // Go back to the marker creation menu link
-            menubacklink.click(function (e) {
-                e.preventDefault();
-                // panelcollapse.collapse('hide');
-                $('#sidebar').scrollTop = 0;
-                $(this.hash).fadeIn().siblings().hide();
-                return;
-            });
-
             // Empty the sidebar on hide, reset accordion and reset scroll
-             ui.sidebar.on('hide', function () {
+            ui.sidebar.on('hide', function () {
 
+                // $('.tab-default').tab('show');
                 $('.sidebar-content').hide();
                 // $('.sidebar-container', '.sidebar-content').scrollTop = 0;
                 // $('form').each(function() {this.reset();});
                 // $('input').val('');
                 // $('.selectpicker').selectpicker('render');
-                $('.tab-default').tab('show');
+
                 $('.leaflet-draw-edit-edit').removeClass('visible');
                 $('.leaflet-draw-edit-remove').removeClass('visible');
                 // FIXME this removes the placeholder as well ?
@@ -385,52 +352,9 @@ var ui = (function () {
                     ui.bottombar.hide();
                 }
             });
+        },
+        _bindBottombarEvents = function _bindBottombarEvents () {
 
-            // TOPBAR //////////////////////////////////////////////////////
-            // Activate dropdown menu links in topbar
-            usertools.on('click', 'a', function (e) {
-
-                if ($(this).hasClass('dropdown-link')) {
-                    e.preventDefault();
-                    ui.bottombar.hide();
-                    ui.sidebar.show();
-                    $(this.hash).fadeIn().siblings().hide();
-                }
-            });
-
-            // Show nearby trashbins
-            trashbinbutton.on('click', function () {
-                if(maps.map.getZoom() < 15 ) {
-
-                    alerts.showAlert(31, 'info', 2000);
-                    return;
-
-                } else {
-                    maps.trashBins();
-                }
-            });
-
-
-            // Set the event listeners for modals in the topbar or elsewhere
-            modallink.on('click', function (e) {
-
-                e.preventDefault();
-
-                if ($(this).hasClass('modal-list-garbage')) {
-                    // Passing the garbage array in the current screen to the function
-                    ui.makeModal('garbage', features.garbageArray());
-                }
-
-                if ($(this).hasClass('modal-list-cleaning')) {
-                    ui.makeModal('cleaning', features.cleaningArray());
-                }
-
-                /*if ($(this).hasClass('btn-join-game')) {
-                    ui.makeModal('game', null);
-                }*/
-            });
-
-            // BOTTOMBAR //////////////////////////////////////////////////////////////////
             // Events to execute when the bottombar is hidden
             ui.bottombar.on('hide', function (e) {
                 // force destroy the popup which hangs on certain tablets (tested on samsung w/ android)
@@ -459,34 +383,124 @@ var ui = (function () {
             $('.modal').on('hidden.bs.modal', function () {
                 $(body).find('.modal').remove();
             });
+        },
+        _bindTopbarEvents = function _bindTopbarEvents () {
+
+            var usertools = $('#topbar').find('#user-tools'),
+                trashbinbutton = $('#topbar').find('#btn-trashbins'),
+                modallink = $('#topbar').find('.modal-link');
+
+            // Activate dropdown menu links in topbar
+            usertools.on('click', 'a', function (e) {
+
+                if ($(this).hasClass('dropdown-link')) {
+                    e.preventDefault();
+                    ui.bottombar.hide();
+                    ui.sidebar.show();
+                    $(this.hash).fadeIn().siblings().hide();
+                }
+            });
+
+            // Show nearby trashbins
+            trashbinbutton.on('click', function () {
+                if(maps.map.getZoom() < 15 ) {
+
+                    alerts.showAlert(31, 'info', 2000);
+                    return;
+
+                } else {
+                    maps.getTrashBins();
+                }
+            });
+
+            // Set the event listeners for modals in the topbar or elsewhere
+            modallink.on('click', function (e) {
+
+                e.preventDefault();
+
+                var type = $(this).attr('name');
+                var currentmarkers = tools.listMarkersInView(type);
+
+                _makeModal(type, currentmarkers);
+            });
+        },
+        _bindBottombarFeatureEvents = function _bindBottombarFeatureEvents (obj) {
+
+            var btnfeature = $('#bottombar').find('.btn-feature');
+
+            // Event listener for share button and social links
+            $('.btn-social, fa-share-alt').popover({
+                trigger: 'focus',
+                html : true,
+                container: 'body',
+                placement: function (pop) {
+                    if (window.isMobile) { return 'top'; } else { return 'right'; }
+                },
+                content: function () {
+                    return $('#social-links').html();
+                },
+                template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
+            });
+
+            // Event listener for actions buttons (edit, cleaned join, confirm, play)
+            btnfeature.on('click', function (e) {
+
+                var ct = $(this).attr('name');
+                console.log(ct);
+
+                // Send the full leaflet object to actions dispatch function
+                actions.act(ct, obj);
+            });
+
 
         },
         init = function init () {
 
-            // Add the Leaflet UI controls to the map
+            /*var sidebardiv = document.createElement('div'),
+                bottombardiv = document.createElement('div'),
+                topbardiv = document.createElement('div'),
+                alertdiv = document.createElement('div');
+
+            sidebardiv.id = 'sidebar';
+            topbardiv.id = 'topbar';
+            bottombardiv.id = 'bottombar';
+            alertdiv.className = 'alert-container text-center';
+
+
+            if ( document.body != null ) {
+                document.body.appendChild(sidebardiv);
+                document.body.appendChild(bottombardiv);
+                document.body.appendChild(topbardivbardiv);
+                document.body.appendChild(alertdiv);
+            }*/
+
+            // Add the Leaflet ui controls to the map
             sidebar.addTo(maps.map);
             bottombar.addTo(maps.map);
 
-            // Fill the main topbar and sidebar template
-            if (!window.isMobile) {
+            // Fill the main topbar and set non-mobile listeners
+            if ( !window.isMobile ) {
                 document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', templates);
+                _bindTopbarEvents();
             }
+
+            // Fill other templates
             document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
             document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
 
+            // Set the rest of the listeners
+            _bindSidebarEvents();
+            _bindBottombarEvents();
+
             // custom alerts at startup for cookies
             alerts.showAlert(32, 'warning', 5000);
-
-            _bindEvents();
        };
 
     return { init: init,
              sidebar: sidebar,
              templates: templates,
              bottombar: bottombar,
-             pushDataToBottomPanel: pushDataToBottomPanel,
-             makeModal: makeModal };
+             pushDataToBottomPanel: pushDataToBottomPanel };
 }());
 // We can start initializing the UI once this code block is read
-// TODO wait for pace?
 ui.init();

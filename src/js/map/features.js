@@ -3,37 +3,37 @@
 * Loading map features from the backend
 */
 
-var features =  (function () {
-    
+var features =  ( function () {
+
     'use strict';
-    
-    var garbageArray = [],
-        cleaningArray = [],
-        useToken = localStorage.getItem('token') || tools.token,
+
+    // TODO stop using custom arrays and solely use leaflet layers mechanisms
+    var useToken = localStorage.getItem('token') || tools.token,
         loadFeature = function (type) {
+
             var alltypes = ['garbage','cleaning','litter','area','opengraph'];
             var type = type.trim();
+
             switch (type) {
                 case 'garbage' : _loadGarbages();
                 break;
-                
+
                 case 'cleaning' : _loadCleanings();
                 break;
-                
+
                 case 'litter' : _loadLitters();
                 break;
-                
+
                 case 'area' : _loadAreas();
                 break;
-                
+
                 case 'all' :
                     alltypes.forEach(function(item) {
-                        console.log('loading all features');
-                        console.log('item value from features.loadFeature(): ', item);
-                        features.loadFeature(item); 
+                        console.log('Loading all features, item value from features.loadFeature(): ', item);
+                        loadFeature(item);
                     });
                     break;
-                
+
                 case 'opengraph' : _loadOpengraph();
                 break;
             }
@@ -47,24 +47,22 @@ var features =  (function () {
                 headers: {
                           "Authorization": 'Bearer ' + useToken
                          },
-                success: function(data) {
+                success: function (data) {
                     console.log('Success getting garbage marker data', data);
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log('Error getting garbage marker data', data);
                 }
             });
-            fetchGarbage.done(function(data) {
-                
-                maps.garbageLayerGroup.clearLayers();
-              
-                garbageArray = [];
+            fetchGarbage.done(function (data) {
 
-                $(data).each(function(i, o) {
-                  
+                maps.garbageLayerGroup.clearLayers();
+
+                $(data).each(function (i, o) {
+
                     console.log('value of ob.cleaned: ', o.cleaned);
 
-                    garbageArray.push(o);
+                    // garbageArray.push(o);
                     // FIXME this doesnt work but would be preferable to emptying the array each time
                     // garbageArray.indexOf(o) === -1 ? garbageArray.push(o) : console.log("This item already exists");
 
@@ -72,7 +70,7 @@ var features =  (function () {
                     var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
                     var marker = L.marker(L.latLng(latlng[0],latlng[1]),
                         {
-                          amount:       o.amount,  
+                          amount:       o.amount,
                           cleaned:      o.cleaned,
                           cleaned_by:   o.cleaned_by,
                           cleaned_date: o.cleaned_date,
@@ -88,10 +86,10 @@ var features =  (function () {
                           size:         o.size,
                           tags:         o.tag,
                           types:        o.types.join(', '),
-                      
+
                           icon: tools.setMarkerIcon(o.cleaned, null),
                           todo: (o.cleaned === true) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo), // FIXME this doesnt do what it should be doing
-                          
+
                           feature_type: 'marker_garbage'
                         });
 
@@ -106,33 +104,31 @@ var features =  (function () {
             });
         },
         _loadCleanings = function _loadCleaning () {
-                  
+
             var fetchCleaning = $.ajax({
                 type: api.readCleaningWithinBounds.method,
                 url: api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
                 headers: {"Authorization": 'Bearer ' + useToken},
-                success: function(data) {
+                success: function (data) {
                     console.log('Success getting cleaning event (marker) data', data);
                 },
-                error: function(data) {
+                error: function (data) {
                   console.log('Error getting cleaning event (marker) data', data);
                 }
             });
-            fetchCleaning.done(function(data){
-              
+            fetchCleaning.done(function (data) {
+
                 maps.cleaningLayerGroup.clearLayers();
-              
-                cleaningArray = [];
 
-                    $(data).each(function(i, o) {
+                    $(data).each(function (i, o) {
 
-                        cleaningArray.push(o);
+                        // cleaningArray.push(o);
                         // cleaningArray.indexOf(o) === -1 ? cleaningArray.push(o) : console.log("This item already exists");
 
                         var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
                         var marker = L.marker(L.latLng(latlng[0], latlng[1]),
                             {
-                                attends:     o.attends, 
+                                attends:     o.attends,
                                 created_at:  o.created_at,
                                 created_by:  o.created_by,
                                 datetime:    o.datetime,
@@ -144,7 +140,7 @@ var features =  (function () {
                                 icon:        tools.setMarkerIcon(null, o.datetime),
                                 feature_type: 'marker_cleaning',
                             });
-                                 
+
                         marker.addTo(maps.cleaningLayerGroup);
                         /*marker.on('click', function(e) {
                             // Bind click listener
@@ -157,7 +153,7 @@ var features =  (function () {
             });*/
         },
         _loadAreas = function _loadAreas () {
-        
+
             var fetchArea = $.ajax({
                 type: api.readAreaWithinBounds.method,
                 url: api.readAreaWithinBounds.url(tools.getCurrentBounds()),
@@ -170,7 +166,7 @@ var features =  (function () {
                 }
             });
             fetchArea.done(function (data) {
-              
+
                 maps.areaLayerGroup.clearLayers();
 
                 $(data).each(function (i, o) {
@@ -206,7 +202,7 @@ var features =  (function () {
                     }
                 );
             });
-            fetchArea.fail(function(data) {
+            fetchArea.fail(function (data) {
                 alerts.showAlert(10, 'warning', 1500);
             });
         },
@@ -223,7 +219,7 @@ var features =  (function () {
                 }
             });
             fetchLitter.done(function(data) {
-              
+
                 maps.litterLayerGroup.clearLayers();
 
                 $(data).each(function(i, o) {
@@ -248,7 +244,7 @@ var features =  (function () {
                         shape: true,
                         feature_type: 'polyline_litter',
                         clickable: true,
-                        weight: 15, 
+                        weight: 15,
                         opacity: 0.5,
                         smoothFactor: 3,
                     });
@@ -262,20 +258,20 @@ var features =  (function () {
                 });
             });
             /* fetchLitter.fail(function() {}); */
-          
+
         },
         _loadOpengraph = function _loadOpengraph () {
             // TODO
             return;
         },
-        _bindEvents = (function _bindEvents () {
+        _bindEvents = function _bindEvents () {
 
             console.log('Binding map self events.')
             // Load features conditionally if the wider bbox is set
             // if (tools.states.initialBbox.length !== 0) {
                 // if the map was already loaded we listen to specific events before fetching features
-                maps.map.on('zoomstart dragend zoomend', function(e) {
-              
+                maps.map.on('zoomstart dragend zoomend', function (e) {
+
                 console.log("map move event: ", e);
                 var eventtype = e.type.trim();
                 var newZoom = e.target.getZoom();
@@ -300,15 +296,17 @@ var features =  (function () {
                         // the only problem remains with the clusters, because when they are exploded
                         // the single markers lose their styles
                         if (newZoom >= 2 && zoomDiff >= 1) {
+
                             features.loadFeature('cleaning');
                             features.loadFeature('garbage');
                             features.loadFeature('opengraph');
 
                            if (newZoom <= 16) {
+
                                 features.loadFeature('litter');
                                 features.loadFeature('area');
                             }
-                          
+
                         } else if (!zoomDiff) {
                             // if there's no prior zoom value it means we're loading for the first time
                             features.loadFeature('all');
@@ -319,6 +317,7 @@ var features =  (function () {
                         if (lengthDiff >= viewportRatio) {
 
                             if (newZoom >= 2 ) {
+
                                 features.loadFeature('cleaning');
                                 features.loadFeature('garbage');
                                 features.loadFeature('opengraph');
@@ -349,9 +348,10 @@ var features =  (function () {
                     _loadAllFeatures();
                 });
             }*/
+        },
+        _init = ( function () {
+          _bindEvents();
         }());
-    
-    return { garbageArray: function () { return garbageArray },
-             cleaningArray: function () { return cleaningArray },
-             loadFeature: loadFeature };
+
+    return { loadFeature: loadFeature };
 }());

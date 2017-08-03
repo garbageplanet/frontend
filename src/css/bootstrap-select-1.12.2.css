@@ -15,8 +15,8 @@
   left: 50%;
   width: 0.11px !important;
   height: 100% !important;
-  opacity: 0 !important;
   padding: 0 !important;
+  opacity: 0 !important;
   border: none;
 }
 .bootstrap-select > select.mobile-device {

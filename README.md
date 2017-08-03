@@ -19,5 +19,9 @@ All contributions are welcome. If you want to contribute to a specific todo belo
 - [ ] make the edit system
 - [ ] documentation
 
+### Additions
+
+- [ ] naviguate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
+
 ### Licence
 This code is available under the ISC licence but some parts have a different license information, see [this file](https://github.com/garbageplanet/web-ui/blob/dev/license.md).

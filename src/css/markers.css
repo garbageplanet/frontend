@@ -76,12 +76,12 @@
 
 /* Garbage amount scale 1-5 */
 .map-marker.marker-color-limegreen {background-color: rgba(204, 255, 102, 0.9)/*#ccff66*/;}
-.map-marker.marker-color-yellow {background-color: rgba(255, 255, 0, 0.9)/*#ffff00*/;}
+.map-marker.marker-color-yellow {background-color: rgba(255, 197, 38, 0.9)/*#ffff00*/;}
 .map-marker.marker-color-orangered {background-color: rgba(255, 102, 0, 09)/*#FF4500*/;}
 .map-marker.marker-color-red {background-color: rgba(255, 26, 26, 0.9)/*#ff1a1a*/;}
 .map-marker.marker-color-violet {background-color: rgba(230, 0, 115, 0.9)/*#e60073*/;}
 
-/* Marker cluster code adapted from L.Markercluster default css 
+/* Marker cluster code adapted from L.Markercluster default css
 * https://github.com/Leaflet/Leaflet.markercluster
 * License MIT
 * Copyright 2012 David Leaver
@@ -91,7 +91,7 @@
 	}
 
 .leaflet-marker-cluster-small {
-	background-color: rgba(255, 255, 0, 0.9);
+	background-color: rgba(255, 197, 38, 0.9);
 	}
 
 .leaflet-marker-cluster-medium {
@@ -107,14 +107,15 @@
 	}
 
 /* Color the text on top of the trashbags */
+/*  tiny is green, small is yellow, medium is orangered, large is red, huge is purple */
 .leaflet-marker-cluster-tiny .leaflet-marker-cluster-count {
 	color: rgba(204, 255, 102, 0.9);
 	}
 .leaflet-marker-cluster-small .leaflet-marker-cluster-count {
-	color: rgba(255, 255, 0, 0.9);
+	color: rgba(255, 197, 38, 0.9);
 	}
 .leaflet-marker-cluster-medium .leaflet-marker-cluster-count {
-	color: rgba(255, 102, 0, 09);
+	color: rgba(255, 102, 0, 0.9);
 	}
 .leaflet-marker-cluster-large .leaflet-marker-cluster-count {
 	color: rgba(255, 26, 26, 0.9);
@@ -126,7 +127,7 @@
 .leaflet-marker-cluster {
     border-radius: 50%;
     text-align: center;
-    display: block;    
+    display: block;
          filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
  -webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
       -o-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
@@ -183,17 +184,17 @@
 }
 
 /* Icon styling and sizing according to zoom */
-.z6 .map-marker, 
-.z5 .map-marker, 
-.z4 .map-marker, 
-.z3 .map-marker, 
-.z2 .map-marker, 
-.z1 .map-marker, 
+.z6 .map-marker,
+.z5 .map-marker,
+.z4 .map-marker,
+.z3 .map-marker,
+.z2 .map-marker,
+.z1 .map-marker,
 .z0 .map-marker {display: none;}
 
-.z7 .map-marker, 
+.z7 .map-marker,
 .z8 .map-marker,
-.z9 .map-marker, 
+.z9 .map-marker,
 .z10 .map-marker {
   font-size:9px;
   width:14px !important;
@@ -201,8 +202,8 @@
   padding-left: 0px;
   padding-bottom: 1px;
 }
-.z11 .map-marker, 
-.z12 .map-marker, 
+.z11 .map-marker,
+.z12 .map-marker,
 .z13 .map-marker {
   font-size:12px;
   width:20px !important;
@@ -242,7 +243,7 @@
 .z0 .marker-nearby-trashbin,
 .z1 .marker-nearby-trashbin,
 .z2 .marker-nearby-trashbin,
-.z3 .marker-nearby-trashbin, 
+.z3 .marker-nearby-trashbin,
 .z4 .marker-nearby-trashbin,
 .z5 .marker-nearby-trashbin,
 .z6 .marker-nearby-trashbin,

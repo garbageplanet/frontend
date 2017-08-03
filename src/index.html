@@ -3,15 +3,15 @@
 <head>
     <title>Garbagepla.net - Earth, spotless.</title>
     <!--<meta http-equiv="Content-Security-Policy" content="default-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net; connect-src http://garbageplanet.dist https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://opengraph.io https://api.imgur.com/3/upload; script-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com 'self'; style-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net 'unsafe-inline'; img-src * data:; object-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://opengraph.io">
-    --><meta charset="utf-8"/>
+    -->
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
     <meta http-equiv="X-UA-Compatible">
     <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
-    <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, maptile, map marker, environmental monitoring, environment, trash, reporting">
+    <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, litter, marine litter, map marker, environmental monitoring, environment, trash, garbage, reporting">
     <meta name="copyright" content="&copy; Garbagepla.net"/>
     <meta property="og:site_name" content="Garbagepla.net"/>
     <meta property="fb:app_id" content="302184056577324"/>
-    <!-- <meta property="fb:app_id" content="@@facebookToken"/> -->
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://garbagepla.net"/>
     <meta property="og:title" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment"/>
@@ -21,97 +21,26 @@
     <meta name="twitter:site" content="@garbageplanet_" />
     <meta name="twitter:creator" content="@adriennn1" />
     
-    <!-- Mobile stuff -->
+    <!-- Mobile meta -->
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#00000">
     <meta name="msapplication-navbutton-color" content="#00000">
     <meta name="apple-mobile-web-app-status-bar-style" content="#00000">
+  
     <!-- inject:head:css:styles -->
     <!-- endinject -->
-
-    <script type="text/javascript" src="js/libs/pace.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/pace.css" >
-
-    <link rel="stylesheet" type="text/css" href="css/font-awesome-4.7.0.css" >
-    <link rel="stylesheet" type="text/css" href="css/google-work-sans.css" >
-    <link rel="stylesheet" type="text/css" href="css/leaflet-1.0.1.css">
-    <link rel="stylesheet" type="text/css" href="css/L.Markercluster-1.0.0.css">
-    <link rel="stylesheet" type="text/css" href="css/L.Compact.Attributions.css">
-    <link rel="stylesheet" type="text/css" href="css/L.Geocoder.Opencage-1.1.2.css">
-
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.6.css"> 
-    <link rel="stylesheet" type="text/css" href="css/L.Control.Sidebar-0.19a.css">
-    <link rel="stylesheet" type="text/css" href="css/L.Control.Locate.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker-4.17.47.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-select-1.9.4.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-tagsinput-0.4.3.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-horizon.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-datatables-1.10.11.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-tour-0.10.1.css">
-    <link rel="stylesheet" type="text/css" href="css/trashbag.css">
-    <link rel="stylesheet" type="text/css" href="css/L.Draw-0.2.4.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/markers.css">
-
-    <script type="text/javascript" src="js/libs/jquery-3.2.0.js"></script>
-    <script type="text/javascript" src="js/libs/Moment-2.10.6.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap-validator-0.9.0.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap-tagsinput-0.4.3.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap-3.3.7.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap-datetimepicker-4.17.47.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap-select-1.9.4.js"> </script>
-    <script type="text/javascript" src="js/libs/bootstrap-datatables-1.10.11.js"></script>
-    <script type="text/javascript" src="js/libs/bootstrap-tour-0.10.1.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-ui-widget-1.11.4.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-fileupload.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-touchwipe-1.1.1.js"></script>
-
-    <script type="text/javascript" src="js/libs/leaflet-1.0.3.js"></script>    
-    <script type="text/javascript" src="js/libs/L.Hash.js"></script>
-    <script type="text/javascript" src="js/libs/L.zoomCSS.js"></script>
-    <script type="text/javascript" src="js/libs/L.Markercluster-1.0.0.js"></script>
-    <script type="text/javascript" src="js/libs/L.Compact.Attributions.js"></script>
-    <!--<script type="text/javascript" src="js/libs/L.Marker.Menu.js"></script>-->
-    <script type="text/javascript" src="js/libs/L.Control.Sidebar-0.19a.js"></script>
-    <script type="text/javascript" src="js/libs/L.Overpass.Layer.js"></script>
-    <script type="text/javascript" src="js/libs/L.Draw-0.2.4.js"></script>
-    <script type="text/javascript" src="js/libs/L.Geocoder.Opencage-1.1.2.js"></script>
-    <script type="text/javascript" src="js/libs/L.Control.Locate.js"></script>
-    <script type="text/javascript" src="js/libs/L.Control.Login.js"></script>
-
 </head>
 <body>
     
-<div id="topbar" class="topbar-container container"></div><!-- Contents of the top bar -->
-<div id="map" class="map-container"></div><!-- Map div -->
-<div id="sidebar" class="sidebar-container"></div><!-- Contents of the sidebar -->
-<div id="bottombar" class="bottombar-container"></div><!-- Contents of the bottom bar -->
+<div id="map"></div>
+<div id="topbar" class="container"></div><!-- Contents of the top bar -->
+<div id="sidebar"></div><!-- Contents of the sidebar -->
+<div id="bottombar"></div><!-- Contents of the bottom bar -->
 <div class="alert-container text-center"></div><!-- Alerts -->
     
 <!-- inject:body:app -->
 <!-- endinject -->
-
-<!-- api config and utilities -->
-<script type="text/javascript" src="js/config/config.js"></script>
-<script type="text/javascript" src="js/ui/tools.js"></script>
-<!-- Templates -->
-<script type="text/javascript" src="js/templates/tmpl.js"></script>
-<!-- Map display and actions scripts -->
-<script type="text/javascript" src="js/ui/alerts.js"></script>
-<script type="text/javascript" src="js/map/map.js"></script>
-<script type="text/javascript" src="js/ui/ui.js"></script>
-<script type="text/javascript" src="js/map/features.js"></script>
-<script type="text/javascript" src="js/map/actions.js"></script>
-<script type="text/javascript" src="js/map/draw.js"></script>
-<!-- Session and user auth scripts -->
-<script type="text/javascript" src="js/session/session.js"></script>
-<!-- Form scripts -->
-<script type="text/javascript" src="js/forms/forms.js"></script>
-<script type="text/javascript" src="js/forms/submit.js"></script>
-<!-- Social -->
-<script type="text/javascript" src="js/social/social.js"></script>
-<script type="text/javascript" src="js/tour/tour.js"></script>
 
 <noscript>
     <div class='noscript'>

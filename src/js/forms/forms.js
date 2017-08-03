@@ -11,11 +11,13 @@ var forms = (function () {
             // This function activates the widgets and init the form submission code in js/forms/submit.js
 
             // Force styling of multiselects
-            // other options are already set in the html
+            // other options are already set as html attributes
+            // FIXME mobile display
             $('.selectpicker').selectpicker({
                 style: 'btn-lg btn-default text-center',
                 size: 6
             });
+
             // Separate tags by hitting space bar or right key
             // FIXME space key doesn't work with mobile keyboard
             // FIXME options are removed upon calling 'removeAll' even when commenting out the code in the plugin
@@ -27,8 +29,8 @@ var forms = (function () {
             });
 
             // Prevent sending the form with enter key
-            // FIXME this doesn't work anymore?
-            $(".form-feature").bind("keypress", function(e) {
+            // FIXME this doesn't seem to work anymore?
+            $(".form-feature").bind("keypress", function (e) {
 
                 if (e.keyCode === 13) {
                     $(".btn-save").attr('type');
@@ -44,7 +46,7 @@ var forms = (function () {
                 drawing.init();
             }
             // Re-initialize some listeners
-            tools.bindUnsavedMarkerEvents();
+            actions.bindUnsavedMarkerEvents();
 
             // activate the form
             saving.init();
@@ -68,11 +70,9 @@ var forms = (function () {
                     _makeForm(id, types[key]);
                 }
             } // adapted from http://stackoverflow.com/a/22277556/2842348
-
-          // TODO catch error?
         },
         _makeForm = function _makeForm (id, type) {
-
+          // TODO extract the form events and init into separate functions
             var typeobj = {},
                 typeid = null,
                 marker = null,
@@ -87,7 +87,7 @@ var forms = (function () {
 
             // add a marker with data from a webpage scraped using the Opengraph scraper
             // this form opens inside a modal
-            // TODO make this as a sidebar form?
+            // TODO make opengraph as a sidebar form?
             if (type === 'opengraph') {
 
                 ui.makeModal(type, null);
@@ -98,6 +98,7 @@ var forms = (function () {
                 $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
             }
 
+            // Else we deal with normal map features
             else {
 
                 typeid = 'create-' + type + '-dialog';
@@ -113,7 +114,7 @@ var forms = (function () {
                 if (type === "litter" || type === "area") {
 
                     // BUG
-                    // FIXME this causes a bug where the layreGroup becomes unaccessible
+                    // FIXME this causes a bug where the layerGroup becomes unaccessible
                     // Delete any unsaved marker icons before drawing shapes
                     // maps.unsavedMarkersLayerGroup.clearLayers();
 
@@ -122,6 +123,7 @@ var forms = (function () {
                         console.log('litter form');
                         document.getElementById('litter-select').innerHTML = tmpl('tmpl-form-garbage-type', ui.templates.garbagetypes);
                     }
+
                     if (type === "area") {
                         console.log('area form');
                     }
@@ -131,21 +133,18 @@ var forms = (function () {
 
                     // Forms for single point markers
                     marker = maps.unsavedMarkersLayerGroup.getLayer(id);
-                    console.log('*****************************************')
-                    console.log("marker obj from _makeForm()", marker);
-                    console.log("unsavedMarkersLayerGroup from _makeForm()", maps.unsavedMarkersLayerGroup);
-                    console.log('*****************************************')
 
                     latlng = marker.getLatLng();
+
+                    // TODO Pass the latlng as an object once templates are in place?
+                    $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
 
                     if (type === "garbage") {
 
                         console.log('garbage form');
+
                         // Fill the multiselect templates in the forms
                         document.getElementById('garbage-select').innerHTML = tmpl('tmpl-form-garbage-type', ui.templates.garbagetypes);
-
-                        // TODO Pass the latlng as an object once templates are in place
-                        $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
 
                         $('input[type=radio]').on('change', function () {
 
@@ -157,7 +156,9 @@ var forms = (function () {
 
                             // Change the class to the corresponding value
                             $(marker._icon).removeClass(function (index, css) {
+
                                 return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+
                             }).addClass(tools.setMarkerClassColor(selectedValue));
                         });
                     }
@@ -165,22 +166,24 @@ var forms = (function () {
                     if (type === "cleaning") {
 
                         console.log('loading cleaning form');
-                        // TODO Pass the latlng as an object once templates are in place
-                        $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
-                        // Set the options on the time and date selects
-                        $('#event-date-time-picker')
-                            .datetimepicker({ showClose: true,
-                                              ignoreReadonly: true,
-                                              focusOnShow: false,
-                                              toolbarPlacement: 'top' });
 
-                        $('#event-date-time-picker').on('dp.change', function(e) {
-                            var eventDateTime = e.date.format('YYYY-MM-DD HH:MM');
-                            console.log('-------------TIME----------', eventDateTime);
-                            $('#date-time-value').val(eventDateTime);
-                            // Change the icon of the marker if a time is set
-                            $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
-                        });
+                        var datetimecontainer =document.getElementById('#cleaning-main-tab');
+
+                        var config = {
+                            enableTime: true,
+                            appendTo: datetimecontainer,
+                            altInput: true,
+                            disableMobile: true,
+                            onChange: function (selectedDates, dateStr, instance) {
+                                console.log(dateStr);
+                                // $('#date-time-value').val(dateStr.toString());
+                                // $('#event-date-time-picker').children().val(dateStr);
+                                // Change the icon of the marker if a time is set
+                                $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
+                            }
+                        };
+
+                        $("#event-date-time-input").flatpickr(config);
                     }
                 }
             }
@@ -188,7 +191,7 @@ var forms = (function () {
             _bindEvents(type);
         },
         _initUploader = function _initUploader () {
-        // TODO find a jquery uploader that doesnt need widget but uses native html fileaccess
+        // TODO find a jquery uploader that doesnt need widget but uses native html file access
             var imageuploader = $('.image-uploader'),
                 imageuploaderbutton = $('.btn-image-uploader'),
                 progressdiv = $('.progress');
@@ -245,7 +248,7 @@ var forms = (function () {
                 }
             });
 
-            imageuploaderbutton.on('click', function() {
+            imageuploaderbutton.on('click', function () {
 
                 // TODO this needs to be more secure with session.checkLogin(checkonly)
                 // but how to catch the promise?

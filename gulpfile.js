@@ -6,16 +6,18 @@ var gulp = require('gulp'),
     deleteLines = require('gulp-delete-lines'),
     stripDebug = require('gulp-strip-debug'),
     concat = require('gulp-concat'),
+    purify = require('gulp-purifycss'),
     minifyCSS = require('gulp-cssnano'),
     uglify = require('gulp-uglify'),
     htmlmin = require('gulp-htmlmin'),
     del = require('del'),
     replace = require('gulp-replace-task'),
     gutil = require('gulp-util'),
+    injectstr = require('gulp-inject-string'),
     env = require('gulp-env');
 
 // Remove the local src scripts and styles from the head of the html
-gulp.task('trimHTML', function() {
+gulp.task('trimHTML', function () {
   return gulp.src('./src/index.html')
    .pipe(deleteLines({
       'filters': [/<script\s+type=["']text\/javascript["']\s+src=/i]
@@ -26,7 +28,7 @@ gulp.task('trimHTML', function() {
   .pipe(gulp.dest('./temp/'));
 });
 // Minify the styleshseets and concat them in order
-gulp.task('styles', ['trimHTML'], function() {
+gulp.task('styles', ['trimHTML'], function () {
   return gulp.src([
                     './src/css/pace.css',
                     './src/css/font-awesome-4.7.0.css',
@@ -47,19 +49,22 @@ gulp.task('styles', ['trimHTML'], function() {
                     './src/css/L.Control.Sidebar-0.19a.css',
                     './src/css/L.Control.Locate.css',
                     './src/css/main.css',
-                    './src/css/markers.css'
+                    './src/css/markers.css',
+                    './src/css/flatpickr.css'
                   ])
+
       .pipe(concat('styles.min.css'))
+      .pipe(purify(['./src/js/**/*.js','./src/js/templates/*.html', './*.html']))
       .pipe(minifyCSS({discardComments: {removeAll: true}}))
       .pipe(gulp.dest('./dist/'));
 });
 // Minify head scripts and concat them in order
-gulp.task('scripts:leaflet', ['trimHTML'], function() {
-  
+gulp.task('scripts:leaflet', ['trimHTML'], function () {
+
   env({file: "env.json"});
-  
+
   var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
-  
+
   return gulp.src([
                     './src/js/libs/leaflet-1.0.3.js',
                     './src/js/libs/L.Markercluster-1.0.0.js',
@@ -80,25 +85,26 @@ gulp.task('scripts:leaflet', ['trimHTML'], function() {
     .pipe(gulp.dest('./temp/'));
 });
 // Minify head scripts and concat them in order
-gulp.task('scripts:jquery', ['trimHTML'], function() {
-  
+gulp.task('scripts:jquery', ['trimHTML'], function () {
+
   env({file: "env.json"});
-  
+
   var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
-  
+
   return gulp.src([
                     './src/js/libs/pace.js',
                     './src/js/libs/jquery-3.2.0.js',
-                    './src/js/libs/Moment-2.10.6.js',
+                    // './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',
                     './src/js/libs/bootstrap-3.3.7.js',
-                    './src/js/libs/bootstrap-datetimepicker-4.17.47.js',
+                    // './src/js/libs/bootstrap-datetimepicker-4.17.47.js',
                     './src/js/libs/bootstrap-select-1.9.4.js',
                     './src/js/libs/bootstrap-validator-0.9.0.js',
                     './src/js/libs/bootstrap-tour-0.10.1.js',
                     './src/js/libs/jquery-ui-widget-1.11.4.js',
                     './src/js/libs/jquery-fileupload.js',
-                    './src/js/libs/bootstrap-datatables-1.10.11.js'
+                    './src/js/libs/bootstrap-datatables-1.10.11.js',
+                    './src/js/libs/flatpickr.js'
   ])
     .pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
@@ -106,12 +112,12 @@ gulp.task('scripts:jquery', ['trimHTML'], function() {
     .pipe(gulp.dest('./temp/'));
 });
 // Minify body scripts and concat them in order
-gulp.task('scripts:app', ['trimHTML'], function() {
-  
+gulp.task('scripts:app', ['trimHTML'], function () {
+
   env({file: "env.json"});
-  
+
   var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
-  
+
   return gulp.src([
                     './src/js/config/config.js',
                     './src/js/templates/tmpl.js',
@@ -134,10 +140,10 @@ gulp.task('scripts:app', ['trimHTML'], function() {
     .pipe(gulp.dest('./temp/'));
 });
 // Minify body scripts, replace strings and concat them in order
-gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function() {
-  
+gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function () {
+
     env({file: "env.json"});
-  
+
     return gulp.src([
         './temp/jquery.min.js',
         './temp/leaflet.min.js',
@@ -179,49 +185,64 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
     .pipe(gulp.dest('dist/'));
 });
 // Inject minifed files path in head and body
-gulp.task('injectFiles', ['scripts:all', 'styles'], function() {
+gulp.task('injectFiles', ['scripts:all', 'styles'], function () {
   return gulp.src('./temp/index.html')
   // inject styles
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
   // Inject scripts
     .pipe(inject(gulp.src('./dist/app.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
+    // .pipe(injectstr.before('</body', '<script src="https://garbageplanet.disqus.com/embed.js"></script>\n'))
     .pipe(gulp.dest('temp1/'));
 });
 // Minify the html, clean comments and spaces
-gulp.task('minifyHTML', ['injectFiles'], function() {
+gulp.task('minifyHTML', ['injectFiles'], function () {
   return gulp.src('./temp1/index.html')
     .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
     .pipe(gulp.dest('dist/'));
 });
-gulp.task('clean:start', function() {
+gulp.task('clean:start', function () {
     return del([
         'dist/',
         'temp',
         'temp1'
     ]);
 });
-gulp.task('clean:end', ['minifyHTML'], function() {
+gulp.task('clean:end', ['minifyHTML'], function () {
     return del([
         'temp',
         'temp1'
     ]);
 });
-gulp.task('copy:fonts', ['clean:end'], function() {
+gulp.task('copy:fonts', ['clean:end'], function () {
     return gulp.src('src/css/fonts/**/*', {base: 'src/css/fonts'})
       .pipe(gulp.dest('dist/fonts'));
 });
-gulp.task('copy:media', ['clean:end'], function() {
+gulp.task('copy:media', ['clean:end'], function () {
     return gulp.src(['src/images/*/**','src/images/*'], {base: 'src/images'})
       .pipe(gulp.dest('dist/images'));
 });
-gulp.task('copy:favicon', ['clean:end'], function() {
+gulp.task('copy:favicon', ['clean:end'], function () {
     return gulp.src('./src/favicon.ico', {base: 'src/'})
       .pipe(gulp.dest('./dist'));
 });
-gulp.task('copy:manifest', ['clean:end'], function() {
+gulp.task('copy:manifest', ['clean:end'], function () {
     return gulp.src('./src/manifest.json', {base: 'src/'})
       .pipe(gulp.dest('./dist'));
 });
-gulp.task('default', ['clean:start'], function() {
-    gulp.start('trimHTML', 'scripts:leaflet', 'scripts:jquery', 'scripts:app', 'scripts:all' , 'styles', 'injectFiles', 'minifyHTML', 'clean:end', 'copy:fonts', 'copy:media', 'copy:favicon', 'copy:manifest');
+gulp.task('default', ['clean:start'], function () {
+    gulp.start(
+      'trimHTML',
+      'scripts:leaflet',
+      'scripts:jquery',
+      'scripts:app',
+      'scripts:all' ,
+      'styles',
+      'injectFiles',
+      'minifyHTML',
+      'clean:end',
+      'copy:fonts',
+      'copy:media',
+      'copy:favicon',
+      'copy:manifest'
+    );
 });
