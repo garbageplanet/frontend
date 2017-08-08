@@ -1,5 +1,6 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 var gulp = require('gulp'),
+    env = require('dotenv').config(),
     gulpif = require('gulp-if'),
     inject = require('gulp-inject'),
     injectStr = require('gulp-inject-string'),
@@ -14,7 +15,9 @@ var gulp = require('gulp'),
     replace = require('gulp-replace-task'),
     gutil = require('gulp-util'),
     injectstr = require('gulp-inject-string'),
-    env = require('gulp-env');
+    uuid = require('uuid-lib');
+
+var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
 
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', function () {
@@ -61,9 +64,7 @@ gulp.task('styles', ['trimHTML'], function () {
 // Minify head scripts and concat them in order
 gulp.task('scripts:leaflet', ['trimHTML'], function () {
 
-  env({file: "env.json"});
-
-  var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
+  // env({file: "env.json"});
 
   return gulp.src([
                     './src/js/libs/leaflet-1.0.3.js',
@@ -87,17 +88,13 @@ gulp.task('scripts:leaflet', ['trimHTML'], function () {
 // Minify head scripts and concat them in order
 gulp.task('scripts:jquery', ['trimHTML'], function () {
 
-  env({file: "env.json"});
-
-  var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
+  // env({file: "env.json"});
 
   return gulp.src([
                     './src/js/libs/pace.js',
                     './src/js/libs/jquery-3.2.0.js',
-                    // './src/js/libs/Moment-2.10.6.js',
                     './src/js/libs/bootstrap-tagsinput-0.4.3.js',
                     './src/js/libs/bootstrap-3.3.7.js',
-                    // './src/js/libs/bootstrap-datetimepicker-4.17.47.js',
                     './src/js/libs/bootstrap-select-1.9.4.js',
                     './src/js/libs/bootstrap-validator-0.9.0.js',
                     './src/js/libs/bootstrap-tour-0.10.1.js',
@@ -114,9 +111,7 @@ gulp.task('scripts:jquery', ['trimHTML'], function () {
 // Minify body scripts and concat them in order
 gulp.task('scripts:app', ['trimHTML'], function () {
 
-  env({file: "env.json"});
-
-  var production = function() {if (process.env.PRODUCTION === 'true') {return true} else {return false}};
+  // env({file: "env.json"});
 
   return gulp.src([
                     './src/js/config/config.js',
@@ -142,7 +137,7 @@ gulp.task('scripts:app', ['trimHTML'], function () {
 // Minify body scripts, replace strings and concat them in order
 gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function () {
 
-    env({file: "env.json"});
+    // env({file: "env.json"});
 
     return gulp.src([
         './temp/jquery.min.js',

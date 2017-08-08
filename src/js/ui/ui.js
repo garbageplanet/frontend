@@ -166,7 +166,7 @@ var ui = (function () {
             document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
             // Set the vars after loading the template
             featureinfo = $('#feature-info');
-            
+
             // TODO use bottombar.getContent() in conjunction with template creation above
             ui.bottombar.show(featureinfo.fadeIn());
 
@@ -193,7 +193,6 @@ var ui = (function () {
             social.shareThisFeature(featuredata);
             // document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
             _bindBottombarFeatureEvents(feature);
-
         },
         _makeModal = function _makeModal (type, arr) {
             // TODO extract function to make the datatable

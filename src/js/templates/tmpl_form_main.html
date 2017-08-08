@@ -535,10 +535,14 @@
                 <input class="form-control disabled area-secret"
                        placeholder="Set the secret to access this game"
                        name="secret"
+                       data-maxlength="256"
+                       data-minlength="24"
+                       data-pattern="^[a-zA-Z0-9]+$"
                        required>
             </div>
             <div class="form-group form-group-lg" style="width:100%">
-                <input class="form-control disabled area-contact"
+                <input type="email"
+                       class="form-control disabled area-contact"
                        placeholder="Set a contact info for this game"
                        name="contact"
                        required>
