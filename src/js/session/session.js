@@ -457,4 +457,6 @@ var session = (function () {
 }());
 
 // Check if the localStorage has token, if yes try to log the user in with data
-window.Pace.on('done', session.init);
+// window.Pace.on('done', session.init);
+
+session.init();

@@ -241,6 +241,17 @@ var maps = (function () {
                 console.log('starting to geolocate');
                 maps.locationcontrol.start();
             }
+
+          _tiles['Mapbox Outdoors'].on("load", function () {
+
+                /*
+                 * Remove the loader div once the tiles have loaded
+                 */
+
+                var loader = document.getElementById('loader');
+                document.body.removeChild(loader);
+                var loader = null;
+             });
         };
 
     return { init: init,

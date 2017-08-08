@@ -49,7 +49,7 @@ var touring = (function () {
                     _mobileTour.init();
                     _mobileTour.start(true);
                 }
-            }, 1000)
+            }, 5000)
         },
         _bindEvents = (function () {
             $('.start-tour').on('click', function () {
@@ -57,10 +57,8 @@ var touring = (function () {
             });
         }());
 
-    return { init: init
-    }
+    return { init: init }
 
 }());
 
-// Only launch the tour once Pace has finished
-window.Pace.on('done', touring.init);
+touring.init()

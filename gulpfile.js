@@ -33,27 +33,26 @@ gulp.task('trimHTML', function () {
 // Minify the styleshseets and concat them in order
 gulp.task('styles', ['trimHTML'], function () {
   return gulp.src([
-                    './src/css/pace.css',
-                    './src/css/font-awesome-4.7.0.css',
-                    './src/css/google-work-sans.css',
-                    './src/css/trashbag.css',
-                    './src/css/bootstrap-3.3.6.css',
-                    './src/css/bootstrap-datetimepicker-4.17.47.css',
-                    './src/css/bootstrap-select-1.9.4.css',
-                    './src/css/bootstrap-tagsinput-0.4.3.css',
-                    './src/css/bootstrap-horizon.css',
-                    './src/css/bootstrap-tour-0.10.1.css',
-                    './src/css/bootstrap-datatables-1.10.11.css',
-                    './src/css/leaflet-1.0.1.css',
-                    './src/css/L.Markercluster-1.0.0.css',
-                    './src/css/L.Compact.Attributions.css',
-                    './src/css/L.Geocoder.Opencage-1.1.2.css',
-                    './src/css/L.Draw-0.2.4.css',
-                    './src/css/L.Control.Sidebar-0.19a.css',
-                    './src/css/L.Control.Locate.css',
+                    './src/vendor/font-awesome-4.7.0.css',
+                    './src/vendor/google-work-sans.css',
+                    './src/vendor/font-trashbag.css',
+                    './src/vendor/bootstrap-3.3.6.css',
+                    './src/vendor/bootstrap-datetimepicker-4.17.47.css',
+                    './src/vendor/bootstrap-select-1.9.4.css',
+                    './src/vendor/bootstrap-tagsinput-0.4.3.css',
+                    './src/vendor/bootstrap-horizon.css',
+                    './src/vendor/bootstrap-tour-0.10.1.css',
+                    './src/vendor/bootstrap-datatables-1.10.11.css',
+                    './src/vendor/leaflet-1.0.1.css',
+                    './src/vendor/L.Markercluster-1.0.0.css',
+                    './src/vendor/L.Compact.Attributions.css',
+                    './src/vendor/L.Geocoder.Opencage-1.1.2.css',
+                    './src/vendor/L.Draw-0.2.4.css',
+                    './src/vendor/L.Control.Sidebar-0.19a.css',
+                    './src/vendor/L.Control.Locate.css',
+                    './src/vendor/flatpickr.css',
                     './src/css/main.css',
-                    './src/css/markers.css',
-                    './src/css/flatpickr.css'
+                    './src/css/markers.css'
                   ])
 
       .pipe(concat('styles.min.css'))
@@ -64,21 +63,19 @@ gulp.task('styles', ['trimHTML'], function () {
 // Minify head scripts and concat them in order
 gulp.task('scripts:leaflet', ['trimHTML'], function () {
 
-  // env({file: "env.json"});
-
   return gulp.src([
-                    './src/js/libs/leaflet-1.0.3.js',
-                    './src/js/libs/L.Markercluster-1.0.0.js',
-                    './src/js/libs/L.Hash.js',
-                    './src/js/libs/L.zoomCSS.js',
-                    './src/js/libs/L.Control.Locate.js',
-                    './src/js/libs/L.Compact.Attributions.js',
-                    './src/js/libs/L.Control.Sidebar-0.19a.js',
-                    './src/js/libs/L.Overpass.Layer.js',
-                    './src/js/libs/L.Draw-0.2.4.js',
-                    './src/js/libs/L.Geocoder.Opencage-1.1.2.js',
-                    './src/js/libs/L.Control.Login.js',
-                    './src/js/libs/L.Control.Menu.js'
+                    './src/vendor/leaflet-1.0.3.js',
+                    './src/vendor/L.Markercluster-1.0.0.js',
+                    './src/vendor/L.Hash.js',
+                    './src/vendor/L.zoomCSS.js',
+                    './src/vendor/L.Control.Locate.js',
+                    './src/vendor/L.Compact.Attributions.js',
+                    './src/vendor/L.Control.Sidebar-0.19a.js',
+                    './src/vendor/L.Overpass.Layer.js',
+                    './src/vendor/L.Draw-0.2.4.js',
+                    './src/vendor/L.Geocoder.Opencage-1.1.2.js',
+                    './src/vendor/L.Control.Login.js',
+                    './src/vendor/L.Control.Menu.js'
                   ])
     .pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
@@ -88,20 +85,17 @@ gulp.task('scripts:leaflet', ['trimHTML'], function () {
 // Minify head scripts and concat them in order
 gulp.task('scripts:jquery', ['trimHTML'], function () {
 
-  // env({file: "env.json"});
-
   return gulp.src([
-                    './src/js/libs/pace.js',
-                    './src/js/libs/jquery-3.2.0.js',
-                    './src/js/libs/bootstrap-tagsinput-0.4.3.js',
-                    './src/js/libs/bootstrap-3.3.7.js',
-                    './src/js/libs/bootstrap-select-1.9.4.js',
-                    './src/js/libs/bootstrap-validator-0.9.0.js',
-                    './src/js/libs/bootstrap-tour-0.10.1.js',
-                    './src/js/libs/jquery-ui-widget-1.11.4.js',
-                    './src/js/libs/jquery-fileupload.js',
-                    './src/js/libs/bootstrap-datatables-1.10.11.js',
-                    './src/js/libs/flatpickr.js'
+                    './src/vendor/jquery-3.2.0.js',
+                    './src/vendor/bootstrap-tagsinput-0.4.3.js',
+                    './src/vendor/bootstrap-3.3.7.js',
+                    './src/vendor/bootstrap-select-1.9.4.js',
+                    './src/vendor/bootstrap-validator-0.9.0.js',
+                    './src/vendor/bootstrap-tour-0.10.1.js',
+                    './src/vendor/jquery-ui-widget-1.11.4.js',
+                    './src/vendor/jquery-fileupload.js',
+                    './src/vendorbootstrap-datatables-1.10.11.js',
+                    './src/vendor/flatpickr.js'
   ])
     .pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
@@ -110,8 +104,6 @@ gulp.task('scripts:jquery', ['trimHTML'], function () {
 });
 // Minify body scripts and concat them in order
 gulp.task('scripts:app', ['trimHTML'], function () {
-
-  // env({file: "env.json"});
 
   return gulp.src([
                     './src/js/config/config.js',
@@ -136,8 +128,6 @@ gulp.task('scripts:app', ['trimHTML'], function () {
 });
 // Minify body scripts, replace strings and concat them in order
 gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function () {
-
-    // env({file: "env.json"});
 
     return gulp.src([
         './temp/jquery.min.js',
@@ -209,7 +199,7 @@ gulp.task('clean:end', ['minifyHTML'], function () {
     ]);
 });
 gulp.task('copy:fonts', ['clean:end'], function () {
-    return gulp.src('src/css/fonts/**/*', {base: 'src/css/fonts'})
+    return gulp.src('src/vendor/fonts/**/*', {base: 'src/vendor/fonts'})
       .pipe(gulp.dest('dist/fonts'));
 });
 gulp.task('copy:media', ['clean:end'], function () {
