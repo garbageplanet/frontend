@@ -1,4 +1,5 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global tools */
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global $, L, maps, jQuery, alerts */
 
 /**
   * @namespace jQuery.fn.serializeObject
@@ -308,7 +309,7 @@ var tools = {
         if ( !maps.layerscontrol.options.iscollapsed || $(layerscontrolbutton).hasClass('leaflet-control-layers-expanded')) {
             console.log('layers control collapsing from ui check open elements');
             maps.layerscontrol.collapse();
-            return;
+            // return;
         }
         // Somehow checking the collapsed property of the control doesn't work?
         // if (!maps.geocodercontrol.options.collapsed) {
@@ -380,7 +381,7 @@ var tools = {
                         alerts.showAlert(5, "danger", 3000);
                         return;
                     }
-                    if (data.openGraph.error = 'null' || !data.openGraph.error){
+                    if (data.openGraph.error == 'null' || !data.openGraph.error) {
                         console.log('Successfully retrieved OG data');
                     }
                 },
@@ -395,10 +396,10 @@ var tools = {
 
         else {
             alerts.showAlert(5, "warning", 2000);
-            return
+            return;
         }
     },
-    scrapeGeolocationFromText: function (o) {
+    scrapeGeolocationFromText: function () {
         // TODO
         return;
     },

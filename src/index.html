@@ -27,8 +27,6 @@
     <meta name="msapplication-navbutton-color" content="#00000">
     <meta name="apple-mobile-web-app-status-bar-style" content="#00000">
 
-    <!-- inject:head:css:styles -->
-    <!-- endinject -->
     <style>
     /*
      * Copyright 2016 Google Inc.
@@ -104,21 +102,23 @@
         -webkit-transform: rotate(90deg);
                 transform: rotate(90deg); } }
     </style>
+
+    <!-- inject:head:css:styles -->
+    <!-- endinject -->
+
 </head>
 <body>
-
-<div class="loader" id="loader" style="z-index:50000">
-  <svg viewBox="0 0 32 32" width="32" height="32">
-    <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
-  </svg>
-</div>
 
 <div id="map"></div>
 <div id="topbar" class="container"></div>
 <div id="sidebar"></div>
 <div id="bottombar"></div>
 <div class="alert-container text-center"></div>
-
+<div class="loader" id="loader" style="z-index:auto">
+  <svg viewBox="0 0 32 32" width="32" height="32">
+    <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+  </svg>
+</div>
 
 <!-- inject:body:app -->
 <!-- endinject -->

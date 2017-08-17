@@ -1,12 +1,16 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global $, L, maps */
 
 /**
 * User interfaces that don't happen directly on the map
 */
-var ui = (function () {
 
-    'use strict';
+var ui = ( function () {
+
+    // 'use strict';
+
     // TODO move versioning to package.json and add during build
+
     var templates = {
             garbagetypes: [
                 {short:"plastic",long:"Plastic items"},
@@ -94,7 +98,7 @@ var ui = (function () {
                     "text":"Address search and geocoding using"
                 },
                 {
-                    "title":"Leaflet 1.0",
+                    "title":"Leaflet",
                     "linkurl":"https://leafletjs.com/",
                     "text":"Mapping done with "
                 },
@@ -104,7 +108,7 @@ var ui = (function () {
                     "text":"Icons by"
                 },
                 {
-                    "title":"Bootstrap 3",
+                    "title":"Bootstrap",
                     "linkurl":"http://getbootstrap.com/",
                     "text":"Built with"
                 },
@@ -114,7 +118,7 @@ var ui = (function () {
                     "text":"Runs on"
                 },
                 {
-                    "title":"Laravel 5.1",
+                    "title":"Laravel",
                     "linkurl":"https://laravel.com/",
                     "text":"Backed by"
                 },
@@ -194,7 +198,7 @@ var ui = (function () {
             // document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
             _bindBottombarFeatureEvents(feature);
         },
-        _makeModal = function _makeModal (type, arr) {
+        makeModal = function makeModal (type, arr) {
             // TODO extract function to make the datatable
             // TODO extract event listeners
             console.log('type of modal: ', type);
@@ -226,12 +230,15 @@ var ui = (function () {
             // TODO move this to the sidebar
             if ( !arr ) {
                 if ( type.indexOf('opengraph') > -1 ) {
+
                     document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
+
                     $('#' + modalid).modal('show');
                     $('#' + modalid).find('input').focus();
                 }
                 // Bind the action to launch the scraper
-                $('.btn-opengraph-fetch').click(function () {
+                $('.btn-opengraph-fetch').click( function () {
+
                     // Retrieve the value of the url
                     var url = $('#opengraph-url').val();
 
@@ -239,7 +246,7 @@ var ui = (function () {
                     $('.btn-opengraph-fetch').attr('disabled', 'disabled');
 
                     // Start the scraper promise
-                    $.when(tools.openGraphScraper(url)).then(function (data) {
+                    $.when( tools.openGraphScraper(url) ).then( function (data) {
 
                         console.log('data from openGraph Promise resolved:', data);
 
@@ -250,6 +257,10 @@ var ui = (function () {
                         // TODO allow saving only if request return meaningful data
                         $('.btn-save-opengraph').removeClass('hidden');
                         // Replace button text and disable nutil request has finished
+                        $('.btn-opengraph-fetch').text('Fetch');
+                        $('.btn-opengraph-fetch').removeAttr('disabled');
+                    }).catch( function () {
+                        // If the promise returns any error reset the form field
                         $('.btn-opengraph-fetch').text('Fetch');
                         $('.btn-opengraph-fetch').removeAttr('disabled');
                     });
@@ -358,7 +369,7 @@ var ui = (function () {
         _bindBottombarEvents = function _bindBottombarEvents () {
 
             // Events to execute when the bottombar is hidden
-            ui.bottombar.on('hide', function (e) {
+            ui.bottombar.on('hide', function () {
                 // force destroy the popup which hangs on certain tablets (tested on samsung w/ android)
                 $('.btn-social').popover('destroy');
                 // reset any modals that was created
@@ -423,7 +434,7 @@ var ui = (function () {
                 var type = $(this).attr('name');
                 var currentmarkers = tools.listMarkersInView(type);
 
-                _makeModal(type, currentmarkers);
+                makeModal(type, currentmarkers);
             });
         },
         _bindBottombarFeatureEvents = function _bindBottombarFeatureEvents (obj) {
@@ -458,24 +469,6 @@ var ui = (function () {
         },
         init = function init () {
 
-            /*var sidebardiv = document.createElement('div'),
-                bottombardiv = document.createElement('div'),
-                topbardiv = document.createElement('div'),
-                alertdiv = document.createElement('div');
-
-            sidebardiv.id = 'sidebar';
-            topbardiv.id = 'topbar';
-            bottombardiv.id = 'bottombar';
-            alertdiv.className = 'alert-container text-center';
-
-
-            if ( document.body != null ) {
-                document.body.appendChild(sidebardiv);
-                document.body.appendChild(bottombardiv);
-                document.body.appendChild(topbardivbardiv);
-                document.body.appendChild(alertdiv);
-            }*/
-
             // Add the Leaflet ui controls to the map
             sidebar.addTo(maps.map);
             bottombar.addTo(maps.map);
@@ -498,11 +491,11 @@ var ui = (function () {
             alerts.showAlert(32, 'warning', 5000);
        };
 
-    return { init: init,
-             sidebar: sidebar,
-             templates: templates,
-             bottombar: bottombar,
-             pushDataToBottomPanel: pushDataToBottomPanel };
+    return {   bottombar             : bottombar
+             , init                  : init
+             , makeModal             : makeModal
+             , pushDataToBottomPanel : pushDataToBottomPanel
+             , sidebar               : sidebar
+             , templates             : templates
+            };
 }());
-// We can start initializing the UI once this code block is read
-ui.init();

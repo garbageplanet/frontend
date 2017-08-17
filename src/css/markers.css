@@ -7,7 +7,7 @@
     -ms-filter: drop-shadow(0px 0px 15px rgba(255,255,255,0.7));
 }
 
-.map-marker{
+.map-marker {
  text-align: center;
  position: absolute;
  overflow: visible;
@@ -15,7 +15,7 @@
  background-position: center;
  color: #fff;
  border-radius: 50%;
- font-family: 'FontAwesome';
+ font-family: 'garbageplanet';
          filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
  -webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
       -o-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
@@ -25,11 +25,10 @@
 
 /*Marker contents */
 .map-marker.marker-generic:before{
- content: '\f128';
+ content: '\78';
 }
 .map-marker.marker-garbage:before{
- font-family: 'trashbag';
- content: '\e600';
+ content: '\67';
 }
 
 .map-marker.marker-dieoff:before{
@@ -86,6 +85,14 @@
 * License MIT
 * Copyright 2012 David Leaver
 */
+
+.leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
+	-webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
+	-moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
+	-o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
+	transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+}
+
 .leaflet-marker-cluster-tiny {
 	background-color: rgba(204, 255, 102, 0.9);
 	}
@@ -148,13 +155,13 @@
 }
 
 .leaflet-marker-cluster-icon-garbage:before {
-    content: '\e600';
-    font-family: 'trashbag';
+    content: '\67';
+    font-family: 'garbageplanet';
 }
 
 .leaflet-marker-cluster-icon-cleaning:before {
     content: '\f133';
-    font-family: 'FontAwesome';
+    font-family: 'garbageplanet';
 }
 
 .leaflet-marker-cluster-cleaning {

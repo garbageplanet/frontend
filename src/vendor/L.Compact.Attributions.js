@@ -24,6 +24,8 @@ L.Control.Attribution.prototype.addTo = function(map) {
     label.setAttribute('for', checkboxId);
     label.classList.add('leaflet-control');
     label.classList.add('leaflet-compact-attribution-label');
+    label.classList.add('fa');
+    label.classList.add('fa-info');
     parent.appendChild(label);
 
     var stop = L.DomEvent.stopPropagation;
@@ -37,12 +39,12 @@ L.Control.Attribution.prototype.addTo = function(map) {
         .on(parent, 'dblclick', fakeStop)
         .on(parent, 'mousewheel', stop)
         .on(parent, 'MozMousePixelScroll', stop);
-    
+
     // initial setup for map load
     if (map._container.offsetWidth <= 600) {
     L.DomUtil.addClass(this._container, 'leaflet-compact-attribution');
     }
-  
+
     // update on map resize
     map.on('resize', function() {
         if (map._container.offsetWidth > 600) {

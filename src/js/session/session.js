@@ -2,17 +2,18 @@
 // author: villeglad 6.11.2015
 // modified by adriennn
 // modified by feri
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global $, tools, alerts, api, ui */
 
 /**
 * Logins, logouts, account deletion and glome pairing
 */
 
-var session = (function () {
+var session = ( function () {
 
     'use strict';
 
-    var _switchSession = function (obj) {
+    var _switchSession = function _switchSession (obj) {
 
         var classicSessionType = localStorage.getItem('classic');
 
@@ -123,7 +124,7 @@ var session = (function () {
             }
         }
     },
-        _login = function (e) {
+        _login = function _login (e) {
               console.log('calling login');
               // NOTE _login can call _switchSession and not the other way around
                 if (e) {
@@ -183,7 +184,7 @@ var session = (function () {
                     localStorage.removeItem('token');
                 });
             },
-        _checkLogin = function (d) {
+        _checkLogin = function _checkLogin (d) {
             console.log('checking login');
             var tokeh = d;
             // TODO checklogin for glome key as well
@@ -231,7 +232,7 @@ var session = (function () {
                 checklogincall: checklogincall
             }
         },
-        _logout = function () {
+        _logout = function _logout () {
                 // FIXME serverside logout backend replies 401
                 if (!localStorage.token) {
                     alerts.showAlert(23, 'info', 2000);
@@ -271,7 +272,7 @@ var session = (function () {
                     });
                 }
             },
-        _register = function (e) {
+        _register = function _register (e) {
 
                 e.preventDefault();
 
@@ -322,7 +323,7 @@ var session = (function () {
                 });
 
             },
-        glomeGo = function () {
+        glomeGo = function glomeGo () {
 
                 console.log('glomego clicked');
 
@@ -382,7 +383,7 @@ var session = (function () {
                 });
 
             },
-        _deleteAccount = function (e) {
+        _deleteAccount = function _deleteAccount (e) {
                 // FIXME backend replies 405 method not allowed
                 var classicSessionType = localStorage.getItem('classic');
 
@@ -429,7 +430,12 @@ var session = (function () {
                 }
 
             },
-        _bindEvents = function () {
+        _bindEvents = function _bindEvents () {
+
+            // TODO displatch from a single listener
+            // var formtosend = document.getElementsByTagName('form');
+            // fortosend.addEventListener('submit', myFunc());
+
             // logout, there are two places where user can click to logout ('button' and 'a')
             $('.btn-logout').on('click', _logout);
             // login
@@ -441,22 +447,19 @@ var session = (function () {
             // delete account
             $('.btn-delete-account').one('click', _deleteAccount);
         },
-        init = function () {
+        init = function init () {
+
             _bindEvents();
 
             if (localStorage.getItem('token')) {
                 // Check the current session with the backend
-                console.log('Pace done, calling _checklogin');
+                console.log('calling _checklogin');
                 _checkLogin();
-            } else { console.log('no prior session found.') }
+
+            } else { console.log('no prior session found.'); }
         };
 
-    return { init: init,
-             glomego: glomeGo
-    };
+    return {   init    : init
+             , glomego : glomeGo
+            };
 }());
-
-// Check if the localStorage has token, if yes try to log the user in with data
-// window.Pace.on('done', session.init);
-
-session.init();

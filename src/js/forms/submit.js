@@ -1,4 +1,5 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global L, $, tools, alerts, api, ui, maps, features, forms */
 
 /**
 * Saving forms data to the backend
@@ -12,7 +13,7 @@
     var _saveFeature = function _saveFeature (fo, ft) {
 
         // NOTE ft = formtype, fo = formobj
-        var ft = ft.trim();
+        ft = ft.trim();
         var useToken = localStorage.getItem('token') || tools.token;
         var auth = 'Bearer ' + useToken;
         var postrequest;
@@ -31,7 +32,6 @@
             }
         }
 
-        console.log('------------------------------')
         console.log('prepared submission obj: ', so);
         console.log('form type: ', ft);
         console.log("form object: ", fo);
@@ -136,7 +136,7 @@
                     }
                 });
                 break;
-        };
+        }
 
         postrequest.done(function (data) {
 
@@ -149,16 +149,19 @@
 
                     if (maps.unsavedMarkersLayerGroup._layers.hasOwnProperty(i)) {
                         tools.resetIconStyle(i);
-                        maps.map.removeLayer(maps.unsavedMarkersLayerGroup.getLayer(i))
+                        maps.map.removeLayer(maps.unsavedMarkersLayerGroup.getLayer(i));
                     }
                 }
             }
 
             // Reload map features after an item is saved
+            // TODO need to change this logic for loading newly created features
+            // call the route to retrieve data for a single feature after saved
+            // and only render this particular feature
             features.loadFeature(ft);
 
             alerts.showAlert(25, 'success', 1500);
-            ui.sidebar.hide('slow');
+            ui.sidebar.hide();
         });
 
         postrequest.fail(function (data) {
@@ -187,7 +190,7 @@
                 currentform.validator('validate');
             }
 
-            currentform.on('keyup change', function(e) {
+            currentform.on('keyup change', function() {
                 currentform.validator('validate');
             });
 

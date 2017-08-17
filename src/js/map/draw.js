@@ -1,4 +1,5 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global L, $, tools, alerts, api, ui, maps */
 
 /**
 * All code related to drawing shapes
@@ -6,16 +7,16 @@
 */
 
 var drawing = (function () {
-  
+
     'use strict';
-    
+
     var drawControl = new L.Control.Draw({
-    
+
             position: 'topright',
-            draw: { 
+            draw: {
                 circle: false,
                 rectangle: false,
-                marker: false 
+                marker: false
             },
         }),
         _bindEvents = function _bindEvents () {
@@ -25,8 +26,7 @@ var drawing = (function () {
                 buttonDrawRemove = $('.leaflet-draw-edit-remove'),
                 buttonDrawPolyline = $('.btn-draw-polyline'),
                 buttonDrawPolygon = $('.btn-draw-polygon');
-            var polylineListener = new L.Draw.Polyline(maps.map, 
-                  { 
+            var polylineListener = new L.Draw.Polyline(maps.map, {
                     allowIntersection: false,
                        drawError: {
                        color: '#cc0000',
@@ -40,8 +40,7 @@ var drawing = (function () {
                       opacity: 0.5
                     }
             });
-            var polygonListener = new L.Draw.Polygon(maps.map, 
-                  { 
+            var polygonListener = new L.Draw.Polygon(maps.map, {
                    shapeOptions:{
                       color: '#33cccc',
                       weight: 5,
@@ -54,7 +53,7 @@ var drawing = (function () {
                          color: '#cc0000',
                          timeout: 2000}
             });
-          
+
             buttonDrawPolyline.on('click', function() {
 
                 // Stop default marker event listener
@@ -82,15 +81,15 @@ var drawing = (function () {
 
                 if (window.isMobile) {
                         ui.sidebar.hide();
-                        alerts.showAlert(14, 'warning', 3500);  
+                        alerts.showAlert(14, 'warning', 3500);
                 }
             });
-          
+
             maps.map.on('draw:drawstart', function(e) {
 
                 var type = e.layerType,
                     layer = e.layer;
-              
+
                 // Disable start drawing buttons
                 // TODO entirely disable handlers
                 buttonDraw.addClass('disabled');
@@ -98,7 +97,7 @@ var drawing = (function () {
             // Stop click listeners when editing and deleting features
             // TODO remove these as editing / deleting unsvaed shapes isn't implemented yet
             maps.map.on('draw:editstart', function(e) {
-              
+
                 maps.map.off('click', actions.mapClick);
 
                 $('.btn-draw').addClass('disabled');
@@ -106,7 +105,7 @@ var drawing = (function () {
                 // litterLayerGroup.off('click', onPathClick);
                 // areaLayerGroup.off('click', onAreaClick);
             });
-            maps.map.on('draw:editstop', function(e) { 
+            maps.map.on('draw:editstop', function(e) {
 
                 // $('.btn-draw').removeClass('disabled');
 
@@ -117,7 +116,7 @@ var drawing = (function () {
                 // litterLayerGroup.off('click', onPathClick);
                 // areaLayerGroup.off('click', onAreaClick);
             });
-            maps.map.on('draw:deletestart', function(e) { 
+            maps.map.on('draw:deletestart', function(e) {
 
                 maps.map.off('click', actions.mapClick);
 
@@ -151,7 +150,7 @@ var drawing = (function () {
             maps.map.on('draw:created', function(e) {
 
                 var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, ''),
-                    polylineLayer, 
+                    polylineLayer,
                     polygonLayer;
 
                 if (e.layerType === 'polyline') {
@@ -182,7 +181,7 @@ var drawing = (function () {
 
                 if( e.layerType === 'polygon') {
 
-                    // Show the sidebar again on mobile    
+                    // Show the sidebar again on mobile
                     if (window.isMobile) {
 
                         ui.sidebar.show($("#create-area-dialog").show());
@@ -207,7 +206,7 @@ var drawing = (function () {
 
                         maps.map.removeLayer(e.layer);
                     });
-                    
+
                 }
 
                 // Reactivate default marker event listener and drawing button
@@ -245,14 +244,14 @@ var drawing = (function () {
                     var type = e.layerType,
                         currentlayer = e.layer;
 
-                    if ( type === 'polyline') { 
+                    if ( type === 'polyline') {
 
-                      return "polyline";/*save to backend*/ 
+                      return "polyline";/*save to backend*/
                     }
 
-                    if ( type === 'polygon') { 
+                    if ( type === 'polygon') {
 
-                      return "polygon";/*save to backend*/ 
+                      return "polygon";/*save to backend*/
                     }
                 });
 
@@ -269,7 +268,7 @@ var drawing = (function () {
             _bindEvents();
         };
 
-    return { init: init,
-             drawControl: drawControl
-    };
+    return {   init        : init
+             , drawControl : drawControl
+            };
 }());

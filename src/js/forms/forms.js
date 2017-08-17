@@ -1,3 +1,6 @@
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global L, $, tools, alerts, api, ui, features, maps, drawing, actions, saving, tmpl */
+
 /**
 * Forms elements that requires js activations and settings
 */
@@ -12,7 +15,7 @@ var forms = (function () {
 
             // Force styling of multiselects
             // other options are already set as html attributes
-            // FIXME mobile display
+            // FIXME mobile display sometimes works sometime not
             $('.selectpicker').selectpicker({
                 style: 'btn-lg btn-default text-center',
                 size: 6
@@ -51,10 +54,11 @@ var forms = (function () {
             // activate the form
             saving.init();
         },
-        formDispatcher = function _formDispatcher (id, targetLinkClass) {
+        formDispatcher = function formDispatcher (id, targetLinkClass) {
 
             console.log("id from _formDispatcher: ", id);
             console.log("link class from _formDispatcher(): ", targetLinkClass );
+            
             // TODO extract this logic to tools.dispatcher so we can dispatch any type of function with any callback
             var types = { 'garbage': 'garbage',
                           'cleaning': 'cleaning',
@@ -69,7 +73,7 @@ var forms = (function () {
                 if (targetLinkClass.indexOf(key) !== -1) {
                     _makeForm(id, types[key]);
                 }
-            } // adapted from http://stackoverflow.com/a/22277556/2842348
+            }
         },
         _makeForm = function _makeForm (id, type) {
           // TODO extract the form events and init into separate functions
@@ -201,7 +205,7 @@ var forms = (function () {
                 url: 'https://api.imgur.com/3/upload',
                 dataType: 'json',
                 paramName: 'image',
-                progressall: function(e, data) {
+                progressall: function (e, data) {
 
                     var progress = parseInt(data.loaded / data.total * 100, 10),
                         progressbar = $('.progress-bar');
@@ -210,17 +214,17 @@ var forms = (function () {
                     progressbar.css('width', progress + '%');
                 },
 
-                fail: function(err) {
+                fail: function (err) {
                     console.log("upload error: ", err);
                     progressdiv.addClass('hidden').delay(400);
                 },
 
-                error: function(err) {
+                error: function (err) {
                     console.log("upload error: ", err);
                     progressdiv.addClass('hidden').delay(400);
                 },
 
-                done: function(e, data) {
+                done: function (e, data) {
 
                     console.log("IMGUR DATA OBJ: ", data);
                     $(e.target).parent().next().val(data.result.data.link);
@@ -252,7 +256,8 @@ var forms = (function () {
                 // but how to catch the promise?
                 if (localStorage.getItem('token')) {
 
-                    console.log('we got check')
+                    console.log('we got check');
+                    
                     $(this).next().trigger('click');
 
                   } else {
@@ -262,5 +267,5 @@ var forms = (function () {
             });
         };
 
-    return { formDispatcher: formDispatcher };
+    return { formDispatcher : formDispatcher };
 }());

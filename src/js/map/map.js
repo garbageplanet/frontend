@@ -1,4 +1,5 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000 global maps locating*/
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global L, alerts */
 
 /**
   * Extend L.Control.Locate to accomodate the url regex
@@ -10,7 +11,7 @@
   */
 L.Control.OwnLocate = L.Control.Locate.extend({
    latlnginURL: function () {
-     return window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/)
+     return window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/);
    }
 });
 
@@ -18,16 +19,15 @@ L.Control.OwnLocate = L.Control.Locate.extend({
   * Set the map and plugins
   */
 
-var maps = (function () {
+var maps = ( function () {
 
-    'use strict';
+    // 'use strict';
 
     var _tiles = {
 
         // TODO simplify this
         "Mapbox Outdoors":
             L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
-            //L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWRyaWVubm4iLCJhIjoiNWQ5ZTEwYzE0MTY5ZjcxYjIyNmExZDA0MGE2MzI2YWEifQ.WGCZQzbVhF87_Z_Yo1aMIQ',
                 {
                     maxZoom: 20,
                     minZoom: 2,
@@ -62,14 +62,13 @@ var maps = (function () {
             maxClusterRadius: 50,
             disableClusteringAtZoom: 15,
             showCoverageOnHover: false,
-            singleMarkerMode: true,
-        }).addTo(map),
+            singleMarkerMode: true
+        }),
         cleaningLayerGroup = L.markerClusterGroup({
             spiderfyOnMaxZoom: false,
             maxClusterRadius: 80,
             disableClusteringAtZoom: 15,
             showCoverageOnHover: false,
-            // FIXME singleMarkerMode doesn't work with iConCreateFunction enabled
             singleMarkerMode: true,
             iconCreateFunction:  function (cluster) {
 
@@ -82,7 +81,7 @@ var maps = (function () {
                     iconSize: [40,40]
                 });
             }
-        }).addTo(map),
+        }),
         linkLayerGroup = L.markerClusterGroup({
             spiderfyOnMaxZoom: false,
             maxClusterRadius: 80,
@@ -100,20 +99,22 @@ var maps = (function () {
                     iconSize: [40,40]
                 });
             }
-        }).addTo(map),
-        litterLayerGroup = L.featureGroup().addTo(map),
-        areaLayerGroup = L.featureGroup().addTo(map),
-        unsavedMarkersLayerGroup = L.featureGroup().addTo(map),
+        }),
+        litterLayerGroup = L.featureGroup(),
+        areaLayerGroup = L.featureGroup(),
+        unsavedMarkersLayerGroup = L.featureGroup(),
         allLayers = L.layerGroup([
                         garbageLayerGroup,
                         areaLayerGroup,
                         cleaningLayerGroup,
-                        litterLayerGroup
+                        litterLayerGroup,
+                        linkLayerGroup
                     ]),
         _overlayGroups = {
             "Garbage markers": garbageLayerGroup,
             "Cleaning events": cleaningLayerGroup,
             "Littered coasts and roads": litterLayerGroup,
+            "Linked markers": linkLayerGroup,
             "Tiles and areas": areaLayerGroup
         },
         locationcontrol = new L.Control.OwnLocate({
@@ -145,16 +146,14 @@ var maps = (function () {
         }),
         scalecontrol = L.control.scale({metric: true, imperial: false}),
         layerscontrol = L.control.layers(_tiles, _overlayGroups, {
-        /** The custom icon 'linkText' is set in Leaflet 1.0.3 source code
-          * in L.Control.Layers.__initLayout()
-          */
+            // the custom icon 'linkText' is set in Leaflet 1.0.3 source code in L.Control.Layers.__initLayout()
             position: 'topleft',
             linkText: '<span class="fa fa-fw fa-globe"></span>'
         }),
         geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
         glomelogincontrol = L.control.login(),
         menucontrol = L.control.menu(),
-        icons = (function icons () {
+        icons = ( function icons () {
 
             var mapMarker = L.DivIcon.extend({
                     options: {
@@ -178,19 +177,18 @@ var maps = (function () {
                 linkMarker         = mapmarker({className: 'map-marker marker-link'}),
                 cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
 
-            return {
-                genericMarker : genericMarker,
-                garbageMarker : garbageMarker,
-                cleaningMarker : cleaningMarker,
-                dieoffMarker : dieoffMarker,
-                sewageMarker : sewageMarker,
-                floatingMarker : floatingMarker,
-                linkMarker: linkMarker,
-                cleanedMarker: cleanedMarker,
-                pastCleaningMarker: pastCleaningMarker
-            }
+            return {   genericMarker      : genericMarker
+                     , garbageMarker      : garbageMarker
+                     , cleaningMarker     : cleaningMarker
+                     , dieoffMarker       : dieoffMarker
+                     , sewageMarker       : sewageMarker
+                     , floatingMarker     : floatingMarker
+                     , linkMarker         : linkMarker
+                     , cleanedMarker      : cleanedMarker
+                     , pastCleaningMarker : pastCleaningMarker
+                    };
         }()),
-        getTrashBins = function  getTrashBins () {
+        getTrashBins = function getTrashBins () {
             // load trashbins icons on the map
             var query = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
 
@@ -214,10 +212,10 @@ var maps = (function () {
             maps.map.doubleClickZoom.disable();
 
             // Add zoom controls on desktop
-            if (!window.isMobile) {
+            if ( !window.isMobile ) {
                 var zoomcontrol = L.control.zoom({position: 'topleft'});
-                zoomcontrol.options.zoomInText = '<span class="fa fa-fw fa-plus"></span>';
-                zoomcontrol.options.zoomOutText = '<span class="fa fa-fw fa-minus"></span>';
+                zoomcontrol.options.zoomInText = '<span class="fa fa-fw fa-search-plus"></span>';
+                zoomcontrol.options.zoomOutText = '<span class="fa fa-fw fa-search-minus"></span>';
                 zoomcontrol.addTo(maps.map);
             }
 
@@ -226,50 +224,55 @@ var maps = (function () {
             layerscontrol.addTo(maps.map);
             geocodercontrol.addTo(maps.map);
 
+            // Add feature layers
+            maps.garbageLayerGroup.addTo(maps.map);
+            maps.areaLayerGroup.addTo(maps.map);
+            maps.litterLayerGroup.addTo(maps.map);
+            maps.linkLayerGroup.addTo(maps.map);
+            maps.cleaningLayerGroup.addTo(maps.map);
+            maps.unsavedMarkersLayerGroup.addTo(maps.map);
+
             // Add a glome anonymous login button on mobile and small screens
-            if (window.isMobile) {
-                if (!maps.map.glomelogincontrol) {
-                    maps.glomelogincontrol.addTo(map);
+            if ( window.isMobile ) {
+                if ( !maps.map.glomelogincontrol ) {
+                    maps.glomelogincontrol.addTo(maps.map);
                 }
                 menucontrol.addTo(maps.map);
             }
-            // Start geolocalization
-            // maps.map.on('locationerror', _locating.onLocationError);
-            // maps.map.on('locationfound', _locating.onLocationFound);
 
             if ( !maps.locationcontrol.latlnginURL() || maps.locationcontrol.latlnginURL() === null ) {
                 console.log('starting to geolocate');
                 maps.locationcontrol.start();
             }
 
-          _tiles['Mapbox Outdoors'].on("load", function () {
+          _tiles['Mapbox Outdoors'].on('load', function () {
 
-                /*
-                 * Remove the loader div once the tiles have loaded
-                 */
+                // Remove the loader div once the tiles have loaded
 
                 var loader = document.getElementById('loader');
-                document.body.removeChild(loader);
-                var loader = null;
+
+                if ( loader ) {
+                    document.body.removeChild(loader);
+                    loader = null;
+                }
              });
         };
 
-    return { init: init,
-             map: map,
-             hash: hash,
-             getTrashBins: getTrashBins,
-             locationcontrol: locationcontrol,
-             glomelogincontrol: glomelogincontrol,
-             layerscontrol: layerscontrol,
-             geocodercontrol: geocodercontrol,
-             garbageLayerGroup: garbageLayerGroup,
-             areaLayerGroup: areaLayerGroup,
-             litterLayerGroup: litterLayerGroup,
-             linkLayerGroup: linkLayerGroup,
-             cleaningLayerGroup: cleaningLayerGroup,
-             unsavedMarkersLayerGroup: unsavedMarkersLayerGroup,
-             allLayers: allLayers,
-             icons: icons };
+    return {   init                     : init
+             , map                      : map
+             , hash                     : hash
+             , getTrashBins             : getTrashBins
+             , locationcontrol          : locationcontrol
+             , glomelogincontrol        : glomelogincontrol
+             , layerscontrol            : layerscontrol
+             , geocodercontrol          : geocodercontrol
+             , garbageLayerGroup        : garbageLayerGroup
+             , areaLayerGroup           : areaLayerGroup
+             , litterLayerGroup         : litterLayerGroup
+             , linkLayerGroup           : linkLayerGroup
+             , cleaningLayerGroup       : cleaningLayerGroup
+             , unsavedMarkersLayerGroup : unsavedMarkersLayerGroup
+             , allLayers                : allLayers
+             , icons                    : icons
+            };
 }());
-
-maps.init();

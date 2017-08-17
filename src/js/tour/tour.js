@@ -1,5 +1,10 @@
-/*jshint maxerr: 1000*/
-// Touring the app
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global $, Tour */
+
+/**
+  * Touring the app
+  */
+
 var touring = (function () {
 
     'use strict';
@@ -34,6 +39,8 @@ var touring = (function () {
             ]
         }),
         init = function () {
+          
+            _bindEvents();
 
             setTimeout(function () {
 
@@ -49,16 +56,16 @@ var touring = (function () {
                     _mobileTour.init();
                     _mobileTour.start(true);
                 }
-            }, 5000)
+            }, 5000);
         },
-        _bindEvents = (function () {
+        _bindEvents = function () {
+          
             $('.start-tour').on('click', function () {
-                setTimeout(touring.init, 2000)
+              
+                setTimeout(touring.init, 2000);
             });
-        }());
+        };
 
-    return { init: init }
+    return { init: init };
 
 }());
-
-touring.init()

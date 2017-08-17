@@ -7,7 +7,8 @@
  */
 L.Control.Sidebar = L.Control.extend({
 
-    includes: L.Mixin.Events,
+    // includes: L.Mixin.Events,
+    includes: L.Evented.prototype,
 
     options: {
         closeButton: true,
@@ -37,10 +38,10 @@ L.Control.Sidebar = L.Control.extend({
         // Create close button and attach it if configured for given panel
         var closeclass= 'close-button close-' + this.options.position;
         if (this.options.closeButton) {
-            
+
             var close = this._closeButton = L.DomUtil.create('div', closeclass, container);
-            // close.innerHTML = '<span>x</span>';   
-            close.innerHTML = '<span class="close">x</span>';            
+            // close.innerHTML = '<span>x</span>';
+            close.innerHTML = '<span class="close">x</span>';
         }
     },
 
@@ -129,44 +130,44 @@ L.Control.Sidebar = L.Control.extend({
 
     show: function () {
         if (!this.isVisible()) {
-          
+
             L.DomUtil.addClass(this._container, 'visible');
-          
+
             if (this.options.autoPan) {
                 this._map.panBy([-this.getOffset() / 2, 0], {
                     duration: 0.5
                 });
-              
+
             }
-              
+
             else if (this.options.autoPan && this.options.position === 'bottom') {
                 this._map.panBy([0, -this.getOffset() / 2], {
                 duration: 0.5
                 });
             }
-              
+
             this.fire('show');
         }
     },
 
     hide: function (e) {
-        
+
         if (this.isVisible()) {
             L.DomUtil.removeClass(this._container, 'visible');
-            
+
             if (this.options.autoPan) {
                 this._map.panBy([this.getOffset() / 2, 0], {
                     duration: 0.5
                 });
-              
+
             }
-              
+
             else if (this.options.autoPan && this.options.position === 'bottom') {
                 this._map.panBy([0, this.getOffset() / 2], {
                 duration: 0.5
                 });
             }
-          
+
             this.fire('hide');
         }
         if(e) {
@@ -198,8 +199,8 @@ L.Control.Sidebar = L.Control.extend({
     getOffset: function () {
         if (this.options.position === 'right') {
             return -this._container.offsetWidth;
-        } 
-      
+        }
+
         else if ((this.options.position === 'bottom')) {
             return -this._container.offsetHeight;
         }

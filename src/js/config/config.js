@@ -1,3 +1,6 @@
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global L, $, tools, alerts, api, ui */
+
 /**
   * The necessary configurations that are used by the UI
   * TODO group routes and add middleware functions in the backend to cut the amount of routes
@@ -58,7 +61,7 @@ var api = {
     },
     createTrash: {
         method: 'POST',
-        url: function(id) {
+        url: function() {
             return api.readTrash.url();
         }
     },/* Trash */
@@ -98,7 +101,7 @@ var api = {
     },
     createCleaning: {
         method: 'POST',
-        url: function(id) {
+        url: function() {
             return api.readCleaning.url();
         }
     },/* Cleaning */

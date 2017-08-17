@@ -2,7 +2,7 @@
   padding: 2px 6px;
   background: rgba(255, 255, 255, 0.9);
   }
-  
+
 .leaflet-container .leaflet-control-attribution.leaflet-compact-attribution {
   width: auto !important;
   margin: 10px 44px 0 10px;
@@ -10,10 +10,10 @@
   background: rgba(255, 255, 255, 0.6);
   visibility: hidden;
   }
-  
+
 .leaflet-compact-attribution-label:after {
-  font-family: 'FontAwesome';
-  content: '\f129';
+  font-family: 'garbageplanet' !important;
+  content: '\f53';
   position: absolute;
   right: 0;
   bottom: 0;
@@ -30,11 +30,11 @@
   cursor: pointer;
   visibility: visible;
   }
-  
+
 .leaflet-compact-attribution-toggle, .leaflet-compact-attribution-label {
   display: none;
   }
-  
+
 .leaflet-compact-attribution ~ .leaflet-compact-attribution-label {
   display: block;
   }

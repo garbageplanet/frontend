@@ -6,18 +6,17 @@ Repository for the [garbagepla.net](https://garbagepla.net) frontend.
 
 ### How to get started?
 
-Run `npm i` to install gulp and dependencies in the root directory and type `gulp`.
-To rebuild or new templates you need to install javascript-template `npm i blueimp-tmpl` then change directory to `/src/js/templates` and run the command found at the bottom of the file `tmpl_howto.html` in the same folder.
-Note that if you do not have your own token for mapbox and other APIs you won't be able to build properly.
+Run `npm i` to install gulp and dependencies in the root directory and type `gulp`. Note that if you do not have your own token for mapbox and other APIs you won't be able to build properly.
 
 ### Tokens and external APIs
 
-These should be in an env.json file in the root folder:
+These should be in an .env file in the root folder:
 
-    "IMGUR_TOKEN" : "*************''"
-    "MAPBOX_TOKEN" : "***************************************"
-    "OPENCAGEGEOCODERC_TOKEN" : "*********"
-    "OPENGRAPHSCRAPER_TOKEN" : "**************"
+    IMGUR_TOKEN=*************
+    MAPBOX_TOKEN=***************************************
+    OPENCAGEGEOCODERC_TOKEN=*********
+    OPENGRAPHSCRAPER_TOKEN=**************
+    ...
 
 ### Contributing
 
@@ -26,7 +25,6 @@ If you want to contribute to a specific todo below, the first thing you should d
 ### TODO
 
 - [ ] add backend controllers and geographical geocoding capability for webpage scraping (using the OG api, check again list of countries, then against list of most common words, excluding these not starting with a capital etc, then submit to reverse geocoding search and check for number of hits and work from there)
-- [ ] rebuild template at build time with gulp (call tmpl.js from gulp)
 - [ ] add direct upload of geotagged photo
 - [ ] upload to imgur as user
 - [ ] make the edit system

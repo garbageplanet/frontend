@@ -136,16 +136,15 @@ body {
   }
 }
 
-
 /* custom leaflet control classes */
 /* put the control buttons under the sideba shadow */
 .leaflet-top.leaflet-left {
     z-index: 499 !important;
 }
 
-
 .fa-icon-centered {
   margin-left: -3px;
+  margin-top: 10px;
 }
 
 /* Style share buttons */
@@ -628,9 +627,9 @@ h1, .h1, h2, .h2, h3, .h3 {
 }
 
 .popover.tour {
-  background-color: #7e40ca;
-  color: #FFF;
-  font-size: 2rem
+  background-color: #fff;
+  color: #000;
+  font-size: 1.5rem
 }
 
 .popover-navigation > a {
@@ -843,7 +842,7 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
     margin-right: 10%
 }
 
-.modal-body{
+.modal-body {
     max-height: calc(100vh - 200px);
     overflow-y: auto;
     min-width: 70vw !important;

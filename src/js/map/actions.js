@@ -1,4 +1,5 @@
-/* jslint browser: true, white: true, sloppy: true, maxerr:1000 global: actions*/
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/* global L, $, tools, alerts, api, ui, maps, features, forms */
 
 /**
 * User actions on the map and on features that are already present
@@ -6,7 +7,7 @@
 
 var actions = (function () {
 
-    'use strict';
+    // 'use strict';
 
     var mapClick = function mapClick (map) {
 
@@ -66,15 +67,17 @@ var actions = (function () {
             }
         },
         _unsavedMarkerClick = function _unsavedMarkerClick (obj) {
+            
+            console.log('caught click on unsaved marker');
 
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
             // inside a form for another marker else it's possible to modify a new marker with
             // another marker not cleared nor saved. This can only happen on desktop.
-            if (!window.mobile) {
+            if ( !window.mobile ) {
 
                 console.log('unsavedMarkersLayerGroup data: ', maps.unsavedMarkersLayerGroup);
 
-                for (var i in maps.unsavedMarkersLayerGroup._layers) {
+                for ( var i in maps.unsavedMarkersLayerGroup._layers ) {
 
                     if (maps.unsavedMarkersLayerGroup._layers.hasOwnProperty(i)) {
                         tools.resetIconStyle(i);
@@ -88,7 +91,7 @@ var actions = (function () {
             tools.states.currentFeatureId = maps.unsavedMarkersLayerGroup.getLayerId(obj.layer);
 
             // Behavior for large screens
-            if (!window.isMobile) {
+            if ( !window.isMobile ) {
 
                 maps.map.panToOffset(obj.layer.getLatLng(), tools.getHorizontalOffset());
                 $('#sidebar').scrollTop = 0;
@@ -107,13 +110,13 @@ var actions = (function () {
             // Check that there's not already something else going on in the UI
             // TODO need to bypass the bottombar check because we just want to update its contents
             // if it's already open with another marker data
+
             /*if (!tools.checkOpenUiElement()){
                 return;
             }*/
 
-            // L.DomEvent.stopPropagation(e);
-
             if ( obj.layer.options ) {
+
                 // check if the feature is a shape
                 if ( obj.layer.options.shape ) {
 
@@ -140,7 +143,7 @@ var actions = (function () {
 
             console.log('acting type: ', t);
             console.log(o);
-            var t = t.trim();
+            t = t.trim();
             // oo, options only
             var oo = o.options;
             console.log('trimmed value t: ', t);
@@ -206,11 +209,11 @@ var actions = (function () {
                 var callurl = null;
 
                 if (e.feature_type === 'marker_garbage') {
-                    var callurl = api.confirmTrash.url(e.id);
+                    callurl = api.confirmTrash.url(e.id);
                 }
 
                 else if (e.feature_type === 'polyline_litter') {
-                    var callurl = api.confirmLitter.url(e.id);
+                    callurl = api.confirmLitter.url(e.id);
                 }
 
                 var useToken = localStorage.getItem('token') || tools.token;
@@ -248,6 +251,8 @@ var actions = (function () {
             }
         },
         _deleteFeature = function deleteFeature (o) {
+            
+            var deletemethod, deleteurl;
 
             console.log("object passed to function: ", o);
             // debugger;
@@ -259,28 +264,28 @@ var actions = (function () {
                 switch (cf.feature_type) {
 
                     case 'marker_cleaning':
-                      var deletemethod = api.deleteCleaning.method;
-                      var deleteurl = api.deleteCleaning.url(cf.id);
+                      deletemethod = api.deleteCleaning.method;
+                      deleteurl = api.deleteCleaning.url(cf.id);
                       break;
 
                     case 'polyline_litter':
-                      var deletemethod = api.deleteLitter.method;
-                      var deleteurl = api.deleteLitter.url(cf.id);
+                      deletemethod = api.deleteLitter.method;
+                      deleteurl = api.deleteLitter.url(cf.id);
                       break;
 
                     case 'polygon_area':
-                      var deletemethod = api.deleteArea.method;
-                      var deleteurl = api.deleteArea.url(cf.id);
+                      deletemethod = api.deleteArea.method;
+                      deleteurl = api.deleteArea.url(cf.id);
                       break;
 
                     case 'marker_garbage':
-                      var deletemethod = api.deleteTrash.method;
-                      var deleteurl = api.deleteTrash.url(cf.id);
+                      deletemethod = api.deleteTrash.method;
+                      deleteurl = api.deleteTrash.url(cf.id);
                       break;
 
                     case 'link_marker':
-                      var deletemethod = api.deleteLink.method;
-                      var deleteurl = api.deleteLink.url(cf.id);
+                      deletemethod = api.deleteLink.method;
+                      deleteurl = api.deleteLink.url(cf.id);
                       break;
 
                     default: console.log('error deleting item');
@@ -296,7 +301,7 @@ var actions = (function () {
                         headers: {"Authorization": "Bearer " + useToken}
                     });
 
-                    deletecall.done(function(response) {
+                    deletecall.done(function() {
                         // itd item to delete
                         // var itd = null;
                         maps.map.removeLayer(o);
@@ -391,11 +396,11 @@ var actions = (function () {
                 var callurl = null;
 
                 if (e.feature_type === 'marker_garbage') {
-                    var callurl = api.cleanTrash.url(e.id);
+                    callurl = api.cleanTrash.url(e.id);
                 }
 
                 else if (e.feature_type === 'polyline_litter') {
-                    var callurl = api.cleanLitter.url(e.id);
+                    callurl = api.cleanLitter.url(e.id);
                 }
 
                 var useToken = localStorage.getItem('token') || tools.token;
@@ -431,7 +436,7 @@ var actions = (function () {
                 });
             }
         },
-        _joinGame = function joinGame (e) {
+        _joinGame = function joinGame () {
             console.log('game not implemented');
             return;
         },
@@ -439,6 +444,7 @@ var actions = (function () {
 
             // NOTE the event listeners for most map feature actions are set in the ui/ui.js file in ui.pushDataToBottomPanel()
             // because we need to bind the feature data for each action
+
             console.log('binding basic map actions');
             maps.map.on('click', mapClick);
 
@@ -476,30 +482,34 @@ var actions = (function () {
 
             // Close sidebar if cancel button clicked and delete unsaved markers
             cancelbutton.on('click', function (e) {
+
                 e.preventDefault();
                 ui.sidebar.hide();
-                if (id) {
+
+                if ( id ) {
                     tools.resetIconStyle(id);
                     maps.map.removeLayer(marker);
-                }
-                else {
+                } else {
                   maps.unsavedMarkersLayerGroup.clearLayers();
                 }
-        });
-    },
-        _init = (function () {
+            });
+          },
+        init = function init () {
 
             // Check the map obj is available
-            if (maps.map) {
+            if ( maps.map !== undefined ) {
                 _bindEvents();
+
             } else {
-                setTimeout(function() {
-                    maps.map.once('ready', _bindEvents)
+                setTimeout( function () {
+                    maps.map.once('ready', _bindEvents);
                 }, 500);
             }
-        }());
+        };
 
-    return { mapClick: mapClick,
-             act: act,
-             bindUnsavedMarkerEvents: bindUnsavedMarkerEvents };
+    return {   mapClick                : mapClick
+             , act                     : act
+             , bindUnsavedMarkerEvents : bindUnsavedMarkerEvents
+             , init                    : init
+            };
 }());

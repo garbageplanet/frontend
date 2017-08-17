@@ -1,28 +1,29 @@
-/*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
+/* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
+/*global tmpl */
 
 /**
 * Sharing map features from the bottom panel
 */
 
-var social = (function () {
+var social = ( function () {
 
     'use strict';
 
     var network = [
           {
-            'iconclass': 'fa-facebook',
+            'iconclass': 'fa-facebook fa-icon-centered',
             'btnclass': 'btn-facebook',
             'title': 'Share on Facebook',
             'targeturl': ''
           },
           {
-            'iconclass': 'fa-twitter',
+            'iconclass': 'fa-twitter fa-icon-centered',
             'btnclass': 'btn-twitter',
             'title': 'Share on Twitter',
             'targeturl': ''
           },
           {
-            'iconclass': 'fa-google-plus',
+            'iconclass': 'fa-google-plus fa-icon-centered',
             'btnclass': 'btn-google-plus',
             'title': 'Share on Google+',
             'targeturl': ''
@@ -34,7 +35,7 @@ var social = (function () {
             'targeturl': ''
           },
           {
-            'iconclass': 'fa-tumblr',
+            'iconclass': 'fa-tumblr fa-icon-centered',
             'btnclass': 'btn-tumblr',
             'title': 'Share on Tumblr',
             'targeturl': ''
@@ -60,16 +61,21 @@ var social = (function () {
         ],
         shareThisFeature = function (obj) {
 
-            var encoded_url = encodeURIComponent(window.location),
-                feature_image_url,
-                feature_note,
-                feature_tags;
+            var encoded_url = encodeURIComponent(window.location);
 
-            obj.image_url ? feature_image_url = obj.image_url : feature_image_url =  '';
+            // obj.image_url ? feature_image_url = obj.image_url : feature_image_url = '';
+            var feature_image_url = obj.image_url ? obj.image_url : '';
             var feature_image_url_encoded = encodeURIComponent(feature_image_url);
-            obj.note ? feature_note = obj.note : feature_note =  '';
+
+            // obj.note ? feature_note = obj.note : feature_note =  '';
+            var feature_note = obj.note ? obj.note : '';
+
             var feature_note_encoded = encodeURIComponent(feature_note);
-            obj.tags ? feature_tags = obj.tags : feature_tags =  '';
+
+            // obj.tags ? feature_tags = obj.tags : feature_tags =  '';
+
+            var feature_tags = obj.tags ? obj.tags : '';
+
             var feature_tags_encoded = encodeURIComponent(feature_tags);
 
             // Create the links in the templatedata object
@@ -125,7 +131,7 @@ var social = (function () {
             }
         }*/
 
-    return { shareThisFeature: shareThisFeature }
+    return { shareThisFeature: shareThisFeature };
 }());
 
 /**

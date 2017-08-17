@@ -1611,7 +1611,7 @@ pre code {
 @media (min-width: 480px) and (max-width: 767px) {
   .container {
     max-width: 748px; }
-    
+
   .form-horizontal .form-group .control-label {text-align:right;}
 }
 
@@ -6130,4 +6130,3 @@ button.close {
     display: none !important;
   }
 }
-/*# sourceMappingURL=bootstrap.css.map */

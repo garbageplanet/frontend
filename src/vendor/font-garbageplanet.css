@@ -1,0 +1,223 @@
+/*!
+ *  The garbageplanet font is a subset of Font Awesome 4.4 that also includes Icon-Roska-Trashbag.
+ *  Icon-Roska-Trashbag by @adriennn/@garbagepla_net - https://github.com/adriennn/icon-roska-trashbag
+ *  License - The Unlicense
+ *  Font Awesome 4.4.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+
+@charset "UTF-8";
+
+@font-face {
+  font-family: "garbageplanet";
+  src:url("fonts/garbageplanet/garbageplanet.eot");
+  src:url("fonts/garbageplanet/garbageplanet.eot?#iefix") format("embedded-opentype"),
+    url("fonts/garbageplanet/garbageplanet.woff") format("woff"),
+    url("fonts/garbageplanet/garbageplanet.ttf") format("truetype"),
+    url("fonts/garbageplanet/garbageplanet.svg#garbageplanet") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="fa fa-"]:before,
+[class*=" fa fa-"]:before {
+  font-family: "garbageplanet" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-calendar-check-o:before {
+  content: "\61";
+}
+.fa-calendar-o:before {
+  content: "\62";
+}
+.fa-check:before {
+  content: "\64";
+}
+.fa-bar-chart:before {
+  content: "\65";
+}
+.fa-bars:before {
+  content: "\66";
+}
+.fa-cloud-download:before {
+  content: "\6f";
+}
+.fa-envelope-o:before {
+  content: "\70";
+}
+.fa-facebook:before {
+  content: "\71";
+}
+.fa-google-plus:before {
+  content: "\72";
+}
+.fa-instagram:before {
+  content: "\73";
+}
+.fa-link:before {
+  content: "\74";
+}
+.fa-location-arrow:before {
+  content: "\75";
+}
+.fa-map-marker:before {
+  content: "\76";
+}
+.fa-pencil:before {
+  content: "\77";
+}
+.fa-question:before {
+  content: "\78";
+}
+.fa-search-minus:before {
+  content: "\79";
+}
+.fa-search-plus:before {
+  content: "\7a";
+}
+.fa-search:before {
+  content: "\41";
+}
+.fa-spinner:before {
+  content: "\42";
+}
+.fa-tag:before {
+  content: "\43";
+}
+.fa-times:before {
+  content: "\44";
+}
+.fa-trash-o:before {
+  content: "\45";
+}
+.fa-user:before {
+  content: "\46";
+}
+.fa-user-secret:before {
+  content: "\47";
+}
+.fa-whatsapp:before {
+  content: "\48";
+}
+.fa-vk:before {
+  content: "\49";
+}
+.fa-sort:before {
+  content: "\4a";
+}
+.fa-sort-asc:before {
+  content: "\4b";
+}
+.fa-sort-desc:before {
+  content: "\4c";
+}
+.fa-twitter:before {
+  content: "\4d";
+}
+.fa-tumblr:before {
+  content: "\4e";
+}
+.fa-renren:before {
+  content: "\4f";
+}
+.fa-reddit:before {
+  content: "\50";
+}
+.fa-pinterest-p:before {
+  content: "\51";
+}
+.fa-play:before {
+  content: "\52";
+}
+.fa-map:before {
+  content: "\54";
+}
+.fa-map-signs:before {
+  content: "\53";
+}
+.fa-info:before {
+  content: "\55";
+}
+.fa-file-image-o:before {
+  content: "\56";
+}
+.fa-comment:before {
+  content: "\57";
+}
+.fa-eye:before {
+  content: "\63";
+}
+.fa-trashbag:before {
+  content: "\67";
+}
+.fa-globe:before {
+  content: "\68";
+}
+.fa-share-alt:before {
+  content: "\69";
+}
+
+/* makes the font 33% larger relative to the icon container */
+.fa-lg {
+  font-size: 1.33333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+.fa-2x {
+  font-size: 2em;
+}
+.fa-3x {
+  font-size: 3em;
+}
+.fa-4x {
+  font-size: 4em;
+}
+.fa-5x {
+  font-size: 5em;
+}
+.fa-fw {
+  width: 1.28571429em;
+  text-align: center;
+}
+.fa-spin {
+  -webkit-animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear;
+}
+.fa-pulse {
+  -webkit-animation: fa-spin 1s infinite steps(8);
+  animation: fa-spin 1s infinite steps(8);
+}
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+.fa-rotate-90 {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
