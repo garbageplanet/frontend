@@ -27,7 +27,16 @@
   font-variant: normal !important;
   text-transform: none !important;
   speak: none;
-  line-height: 1;
+  /*line-height: 1;*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 garbageplanet;
+  font-size: inherit;
+  text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

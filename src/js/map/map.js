@@ -27,7 +27,7 @@ var maps = ( function () {
 
         // TODO simplify this
         "Mapbox Outdoors":
-            L.tileLayer('https://api.tiles.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
+            L.tileLayer('https://api.mapbox.com/v4/adriennn.9da931dd/{z}/{x}/{y}.png?access_token=@@mapboxtoken',
                 {
                     maxZoom: 20,
                     minZoom: 2,
@@ -56,7 +56,10 @@ var maps = ( function () {
                 })
         },
         map = L.map('map', {zoomControl: false, attributionControl: true}),
-        hash = L.hash(map),
+        hash = L.hash(map, {
+          baseURI: '',
+          query: true
+        }),
         garbageLayerGroup = L.markerClusterGroup({
             spiderfyOnMaxZoom: false,
             maxClusterRadius: 50,

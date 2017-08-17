@@ -35,9 +35,9 @@ gulp.task('trimHTML', ['templates'], function () {
    .pipe(deleteLines({
       'filters': [/<script\s+type=["']text\/javascript["']\s+src=/i]
     }))
-   .pipe(deleteLines({
-      'filters': [/<link\s+rel=["']stylesheet["']\s+type=/i]
-    }))
+  //  .pipe(deleteLines({
+  //     'filters': [/<link\s+rel=["']stylesheet["']\s+type=/i]
+  //   }))
   .pipe(gulp.dest('./temp/'));
 });
 
@@ -46,9 +46,9 @@ gulp.task('styles', ['trimHTML'], function () {
   return gulp.src([
                     './src/vendor/Normalize-7.0.0.css',
                     './src/vendor/font-garbageplanet.css',
-                    './src/vendor/google-work-sans.css',
+                    // './src/vendor/google-work-sans.css',
                     './src/vendor/bootstrap-3.3.6.css',
-                    './src/vendor/bootstrap-datetimepicker-4.17.47.css',
+                    // './src/vendor/bootstrap-datetimepicker-4.17.47.css',
                     './src/vendor/bootstrap-select-1.9.4.css',
                     './src/vendor/bootstrap-tagsinput-0.4.3.css',
                     './src/vendor/bootstrap-horizon.css',

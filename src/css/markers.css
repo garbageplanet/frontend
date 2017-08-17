@@ -44,7 +44,7 @@
  content: '\f0c1';
 }
 .map-marker.marker-cleaned:before{
- content: '\f00c';
+ content: '\64';
 }
 .map-marker.marker-cleaned{
  opacity: 0.5;
