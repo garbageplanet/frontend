@@ -531,9 +531,6 @@ var ui = ( function () {
                 _bindTopbarEvents();
             }
 
-            // Fill other templates
-            document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
-
             // Set the rest of the listeners
             _bindSidebarEvents();
             _bindBottombarEvents();

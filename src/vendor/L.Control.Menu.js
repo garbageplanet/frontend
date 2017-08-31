@@ -24,8 +24,8 @@
     if(typeof window !== 'undefined' && window.L){
         window.L.Control.Menu = factory(L);
     }
-} 
- 
+}
+
 (function (L) {
     var MenuControl = L.Control.extend({
         options: {
@@ -70,7 +70,8 @@
         },
 
         _onClick: function() {
-            ui.sidebar.show($('#mobile-menu-dialog').show());
+            ui.sidebar.setContent( tmpl('tmpl-mobile-menu', ui.templates) );
+            ui.sidebar.show();
         },
     });
 

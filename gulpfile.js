@@ -38,12 +38,10 @@ gulp.task('templates', function (cb) {
                                       tmpl_social_links.html \
                                       tmpl_credits.html \
                                       tmpl_topbar_main.html \
-                                      tmpl_sidebar_main.html \
-                                      tmpl_form_menu.html > tmpl.js', function (err, stdout, stderr) {
-    console.log(stdout);
-    console.log(stderr);
-    cb(err);
-  });
+                                      tmpl_sidebar_header.html \
+                                      tmpl_auth_*.html \
+                                      tmpl_info_*.html \
+                                      tmpl_form_menu.html > tmpl.js', function (err, stdout, stderr) { console.log(stdout); console.log(stderr); cb(err); });
 });
 
 // Remove the local src scripts and styles from the head of the html

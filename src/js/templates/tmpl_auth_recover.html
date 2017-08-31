@@ -2,6 +2,40 @@
 
 {% include('tmpl-sidebar-header', {title: "Reset your password", url: "#/auth/account"}); %}
 
+<p class="lead">Please provide the email address you have used to register. If you encounter an issue while recovering your credentials you can also <a href="mailto:info@garbagepla.net?Subject=Halp" target="_top">contact us</a>.</p>
 
+<form id="recover-credentials-form"
+      class="form-group"
+      accept-charset="UTF-8"
+      data-toggle="validator">
+
+    <div class="form-group input-group input-group-lg form-group form-group-lg">
+            <input type="email"
+                   class="form-control"
+                   placeholder="Your email"
+                   with-error>
+            <span class="input-group-btn">
+                  <button class="btn btn-default btn-lg"
+                          type="submit">
+                      <span class="fa fa-fw fa-envelope-o"></span> Submit</button>
+            </span>
+    </div>
+
+    <br>
+
+    <div>
+        <div class="alert alert-danger hidden" role="alert">
+            <span class="fa fa-fw fa-exclamation"></span>
+            <span class="sr-only">Error:</span>
+                    Sorry, there is no user registered with this email.
+        </div>
+        <div class="alert alert-success hidden" role="alert">
+            <span class="fa fa-fw fa-check"></span>
+            <span class="sr-only">Error:</span>
+                    Check your inbox.
+        </div>
+    </div>
+
+</form>
 
 </script>
