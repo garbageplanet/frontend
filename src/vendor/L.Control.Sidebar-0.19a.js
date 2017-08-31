@@ -87,7 +87,7 @@ L.Control.Sidebar = L.Control.extend({
         //if the control is visible, hide it before removing it.
         this.hide();
 
-	    var container = this._container;
+	      var container = this._container;
         var content = this._contentContainer;
 
         // Remove sidebar container from controls container
@@ -192,7 +192,22 @@ L.Control.Sidebar = L.Control.extend({
     },
 
     setContent: function (content) {
-        this.getContainer().innerHTML = content;
+
+        var container = this.getContainer();
+
+        if (typeof content === 'string') {
+
+            container.innerHTML = content;
+
+        } else {
+            // clean current content
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            container.appendChild(content);
+        }
+
         return this;
     },
 

@@ -39,7 +39,7 @@ var touring = (function () {
             ]
         }),
         init = function () {
-          
+
             _bindEvents();
 
             setTimeout(function () {
@@ -59,9 +59,9 @@ var touring = (function () {
             }, 5000);
         },
         _bindEvents = function () {
-          
+
             $('.start-tour').on('click', function () {
-              
+
                 setTimeout(touring.init, 2000);
             });
         };

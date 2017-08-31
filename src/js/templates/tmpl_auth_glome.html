@@ -1,0 +1,38 @@
+<script type="text/x-tmpl" id="tmpl-auth-glome">
+
+  {% include('tmpl-sidebar-header', {title: "Pair your Glome account", url: "#/auth/account"}); %}
+
+  <h4>Scan the QR code</h4><img src="" alt="qr code" class="qrcode-image center-block">
+
+  <h4>or type in your key</h4>
+
+  <form id="glome-withkey-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
+    <div class="form-group form-group-lg">
+      <div>
+        <div class="row">
+           <div class="input-group" style="width:100%">
+            <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+              <input type="text"
+                     class="form-control"
+                     maxlength="14"
+                     size="14"
+                     pattern="[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}"
+                     data-error="Wrong key format"
+                     placeholder="XXXX-XXXX-XXXX"
+                     required>
+                <div class="help-block with-errors"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div>
+        <div>
+          <button type="submit" class="btn btn-info btn-lg btn-block btn-glome-key-send">Submit &raquo;</button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+</script>

@@ -1,0 +1,50 @@
+<script type="text/x-tmpl" id="tmpl-auth-account">
+
+  {% include('tmpl-sidebar-header', {title: "Account details", url: "#/auth/account"}); %}
+
+  <br class="hidden-lg hidden-xl">
+
+  <div class="tab-view">
+
+      <ul class="nav nav-tabs nav-justified" role="tablist">
+        <li class="active"><a data-target="#user-info-main" data-toggle="tab" class="tab-default"><span class="fa fa-fw fa-user"></span></a></li>
+        <li               ><a data-target="#user-info-terms" data-toggle="tab"                   ><span class="fa fa-fw fa-info"></span></a></li>
+      </ul>
+
+      <div class="tab-content">
+        <br>
+        <div class="tab-pane active form-group form-group-lg" id="user-info-main" role="tabpanel">
+
+          <h3>Welcome, <span class="user-name"></span></h3>
+
+          <h4>User id</h4><p class="user-id"></p>
+
+          <div class="user-glome-key"><h4>Glome key value</h4><p></p></div>
+
+          <div class="user-email"><h4>User email</h4><p></p></div>
+
+          <br>
+
+          <button type="button" class="btn btn-default btn-lg btn-block btn-logout">
+            Logout
+          </button>
+
+          <br>
+
+          <div class="pull-left">
+            <p><a href="#/auth/delete" data-navigo>Delete</a> your account.</p>
+            <p><a href="#/info/privacy" data-navigo>Privacy policy</a></p>
+          </div>
+        </div>
+
+        <div class="tab-pane form-group form-group-lg" id="user-info-terms" role="tabpanel">
+          <h3>Terms of service</h3>
+          <p>As a user (anybody who has created an account or is creating markers anonymously) of the grabagepla.net platform, you agree to use this platform for the sole purpose that it was designed for and no other ends including but not limited to the promotion of hate speech, third-party material advertisement or any other illegal activity.</p>
+          <p>The underlying software is distributed under the <a href="https://opensource.org/licenses/ISC" target="_blank">ISC Licence</a>. The data gathered by this platform is available upon request under the ODC Open Database License (<a href="http://opendatacommons.org/licenses/odbl/" target="_blank">ODbL v1.0</a>). The garbagepla.net logo is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0</a> International License.</p>
+          <p>Contents in preparation.</p>
+        </div>
+
+      </div>
+    </div>
+
+</script>

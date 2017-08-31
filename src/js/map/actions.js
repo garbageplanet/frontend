@@ -7,7 +7,7 @@
 
 var actions = (function () {
 
-    // 'use strict';
+    'use strict';
 
     var mapClick = function mapClick (map) {
 
@@ -16,16 +16,14 @@ var actions = (function () {
 
 
             // Check that there's not already something else going on in the UI and if yes then we don't do anything with the click
-            if (!tools.checkOpenUiElement(map)) {
+            if ( !tools.checkOpenUiElement(map) ) {
                 return;
             }
             // Else place a marker on the map
             else {
 
-                console.log('markerid before setting it: ', markerid);
-
                 // Make the actual marker and add it to the map
-                var marker = L.marker(map.latlng, { icon: maps.icons.genericMarker, draggable: false, feature_type: 'marker_generic' });
+                var marker = L.marker(map.latlng, { icon: maps.icons.genericMarker, draggable: false, feature_type: 'generic' });
 
                 // Add the marker to the unsaved layer
                 maps.unsavedMarkersLayerGroup.addLayer(marker);
@@ -41,33 +39,35 @@ var actions = (function () {
                 // Set listeners in the case the marker isn't saved
                 actions.bindUnsavedMarkerEvents(markerid);
 
+                // Build the route
+                var route = router.generate('form', {
+                    id: markerid,
+                    type: 'menu'
+                });
+
+                console.log('route:', route);
+
                 // Show the menu with a delay on mobile
-                // TODO need a better marker creation flow
-                if (window.isMobile) {
-                    // Pan the map to center the marker
-                    maps.map.panTo(marker.getLatLng());
 
-                    setTimeout( function(){
-                        ui.sidebar.show($("#create-marker-dialog").show());
-                    }, 1000);
-                }
+                 if ( window.isMobile ) {
 
-                // On desktop,we keep the marker available event if not saved
-                if (!window.isMobile) {
+                   maps.map.panTo(marker.getLatLng());
 
-                    // Pan the map to center the marker
-                    maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
+                   setTimeout(
+                     function () {
+                       router.navigate(route);
+                     }, 1000);
 
-                    // Reset the sidebar contents and show the form container
-                    // the form itself is built from template from the function forms.passMarkerToForm() above
-                    // $('.sidebar-content').hide();
-                    // $('#sidebar').scrollTop = 0;
-                    ui.sidebar.show($("#create-marker-dialog").show());
-                }
+                 } else {
+
+                   console.log('not mobile');
+                   maps.map.panToOffset(marker.getLatLng(), tools.getHorizontalOffset());
+                   router.navigate(route);
+                 }
             }
         },
         _unsavedMarkerClick = function _unsavedMarkerClick (obj) {
-            
+
             console.log('caught click on unsaved marker');
 
             // Clear all the marker icon styles when clicking on a marker when user is doing sthg
@@ -94,9 +94,15 @@ var actions = (function () {
             if ( !window.isMobile ) {
 
                 maps.map.panToOffset(obj.layer.getLatLng(), tools.getHorizontalOffset());
-                $('#sidebar').scrollTop = 0;
-                $('.sidebar-content').hide();
-                ui.sidebar.show($("#create-marker-dialog").fadeIn());
+
+                // Build the route
+                var route = router.generate('form', {
+                    id: tools.states.currentFeatureId,
+                    type: 'menu'
+                });
+
+                console.log('route:', route);
+                router.navigate(route)
             }
         },
         _featureClick = function featureClick (obj) {
@@ -104,36 +110,39 @@ var actions = (function () {
             console.log("map feature clicked obj: ", obj);
 
             // We must stop the bubbling else the map catches click
-            // obj.originalEvent.preventDefault();
             L.DomEvent.stopPropagation(obj);
 
-            // Check that there's not already something else going on in the UI
-            // TODO need to bypass the bottombar check because we just want to update its contents
-            // if it's already open with another marker data
+            // Build the route from the obj data
+            var route = router.generate('feature.show', {
+                id: obj.layer._leaflet_id,
+                type: obj.layer.options.feature_type
+            });
 
-            /*if (!tools.checkOpenUiElement()){
-                return;
-            }*/
+            console.log('route:', route);
 
+            router.navigate(route);
+
+            // Purely visual logic below, the router dispatches the business logic
             if ( obj.layer.options ) {
 
                 // check if the feature is a shape
                 if ( obj.layer.options.shape ) {
 
                     maps.map.panToOffset(obj.layer.getCenter(), tools.getVerticalOffset());
-                    ui.pushDataToBottomPanel(obj.layer);
 
                 } else {
 
                     // if not a shape clicked it's a marker, bring it to the map center with panToOffset()
                     // Rise the marker to the top of others
                     var currentZindex = obj.layer._zIndex;
+
                     obj.layer.setZIndexOffset(currentZindex + 10000);
                     maps.map.panToOffset(obj.layer.getLatLng(), tools.getVerticalOffset());
-                    ui.pushDataToBottomPanel(obj.layer);
                 }
             } else {
+              // return error to user
               console.log('no options in the object');
+              alerts.showAlert(5, 'danger', 1000);
               return;
             }
         },
@@ -173,7 +182,8 @@ var actions = (function () {
         },
         _editFeature = function editFeature (e) {
 
-            if (!localStorage.getItem('token')){
+            if ( !localStorage.getItem('token' )) {
+
                 alerts.showAlert(3, "info", 2000);
                 return;
 
@@ -208,15 +218,16 @@ var actions = (function () {
 
                 var callurl = null;
 
-                if (e.feature_type === 'marker_garbage') {
+                if (e.feature_type === 'garbage') {
                     callurl = api.confirmTrash.url(e.id);
                 }
 
-                else if (e.feature_type === 'polyline_litter') {
+                else if (e.feature_type === 'litter') {
                     callurl = api.confirmLitter.url(e.id);
                 }
 
                 var useToken = localStorage.getItem('token') || tools.token;
+
                 var confirmcall = $.ajax({
                     method: 'PUT',
                     url: callurl,
@@ -232,7 +243,8 @@ var actions = (function () {
                 confirmcall.done(function(response) {
 
                     var message = response.data.message;
-                    ui.pushDataToBottomPanel(response.data.data);
+
+                    ui.pushDataToBottomPanel(null, response.data.data);
 
                     // update litters if we confirmed litter
                     if (message.indexOf('litter') === 0) {
@@ -251,7 +263,7 @@ var actions = (function () {
             }
         },
         _deleteFeature = function deleteFeature (o) {
-            
+
             var deletemethod, deleteurl;
 
             console.log("object passed to function: ", o);
@@ -263,27 +275,27 @@ var actions = (function () {
 
                 switch (cf.feature_type) {
 
-                    case 'marker_cleaning':
+                    case 'cleaning':
                       deletemethod = api.deleteCleaning.method;
                       deleteurl = api.deleteCleaning.url(cf.id);
                       break;
 
-                    case 'polyline_litter':
+                    case 'litter':
                       deletemethod = api.deleteLitter.method;
                       deleteurl = api.deleteLitter.url(cf.id);
                       break;
 
-                    case 'polygon_area':
+                    case 'area':
                       deletemethod = api.deleteArea.method;
                       deleteurl = api.deleteArea.url(cf.id);
                       break;
 
-                    case 'marker_garbage':
+                    case 'garbage':
                       deletemethod = api.deleteTrash.method;
                       deleteurl = api.deleteTrash.url(cf.id);
                       break;
 
-                    case 'link_marker':
+                    case 'marker':
                       deletemethod = api.deleteLink.method;
                       deleteurl = api.deleteLink.url(cf.id);
                       break;
@@ -375,7 +387,7 @@ var actions = (function () {
                 });
                 attendcall.done(function(response) {
                     // push the new data to the bottom bar
-                    ui.pushDataToBottomPanel(response.data.data);
+                    ui.pushDataToBottomPanel(null, response.data.data);
                     // features.loadCleaningMarkers();
                     features.loadFeature('cleaning');
                 });
@@ -395,11 +407,11 @@ var actions = (function () {
 
                 var callurl = null;
 
-                if (e.feature_type === 'marker_garbage') {
+                if (e.feature_type === 'garbage') {
                     callurl = api.cleanTrash.url(e.id);
                 }
 
-                else if (e.feature_type === 'polyline_litter') {
+                else if (e.feature_type === 'litter') {
                     callurl = api.cleanLitter.url(e.id);
                 }
 
@@ -420,7 +432,7 @@ var actions = (function () {
                 cleancall.done(function(response) {
 
                     var message = response.data.message;
-                    ui.pushDataToBottomPanel(response.data.data);
+                    ui.pushDataToBottomPanel(null, response.data.data);
 
                     if (message.indexOf('litter') === 0) {
                         // features.loadLitters();

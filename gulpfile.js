@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     gulpif = require('gulp-if'),
     inject = require('gulp-inject'),
     injectStr = require('gulp-inject-string'),
-    deleteLines = require('gulp-delete-lines'),
+    // deleteLines = require('gulp-delete-lines'),
     stripDebug = require('gulp-strip-debug'),
     concat = require('gulp-concat'),
     purify = require('gulp-purifycss'),
@@ -20,9 +20,26 @@ var gulp = require('gulp'),
 
 var production = process.env.PRODUCTION === 'true' ? true : false;
 
+var reservedvars = ['$','jQuery','L','tmpl','flatpickr','Tour','tagsinput'];
+
 // Compile the templates
 gulp.task('templates', function (cb) {
-  exec('cd $(pwd)/src/js/templates && tmpl.js tmpl_feature_info.html tmpl_modal.html tmpl_modal_og.html tmpl_modal_cleaning.html tmpl_modal_garbage.html tmpl_form_main.html tmpl_form_garbage_type.html tmpl_social_links.html tmpl_credits.html tmpl_topbar_main.html tmpl_sidebar_main.html > tmpl.js', function (err, stdout, stderr) {
+  exec('cd $(pwd)/src/js/templates && tmpl.js \
+                                      tmpl_feature_info.html \
+                                      tmpl_modal.html \
+                                      tmpl_modal_og.html \
+                                      tmpl_modal_cleaning.html \
+                                      tmpl_modal_garbage.html \
+                                      tmpl_form_garbage.html \
+                                      tmpl_form_litter.html \
+                                      tmpl_form_cleaning.html \
+                                      tmpl_form_area.html \
+                                      tmpl_form_garbage_type.html \
+                                      tmpl_social_links.html \
+                                      tmpl_credits.html \
+                                      tmpl_topbar_main.html \
+                                      tmpl_sidebar_main.html \
+                                      tmpl_form_menu.html > tmpl.js', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
@@ -32,9 +49,9 @@ gulp.task('templates', function (cb) {
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', ['templates'], function () {
   return gulp.src('./src/index.html')
-   .pipe(deleteLines({
-      'filters': [/<script\s+type=["']text\/javascript["']\s+src=/i]
-    }))
+  //  .pipe(deleteLines({
+  //     'filters': [/<script\s+type=["']text\/javascript["']\s+src=/i]
+  //   }))
   //  .pipe(deleteLines({
   //     'filters': [/<link\s+rel=["']stylesheet["']\s+type=/i]
   //   }))
@@ -42,13 +59,11 @@ gulp.task('trimHTML', ['templates'], function () {
 });
 
 // Minify the styleshseets and concat them in order
-gulp.task('styles', ['trimHTML'], function () {
+gulp.task('styles', ['templates'], function () {
   return gulp.src([
                     './src/vendor/Normalize-7.0.0.css',
                     './src/vendor/font-garbageplanet.css',
-                    // './src/vendor/google-work-sans.css',
                     './src/vendor/bootstrap-3.3.6.css',
-                    // './src/vendor/bootstrap-datetimepicker-4.17.47.css',
                     './src/vendor/bootstrap-select-1.9.4.css',
                     './src/vendor/bootstrap-tagsinput-0.4.3.css',
                     './src/vendor/bootstrap-horizon.css',
@@ -73,7 +88,7 @@ gulp.task('styles', ['trimHTML'], function () {
       .pipe(gulp.dest('./dist/'));
 });
 // Minify leaflet scripts and concat them in order
-gulp.task('scripts:leaflet', ['trimHTML'], function () {
+gulp.task('scripts:leaflet', ['templates'], function () {
 
   return gulp.src([
                     './src/vendor/leaflet-1.2.0.js',
@@ -91,32 +106,33 @@ gulp.task('scripts:leaflet', ['trimHTML'], function () {
                     './src/vendor/L.Control.Menu.js'
                   ])
     .pipe(gulpif(production, stripDebug()))
-    .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
+    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('leaflet.min.js'))
     .pipe(gulp.dest('./temp/'));
 });
+
 // Minify util scripts and concat them in order
-gulp.task('scripts:jquery', ['trimHTML'], function () {
+gulp.task('scripts:jquery', ['templates'], function () {
 
   return gulp.src([
+                    './src/vendor/navigo.js',
                     './src/vendor/jquery-3.2.0.js',
                     './src/vendor/bootstrap-tagsinput-0.4.3.js',
                     './src/vendor/bootstrap-3.3.7.js',
                     './src/vendor/bootstrap-select-1.9.4.js',
                     './src/vendor/bootstrap-validator-0.9.0.js',
                     './src/vendor/bootstrap-tour-0.10.1.js',
-                    './src/vendor/jquery-ui-widget-1.11.4.js',
-                    './src/vendor/jquery-fileupload.js',
+                    './src/vendor/simple-ajax-uploader-2.6.2.js',
                     './src/vendor/bootstrap-datatables-1.10.11.js',
                     './src/vendor/flatpickr.js'
   ])
     .pipe(gulpif(production, stripDebug()))
-    .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
+    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('jquery.min.js'))
     .pipe(gulp.dest('./temp/'));
 });
 // Minify own scripts and concat them in order
-gulp.task('scripts:app', ['trimHTML'], function () {
+gulp.task('scripts:app', ['templates'], function () {
 
   return gulp.src([
                     './src/js/config/config.js',
@@ -125,6 +141,7 @@ gulp.task('scripts:app', ['trimHTML'], function () {
                     './src/js/ui/alerts.js',
                     './src/js/map/map.js',
                     './src/js/ui/ui.js',
+                    './src/js/ui/router.js',
                     './src/js/session/session.js',
                     './src/js/map/features.js',
                     './src/js/map/actions.js',
@@ -136,7 +153,7 @@ gulp.task('scripts:app', ['trimHTML'], function () {
                     './src/js/init.js'
                   ])
     .pipe(gulpif(production, stripDebug()))
-    .pipe(gulpif(production, uglify({mangle: false, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
+    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('app.min.js').on('error', gutil.log))
     .pipe(gulp.dest('./temp/'));
 });
@@ -153,6 +170,10 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
         {
           match: 'server',
           replacement: process.env.SERVER
+        },
+        {
+          match: 'root',
+          replacement: process.env.ROOT
         },
         {
           match: 'mapboxtoken',
@@ -177,7 +198,11 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
         {
           match: 'opengraphiotoken',
           replacement: process.env.OG_TOKEN
-        }
+        },
+        {
+          match: 'production',
+          replacement: process.env.PRODUCTION
+        },
       ]
     }))
     .pipe(concat('app.js').on('error', gutil.log))

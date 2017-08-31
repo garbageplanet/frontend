@@ -1,0 +1,138 @@
+<script type="text/x-tmpl" id="tmpl-form-area">
+
+<form class="form-feature form-area" data-toggle="validator">
+
+<h3>Create an area</h3>
+
+  <div class="tab-view">
+
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+      <li class="active"><a data-target="#area-main"  data-toggle="tab" class="tab-default"><span class="fa fa-fw fa-map"></span></a></li>
+      <li               ><a data-target="#area-tools" data-toggle="tab">                    <span class="fa fa-fw fa-play"></span></a></li>
+      <li               ><a data-target="#area-info"  data-toggle="tab">                    <span class="fa fa-fw fa-question"></span></a></li>
+    </ul>
+
+    <div class="tab-content">
+
+      <br>
+
+      <div class="tab-pane active form-group form-group-lg" id="area-main" role="tabpanel">
+
+        <div class="form-group">
+          <button type="button" class="btn btn-lg btn-block btn-default btn-draw btn-draw-polygon" name="polygon">
+            <span class="fa fa-fw fa-pencil"></span> Start drawing
+          </button>
+        </div>
+
+        <input type="hidden" name="latlngs" class="latlngs">
+
+        <div class="form-group form-group-lg" style="width:100%">
+          <input class="form-control area-title"
+                 placeholder="Use a custom area name"
+                 name="title"
+                 data-maxlength="12"
+                 data-minlength="12"
+                 data-pattern="^[a-zA-Z0-9]+$">
+          <div class="help-block with-errors"></div>
+        </div>
+
+        <div class="form-group form-group-lg" style="width:100%">
+          <textarea class="form-control area-note"
+                    rows="3"
+                    name="note"
+                    data-pattern="^[a-zA-Z\d\-_.,?!\s]+$"
+                    data-maxlength="140"
+                    data-minlength="10"
+                    placeholder="Add a note about this area"></textarea>
+        <div class="help-block with-errors"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
+            <input class="form-control feature-tags area-tags"
+                   type="text"
+                   name="tags"
+                   placeholder="Add tags (max 3)"/>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="tab-pane form-group form-group-lg" id="area-tools" role="tabpanel">
+
+        <div class="alert alert-warning" role="alert">
+            <span class="fa fa-fw fa-exclamation"></span>
+              This tool is not yet available.
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox form-group-lg tile-game-check">
+            <label><input name="game" type="checkbox">Enable game mode for this area.</label>
+          </div>
+        </div>
+
+        <div class="form-group form-group-lg" style="width:100%">
+          <input class="form-control area-players"
+                 type="number"
+                 min="1"
+                 max="100"
+                 step="1"
+                 name="players"
+                 placeholder="Number of players"
+                 required>
+          <div class="help-block with-errors"></div>
+        </div>
+
+        <div class=" form-group tile-game-secret">
+
+            <div class="form-group form-group-lg" style="width:100%">
+                <input class="form-control disabled area-secret"
+                       placeholder="Set the secret to access this game"
+                       name="secret"
+                       data-maxlength="256"
+                       data-minlength="24"
+                       data-pattern="^[a-zA-Z0-9]+$"
+                       required>
+            </div>
+            <div class="form-group form-group-lg" style="width:100%">
+                <input type="email"
+                       class="form-control disabled area-contact"
+                       placeholder="Set a contact info for this game"
+                       name="contact"
+                       required>
+
+              <div class="help-block with-errors"></div>
+            </div>
+
+        </div>
+
+      </div>
+
+      <div class="tab-pane form-group form-group-lg" id="area-info" role="tabpanel">
+
+        <p class="lead">Areas are used to overlay a summary of map features. They can serve as feeds for a given perimeter which can be accessed via our <a href="https://www.github.com/garbageplanet/" target="_blank">API</a>.  They can also be used to restrict actions to a zone during games. Specify an <em>areaname</em> and it can be called through our API using <em>@areaname</em>. If a name is not set, a random id will be assigned.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+      <div>
+        <div class="btn-group btn-group-justified" role="group">
+            <div class="btn-group btn-group-lg" role="group">
+                <button type="submit" class="btn btn-success btn-save bnt-save-area">
+                    <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
+                </button>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn btn-danger btn-cancel">
+                    <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
+                </button>
+            </div>
+        </div>
+      </div>
+
+</form>
+
+</script>

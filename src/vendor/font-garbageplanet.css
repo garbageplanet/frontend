@@ -27,7 +27,7 @@
   font-variant: normal !important;
   text-transform: none !important;
   speak: none;
-  /*line-height: 1;*/
+  /*line-height: 14px;*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,6 +39,7 @@
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle;
 }
 
 .fa-calendar-check-o:before {
@@ -172,6 +173,9 @@
 }
 .fa-share-alt:before {
   content: "\69";
+}
+.fa-users:before {
+  content: "\6a";
 }
 
 /* makes the font 33% larger relative to the icon container */

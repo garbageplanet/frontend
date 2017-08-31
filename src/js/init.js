@@ -1,17 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-    
+
+  var showtour = @@production;
+
   // Init these blocks in order
+
+  // Maps
 
   maps.init();
 
   features.init();
 
-  ui.init();
-
   actions.init();
 
+  // Ui
+
+  ui.init();
+
   session.init();
-    
-  touring.init();
+
+  if (showtour)  {
+      touring.init();
+  }
 
 });

@@ -11,7 +11,7 @@
   */
 L.Control.OwnLocate = L.Control.Locate.extend({
    latlnginURL: function () {
-     return window.location.href.match(/[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\/*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/);
+     return window.location.href.match(/^([-+]?\d{1,2}[.]\d+)\s*,\s*([-+]?\d{1,3}[.]\d+)$/);
    }
 });
 
@@ -21,7 +21,7 @@ L.Control.OwnLocate = L.Control.Locate.extend({
 
 var maps = ( function () {
 
-    // 'use strict';
+    'use strict';
 
     var _tiles = {
 
@@ -56,10 +56,7 @@ var maps = ( function () {
                 })
         },
         map = L.map('map', {zoomControl: false, attributionControl: true}),
-        hash = L.hash(map, {
-          baseURI: '',
-          query: true
-        }),
+        // hash = L.hash(map),
         garbageLayerGroup = L.markerClusterGroup({
             spiderfyOnMaxZoom: false,
             maxClusterRadius: 50,
@@ -263,7 +260,7 @@ var maps = ( function () {
 
     return {   init                     : init
              , map                      : map
-             , hash                     : hash
+             // , hash                     : hash
              , getTrashBins             : getTrashBins
              , locationcontrol          : locationcontrol
              , glomelogincontrol        : glomelogincontrol

@@ -9,6 +9,9 @@ var features =  ( function () {
 
     // 'use strict';
 
+    // TODO way for map('ready' else we load stuff before the map shows up)
+    // FIXME server needs to return 304 if no more feature to load or no new
+
     var useToken = localStorage.getItem('token') || tools.token,
 
         loadFeature = function (type) {
@@ -96,7 +99,7 @@ var features =  ( function () {
                               icon: tools.setMarkerIcon(o.cleaned, null),
                               todo: (o.cleaned === true) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo), // FIXME this doesnt do what it should be doing
 
-                              feature_type: 'marker_garbage'
+                              feature_type: 'garbage'
                             });
 
                         // marker.addTo(maps.garbageLayerGroup);
@@ -144,7 +147,7 @@ var features =  ( function () {
                                 recurrence:  o.recurrence,
                                 ext_link:    o.note,
                                 icon:        tools.setMarkerIcon(null, o.datetime),
-                                feature_type: 'marker_cleaning',
+                                feature_type: 'cleaning',
                             });
 
                         marker.addTo(maps.cleaningLayerGroup);
@@ -190,7 +193,7 @@ var features =  ( function () {
                           title:        o.title,
                           modified_at:  o.updated_at,
 
-                          feature_type: 'polygon_area',
+                          feature_type: 'area',
                           shape:        true,
                           color:        '#33cccc',
                           weight:       5,
@@ -250,7 +253,7 @@ var features =  ( function () {
                         types: o.types.join(', '),
 
                         shape: true,
-                        feature_type: 'polyline_litter',
+                        feature_type: 'litter',
                         clickable: true,
                         weight: 15,
                         opacity: 0.5,
@@ -280,72 +283,72 @@ var features =  ( function () {
                 // if the map was already loaded we listen to specific events before fetching features
                 maps.map.on('zoomstart dragend zoomend', function ( e ) {
 
-                console.log("map move event: ", e);
+                    console.log("map move event: ", e);
 
-                var eventtype = e.type.trim();
-                var newZoom = e.target.getZoom();
-                var zoomDiff = Math.abs(newZoom - tools.states.currentZoom);
-                var lengthDiff = e.distance;
+                    var eventtype = e.type.trim();
+                    var newZoom = e.target.getZoom();
+                    var zoomDiff = Math.abs(newZoom - tools.states.currentZoom);
+                    var lengthDiff = e.distance;
 
-                // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical draggin
-                var viewportRatio = window.innerWidth / 3;
+                    // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical draggin
+                    var viewportRatio = window.innerWidth / 3;
 
-                switch ( eventtype ) {
+                    switch ( eventtype ) {
 
-                    case 'zoomend':
+                        case 'zoomend':
 
-                        console.log('zoomend event');
-                        console.log("fist zoom: ", tools.states.currentZoom);
-                        console.log("new zoom: ", newZoom);
-                        console.log("zoom difference: ", zoomDiff);
+                            console.log('zoomend event');
+                            console.log("fist zoom: ", tools.states.currentZoom);
+                            console.log("new zoom: ", newZoom);
+                            console.log("zoom difference: ", zoomDiff);
 
-                        // TODO we need a better way to load marker from the API
-                        // for example we can pre-load from a larger area than current viewport bbox
-                        // and only check with the backend if the viewport moves out of the bound of the currently
-                        // loaded area, if it is we can then reload more markers.
-                        // the only problem remains with the clusters, because when they are exploded
-                        // the single markers lose their styles
-                        if ( newZoom >= 2 && zoomDiff >= 1 ) {
-
-                            features.loadFeature('cleaning');
-                            features.loadFeature('garbage');
-                            features.loadFeature('opengraph');
-
-                           if ( newZoom <= 16 ) {
-
-                                features.loadFeature('litter');
-                                features.loadFeature('area');
-                            }
-
-                        } else if ( !zoomDiff ) {
-                            // if there's no prior zoom value it means we're loading for the first time
-                            features.loadFeature('all');
-                        }
-
-                    break;
-                    case 'dragend':
-                        if ( lengthDiff >= viewportRatio ) {
-
-                            if ( newZoom >= 2 ) {
+                            // TODO we need a better way to load marker from the API
+                            // for example we can pre-load from a larger area than current viewport bbox
+                            // and only check with the backend if the viewport moves out of the bound of the currently
+                            // loaded area, if it is we can then reload more markers.
+                            // the only problem remains with the clusters, because when they are exploded
+                            // the single markers lose their styles
+                            if ( newZoom >= 2 && zoomDiff >= 1 ) {
 
                                 features.loadFeature('cleaning');
                                 features.loadFeature('garbage');
                                 features.loadFeature('opengraph');
 
+                               if ( newZoom <= 16 ) {
 
-                                if ( newZoom >= 8 && newZoom <= 16 ) {
-                                    // We don't load large features if we're too close or too far
                                     features.loadFeature('litter');
                                     features.loadFeature('area');
                                 }
+
+                            } else if ( !zoomDiff ) {
+                                // if there's no prior zoom value it means we're loading for the first time
+                                features.loadFeature('all');
                             }
-                        }
-                    break;
-                    case 'zoomstart':
-                        tools.states.currentZoom = e.target.getZoom();
-                    break;
-                }
-            });
+
+                        break;
+                        case 'dragend':
+                            if ( lengthDiff >= viewportRatio ) {
+
+                                if ( newZoom >= 2 ) {
+
+                                    features.loadFeature('cleaning');
+                                    features.loadFeature('garbage');
+                                    features.loadFeature('opengraph');
+
+
+                                    if ( newZoom >= 8 && newZoom <= 16 ) {
+                                        // We don't load large features if we're too close or too far
+                                        features.loadFeature('litter');
+                                        features.loadFeature('area');
+                                    }
+                                }
+                            }
+                        break;
+                        case 'zoomstart':
+                            tools.states.currentZoom = e.target.getZoom();
+                        break;
+                    }
+                });
             /*} else {
                 // else we load an area beyond the viewport to cache the features
                 var outerBbox = tools.getCurrentBounds();

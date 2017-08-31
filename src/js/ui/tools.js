@@ -10,11 +10,14 @@
   * @requires jQuery
   */
 $.fn.serializeObject = function () {
+
     var o = {};
     var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name]) {
-            if (!o[this.name].push) {
+
+    $.each(a, function () {
+
+        if ( o[this.name] ) {
+            if ( !o[this.name].push ) {
                 o[this.name] = [o[this.name]];
             }
             o[this.name].push(this.value || '');
@@ -22,16 +25,18 @@ $.fn.serializeObject = function () {
             o[this.name] = this.value || '';
         }
     });
+
     return o;
 };
 /**
   * @namespace Leaflet.LatLngBounds.prototype.toBBoxStringInverse
   * @method toBBoxStringInverse()
   * @returns {object} string object - the bounding box coordinates returned by default by Leaflet
-                      are not in the order expected for making postGRE bounding box requests in the backend.
+                      are not in the order expected for making postgres bounding box requests in the backend.
   * @requires Leaflet
   */
 L.LatLngBounds.prototype.toBBoxStringInverse = function () {
+
     return [this.getSouth(), this.getWest(), this.getNorth(), this.getEast()].join(',');
 };
 /**
@@ -67,7 +72,7 @@ L.Map.prototype.panToOffset = function (latlng, offset, zoom, options) {
   */
 var tools = {
 /**
-  * @namespace tools.makeEllipsis
+  * @namespace tools
   * @method makeEllipsis()
   * @param {obj} object - the string to shorten.
   * @param {n} integer - the length of the final shortened string.
@@ -78,7 +83,7 @@ var tools = {
         return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
     },
  /**
-   * @namespace tools.insertString
+   * @namespace tools
    * @method insertString()
    * @param {obj} object - the string to modify.
    * @param {index} integer - the position in the string where a character is to be inserted.
@@ -98,13 +103,15 @@ var tools = {
       console.log(latlng);
       var token = '@@opencagetoken';
 
-        if (latlng) {
+        if ( latlng ) {
 
             var callurl = 'https://api.opencagedata.com/geocode/v1/json?q=' + latlng + '&limit=1&no_annotations=1&key=' + token;
-            var request = $.ajax({
-                method: 'GET',
-                url: callurl
-            });
+            // var request = $.ajax({
+            //     method: 'GET',
+            //     url: callurl
+            // });
+
+            var request = $.get(callurl);
 
             return request;
 
@@ -218,25 +225,11 @@ var tools = {
     },*/
     getVerticalOffset: function () {
 
-        var vOffset = [0, 0];
-        // TODO take in account the topbar for offsetting on larger screens
-        // TODO do this dynamically
-        if (!window.isMobile) {
-            vOffset[1] = - $(window).height() / 4 + 20;
-        }
-
-        // not needed on mobile
-        else {
-            vOffset[1] = - $(window).height() / 4;
-        }
-
-        return vOffset;
+        return !window.isMobile ? [0, - $(window).height() / 4 + 20] : [0, - $(window).height() / 4]
     },
     getHorizontalOffset: function () {
 
-        var hOffset = [0, 0];
-        hOffset[0] = - $(window).width() / 6;
-        return hOffset;
+        return [- $(window).width() / 6, 0];
     },
     resetIconStyle: function (id) {
 
@@ -268,16 +261,16 @@ var tools = {
 
         } else { return; }
     },
-    /* App states for keeping track of things TODO make these immutable*/
-    states : {
-      currentZoom: null,
-      initialBbox: [],
-      roundedBounds: null,
-      currentFeatureId: null,
-      login: null
+    /* App states for keeping track of things TODO make these immutable */
+    states: {
+        currentZoom: null
+      , initialBbox: []
+      , roundedBounds: null
+      , currentFeatureId: null
+      , login: null
     },
  /**
-   * @namespace tools.checkOpenUiElement - a helper function to check the UI for what's currently going on so that one map
+   * @namespace tools - a helper function to check the UI for what's currently going on so that one map
                                            widget closes or stops when another one is called
    * @method checkOpenUiElement()
    * @param {object} map object - the main map object, only needed to be able to identify clicks on cluser markers
@@ -320,23 +313,23 @@ var tools = {
             $('.leaflet-control-ocd-search-form input').blur();
             return;
         }
-        if (maps.locationcontrol._active || maps.locationcontrol._marker) {
+        if ( maps.locationcontrol._active || maps.locationcontrol._marker ) {
             maps.locationcontrol.stop();
             return;
         }
-        if (compactattributions.is(':checked')) {
+        if ( compactattributions.is(':checked') ) {
             compactattributions.prop('checked', false);
             return;
         }
         // Check the current zoom level and warn the user
-        if (map) {
+        if ( map ) {
             // If the map itself isn't the target it means a marker cluster was clicked
-            if (!map.target) {
+            if ( !map.target ) {
                 if (map._zoom < 15) {
                     return;
                 }
             }
-            if (map.target) {
+            if ( map.target ) {
                 if (map.target.getZoom() < 15) {
                     alerts.showAlert(15, 'info', 1200);
                     return;
@@ -344,7 +337,7 @@ var tools = {
             }
         }
         // Check if there's any marker visible on mobile map
-        if (window.isMobile) {
+        if ( window.isMobile ) {
             if (maps.unsavedMarkersLayerGroup.length > 0) {
                 maps.map.clearLayers(maps.unsavedMarkersLayerGroup);
                 return;
@@ -354,22 +347,22 @@ var tools = {
         return true;
     },
  /**
-   * @namespace tools.token - the app token to talk to the backend.
+   * @namespace tools - the app token to talk to the backend.
    */
     token: '@@windowtoken',
  /**
-   * @namespace tools.ogDotIoScraper - opengraph data scraper
+   * @namespace tools - opengraph data scraper
    * @method randomString()
    * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API,
                            used in the 'link' marker creation to enable users to add map marker with content tretived from
                            external webpages.
    * @return - Returns a Promise obj with scrapped data
    */
-    openGraphScraper: function (url) {
+    openGraphScraper: function ( url ) {
 
         var token = '@@opengraphiotoken';
 
-        if (url) {
+        if ( url ) {
             var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);
             var request = $.ajax({
                 method: 'GET',
@@ -378,7 +371,7 @@ var tools = {
                 success: function (data) {
                     console.log('ajax call pass', data);
                     if (data.error) {
-                        alerts.showAlert(5, "danger", 3000);
+                        alerts.showAlert(5, "danger", 2000);
                         return;
                     }
                     if (data.openGraph.error == 'null' || !data.openGraph.error) {
@@ -387,6 +380,7 @@ var tools = {
                 },
                 error: function () {
                     console.log('Error fetching og data');
+                    alerts.showAlert(5, "danger", 2000);
                     return;
                 }
             });
@@ -404,7 +398,7 @@ var tools = {
         return;
     },
  /**
-   * @namespace tools.randomString
+   * @namespace tools
    * @method randomString()
    * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length, used when
                        creating a game tile and the user didn't give a title to the tile.
@@ -420,7 +414,7 @@ var tools = {
         return a;
     },
  /**
-   * @namespace tools.mobileCheck
+   * @namespace tools
    * @method mobileCheck()
    * @returns {boolean} true - Returns true if the device on which the site is loaded passes the L.Browser leaflet mobile check.
    * @requires Leaflet
@@ -457,6 +451,7 @@ var tools = {
         // https://stackoverflow.com/a/30800715/2842348 @volzo LIC MIT
         var datastr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(extractedoptions));
         var elem = document.getElementById('data-download-hidden');
+
         elem.setAttribute("href", datastr);
         elem.setAttribute("download", "data.json");
         elem.click();

@@ -7,18 +7,21 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
     <meta http-equiv="X-UA-Compatible">
-    <meta name="description" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment">
+    <meta name="description" content="Garbageplanet a platform to identify, tag and clean garbage in your environment">
     <meta name="keywords" content="waste, map, carte, cartography, cartographie, déchets, pollution, carta, kartta, roska, roski, poubelles, geography, géographie, litter, marine litter, map marker, environmental monitoring, environment, trash, garbage, reporting">
-    <meta name="copyright" content="&copy; Garbagepla.net"/>
-    <meta property="og:site_name" content="Garbagepla.net"/>
-    <meta property="fb:app_id" content="302184056577324"/>
+    <meta name="copyright" content="&copy; Garbageplanet"/>
+    <meta property="og:site_name" content="Garbageplanet"/>
+    <!-- <meta property="fb:app_id" content="@@FB_APP_ID"/> -->
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://garbagepla.net"/>
-    <meta property="og:title" content="Garbagepla.net a platform to identify, tag and clean garbage in your environment"/>
+    <meta property="og:title" content="Garbageplanet a platform to identify, tag and clean garbage in your environment"/>
     <meta property="og:image" content="images/og_image.png"/>
-    <meta property="og:description" content="Garbagepla.net is an online platform that aims at helping people put environmental issues back on the map."/>
+    <meta property="og:description" content="Garbageplanet is an online platform that aims at helping people put environmental issues back on the map."/>
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@garbageplanet_" />
+    <meta name="twitter:title" content="Garbageplanet" />
+    <meta name="twitter:description" content="Garbageplanet is an online platform that aims at helping people put environmental issues back on the map." />
+    <meta name="twitter:image" content="images/og_image.png" />
 
     <!-- Mobile meta -->
     <link rel="manifest" href="manifest.json">
@@ -27,8 +30,23 @@
     <meta name="msapplication-navbutton-color" content="#00000">
     <meta name="apple-mobile-web-app-status-bar-style" content="#00000">
 
+    <!-- Schema.org  -->
+    <script type="application/ld+json">
+      {
+    	  "@context": "http://schema.org",
+    	  "@type": "Organization",
+    	  "name": "Garbageplane",
+    	  "url": "https://garbagepla.net/",
+    	  "logo": "https://garbagepla.net/images/logo.svg",
+    	  "sameAs": [
+    	    "https://facebook.com/roskaproject/",
+    	    "https://twitter.com/garbagepla_net",
+    	  ]
+    	}
+    </script>
 
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:300" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/gh/garbageplanet/web-ui@master/dist/styles.min.css" rel="stylesheet"> -->
 
     <style>
     /*
@@ -126,10 +144,13 @@
 <!-- inject:body:app -->
 <!-- endinject -->
 
+<!-- load the assets from JSDeliver CDN-->
+<!-- <script async src="https://cdn.jsdelivr.net/gh/garbageplanet/web-ui@master/dist/app.min.js"></script> -->
+
 <noscript>
-    <div class='noscript'>
-    <h2>Javascript is disabled<span><i class="fa fa-fw fa-hand-spock-o"></i></span></h2>
-    <p>Garbagepla.net does not work without javascript. Enable javascript from your browser's preferences and then reload this page to use the map.</p>
+    <div class="noscript">
+    <h2>Javascript is disabled</h2>
+    <p>Garbagepla.net does not work without javascript. Enable javascript from your browser preferences and then reload this page to use the map.</p>
 </div>
 </noscript>
 </body>

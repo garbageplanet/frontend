@@ -6,17 +6,11 @@ Repository for the [garbagepla.net](https://garbagepla.net) frontend.
 
 ### How to get started?
 
-Run `npm i` to install gulp and dependencies in the root directory and type `gulp`. Note that if you do not have your own token for mapbox and other APIs you won't be able to build properly.
+Run `npm i` to install gulp and dependencies in the root directory and type `gulp` to build. Note that if you do not have your own token for mapbox and other APIs you won't be able to build properly.
 
 ### Tokens and external APIs
 
-These should be in an .env file in the root folder:
-
-    IMGUR_TOKEN=*************
-    MAPBOX_TOKEN=***************************************
-    OPENCAGEGEOCODERC_TOKEN=*********
-    OPENGRAPHSCRAPER_TOKEN=**************
-    ...
+These should be in an .env file in the root folder. Look at gulpfile.js for all the required tokens.
 
 ### Contributing
 
@@ -30,10 +24,8 @@ If you want to contribute to a specific todo below, the first thing you should d
 - [ ] make the edit system
 - [ ] put the build on github and deliver with jsdelivr and inject dependencies with the fetch API / https://github.com/jhabdas/fetch-inject / JAM Stack-style
 - [ ] build a minimal entry point for loading the content via cdn
-
-### Additions
-
 - [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
+- [ ] extend L.hash to be able to pop open marker info when inbound linking
 
 ### Licence
 

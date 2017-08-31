@@ -2,7 +2,9 @@
   "name": "garbageplanet-frontend",
   "version": "0.5.65",
   "description": "Dependancies for building the garbagepla.net frontend.",
-  "main": "gulpfile.js",
+  "main": "dist/app.min.js",
+  "jsdelivr": "dist/app.min.js",
+  "cdn": "dist/app.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/garbageplanet/web-ui.git"

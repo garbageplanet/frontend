@@ -1,5 +1,7 @@
 <script type="text/x-tmpl" id="tmpl-modal">
-<!-- The template for the modal containers -->
+
+// Templates for modal containers
+
 {% if (o.opengraph) { %}
 <div class="modal-dialog">
   <form class="form-feature form-opengraph" accept-charset="UTF-8" data-toggle="validator">
@@ -8,19 +10,19 @@
       <button type="button" class="close pull-right" data-dismiss="modal">x</button>
       <h4 class="modal-title">Get data from an external url</h4>
     </div>
-    
+
     <div class="modal-opengraph-body modal-body">
       <div class="container-fluid">
         <div class="row">
-        
+
           <input type="hidden" name="latlng" class="marker-latlng opengraph-latlng">
-            
+
           <div class="form-group form-group-lg">
             <div class="input-group input-group-lg">
-              <input id="opengraph-url" 
-                     type="url" 
-                     name="url" 
-                     class="form-control" 
+              <input id="opengraph-url"
+                     type="url"
+                     name="url"
+                     class="form-control"
                      placeholder="Paste or type in an url"
                      required>
               <span class="input-group-btn">
@@ -33,7 +35,7 @@
       </div>
       <div id="opengraph-content" class="container-fluid"></div>
     </div>
-        
+
     <div class="modal-footer">
       <div class="form-group form-group-lg">
           <button type="button" data-dismiss="modal" class="btn btn-lg btn-danger pull-right ">Cancel</button>
@@ -44,7 +46,7 @@
   </form>
 </div>
 {% } %}
-  
+
 {% if (o.game) { %}
   <div class="modal-dialog">
     <div class="modal-content">
@@ -63,7 +65,7 @@
     </div>
   </div>
 {% } %}
-<!-- TODO merge both block below eith conditionals within them -->
+
 {% if (o.garbage) { %}
   <div class="modal-dialog">
     <div class="modal-content">
@@ -87,16 +89,16 @@
         <form>
           <button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button>
           <button id="modal-data-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button>
-          
-          <a id="data-download" href="#" type="button" class="btn btn-default pull-right">Download</a>
+
+          <a id="data-download-garbage" href="#" type="button" class="btn btn-default pull-right">Download</a>
           <a id="data-download-hidden" style="display:none"></a>
-          
+
         </form>
       </div>
     </div>
   </div>
 {% } %}
-  
+
 {% if (o.cleaning) { %}
   <div class="modal-dialog">
     <div class="modal-content">
@@ -120,14 +122,14 @@
         <form>
           <button type="button" data-dismiss="modal" class="btn btn-danger pull-right ">Close</button>
           <button id="modal-cleaning-load-more" type="button" class="btn btn-default pull-right ">Zoom out and load more</button>
-          
-          <a id="data-download" href="#" type="button" class="btn btn-default pull-right">Download</a>
+
+          <a id="data-download-cleaning" href="#" type="button" class="btn btn-default pull-right">Download</a>
           <a id="data-download-hidden" style="display:none"></a>
-        
+
         </form>
       </div>
     </div>
   </div>
-{% } %}  
+{% } %}
 
 </script>

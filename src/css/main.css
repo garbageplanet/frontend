@@ -143,8 +143,8 @@ body {
 }
 
 .fa-icon-centered {
-  margin-left: -3px;
-  margin-top: 10px;
+  margin-left: -2px;
+  margin-top: 2px;
 }
 
 /* Style share buttons */
@@ -176,24 +176,28 @@ body {
   background-color: rgba(18, 86, 136, 1) !important;
   border-color: rgba(18, 86, 136, 1) !important;
   color: #FFF;
+  margin-left: -1px
 }
 
 .btn-reddit {
   background-color: rgba(128, 128, 128, 1) !important;
   border-color: rgba(128, 128, 128, 1) !important;
   color: #FFF;
+  margin-left: -3px
 }
 
 .btn-whatsapp {
   background-color: rgba(67, 216, 84, 1) !important;
   border-color: rgba(67, 216, 84, 1) !important;
   color: #FFF;
+  margin-left: -1px
 }
 
 .btn-renren {
   background-color: rgba(232, 59, 55, 1) !important;
   border-color: rgba(232, 59, 55, 1) !important;
   color: #FFF;
+  margin-left: -1px
 }
 
 .btn-weibo {
@@ -787,6 +791,10 @@ h1, h2, h3, h4, span, strong, a, .lead, p, label, input, textarea, select, butto
   line-height: 30px;
   border-radius: 15px;
 -webkit-border-radius: 15px;
+}
+
+.btn-round > span {
+  border-top: 2px;
 }
 
 .alert {border-radius: 0;}

@@ -44,7 +44,7 @@ var alerts = ( function () {
         'No data in the current area',
         'Fill in all the required fields', // 30
         'Zoom in closer to do that',
-        'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies.'
+        'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies </a>.'
     ],
         showAlert = function (errorCode, errorType, closeDelay) {
 
@@ -54,7 +54,9 @@ var alerts = ( function () {
             }
 
             var errorMessage = _strings[errorCode];
-            var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">').append(errorMessage);
+            var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">');
+
+            alertMessage.append(errorMessage);
 
             $(".alert-container").prepend(alertMessage);
 

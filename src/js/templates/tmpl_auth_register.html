@@ -1,0 +1,64 @@
+<script type="text/x-tmpl" id="tmpl-auth-register">
+
+    {% include('tmpl-sidebar-header', {title: "Create a new account", url: "#/auth/account"}); %}
+
+    <p>Using an email to register can help you <a href="#/auth/pwd" data-navigo>recover your credentials</a> but will also allow you to create game tiles.</p>
+
+    <form id="registration-form"
+          class="form-group"
+          data-toggle="validator"
+          accept-charset="UTF-8">
+
+        <div class="form-group form-group-lg">
+            <input type="text"
+                   id="register-name"
+                   class="form-control"
+                   placeholder="Username (min 4 characters)"
+                   data-minlength="4"
+                   required>
+            <div class="help-block with-errors"></div>
+        </div>
+
+        <div class="form-group form-group-lg">
+            <input type="email"
+                   class="form-control"
+                   placeholder="Email address"
+                   id="register-email"
+                   data-minlength="6">
+            <div class="help-block with-errors"></div>
+        </div>
+
+        <div class="form-group form-group-lg">
+                <input id="register-password"
+                       type="password"
+                       class="form-control"
+                       placeholder="Password min 6 characters"
+                       data-minlength="6"
+                       required>
+                <div class="help-block with-errors"></div>
+        </div>
+
+        <div class="form-group form-group-lg">
+                <input id="register-password-confirm"
+                       type="password"
+                       data-match="#register-password"
+                       class="form-control"
+                       placeholder="Repeat password"
+                       data-minlength="6"
+                       data-match-error="Don't match"
+                       required>
+                <div class="help-block with-errors"></div>
+        </div>
+
+        <div class="btn-group btn-group-justified"
+             role="group" >
+            <div class="btn-group btn-group-lg" role="group">
+                <button type="submit" class="btn btn-success">
+                  <span>Register</span>
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+</script>

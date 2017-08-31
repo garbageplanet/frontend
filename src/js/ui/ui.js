@@ -7,7 +7,7 @@
 
 var ui = ( function () {
 
-    // 'use strict';
+    'use strict';
 
     // TODO move versioning to package.json and add during build
 
@@ -144,32 +144,62 @@ var ui = ( function () {
                   "extraclass": "sidebar-link"
                 }
         ],
-            version: '0.5.65'
+            version: 'x.5.00'
         },
         sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
-        pushDataToBottomPanel = function pushDataToBottomPanel (obj) {
+        pushDataToBottomPanel = function pushDataToBottomPanel (type, id) {
 
             // TODO get the leaflet_id of current marker as well
             console.log("pushed data to bottom panel");
 
             // load the data from the options of the object
-            var feature = obj,
-                featuredata = obj.options,
-                featureinfo;
+            var feature;
 
-            // if the data is passed from a server JSON response (attend, confirm, join) the actual data is in the obj var
-            if ( !featuredata ) {
-                featuredata = obj;
+            // Retrieve the data from the feature according to type and id
+            if ( type && type !== null ) {
+
+                switch ( type ) {
+
+                  case 'garbage' : feature = maps.garbageLayerGroup.getLayer(id); break;
+                  case 'litter': feature = maps.litterLayerGroup.getLayer(id); break;
+                  case 'cleaning' : feature = maps.cleaningLayerGroup.getLayer(id); break;
+                  case 'area': feature = maps.areaLayerGroup.getLayer(id); break;
+                  default : feature = null;
+                }
             }
 
             console.log('feature obj from pushDataToBottomPanel()',feature);
-            console.log('feature data from pushDataToBottomPanel()',featuredata);
+
+            // if the data is passed from the server JSON response (attend, confirm, join ...)
+            // the actual data are in the second parameter passed to the function (id)
+            // catch the error and continue with the alternative
+            try {
+
+                var featuredata = feature.options;
+
+            } catch (e) {
+
+                console.log(e);
+
+                try {
+
+                    var featuredata = id;
+                    console.log('feature data from pushDataToBottomPanel()',featuredata);
+
+                } catch (e) {
+
+                    alerts.showAlert(5, 'danger', 2000);
+                    return;
+
+                }
+            }
 
             // Fill the template data
             document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
+
             // Set the vars after loading the template
-            featureinfo = $('#feature-info');
+            var featureinfo = $('#feature-info');
 
             // TODO use bottombar.getContent() in conjunction with template creation above
             ui.bottombar.show(featureinfo.fadeIn());
@@ -179,24 +209,37 @@ var ui = ( function () {
 
                 var img_api_char = tools.insertString(featuredata.image_url, 26, 'b');
                 var img_https = tools.insertString(img_api_char, 4, 's');
+
                 featureinfo.find('.feature-image').attr('src', img_https);
             }
 
             // if there's a datetime field it's a cleaning event, we fetch the address from the reverse geocoder
+            // TODO reverse geocode only once and save to DB then check if field exist before geocoding again
+            // if ( !featuredata.address || featuredata.address === 'undefined' || featuredata.address === '' ) {
             if ( featuredata.datetime ) {
 
                 console.log('calling reverse geocoder');
 
-                $.when(tools.reverseGeocode(featuredata.latlng)).then(function (data) {
+                $.when( tools.reverseGeocode(featuredata.latlng) ).then( function (data) {
+
                     console.log('data from Promise resolved:', data.results[0].formatted);
                     featureinfo.find('.feature-info-location').html(data.results[0].formatted);
+
+                }).catch( function (err) {
+
+                  console.log(err);
                 });
-            }
+            } /* else {
+                featureinfo.find('.feature-info-location').html(featuredata.address.toString())
+            } */
 
             // Create the templateData.social data dynamically before calling the template
             social.shareThisFeature(featuredata);
-            // document.getElementById('social-links').innerHTML = tmpl("tmpl-social-links", social.network);
-            _bindBottombarFeatureEvents(feature);
+
+            // Bind actions for the feature only if it's not loaded from a JSON backend response
+            if ( feature ) {
+                _bindBottombarFeatureEvents(feature);
+            }
         },
         makeModal = function makeModal (type, arr) {
             // TODO extract function to make the datatable
@@ -308,7 +351,7 @@ var ui = ( function () {
                         $(modaltableid).DataTable(datatableoptions);
                     });
 
-                    $('#data-download').on('click', function (e) {
+                    $('#data-download-garbage, #data-download-cleaning').on('click', function (e) {
 
                         // FIXME event listener worksonly once?
                         e.preventDefault;
@@ -319,8 +362,11 @@ var ui = ( function () {
             }
         },
         _bindSidebarEvents = function _bindSidebarEvents () {
+
+            console.log('binding sidebar events');
+
             // Navigation for sidebar links
-            $('.sidebar-link').click(function (e) {
+            $('.sidebar-link').on('click', function (e) {
 
                 e.preventDefault();
 
@@ -335,33 +381,34 @@ var ui = ( function () {
             // Empty the sidebar on hide, reset accordion and reset scroll
             ui.sidebar.on('hide', function () {
 
-                // $('.tab-default').tab('show');
                 $('.sidebar-content').hide();
-                // $('.sidebar-container', '.sidebar-content').scrollTop = 0;
-                // $('form').each(function() {this.reset();});
-                // $('input').val('');
-                // $('.selectpicker').selectpicker('render');
 
+                // Reset the draw button
                 $('.leaflet-draw-edit-edit').removeClass('visible');
                 $('.leaflet-draw-edit-remove').removeClass('visible');
+
                 // FIXME this removes the placeholder as well ?
                 // $('.bootstrap-tagsinput').tagsinput('removeAll');
 
                 // Delete any feature form from the DOM
                 $('.form-feature').remove();
 
-                // Remove any unsaved marker on mobile else the mobile menu bugs
+                // Remove any unsaved marker on mobile
                 if ( window.isMobile ) {
                     // Reset sidebar close button visibility
-                    if ($('.close-right').hasClass('hidden')) {
+                    if ( $('.close-right').hasClass('hidden') ) {
+
                       $('.close-right').removeClass('hidden');
                     }
+
                     maps.unsavedMarkersLayerGroup.clearLayers();
                 }
             });
 
             ui.sidebar.on('show', function () {
+
                 if ( ui.bottombar.isVisible() ) {
+
                     ui.bottombar.hide();
                 }
             });
@@ -416,6 +463,7 @@ var ui = ( function () {
 
             // Show nearby trashbins
             trashbinbutton.on('click', function () {
+
                 if( maps.map.getZoom() < 15 ) {
 
                     alerts.showAlert(31, 'info', 2000);
@@ -436,24 +484,28 @@ var ui = ( function () {
 
                 makeModal(type, currentmarkers);
             });
+
+            // Register the navigo links in the topbar
+            router.updatePageLinks();
         },
         _bindBottombarFeatureEvents = function _bindBottombarFeatureEvents (obj) {
 
             var btnfeature = $('#bottombar').find('.btn-feature');
-
-            // Event listener for share button and social links
-            $('.btn-social, fa-share-alt').popover({
+            var options = {
                 trigger: 'focus',
                 html : true,
                 container: 'body',
                 placement: function (pop) {
-                    if ( window.isMobile ) { return 'top'; } else { return 'right'; }
+                    window.isMobile ? 'top' : 'right';
                 },
                 content: function () {
                     return $('#social-links').html();
                 },
                 template: '<div class="popover popover-share" role="tooltip"><div class="popover-content popover-share"></div></div>'
-            });
+            };
+
+            // Event listener for share button and social links
+            $('.btn-social').popover( options );
 
             // Event listener for actions buttons (edit, cleaned join, confirm, play)
             btnfeature.on('click', function (e) {
@@ -464,10 +516,10 @@ var ui = ( function () {
                 // Send the full leaflet object to actions dispatch function
                 actions.act(ct, obj);
             });
-
-
         },
         init = function init () {
+
+            console.log('init UI');
 
             // Add the Leaflet ui controls to the map
             sidebar.addTo(maps.map);
@@ -481,15 +533,14 @@ var ui = ( function () {
 
             // Fill other templates
             document.getElementById('sidebar').innerHTML = tmpl('tmpl-sidebar-main', templates);
-            document.getElementById('credits').innerHTML = tmpl('tmpl-credits', templates.credits);
 
             // Set the rest of the listeners
             _bindSidebarEvents();
             _bindBottombarEvents();
 
             // custom alerts at startup for cookies
-            alerts.showAlert(32, 'warning', 5000);
-       };
+            // alerts.showAlert(32, 'warning', 5000);
+    };
 
     return {   bottombar             : bottombar
              , init                  : init
