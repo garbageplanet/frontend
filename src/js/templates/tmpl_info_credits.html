@@ -1,20 +1,19 @@
-<script type="text/x-tmpl" id="tmpl-credits">
+<script type="text/x-tmpl" id="tmpl-info-credits">
 
-    <div class="sidebar-content" id="credits-dialog">
-      <div>
-        <h2>Credits</h2>
+{% include('tmpl-sidebar-header', {title: "Credits", url: "#/info/account"}); %}
 
-        <img src="images/logo.svg" class="pull-right logo-icon" alt="The garbagepla.net logo">
+<img src="images/logo.svg" class="pull-right logo-icon" alt="The garbagepla.net logo">
 
-        <div><p class="lead">Please refer to each component source files and repositories for license information.</p></div>
-          <div class="form-group form-group-lg" id="credits">
+<div>
+  <p class="lead">Please refer to each component source files and repositories for license information.</p>
+</div>
 
-              {% for (var i=0; i<o.length; i++) { %}
-                  {%=o[i].text%} <a href="{%=o[i].linkurl%}" class="{%=o[i].extraclass%}">{%=o[i].title%}</a><br>
-              {% } %}
+<div class="form-group form-group-lg" id="credits">
 
-          </div>
-        </div>
-    </div>
+    {% for (var i=0; i<o.length; i++) { %}
+        {%=o[i].text%} <a href="{%=o[i].linkurl%}" class="{%=o[i].extraclass%}">{%=o[i].title%}</a><br>
+    {% } %}
+
+</div>
 
 </script>

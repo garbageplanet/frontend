@@ -1,8 +1,8 @@
 <script type="text/x-tmpl" id="tmpl-form-area">
 
-<form class="form-feature form-area" data-toggle="validator">
+{% include('tmpl-sidebar-header', {title: "reate an area", url: "#/form/menu"}); %}
 
-<h3>Create an area</h3>
+<form class="form-feature form-area" data-toggle="validator">
 
   <div class="tab-view">
 
@@ -118,20 +118,7 @@
     </div>
   </div>
 
-      <div>
-        <div class="btn-group btn-group-justified" role="group">
-            <div class="btn-group btn-group-lg" role="group">
-                <button type="submit" class="btn btn-success btn-save bnt-save-area">
-                    <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
-                </button>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-                <button type="button" class="btn btn-danger btn-cancel">
-                    <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
-                </button>
-            </div>
-        </div>
-      </div>
+{% include('tmpl-sidebar-save', {saveclass: "btn-save-area"}); %}
 
 </form>
 

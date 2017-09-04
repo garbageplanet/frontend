@@ -324,11 +324,6 @@ body {
     color: #FFF !important;
 }
 
-/* hide all the panel contents by default */
-.sidebar-content, .bottombar-content {
-  display: none;
-}
-
 /* Style cards for each box in bottom panel */
 .card {
     border-radius: 1px;
@@ -385,16 +380,6 @@ group-vertical > .btn-group > .btn {
 }
 
 /* Style the sidebar */
-a.menu-backlink {
-  color: lightgray;
-  vertical-align: middle;
-  text-decoration: none;
-}
-
-a.menu-backlink:hover {
-  color: dimgrey;
-  text-decoration: none;
-}
 
 #sidebar {
   overflow-y: scroll;

@@ -1,10 +1,14 @@
-<script type="text/x-tmpl" id="tmpl-auth-account">
+<script type="text/x-tmpl" id="tmpl-auth-delete">
 
 {% include('tmpl-sidebar-header', {title: "Delete your account", url: "#/auth/account"}); %}
 
 <p class="lead">All user data and references are removed but the features you have created are kept in the database.</p>
 
-  <form id="delete-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
+  <form name="delete"
+        class="form-group form-auth"
+        accept-charset="UTF-8"
+        data-toggle="validator">
+
     <div class="form-group form-group-lg">
       <div class="form-group">
         <input type="password" class="form-control" placeholder="Confirm password" id="delete-password" required>

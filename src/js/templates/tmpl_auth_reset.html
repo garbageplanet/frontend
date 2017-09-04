@@ -1,11 +1,11 @@
-<script type="text/x-tmpl" id="tmpl-auth-recover">
+<script type="text/x-tmpl" id="tmpl-auth-reset">
 
 {% include('tmpl-sidebar-header', {title: "Reset your password", url: "#/auth/account"}); %}
 
 <p class="lead">Please provide the email address you have used to register. If you encounter an issue while recovering your credentials you can also <a href="mailto:info@garbagepla.net?Subject=Halp" target="_top">contact us</a>.</p>
 
-<form id="recover-credentials-form"
-      class="form-group"
+<form name="reset"
+      class="form-group form-auth"
       accept-charset="UTF-8"
       data-toggle="validator">
 
@@ -16,8 +16,7 @@
                    with-error>
             <span class="input-group-btn">
                   <button class="btn btn-default btn-lg"
-                          type="submit">
-                      <span class="fa fa-fw fa-envelope-o"></span> Submit</button>
+                          type="submit">Send &raquo</button>
             </span>
     </div>
 

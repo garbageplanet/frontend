@@ -1,21 +1,19 @@
 <script type="text/x-tmpl" id="tmpl-form-search">
 
-<div class="sidebar-content" id="search-dialog">
-  <h3>Search</h3>
+{% include('tmpl-sidebar-header', {title: "Search", url: "/"}); %}
+
   <h4>Use <strong>#tags</strong> or <strong>@tilename</strong> as well as standard text search.</h4>
 
-      <form id="search-form">
-          <div class="form-group-lg" style="width:100%">
-              <input class="form-control" role="search" method="get" id="search-general" placeholder="Search for anything ...">
+  <form id="search-form">
+      <div class="form-group-lg" style="width:100%">
+          <input class="form-control" role="search" method="get" id="search-general" placeholder="Search for anything ...">
+      </div>
+      <br>
+      <div class="form-group form-group-lg">
+          <div>
+              <a class="btn-search btn btn-default btn-lg btn-block btn-disabled" disabled><span class="fa fa-search fa-fw"></span>Start</a>
           </div>
-          <br>
-          <div class="form-group form-group-lg">
-              <div>
-                  <a class="btn-search btn btn-default btn-lg btn-block btn-disabled" disabled><span class="fa fa-search fa-fw"></span>Start</a>
-              </div>
-          </div>
-      </form>
-  <p></p>
-</div>
+      </div>
+  </form>
 
 </script>

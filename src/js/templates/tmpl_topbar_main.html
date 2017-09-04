@@ -1,4 +1,5 @@
 <script type="text/x-tmpl" id="tmpl-topbar-main">
+
     <nav class="navbar navbar-default navbar-fixed-top">
 
     <div class="container">
@@ -6,10 +7,11 @@
         <a class="navbar-brand pull-left" href="#"><span class="navbar-brand-icon fa fa-fw fa-trashbag"></span><strong class="navbar-brand-name">Garbageplanet </strong><kbd class="hidden-xs hidden-sm">{%=o.version%}</kbd></a>
 
         <div class="pull-right">
+
           <ul class="nav navbar-nav">
 
             <li class="session-link">
-              <a href="#" id="glome-tour" class="btn btn-success btn-glome-go btn-glome-shortcut fa fa-user-secret" title="One-click anonymous login.">
+              <a href="#" class="btn btn-success btn-glome-go btn-glome-shortcut fa fa-user-secret" title="One-click anonymous login.">
                 <i class=""></i>
               </a>
             </li>
@@ -17,10 +19,10 @@
             <li class="dropdown">
               <a title="Map and data tools" class="dropdown-toggle btn" data-toggle="dropdown" href="#"><span class="fa fa-fw fa-cloud-download"></span><span class="hidden title-collapsed">Map tools</span></a>
               <ul class="dropdown-menu" id="map-tools">
-                <li><a id="modal-list-garbagee" name="garbage" class="modal-link modal-list-garbage">Get data</a></li>
-                <li><a id="modal-list-cleaningg" name="cleaning" class="modal-link modal-list-cleaning">Cleaning calendar</a></li>
+                <li><a id="modal-list-garbage" name="garbage" class="modal-link modal-list-garbage">Get data</a></li>
+                <li><a id="modal-list-cleaning" name="cleaning" class="modal-link modal-list-cleaning">Cleaning calendar</a></li>
                 <li class="divider"></li>
-                <li><a href="#/trashbins">Nearby trashbins</a></li>
+                <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
                 <li class="disabled"><a class="" href="#">Local forecast</a></li>
                 <li class="disabled"><a class="" href="#">Hotspots</a></li>
                 <li class="disabled"><a class="" href="#">Create route</a></li>
@@ -31,10 +33,10 @@
             <li class="dropdown">
               <a title="User menu and platform infos" class="dropdown-toggle btn" data-toggle="dropdown" href="#"><span class="fa fa-fw fa-user"></span><span class="hidden title-collapsed">User tools</span></a>
               <ul class="dropdown-menu" id="user-tools">
-                <li id="session-status"><a href="#/auth/login" data-navigo>Login</a></li>
+                <li id="session-status"><a href="/auth/login" data-navigo>Login</a></li>
                 <li class="divider"></li>
-                <li><a href="#/info/credits" data-navigo>About</a></li>
-                <li class="disabled"><a href="#/info/tour" data-navigo>Tour</a></li>
+                <li><a href="/info/credits" data-navigo>About</a></li>
+                <li class="disabled"><a id="btn-tour">Tour</a></li>
               </ul>
             </li>
 

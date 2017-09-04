@@ -1,23 +1,18 @@
 <script type="text/x-tmpl" id="tmpl-auth-login">
 
-    <div><h4>Login anonymously</h4></div>
+    {% include('tmpl-sidebar-header', {title: "Login with an account", url: "#/auth/account"}); %}
 
-    <form class="form-group">
-      <div class="form-group form-group-lg">
-        <div>
-            <button class="btn btn-info btn-lg btn-block btn-glome-go">Glome Go &raquo;</button>
-        </div>
-      </div>
-    </form>
+    <form class="form-group form-auth"
+          name="login"
+          accept-charset="UTF-8"
+          data-toggle="validator">
 
-    <form id="login-form" class="form-group" accept-charset="UTF-8" data-toggle="validator">
       <div class="form-group form-group-lg">
-        <h4>Login with an account</h4>
         <div class="form-group">
-          <input type="email" class="form-control" placeholder="Email" id="login-email" required>
+          <input type="email" class="form-control" placeholder="Email" name="email" required>
         </div>
         <div class="form-group">
-          <input type="password" class="form-control" placeholder="Password" id="login-password" required>
+          <input type="password" class="form-control" placeholder="Password" name="password" required>
         </div>
         <div>
           <div class="form-group">
@@ -30,10 +25,10 @@
 
     <div>
         <p>
-          <a class="sidebar-link" href="#/auth/glome">I already have a Glome soft account</a><br>
-          <a class="sidebar-link" href="#/auth/pwd">Forgotten your password?</a><br>
+          <a href="/auth/glome" data-navigo>I already have a Glome soft account</a><br>
+          <a href="/auth/reset" data-navigo>Forgotten your password?</a><br>
           <a href="http://www.glome.me" target="_blank">About Glome</a><br>
-          <a class="sidebar-link" href="#/auth/login">Register</a><br>
+          <a href="/auth/register" data-navigo>Register</a><br>
         </p>
     </div>
     <br>

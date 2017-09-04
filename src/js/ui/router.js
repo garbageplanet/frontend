@@ -1,18 +1,23 @@
 /**
   *
-  * Init Navigo with the root and default #/
+  * Init Navigo with the website root and default #/
   *
   */
 var router = new Navigo('@@root', true);
 
+// Hack to reset the router
+router.on({
+  '/' : { as: 'blank', uses: function () { return; }}
+});
+
 /**
   *
   * Router for showing map feature infos
-  * TODO check that the id is present in current mapview, else user can browse to non-existent markers
+  *
   */
 router.on({
-  '/feature/:type/:id?show'   : { as: 'feature.show'  , uses: function (params, query) { ui.pushDataToBottomPanel(params.type, params.id); }},
-  '/feature/:type/:id?edit'   : { as: 'feature.edit'  , uses: function (params, query) {}, before: function (done, params) { if( !tools.states.login ) { done( false ) } else { done()}} },
+  '/feature/:type/:id/show'   : { as: 'feature.show'  , uses: function (params, query) { ui.setContent(params.type, params.id); }},
+  '/feature/:type/:id/edit'   : { as: 'feature.edit'  , uses: function (params, query) {}, before: function (done, params) { if( !tools.states.login ) { done( false ) } else { done()}} },
   '/feature/:type/:id/:action': { as: 'feature.action', uses: function (params, query) {}, before: null }
 }).resolve();
 
@@ -35,16 +40,20 @@ router.on({
       var tmplstring = 'tmpl-form-' + params.type;
       console.log(tmplstring);
 
-      // FIll the form template and activate the widgets
+      // Fill the form template and activate the widgets
       ui.sidebar.setContent( tmpl(tmplstring, id) );
-      forms.makeForm(params.id, params.type);
       ui.sidebar.show();
+
+      if ( params.type !== 'menu' ) {
+          forms.makeForm(params.id, params.type);
+      }
+
     }
 }}).resolve();
 
 /**
   *
-  * Router for info views and other actions
+  * Router for info views (account, feature, project)
   *
   */
 router.on({
@@ -52,18 +61,13 @@ router.on({
 
       console.log('info router', params);
 
-      switch ( params.target ) {
+      var tmplstring = 'tmpl-info-' + params.target;
 
-          case 'credits'   : ui.sidebar.setContent( tmpl('tmpl-info-credits', ui.templates.credits) );
-          break;
-          case 'privacy'   : ui.sidebar.setContent( tmpl('tmpl-info-privacy', ui.templates) );
-          break;
-          case 'tour'      : tour.init();
-          break;
-          case 'trashbins' : maps.getTrashBins();
-          break;
-          default          : ui.sidebar.setContent( '<h2>Something went wrong</h2></br><p>Close the sidebar and try again.</p>' );
-      }
+      console.log('tmpl string', tmplstring);
+
+      ui.sidebar.setContent( tmpl( tmplstring, strings.credits) );
+      ui.sidebar.show();
+
    }}
 }).resolve();
 
@@ -78,22 +82,17 @@ router.on({
 
       console.log('auth router', params);
 
-      switch ( params.target ) {
+      var tmplstring = 'tmpl-auth-' + params.target;
 
-          case 'account'  : ui.sidebar.setContent( tmpl('tmpl-auth-account', userobj) ); // account infos view
-          break;
-          case 'login'    : ui.sidebar.setContent( tmpl('tmpl-auth-login', userobj) ); // login / logout form
-          break;
-          case 'register' : ui.sidebar.setContent( tmpl('tmpl-auth-register', userobj) ); // register new account view
-          break;
-          case 'recover'  : ui.sidebar.setContent( tmpl('tmpl-auth-recover', userobj) ); // recover forgottenpassword
-          break;
-          case 'delete'   : ui.sidebar.setContent( tmpl('tmpl-auth-delete', userobj) ); // Delete account
-          break;
-          case 'glome'   : ui.sidebar.setContent( tmpl('tmpl-auth-glome', userobj) ); // Glome account pairing
-          break;
-          default         : ui.sidebar.setContent( '<h2>Something went wrong</h2></br><p>Close the sidebar and try again.</p>' );
-      }
+      // Fill the templates
+      ui.sidebar.setContent( tmpl( tmplstring, strings) );
+      ui.sidebar.show();
+
+      // We init the auth methods passing false so we
+      auth.init(false);
+
+      // For the auth router, we need to check for the data-navigo links after each route is visited because the views contains router links
+      router.updatePageLinks();
    }}
 }).resolve();
 

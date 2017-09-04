@@ -4,7 +4,6 @@ var gulp = require('gulp'),
     gulpif = require('gulp-if'),
     inject = require('gulp-inject'),
     injectStr = require('gulp-inject-string'),
-    // deleteLines = require('gulp-delete-lines'),
     stripDebug = require('gulp-strip-debug'),
     concat = require('gulp-concat'),
     purify = require('gulp-purifycss'),
@@ -20,39 +19,24 @@ var gulp = require('gulp'),
 
 var production = process.env.PRODUCTION === 'true' ? true : false;
 
-var reservedvars = ['$','jQuery','L','tmpl','flatpickr','Tour','tagsinput'];
+var reservedvars = ['$','jQuery','L','tmpl','flatpickr','Tour','tagsinput','Navigo'];
 
 // Compile the templates
 gulp.task('templates', function (cb) {
   exec('cd $(pwd)/src/js/templates && tmpl.js \
-                                      tmpl_feature_info.html \
-                                      tmpl_modal.html \
-                                      tmpl_modal_og.html \
-                                      tmpl_modal_cleaning.html \
-                                      tmpl_modal_garbage.html \
-                                      tmpl_form_garbage.html \
-                                      tmpl_form_litter.html \
-                                      tmpl_form_cleaning.html \
-                                      tmpl_form_area.html \
-                                      tmpl_form_garbage_type.html \
+                                      tmpl_moda*.html \
+                                      tmpl_form_*.html \
                                       tmpl_social_links.html \
-                                      tmpl_credits.html \
+                                      tmpl_mobile_menu.html \
                                       tmpl_topbar_main.html \
-                                      tmpl_sidebar_header.html \
+                                      tmpl_sidebar_*.html \
                                       tmpl_auth_*.html \
-                                      tmpl_info_*.html \
-                                      tmpl_form_menu.html > tmpl.js', function (err, stdout, stderr) { console.log(stdout); console.log(stderr); cb(err); });
+                                      tmpl_info_*.html > tmpl.js', function (err, stdout, stderr) { console.log(stdout); console.log(stderr); cb(err); });
 });
 
 // Remove the local src scripts and styles from the head of the html
 gulp.task('trimHTML', ['templates'], function () {
   return gulp.src('./src/index.html')
-  //  .pipe(deleteLines({
-  //     'filters': [/<script\s+type=["']text\/javascript["']\s+src=/i]
-  //   }))
-  //  .pipe(deleteLines({
-  //     'filters': [/<link\s+rel=["']stylesheet["']\s+type=/i]
-  //   }))
   .pipe(gulp.dest('./temp/'));
 });
 
@@ -61,6 +45,7 @@ gulp.task('styles', ['templates'], function () {
   return gulp.src([
                     './src/vendor/Normalize-7.0.0.css',
                     './src/vendor/font-garbageplanet.css',
+                    // './src/vendor/bootstrap-select-1.12.4.css',
                     './src/vendor/bootstrap-3.3.6.css',
                     './src/vendor/bootstrap-select-1.9.4.css',
                     './src/vendor/bootstrap-tagsinput-0.4.3.css',
@@ -71,7 +56,6 @@ gulp.task('styles', ['templates'], function () {
                     './src/vendor/L.Markercluster-1.0.0.css',
                     './src/vendor/L.Compact.Attributions.css',
                     './src/vendor/L.Geocoder.Opencage-1.1.2.css',
-                    // './src/vendor/L.Draw-0.2.4.css',
                     './src/vendor/L.Draw-0.4.10.css',
                     './src/vendor/L.Control.Sidebar-0.19a.css',
                     './src/vendor/L.Control.Locate.css',
@@ -91,13 +75,12 @@ gulp.task('scripts:leaflet', ['templates'], function () {
   return gulp.src([
                     './src/vendor/leaflet-1.2.0.js',
                     './src/vendor/L.Markercluster-1.0.0.js',
-                    './src/vendor/L.Hash.js',
+                    // './src/vendor/L.Hash.js',
                     './src/vendor/L.zoomCSS.js',
                     './src/vendor/L.Control.Locate.js',
                     './src/vendor/L.Compact.Attributions.js',
                     './src/vendor/L.Control.Sidebar-0.19a.js',
                     './src/vendor/L.Overpass.Layer.js',
-                    // './src/vendor/L.Draw-0.2.4.js',
                     './src/vendor/L.Draw-0.4.10.js',
                     './src/vendor/L.Geocoder.Opencage-1.1.2.js',
                     './src/vendor/L.Control.Login.js',
@@ -118,6 +101,7 @@ gulp.task('scripts:jquery', ['templates'], function () {
                     './src/vendor/bootstrap-tagsinput-0.4.3.js',
                     './src/vendor/bootstrap-3.3.7.js',
                     './src/vendor/bootstrap-select-1.9.4.js',
+                    // './src/vendor/bootstrap-select-1.12.4.js',
                     './src/vendor/bootstrap-validator-0.9.0.js',
                     './src/vendor/bootstrap-tour-0.10.1.js',
                     './src/vendor/simple-ajax-uploader-2.6.2.js',
@@ -134,13 +118,14 @@ gulp.task('scripts:app', ['templates'], function () {
 
   return gulp.src([
                     './src/js/config/config.js',
+                    './src/js/config/strings.js',
                     './src/js/templates/tmpl.js',
                     './src/js/ui/tools.js',
                     './src/js/ui/alerts.js',
                     './src/js/map/map.js',
                     './src/js/ui/ui.js',
-                    './src/js/ui/router.js',
                     './src/js/session/session.js',
+                    './src/js/ui/router.js',
                     './src/js/map/features.js',
                     './src/js/map/actions.js',
                     './src/js/forms/submit.js',
@@ -201,6 +186,10 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
           match: 'production',
           replacement: process.env.PRODUCTION
         },
+        {
+          match: 'ga',
+          replacement: process.env.GA
+        }
       ]
     }))
     .pipe(concat('app.js').on('error', gutil.log))

@@ -9,15 +9,17 @@
 * Logins, logouts, account deletion and glome pairing
 */
 
-var session = ( function () {
+var auth = ( function () {
 
     'use strict';
 
     var _switchSession = function _switchSession (obj) {
 
+        // This function only takes car of the UI element, the stroage and cookies are cleared in promises after ajax calls for each auth method
+
         var classicSessionType = localStorage.getItem('classic');
 
-        if (obj === "logout") {
+        if ( obj === "logout" ) {
 
             // Change display of custom login button on mobile
             if (window.isMobile) {
@@ -26,20 +28,21 @@ var session = ( function () {
             }
 
             // TODO make this with templates
-            $('#session-status a').text('Login').attr("href","#user-login-dialog");
+            $('#session-status a').text('Login').attr("href","/auth/login");
             $('#session-status a').attr("id","");
+            $('#session-status a').attr("data-navigo","");
             $('#session-status a').addClass('dropdown-link');
             $('#user-info-link').remove();
-            $('#user-info-mobile-link').remove();
+            $('#btn-mobile-account').remove();
             $('#user-tools').dropdown();
-            $('.user-email, .user-glome-key').removeClass('hidden');
             $(".session-link").removeClass('hidden');
 
+            router.updatePageLinks();
         }
 
-        if (obj === "login") {
+        if ( obj === "login" ) {
 
-            if (window.isMobile) {
+            if ( window.isMobile ) {
                 // remove the anonymous login button
                 maps.glomelogincontrol.login();
             }
@@ -53,142 +56,147 @@ var session = ( function () {
                 // change the UI
                 _switchSession("logout");
                 // server-side logout
-                _logout();
+                _logOut();
             });
 
-            // Reset the event listeners
-            $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="#account-info">User info</a></li>');
-            $("#user-info-link a").on("click", function(e) {
-                e.preventDefault();
-                $('#sidebar').scrollTop = 0;
-                $(this.hash).fadeIn().siblings().hide();
-                ui.sidebar.show();
-            });
+            // Set the links to account info
+            $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="/info/account" data-navigo>Account info</a></li>');
+            $(".mobile-menu").append('<a id="btn-mobile-account" ref="/info/account" class="btn btn-default btn-lg btn-block" data-navigo><span class="fa fa-fw fa-user"></span> Account info</a>');
 
-            $(".mobile-menu").append('<a href="#account-info" id="user-info-mobile-link" class="sidebar-link btn btn-default btn-lg btn-block"><span class="fa fa-fw fa-user"></span> User info</a>');
-            $("#user-info-mobile-link").on("click", function(e) {
-                e.preventDefault();
-                $('#sidebar').scrollTop = 0;
-                $(this.hash).fadeIn().siblings().hide();
-            });
+            router.updatePageLinks();
 
             // Must reload the dropdows in bootstrap to enable new event listeners
             $("#user-tools").dropdown();
+
             // Hide all the login elements
             $(".session-link").addClass('hidden');
 
-            // Push user data to the UI
-            // get the data from localStorage or sessionStorage and clear the other
-            // Note that localStorage only takes strings, not booleans
+            // Push user data to the account view
             if (classicSessionType === "true") {
 
-                $('#account-info').find('.user-email').removeClass('hidden');
-                $('#account-info').find('.user-name').text(localStorage.getItem('username'));
-                $('#account-info').find('.user-email p').html(localStorage.getItem('useremail'));
-                $('#account-info').find('.user-glome-key').addClass('hidden');
-                $('#account-info').find('.user-id').html(localStorage.getItem('userid'));
-                $('.sidebar-content').hide();
+                ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(true)) );
+                ui.sidebar.show();
 
-                // Make sure the sidebar is visible before displaying the user info
-                if (!ui.sidebar.isVisible()) {
-                    ui.sidebar.show();
-                }
-
-                $('#account-info').show();
             }
 
             // Change html to reflect anon login
-            if  (classicSessionType === "false") {
+            if  ( classicSessionType === "false" ) {
 
-                if (window.isMobile) {
-                    if (!map.glomelogincontrol) {
-                        // Add a glome anonymous login button
-                        maps.glomelogincontrol.addTo(maps.map);
+                if ( window.isMobile ) {
+
+                    try {
+
                         maps.glomelogincontrol.login();
+
+                    } catch (e) {
+
+                        console.log (e);
+
+                        try {
+                            // Add a glome anonymous login button if there's none
+                            maps.glomelogincontrol.addTo(maps.map);
+                            maps.glomelogincontrol.login();
+                        } catch (err) {
+
+                          console.log (err);
+                        }
                     }
-                    // this is the leaflet plugin for the custom glome anonymous login button
-                    maps.glomelogincontrol.login();
                 }
 
-                $('#account-info').find('.user-name').text('anon (⌐■_■)');
-                $('#account-info').find('.user-email').addClass('hidden');
-                $('#account-info').find('.user-glome-key p').html(tools.makeEllipsis(localStorage.getItem('glomekey'), 25));
-                $('#account-info').find('.user-id').html(localStorage.getItem('userid'));
-                $('.sidebar-content').hide();
-
-                if (!ui.sidebar.isVisible()) {
-                    ui.sidebar.show();
-                }
-
-                $('#account-info').show();
+                ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(false)) );
+                ui.sidebar.show();
             }
         }
     },
-        _login = function _login (e) {
-              console.log('calling login');
-              // NOTE _login can call _switchSession and not the other way around
-                if (e) {
-                    e.preventDefault();
-                }
+        _setAccount = function _setAccountInfo (classic, data) {
 
-                // TODO get the values from the form
-                var email = $('#login-email').val();
-                var password = $('#login-password').val();
+          if ( classic ) {
 
-                var logincall = $.ajax({
+              localStorage.setItem('classic', 'true');
+              localStorage.setItem('username', data.user.name);
+              localStorage.setItem('userid', data.user.id);
+              localStorage.setItem('useremail', data.user.email);
 
-                    type: api.createLogin.method,
-                    url: api.createLogin.url(),
-                    data: {
-                        'email': email,
-                        'password': password
-                    },
-                    success: function (response) {
-                        console.log(response);
-                    },
-                    error: function (response) {
-                        console.log(response);
-                    }
-                });
+           } else {
 
-                logincall.done(function(response) {
+              localStorage.setItem('classic', 'false');
+              localStorage.setItem('token', data.token);
+              localStorage.setItem('key', data.user.name);
+              localStorage.setItem('id', data.user.id);
+              localStorage.setItem('authuser', data.user);
+              localStorage.setItem('username', 'anon (⌐■_■)');
+           }
+        },
+        _getAccount = function (classic) {
 
-                    console.log(response.token);
+            if ( classic ) {
 
-                    localStorage.setItem('token', response.token.toString());
+                var account = {};
+                    account.username = localStorage.getItem('username');
+                    account.email = localStorage.getItem('email');
+                    account.id = localStorage.getItem('id');
 
-                    // Get the user data after Authorization
-                    $.ajax({
+                return account;
 
-                        method: api.readUser.method,
-                        url: api.readUser.url(),
-                        headers: {'Authorization': 'Bearer ' + response.token},
-                        success: function (data) {
+            } else if ( !classic ) {
 
-                            $('#user-login-dialog').hide();
+                var account = {};
+                    account.username = localStorage.getItem('username');
+                    account.key = localStorage.getItem('key');
+                    account.id = localStorage.getItem('id');
 
-                            // Push the data into localStorage
-                            localStorage.setItem('classic', 'true');
-                            localStorage.setItem('username', data.user.name);
-                            localStorage.setItem('userid', data.user.id);
-                            localStorage.setItem('useremail', data.user.email);
-                            console.log('session type is classic', localStorage.getItem('classic'));
-                            console.log('username value: ', localStorage.getItem('username'));
-                            _switchSession('login');
-                            alerts.showAlert(13, 'success', 1500);
-                        }
-                    });
-                });
-                logincall.fail(function() {
-                    alerts.showAlert(24, 'danger', 2000);
-                    localStorage.removeItem('token');
-                });
+                return account;
+            }
+        },
+        _logIn = function _login (obj) {
+
+              var logincall = $.ajax({
+
+                  type: api.createLogin.method,
+                  url: api.createLogin.url(),
+                  data: {
+                      'email': obj.email,
+                      'password': obj.password
+                  },
+                  success: function (response) {
+                      console.log(response);
+                  },
+                  error: function (err) {
+                      console.log(err);
+                      alerts.showAlert(null, 'danger', 3000, err.responseJSON.error);
+                  }
+              });
+
+              logincall.done(function (response) {
+
+                  console.log(response.token);
+
+                  localStorage.setItem('token', response.token);
+
+                  // Get the user data after Authorization
+                  $.ajax({
+
+                      method: api.readUser.method,
+                      url: api.readUser.url(),
+                      headers: {'Authorization': 'Bearer ' + response.token},
+                      success: function (data) {
+
+                          _setAccount(true, data);
+                          _switchSession('login');
+                          alerts.showAlert(13, 'success', 1500);
+                      }
+                  });
+              });
+              logincall.fail(function (err) {
+
+                  localStorage.clear();
+              });
             },
         _checkLogin = function _checkLogin (d) {
+
             console.log('checking login');
+
             var tokeh = d;
-            // TODO checklogin for glome key as well
-            // TODO use $.when Promises in all user-performable actions to check logins?
             var useToken = localStorage.getItem('token') || tools.token;
             var checklogincall = $.ajax({
 
@@ -205,10 +213,12 @@ var session = ( function () {
             });
             checklogincall.done(function() {
 
-                if (!tokeh || tokeh !== 1) {
+                if ( !tokeh || tokeh !== 1 ) {
+
                   _switchSession('login');
 
-                } else if (tokeh === 1) {
+                } else if ( tokeh === 1 ) {
+
                   console.log('login check');
                   return true
                 }
@@ -217,22 +227,19 @@ var session = ( function () {
 
                 alerts.showAlert(21, 'danger', 2000);
 
-                if (!tokeh || tokeh!== 1) {
+                if ( !tokeh || tokeh!== 1 ) {
+
                     _switchSession('logout');
                     localStorage.clear();
-                    ui.sidebar.show($('#user-login-dialog').show().siblings().hide());
 
-                } else if (tokeh === 1) {
+                } else if ( tokeh === 1 ) {
+
                   alert('CHCK FAILED');
                   return false
                 }
             });
-
-            return {
-                checklogincall: checklogincall
-            }
         },
-        _logout = function _logout () {
+        _logOut = function _logOut () {
                 // FIXME serverside logout backend replies 401
                 if (!localStorage.token) {
                     alerts.showAlert(23, 'info', 2000);
@@ -257,8 +264,10 @@ var session = ( function () {
                         }
                     });
 
-                    logoutcall.done(function(data) {
-                        console.log('logout resonse: ', data);
+                    logoutcall.done(function (data) {
+
+                        console.log('logout response: ', data);
+
                         _switchSession('logout');
                         alerts.showAlert(22, 'info', 2000);
                         localStorage.clear();
@@ -267,27 +276,22 @@ var session = ( function () {
                             ui.sidebar.hide();
                         }
                     });
+
                     logoutcall.fail(function(){
                         alerts.showAlert(10, 'danger', 2000);
                     });
                 }
             },
-        _register = function _register (e) {
-
-                e.preventDefault();
-
-                var email = $('#register-email').val();
-                var name = $('#register-name').val();
-                var password = $('#register-password').val();
+        _registerAccount = function _registerAccount (obj) {
 
                 var registercall = $.ajax({
 
                     type: api.createUser.method,
                     url: api.createUser.url(),
                     data: {
-                        'email': email,
-                        'password': password,
-                        'name': name
+                        'email': obj.email,
+                        'password': obj.password,
+                        'name': obj.name
                     },
                     success: function (response) {
                         console.log(response);
@@ -297,8 +301,8 @@ var session = ( function () {
                     }
                 });
                 registercall.done(function(response) {
+
                     localStorage.setItem('token', response.token);
-                    $('#create-account-dialog').hide();
 
                     $.ajax({
 
@@ -306,24 +310,20 @@ var session = ( function () {
                         url: api.readUser.url(),
                         headers: {'Authorization': 'Bearer ' + response.token},
                         success: function (data) {
-                            console.log(data);
-                            // Push the data into localStorage
-                            localStorage.setItem('classic', 'true');
-                            localStorage.setItem('username', data.user.name);
-                            localStorage.setItem('userid', data.user.id);
-                            localStorage.setItem('useremail', data.user.email);
+
+                            _setAccount(true, data);
                             _switchSession('login');
                             alerts.showAlert(13, 'success', 2000);
                         }
                     });
                 });
-                registercall.fail(function() {
+                registercall.fail( function () {
                     alerts.showAlert(1, 'danger', 3500);
-                    localStorage.removeItem('token');
+                    localStorage.clear();
                 });
 
             },
-        glomeGo = function glomeGo () {
+        _glomeGo = function _glomeGo () {
 
                 console.log('glomego clicked');
 
@@ -340,20 +340,13 @@ var session = ( function () {
                     }
                 });
 
-                glomecall.done(function(response) {
-                    var glomeid = response.user.name,
-                        authUser = response.user,
-                        token = response.token;
+                glomecall.done( function (data) {
 
-                    if (!glomeid || typeof glomeid === 'undefined') {
+                    if ( !glomeid || typeof glomeid === 'undefined' ) {
+
                         alerts.showAlert(12, 'warning', 3000);
                         return;
                     }
-
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('glomekey', glomeid);
-                    localStorage.setItem('userid', response.user.id);
-                    $('#user-login-dialog').hide();
 
                     $.ajax({
                         method: api.readSoftAccount.method,
@@ -362,14 +355,13 @@ var session = ( function () {
                         dataType: 'json',
                         success: function (data) {
 
-                            console.log('glome softaccount read: ', data);
-
-                            if (!data || typeof data === 'undefined') {
+                            if ( !data || typeof data === 'undefined' ) {
                                 return;
                             }
 
-                            if (typeof authUser !== 'undefined') {
-                              localStorage.setItem('classic', 'false');
+                            if ( typeof authUser !== 'undefined' ) {
+
+                              _setAccount(false, data);
                               _switchSession('login');
                               alerts.showAlert(13, 'success', 2000);
                             }
@@ -377,12 +369,17 @@ var session = ( function () {
                     });
                 });
 
-                glomecall.fail(function() {
+                glomecall.fail( function () {
                     alerts.showAlert(12, 'warning', 3000);
-                    localStorage.removeItem('token');
+                    localStorage.clear();
                 });
 
             },
+        _glomePair = function _glomePair () {},
+        _resetPwd = function _resetPAssword () {},
+        _changePwd = function _changePwd () {
+            // Change password
+        },
         _deleteAccount = function _deleteAccount (e) {
                 // FIXME backend replies 405 method not allowed
                 var classicSessionType = localStorage.getItem('classic');
@@ -430,28 +427,72 @@ var session = ( function () {
                 }
 
             },
-        _bindEvents = function _bindEvents () {
+        _bindEvents = function _bindEvents (o, n) {
 
-            // TODO displatch from a single listener
-            // var formtosend = document.getElementsByTagName('form');
-            // fortosend.addEventListener('submit', myFunc());
+            var authform = o;
+            var formname = n;
 
-            // logout, there are two places where user can click to logout ('button' and 'a')
-            $('.btn-logout').on('click', _logout);
-            // login
-            $('.btn-login').on('click', _login);
-            // register
-            $('#registration-form').submit(_register);
-            // glome go
-            $('.btn-glome-go').on('click', glomeGo);
-            // delete account
-            $('.btn-delete-account').one('click', _deleteAccount);
+            authform.validator().on('submit', function (e) {
+
+                if ( e.isDefaultPrevented() ) {
+                    // isDefaultPrevented is the way the validator plugin tells sthg is wrong with the form
+                    alerts.showAlert(30, 'danger', 2000);
+                    return;
+                }
+
+                else {
+
+                    e.preventDefault();
+
+                    // Get the data from the form
+                    var formobj = authform.serializeObject();
+
+                    console.log('------------------------------');
+                    console.log('current form array: ', formobj);
+
+                    switch ( formname ) {
+
+                        case 'login' : _logIn(formobj);
+                        break;
+                        case 'logout' : _logOut(formobj);
+                        break;
+                        case 'reset' : _resetPwd(formobj);
+                        break;
+                        case 'register' : _registerAccount(formobj);
+                        break;
+                        case 'change' : _changePwd(formobj);
+                        break;
+                        case 'delete' : _deleteAccount(formobj);
+                        break;
+                        case 'glomego' : _glomeGo(formobj);
+                        break;
+                        case 'glomepair' : _glomePair(formobj);
+                        break;
+                    }
+                }
+            });
         },
-        init = function init () {
+        init = function init (i) {
 
-            _bindEvents();
+            // We pass session.init(null or false) if we just build the auth forms
+            if ( !i ) {
 
-            if (localStorage.getItem('token')) {
+                this.form = null;
+
+                this.form = $('.form-auth');
+
+                var formname = this.form[0].name;
+
+                if ( formname === 'logout' ) {
+
+                  _logOut();
+
+                } else {
+
+                  _bindEvents(this.form, formname);
+                }
+
+            } else if ( i || localStorage.getItem('token') ) {
                 // Check the current session with the backend
                 console.log('calling _checklogin');
                 _checkLogin();
@@ -459,7 +500,5 @@ var session = ( function () {
             } else { console.log('no prior session found.'); }
         };
 
-    return {   init    : init
-             , glomego : glomeGo
-            };
+    return { init : init };
 }());

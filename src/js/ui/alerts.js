@@ -46,14 +46,14 @@ var alerts = ( function () {
         'Zoom in closer to do that',
         'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies </a>.'
     ],
-        showAlert = function (errorCode, errorType, closeDelay) {
+        showAlert = function (errorCode, errorType, closeDelay, errorText) {
 
             // default to alert-info
             if ( !errorType || typeof errorType === 'undefined' ) {
                 errorType = "info";
             }
 
-            var errorMessage = _strings[errorCode];
+            var errorMessage = errorText || _strings[errorCode];
             var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">');
 
             alertMessage.append(errorMessage);

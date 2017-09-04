@@ -12,10 +12,17 @@
 
     var _saveFeature = function _saveFeature (fo, ft) {
 
+        // with Navigo we do:
+        // _saveFeature(obj);
+        // var type = o.type
+
         // ft = formtype, fo = formobj
         ft = ft.trim();
+
         var useToken = localStorage.getItem('token') || tools.token;
         var auth = 'Bearer ' + useToken;
+
+        // Reset any previous request
         var postrequest = null;
 
         // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
@@ -172,12 +179,7 @@
 
             console.log(data);
 
-            if (data.responseText.indexOf('token_invalid')) {
-                alerts.showAlert(3, 'warning', 2000);
-
-            } else {
-                alerts.showAlert(10, 'danger', 1500);
-            }
+            alerts.showAlert(10, 'danger', 1500);
 
             ui.sidebar.hide();
             tools.resetIconStyle();
@@ -186,21 +188,17 @@
         _bindEvents = function _bindEvents (obj) {
 
             console.log('current formobj: ', obj);
+
             var currentform = obj;
 
-            // Hack to immediatley validate opengraph form
-            // if (obj[0].className.indexOf('opengraph')) {
-            //     currentform.validator('validate');
-            // }
-
-            currentform.on('keyup change keydown', function() {
+            currentform.on('keyup change keydown', function () {
                 currentform.validator('validate');
             });
 
             // Form submission
-            currentform.validator().on('submit', function(e) {
+            currentform.validator().on('submit', function (e) {
 
-                if (e.isDefaultPrevented()) {
+                if ( e.isDefaultPrevented() ) {
                     // isDefaultPrevented is the way the validator plugin tells sthg is wrong with the form
                     alerts.showAlert(30, 'danger', 2000);
                     // FIXME if we call return here the validator exits/bugs?
@@ -215,6 +213,7 @@
                         formobj = currentform.serializeObject();
 
                     // extract the form type from the classname and trim the string
+                    // with Navigo we can omit this because the info will be in the route obj
                     var formtype = formname.substr(formname.lastIndexOf('-') + 1).trim();
 
                     /*console.log('------------------------------');

@@ -9,29 +9,76 @@ var forms = ( function () {
 
     'use strict';
 
-    var _bindEvents = function _bindEvents (id, type) {
-
-            // Manually activate tabs so we can use data-target instead of href
-            $(".nav-tabs").on("click", "a", function(e){
-              e.preventDefault();
-              $(this).tab('show');
-            })
-
+    var garbagetypes = [
+        {short:"plastic",long:"Plastic items"},
+        {short:"bags",long:"Plastic bags"},
+        {short:"foodpacks",long:"Plastic food containers"},
+        {short:"pet",long:"PET bottles"},
+        {short:"party",long:"Party leftovers"},
+        {short:"poly",long:"Expanded plastic polymers"},
+        {short:"butts",long:"Cigarette butts"},
+        {short:"toys",long:"Kids beach toys"},
+        {short:"syringe",long:"Syringes and needles"},
+        {short:"glassbroken",long:"Broken glass"},
+        {short:"glass",long:"Glass"},
+        {short:"bottles",long:"Glass bottles"},
+        {short:"metal",long:"Metal"},
+        {short:"fastfood",long:"Fastfood garbage"},
+        {short:"tin",long:"Tin cans"},
+        {short:"alu",long:"Aluminium cans"},
+        {short:"wood",long:"Recomposed wood"},
+        {short:"chemicals",long:"Chemicals"},
+        {short:"canister",long:"Oil canister"},
+        {short:"barrel",long:"Barrel"},
+        {short:"household",long:"Household garbage"},
+        {short:"clothes",long:"Shoes and clothes"},
+        {short:"fabric",long:"Carpets and fabrics"},
+        {short:"matress",long:"Matresses"},
+        {short:"tarp",long:"Tarps and other large covers"},
+        {short:"electronic",long:"Electronics"},
+        {short:"electric",long:"Electric appliances"},
+        {short:"battery", long:"Batteries"},
+        {short:"industrial",long:"Industrial wastes"},
+        {short:"construction",long:"Construction wastes"},
+        {short:"gas",long:"Gasoline and petroleum oil"},
+        {short:"crude",long:"Crude oil"},
+        {short:"vehicle",long:"Large vehicle"},
+        {short:"bicycle",long:"Bicycles"},
+        {short:"motorcyle",long:"Motorcycles"},
+        {short:"tyres",long:"Tyres"},
+        {short:"engine",long:"Engine parts"},
+        {short:"vehicleparts",long:"Vehicles parts"},
+        {short:"fishing",long:"Fishing gears"},
+        {short:"commercial",long:"Commercial fishing gears"},
+        {short:"net",long:"Fishing net"},
+        {short:"lines",long:"Fishing line"},
+        {short:"boat",long:"Small boat"},
+        {short:"vessel",long:"Large boat or wreck"},
+        {short:"boating",long:"Boating equipment"},
+        {short:"buoy",long:"Buoys and floats"},
+        {short:"navigation",long:"Navigation aid buoy"},
+        {short:"pontoon",long:"Pontoon"},
+        {short:"maritime",long:"Maritime equipment"},
+        {short:"sewage",long:"Sewage"},
+        {short:"dogs",long:"Dog poop bags"},
+        {short:"stormwater",long:"Polluted stormwaters"},
+    ],
+    _bindEvents = function _bindEvents (id, type) {
 
             console.log('binding form events');
 
-            // Style and activate multiselects
-            var selectpicker = $('.selectpicker');
+            // Manually activate tabs so we can use data-target instead of href which is incompatible with the routing
+            $(".nav-tabs").on("click", "a", function (e) {
 
-            selectpicker.selectpicker({
+              e.preventDefault();
+              $(this).tab('show');
+            });
+
+            // Style and activate multiselects
+            $('.selectpicker').selectpicker({
                 style: 'btn-lg btn-default text-center',
                 size: 6
             });
-
-            // window.isMobile ? selectpicker.selectpicker('mobile') :
-            selectpicker.selectpicker('render');
-
-            // selectpicker.selectpicker('refresh');
 
             // Separate tags by hitting space bar or right key
            $('.feature-tags, .bootstrap-tagsinput').tagsinput({
@@ -41,12 +88,13 @@ var forms = ( function () {
                 trimValue: true
             });
 
-            // Prevent sending the form with enter key
+            // Prevent sending the form with enter key with attr hack
             var form = $('form');
 
             form.bind('keypress', function (e) {
 
-                if (e.keyCode === 13) {
+                if ( e.keyCode === 13 ) {
+
                     $('.btn-save').attr('type');
                     e.preventDefault();
                 }
@@ -57,7 +105,7 @@ var forms = ( function () {
                 var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
             }
 
-            if (type === 'garbage') {
+            if ( type === 'garbage' ) {
 
                 $('input[type=radio]').on('change', function () {
 
@@ -76,7 +124,7 @@ var forms = ( function () {
                 });
             }
 
-            if (type === 'cleaning') {
+            if ( type === 'cleaning' ) {
 
                 console.log('loading cleaning form');
 
@@ -103,6 +151,7 @@ var forms = ( function () {
             }
 
             // Re-initialize some listeners
+            // TODO need to unset listeners
             actions.bindUnsavedMarkerEvents();
 
             // Bind the event for saving the form data
@@ -114,13 +163,13 @@ var forms = ( function () {
             console.log('type from forms.makeForm(): ', type);
 
             // We exit if it's the menu form, no need for any activation
-            if (type === 'menu') {
-                return;
-            }
+            // if ( type === 'menu' ) {
+            //     return;
+            // }
 
             // add a marker with data from a webpage scraped using the Opengraph scraper
             // this form opens inside a modal
-            if (type === 'opengraph') {
+            if ( type === 'opengraph' ) {
 
                 ui.makeModal(type, null);
 
@@ -131,30 +180,29 @@ var forms = ( function () {
                 $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
             }
 
+            // Build the garbage multipicker and init uploader
+            if ( type === 'garbage' || type === 'litter' ) {
 
-              // Build the garbage multipicker and init uploader
-              if (type === 'garbage' || type === 'litter') {
+                document.getElementById('type-select').innerHTML = tmpl('tmpl-form-garbage-type', garbagetypes);
 
-                  document.getElementById('type-select').innerHTML = tmpl('tmpl-form-garbage-type', ui.templates.garbagetypes);
+                _initUploader();
+            }
 
-                  _initUploader();
-              }
+            // Hide the close button in the sidebar when we show forms because they have a cancel button
+            $('.close-right').addClass('hidden');
 
-              // Hide the close button in the sidebar when we show forms because they have a cancel button
-              $('.close-right').addClass('hidden');
+            // Forms for single point markers
+            var feature = maps.unsavedMarkersLayerGroup.getLayer(id);
 
-              // Forms for single point markers
-              var feature = maps.unsavedMarkersLayerGroup.getLayer(id);
+            try {
 
-              try {
+                var latlng = feature.getLatLng();
+                $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
 
-                  var latlng = feature.getLatLng();
-                  $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
+            } catch (e) {
 
-              } catch (e) {
-
-                  console.log ('latlngs will be set from draw.js', e);
-              }
+                console.log ('latlngs will be set from draw.js', e);
+            }
 
             // init event listener and set forms widget options
             _bindEvents(id, type);

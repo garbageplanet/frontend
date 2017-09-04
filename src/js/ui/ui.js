@@ -9,149 +9,12 @@ var ui = ( function () {
 
     'use strict';
 
-    // TODO move versioning to package.json and add during build
-
-    var templates = {
-            garbagetypes: [
-                {short:"plastic",long:"Plastic items"},
-                {short:"bags",long:"Plastic bags"},
-                {short:"foodpacks",long:"Plastic food containers"},
-                {short:"pet",long:"PET bottles"},
-                {short:"party",long:"Party leftovers"},
-                {short:"poly",long:"Expanded plastic polymers"},
-                {short:"butts",long:"Cigarette butts"},
-                {short:"toys",long:"Kids beach toys"},
-                {short:"syringe",long:"Syringes and needles"},
-                {short:"glassbroken",long:"Broken glass"},
-                {short:"glass",long:"Glass"},
-                {short:"bottles",long:"Glass bottles"},
-                {short:"metal",long:"Metal"},
-                {short:"fastfood",long:"Fastfood garbage"},
-                {short:"tin",long:"Tin cans"},
-                {short:"alu",long:"Aluminium cans"},
-                {short:"wood",long:"Recomposed wood"},
-                {short:"chemicals",long:"Chemicals"},
-                {short:"canister",long:"Oil canister"},
-                {short:"barrel",long:"Barrel"},
-                {short:"household",long:"Household garbage"},
-                {short:"clothes",long:"Shoes and clothes"},
-                {short:"fabric",long:"Carpets and fabrics"},
-                {short:"matress",long:"Matresses"},
-                {short:"tarp",long:"Tarps and other large covers"},
-                {short:"electronic",long:"Electronics"},
-                {short:"electric",long:"Electric appliances"},
-                {short:"battery", long:"Batteries"},
-                {short:"industrial",long:"Industrial wastes"},
-                {short:"construction",long:"Construction wastes"},
-                {short:"gas",long:"Gasoline and petroleum oil"},
-                {short:"crude",long:"Crude oil"},
-                {short:"vehicle",long:"Large vehicle"},
-                {short:"bicycle",long:"Bicycles"},
-                {short:"motorcyle",long:"Motorcycles"},
-                {short:"tyres",long:"Tyres"},
-                {short:"engine",long:"Engine parts"},
-                {short:"vehicleparts",long:"Vehicles parts"},
-                {short:"fishing",long:"Fishing gears"},
-                {short:"commercial",long:"Commercial fishing gears"},
-                {short:"net",long:"Fishing net"},
-                {short:"lines",long:"Fishing line"},
-                {short:"boat",long:"Small boat"},
-                {short:"vessel",long:"Large boat or wreck"},
-                {short:"boating",long:"Boating equipment"},
-                {short:"buoy",long:"Buoys and floats"},
-                {short:"navigation",long:"Navigation aid buoy"},
-                {short:"pontoon",long:"Pontoon"},
-                {short:"maritime",long:"Maritime equipment"},
-                {short:"sewage",long:"Sewage"},
-                {short:"dogs",long:"Dog poop bags"},
-                {short:"stormwater",long:"Polluted stormwaters"},
-            ],
-            credits: [
-                {
-                    "title":"homepage",
-                    "linkurl":"http://home.garbagepla.net/",
-                    "text":"Project"
-                },
-                /*{
-                    "title":"Let's Encrypt",
-                    "linkurl":"https://letsencrypt.org/",
-                    "text":"Secured with"
-                },*/
-                {
-                    "title":"Mapbox",
-                    "linkurl":"https://www.mapbox.com/",
-                    "text":"Basemaps imagery ©"
-                },
-                {
-                    "title":"Openstreetmap and contributors",
-                    "linkurl":"http://www.openstreetmap.org/",
-                    "text":"Maps and underlying data ©"
-                },
-                {
-                    "title":"Overpass API",
-                    "linkurl":"http://www.overpass-api.de/",
-                    "text":"POIs retrieved using the"
-                },
-                {
-                    "title":"OpenCage Geocoder",
-                    "linkurl":"https://geocoder.opencagedata.com/",
-                    "text":"Address search and geocoding using"
-                },
-                {
-                    "title":"Leaflet",
-                    "linkurl":"https://leafletjs.com/",
-                    "text":"Mapping done with "
-                },
-                {
-                    "title":"FontAwesome",
-                    "linkurl":"http://fontawesome.io/",
-                    "text":"Icons by"
-                },
-                {
-                    "title":"Bootstrap",
-                    "linkurl":"http://getbootstrap.com/",
-                    "text":"Built with"
-                },
-                {
-                    "title":"JQuery",
-                    "linkurl":"https://jquery.com/",
-                    "text":"Runs on"
-                },
-                {
-                    "title":"Laravel",
-                    "linkurl":"https://laravel.com/",
-                    "text":"Backed by"
-                },
-                {
-                    "title":"JavaScript-Templates",
-                    "linkurl":"https://github.com/blueimp/JavaScript-Templates",
-                    "text":"Templating with"
-                },
-                {
-                    "title":"Imgur",
-                    "linkurl":"https://imgur.com",
-                    "text":"Image storage courtesy of"
-                },
-                {
-                    "title":"Github",
-                    "linkurl":"https://github.com/garbageplanet",
-                    "text":"Source code available on"
-                },
-                {
-                  "title": "privacy policy",
-                  "linkurl": "#privacy-policy",
-                  "text": "Read our",
-                  "extraclass": "sidebar-link"
-                }
-        ],
-            version: 'x.5.00'
-        },
-        sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
+    var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'}),
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
-        pushDataToBottomPanel = function pushDataToBottomPanel (type, id) {
+        setContent = function setContent (type, id) {
 
             // TODO get the leaflet_id of current marker as well
-            console.log("pushed data to bottom panel");
+            console.log("setting content of bottom panel");
 
             // load the data from the options of the object
             var feature;
@@ -169,7 +32,7 @@ var ui = ( function () {
                 }
             }
 
-            console.log('feature obj from pushDataToBottomPanel()',feature);
+
 
             // if the data is passed from the server JSON response (attend, confirm, join ...)
             // the actual data are in the second parameter passed to the function (id)
@@ -177,6 +40,7 @@ var ui = ( function () {
             try {
 
                 var featuredata = feature.options;
+                console.log('feature data from ui.setContent()', featuredata);
 
             } catch (e) {
 
@@ -185,24 +49,21 @@ var ui = ( function () {
                 try {
 
                     var featuredata = id;
-                    console.log('feature data from pushDataToBottomPanel()',featuredata);
+                    console.log('feature data as id from ui.setContent()',featuredata);
 
                 } catch (e) {
 
                     alerts.showAlert(5, 'danger', 2000);
                     return;
-
                 }
             }
 
             // Fill the template data
-            document.getElementById('bottombar').innerHTML = tmpl('tmpl-feature-info', featuredata);
+            ui.bottombar.setContent( tmpl('tmpl-info-feature', featuredata) );
+            ui.bottombar.show();
 
             // Set the vars after loading the template
             var featureinfo = $('#feature-info');
-
-            // TODO use bottombar.getContent() in conjunction with template creation above
-            ui.bottombar.show(featureinfo.fadeIn());
 
             // Add an imgur api character to the url to fetch thumbnails only and change the link to https
             if ( featuredata.image_url ) {
@@ -214,7 +75,6 @@ var ui = ( function () {
             }
 
             // if there's a datetime field it's a cleaning event, we fetch the address from the reverse geocoder
-            // TODO reverse geocode only once and save to DB then check if field exist before geocoding again
             // if ( !featuredata.address || featuredata.address === 'undefined' || featuredata.address === '' ) {
             if ( featuredata.datetime ) {
 
@@ -381,17 +241,11 @@ var ui = ( function () {
             // Empty the sidebar on hide, reset accordion and reset scroll
             ui.sidebar.on('hide', function () {
 
-                $('.sidebar-content').hide();
-
-                // Reset the draw button
-                $('.leaflet-draw-edit-edit').removeClass('visible');
-                $('.leaflet-draw-edit-remove').removeClass('visible');
+                // Reset the router
+                router.navigate('/');
 
                 // FIXME this removes the placeholder as well ?
                 // $('.bootstrap-tagsinput').tagsinput('removeAll');
-
-                // Delete any feature form from the DOM
-                $('.form-feature').remove();
 
                 // Remove any unsaved marker on mobile
                 if ( window.isMobile ) {
@@ -421,8 +275,9 @@ var ui = ( function () {
                 $('.btn-social').popover('destroy');
                 // reset any modals that was created
                 $('.modal').modal('hide').data('bs.modal', null);
-                // empty any content
-                $('#feature-info').empty();
+
+                // Reset the router
+                router.navigate('/');
             });
 
             // Events to execute when the bottombat is shown
@@ -527,7 +382,7 @@ var ui = ( function () {
 
             // Fill the main topbar and set non-mobile listeners
             if ( !window.isMobile ) {
-                document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', templates);
+                document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', strings);
                 _bindTopbarEvents();
             }
 
@@ -539,11 +394,10 @@ var ui = ( function () {
             // alerts.showAlert(32, 'warning', 5000);
     };
 
-    return {   bottombar             : bottombar
-             , init                  : init
-             , makeModal             : makeModal
-             , pushDataToBottomPanel : pushDataToBottomPanel
-             , sidebar               : sidebar
-             , templates             : templates
+    return {   bottombar  : bottombar
+             , init       : init
+             , makeModal  : makeModal
+             , setContent : setContent
+             , sidebar    : sidebar
             };
 }());

@@ -1,11 +1,11 @@
 <script type="text/x-tmpl" id="tmpl-form-cleaning">
 
+{% include('tmpl-sidebar-header', {title: "Add a cleaning event", url: "#/form/menu"}); %}
+
 <form class="form-feature form-cleaning " data-toggle="validator">
 
-<h3>Add a cleaning event</h3>
-
   <div class="tab-view">
-    
+
     <ul class="nav nav-tabs nav-justified" role="tablist">
       <li class="active"><a data-target="#cleaning-main-tab" data-toggle="tab" class="tab-default"><span class="fa fa-fw fa-calendar-o"></span></a></li>
       <li               ><a data-target="#cleaning-info-tab" data-toggle="tab"                    ><span class="fa fa-fw fa-question"></span></a></li>
@@ -73,30 +73,14 @@
         </div>
 
         <div class="tab-pane form-group form-group-lg" id="cleaning-info-tab" role="tabpanel">
-          <p class="lead">A marker for a cleaning event is meant for a location where trash has already been identified. Facebook users can choose whether to create a Facebook event simultaneously. <a class="sidebar-link" href="#user-login-dialog">Login</a> or <a class="sidebar-link" href="#create-account-dialog" >register</a> with an email to create an event.</p>
+          <p class="lead">A marker for a cleaning event is meant for a location where trash has already been identified. Facebook users can choose whether to create a Facebook event simultaneously. <a href="#/auth/login" data-navigo>Login</a> or <a href="#/auth/register" data-navigo>register</a> with an email to create an event.</p>
         </div>
       </div>
 
   </div>
 
-  <div>
-      <div class="btn-group btn-group-justified" role="group">
-          <div class="btn-group btn-group-lg" role="group">
-              <button type="submit"
-                      class="btn btn-success btn-save btn-save-cleaning">
-                  <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
-              </button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-              <button type="button"
-                      title="Cancel"
-                      class="btn btn-danger btn-cancel">
-                  <span class="fa  fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
-              </button>
-          </div>
-          <!-- see https://developers.facebook.com/docs/graph-api/reference/event -->
-      </div>
-  </div><!-- Create the marker -->
+  {% include('tmpl-sidebar-save', {saveclass: "btn-save-cleaning"}); %}
+
 </form>
 
 </script>

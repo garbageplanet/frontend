@@ -2,10 +2,10 @@
 
     {% include('tmpl-sidebar-header', {title: "Create a new account", url: "#/auth/account"}); %}
 
-    <p>Using an email to register can help you <a href="#/auth/pwd" data-navigo>recover your credentials</a> but will also allow you to create game tiles.</p>
+    <p>Using an email to register can help you <a href="/auth/recover" data-navigo>recover your credentials</a> but will also allow you to create game tiles.</p>
 
-    <form id="registration-form"
-          class="form-group"
+    <form name="register"
+          class="form-group form-auth"
           data-toggle="validator"
           accept-charset="UTF-8">
 
@@ -54,7 +54,7 @@
              role="group" >
             <div class="btn-group btn-group-lg" role="group">
                 <button type="submit" class="btn btn-success">
-                  <span>Register</span>
+                  <span>Register &raquo</span>
                 </button>
             </div>
         </div>

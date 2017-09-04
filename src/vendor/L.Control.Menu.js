@@ -69,8 +69,10 @@
             return container;
         },
 
-        _onClick: function() {
-            ui.sidebar.setContent( tmpl('tmpl-mobile-menu', ui.templates) );
+        _onClick: function () {
+            // We pass a null obj to the templates for now
+            var nullobj = {};
+            ui.sidebar.setContent( tmpl('tmpl-mobile-menu', nullobj) );
             ui.sidebar.show();
         },
     });

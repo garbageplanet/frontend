@@ -1,0 +1,40 @@
+<script type="text/x-tmpl" id="tmpl-auth-change">
+
+{% include('tmpl-sidebar-header', {title: "Change your password", url: "#/auth/account"}); %}
+
+  <form name="change"
+        class="form-group form-auth"
+        accept-charset="UTF-8"
+        data-toggle="validator">
+
+    <div class="form-group form-group-lg">
+
+      <div class="form-group">
+        <input type="password" class="form-control" name="currentpwd" placeholder="Current password" required>
+      </div>
+
+      <div class="help-block with-errors"></div>
+
+      <div class="form-group">
+        <input type="password" class="form-control" name="newpwd" placeholder="New password" required>
+      </div>
+
+      <div class="help-block with-errors"></div>
+
+      <div class="form-group">
+        <input type="password" class="form-control" name="newpwdconfirm" placeholder="Confirm new password" required>
+      </div>
+
+      <div class="help-block with-errors"></div>
+
+      <div>
+        <div>
+          <button type="submit" class="btn btn-info btn-lg btn-block btn-change-password">Save</button>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+</Script>

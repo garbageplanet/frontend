@@ -1,8 +1,8 @@
 <script type="text/x-tmpl" id="tmpl-form-garbage">
 
-<form class="form-feature form-garbage" accept-charset="UTF-8" data-toggle="validator">
+{% include('tmpl-sidebar-header', {title: "Mark garbage", url: "/form/menu"}); %}
 
-  <h3>Mark garbage</h3>
+<form class="form-feature form-garbage" accept-charset="UTF-8" data-toggle="validator">
 
   <div class="tab-view">
 
@@ -40,22 +40,20 @@
                   data-max-options="20"
                   name="type"
                   width="fit"
-                  mobile="true"
                   multiple
                   required>
           </select>
           <div class="help-block with-errors"></div>
       </div>
 
-      <div class="dropdown">
+      <div class="dropdown form-group">
           <select class="selectpicker form-control garbage-todo-select"
                   title="What to do here?"
                   data-width="100%"
                   name="todo"
                   width="fit"
-                  mobile="true"
                   required>
-              <option value="" disabled="disabled"></option>
+              <!-- <option value="" disabled="disabled"></option> -->
               <option value="1">It has been cleaned up already</option>
               <option value="2">Need help to clean it up</option>
               <option value="3">Need to pick up bags</option>
@@ -69,7 +67,7 @@
 
         <div class="row">
             <div class="input-lg col-lg-12 col-sm-12 col-xs-12 col-md-12">
-            <input class="form-control feature-tags garbage-tags"
+            <input class="form-control feature-tags"
                    type="text"
                    name="tags"
                    placeholder="Add tags (max 3)"/>
@@ -154,27 +152,12 @@
 
       <div class="tab-pane form-group form-group-lg" id="garbage-info" role="tabpanel">
       <br>
-        <p class="lead"> Anybody can anonymously mark trash on the map. If you wish not to register use the anonymous login option Markers can only be placed between zoom level 10 and 20 (<a href="#" onclick="map.setZoom(15)">zoom to level 10 now</a>). When choosing the amount of garbage on the scale of 1 to 5, think of 1 as 'a little' and 5 as a dumpster.</p>
+        <p class="lead"> Anybody can anonymously mark trash on the map. If you wish not to register use the anonymous login option Markers can only be placed between zoom level 10 and 20 (<a onclick="maps.map.setZoom(15)">zoom to level 10 now</a>). When choosing the amount of garbage on the scale of 1 to 5, think of 1 as 'some garbage pieces here and there' and 5 as a dumpster.</p>
       </div>
     </div>
   </div>
 
-  <div>
-    <div class="btn-group btn-group-justified" role="group">
-      <div class="btn-group btn-group-lg" role="group">
-          <button type="submit"
-                  class="btn btn-success btn-save btn-save-garbage">
-          <span class="fa fa-fw fa-check"></span><span class="hidden-xs">Save</span>
-          </button>
-      </div>
-      <div class="btn-group btn-group-lg" role="group">
-          <button type="button"
-                  class="btn btn-danger btn-cancel">
-          <span class="fa fa-fw fa-times"></span><span class="hidden-xs">Cancel</span>
-          </button>
-      </div>
-  </div>
-</div>
+  {% include('tmpl-sidebar-save', {saveclass: "btn-save-garbage"}); %}
 
 </form>
 
