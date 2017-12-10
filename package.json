@@ -1,13 +1,13 @@
 {
   "name": "garbageplanet-frontend",
-  "version": "0.5.65",
+  "version": "unstable",
   "description": "Dependancies for building the garbagepla.net frontend.",
   "main": "dist/app.min.js",
   "jsdelivr": "dist/app.min.js",
   "cdn": "dist/app.min.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/garbageplanet/web-ui.git"
+    "url": "https://github.com/garbageplanet/frontend.git"
   },
   "author": "adriennn",
   "license": "ISC",
@@ -16,10 +16,12 @@
   },
   "homepage": "https://garbagepla.net",
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
     "blueimp-tmpl": "^3.9.0",
     "del": "^2.2.0",
     "dotenv": "^4.0.0",
     "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "^2.1.1",
     "gulp-delete-lines": "0.0.7",

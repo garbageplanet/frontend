@@ -2,7 +2,7 @@
 
     {% include('tmpl-sidebar-header', {title: "Create a new account", url: "#/auth/account"}); %}
 
-    <p>Using an email to register can help you <a href="/auth/recover" data-navigo>recover your credentials</a> but will also allow you to create game tiles.</p>
+    <p>Using an email to register can help you <a href="/auth/reset" data-navigo>recover your credentials</a> but will also allow you to create game tiles.</p>
 
     <form name="register"
           class="form-group form-auth"
@@ -11,7 +11,7 @@
 
         <div class="form-group form-group-lg">
             <input type="text"
-                   id="register-name"
+                   name="username"
                    class="form-control"
                    placeholder="Username (min 4 characters)"
                    data-minlength="4"
@@ -21,15 +21,17 @@
 
         <div class="form-group form-group-lg">
             <input type="email"
+                   name="email"
                    class="form-control"
                    placeholder="Email address"
-                   id="register-email"
-                   data-minlength="6">
+                   data-minlength="6"
+                   required>
             <div class="help-block with-errors"></div>
         </div>
 
         <div class="form-group form-group-lg">
-                <input id="register-password"
+                <input name="password"
+                       id="pwd"
                        type="password"
                        class="form-control"
                        placeholder="Password min 6 characters"
@@ -39,13 +41,12 @@
         </div>
 
         <div class="form-group form-group-lg">
-                <input id="register-password-confirm"
-                       type="password"
-                       data-match="#register-password"
+                <input type="password"
+                       data-match="#pwd"
                        class="form-control"
                        placeholder="Repeat password"
                        data-minlength="6"
-                       data-match-error="Don't match"
+                       data-match-error="Passwords must match"
                        required>
                 <div class="help-block with-errors"></div>
         </div>

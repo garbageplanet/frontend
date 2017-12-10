@@ -100,22 +100,19 @@ var tools = {
     reverseGeocode: function (o) {
 
       var latlng = o.replace(', ', '+');
-      console.log(latlng);
+      // console.log(latlng);
+
       var token = '@@opencagetoken';
 
         if ( latlng ) {
 
             var callurl = 'https://api.opencagedata.com/geocode/v1/json?q=' + latlng + '&limit=1&no_annotations=1&key=' + token;
-            // var request = $.ajax({
-            //     method: 'GET',
-            //     url: callurl
-            // });
 
             var request = $.get(callurl);
 
             return request;
 
-        } else { return; }
+        } else { return null; }
     },
     setMarkerClassColor: function( c) {
 
@@ -142,18 +139,49 @@ var tools = {
                          ' tell the local authorities'      ;
     },
     setMarkerIcon: function (c, d) {
-        if (!d) {
+        if ( !d ) {
             return (c == false) ? maps.icons.garbageMarker : maps.icons.cleanedMarker;
 
         } else {
 
-            return (new Date(d) < new Date()) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
+            return ( new Date(d) < new Date() ) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
         }
     },
+    /*
+     * Getting bounds in a proper format for postGIS calls
+     * toBBoxStringInverse() is a custom map method
+     */
+     /**
+       * @namespace tools
+       * @method getCurrentBounds()
+       * @param none
+       * @returns {array} [S, W, N, E] map corners in viewport
+       */
     getCurrentBounds: function () {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
-        console.log
         return bounds;
+    },
+    /**
+      * @namespace tools
+      * @method getLeafletIdfromDatabaseId()
+      * @param {type} string - the type of feature
+      * @param {id} integer - the database id of the feature
+      * @returns {obj} the leaflet object that matches the db id
+      */
+    getLeafletObj: function (type, id) {
+
+        var layername = type + 'LayerGroup';
+
+        var layergroup = maps[layername].getLayers();
+
+        console.log('layername', layername);
+        console.log('layergroup', layergroup);
+
+        var layer = layergroup.filter( function( obj ) {
+            return obj.options.id == id;
+        })[0];
+
+        return layer;
     },
     /*roundBounds: function(b) {
     // TODO

@@ -44,7 +44,8 @@ var alerts = ( function () {
         'No data in the current area',
         'Fill in all the required fields', // 30
         'Zoom in closer to do that',
-        'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies </a>.'
+        'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies </a>.',
+        'Layer not found on the map'
     ],
         showAlert = function (errorCode, errorType, closeDelay, errorText) {
 

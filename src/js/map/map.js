@@ -3,16 +3,20 @@
 
 /**
   * Extend L.Control.Locate to accomodate the url regex
-  *  @namespace L.Control.Locate - regex to check if the address barof the browser contains coordinates, needed when we
-                                  gelocate at startup so we don't override geographic locations in inbound urls
+  *  @namespace L.Control.Locate - regex to check if the address bar of the browser contains coordinates, needed when we
+                                   gelocate at startup so we don't override geographic locations in inbound urls
   * @see http://stackoverflow.com/a/18690202/2842348
   * @author Iain Fraser
   * @license MIT stackoverflow
   */
-L.Control.OwnLocate = L.Control.Locate.extend({
+L.Control.CustomLocate = L.Control.Locate.extend({
    latlnginURL: function () {
-     return window.location.href.match(/^([-+]?\d{1,2}[.]\d+)\s*,\s*([-+]?\d{1,3}[.]\d+)$/);
-   }
+     return window.location.href.match(/^([-+]?\d{1,2}[.]\d+)\s*\\\s*([-+]?\d{1,3}[.]\d+)$/);
+   },
+   sharedURL: function () {
+     return window.location.href.match(/shared/);
+   },
+
 });
 
 /**
@@ -35,7 +39,6 @@ var maps = ( function () {
                     updateWhenZooming: true,
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
                 }),
-
         "Mapbox Satellite Street":
             L.tileLayer('https://api.mapbox.com/styles/v1/adriennn/ciw6qz5tn00002qry747yh58p/tiles/256/{z}/{x}/{y}?access_token=@@mapboxtoken',
                 {
@@ -55,7 +58,13 @@ var maps = ( function () {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
                 })
         },
-        map = L.map('map', {zoomControl: false, attributionControl: true}),
+        map = L.map('map', { zoomControl        : false,
+                             attributionControl : true,
+                             zoomSnap           : 0,
+                             zoomDelta          : 2,
+                             wheelPxPerZoomLevel: 40,
+                             wheelDebounceTime  : 200
+                           }),
         // hash = L.hash(map),
         garbageLayerGroup = L.markerClusterGroup({
             spiderfyOnMaxZoom: false,
@@ -104,20 +113,20 @@ var maps = ( function () {
         areaLayerGroup = L.featureGroup(),
         unsavedMarkersLayerGroup = L.featureGroup(),
         allLayers = L.layerGroup([
-                        garbageLayerGroup,
-                        areaLayerGroup,
-                        cleaningLayerGroup,
-                        litterLayerGroup,
-                        linkLayerGroup
+                          garbageLayerGroup
+                        , areaLayerGroup
+                        , cleaningLayerGroup
+                        , litterLayerGroup
+                        , linkLayerGroup
                     ]),
         _overlayGroups = {
-            "Garbage markers": garbageLayerGroup,
-            "Cleaning events": cleaningLayerGroup,
-            "Littered coasts and roads": litterLayerGroup,
-            "Linked markers": linkLayerGroup,
-            "Tiles and areas": areaLayerGroup
+              "Garbage markers"           : garbageLayerGroup
+            , "Cleaning events"           : cleaningLayerGroup
+            , "Littered coasts and roads" : litterLayerGroup
+            , "Linked markers"            : linkLayerGroup
+            , "Tiles and areas"           : areaLayerGroup
         },
-        locationcontrol = new L.Control.OwnLocate({
+        locationcontrol = new L.Control.CustomLocate({
             locateOptions: {
                 enableHighAccuracy: true,
                 maxZoom: 19
@@ -134,11 +143,11 @@ var maps = ( function () {
                 console.log('There are coordinates in the url: ', maps.locationcontrol.latlnginURL() !== null);
 
                 // If we are currently trying to locate the user and it fails and the maps is already set, just stop the control
-                if ( maps.locationcontrol.latlnginURL() ) {
+                if ( maps.locationcontrol.latlnginURL() || maps.locationcontrol.sharedURL() ) {
                     control.stop();
                 }
-                // Show the world without borders if geolocalization fail
-                else if ( !maps.locationcontrol.latlnginURL() || maps.locationcontrol.latlnginURL() === null ) {
+                // Show the world without borders if geolocalization fails
+                else if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
                     control.stop();
                     maps.map.setView([0, 0], 2);
                 }
@@ -167,15 +176,15 @@ var maps = ( function () {
                     return new mapMarker(options);
                 },
 
-                genericMarker      = mapmarker({className: 'map-marker marker-color-gray marker-generic'}),
-                garbageMarker      = mapmarker({className: 'map-marker marker-garbage'}),
-                cleaningMarker     = mapmarker({className: 'map-marker marker-cleaning marker-color-blue'}),
-                pastCleaningMarker = mapmarker({className: 'map-marker marker-cleaning-past marker-color-blue'}),
-                dieoffMarker       = mapmarker({className: 'map-marker marker-dieoff'}),
-                sewageMarker       = mapmarker({className: 'map-marker marker-sewage'}),
-                floatingMarker     = mapmarker({className: 'map-marker marker-floating'}),
-                linkMarker         = mapmarker({className: 'map-marker marker-link'}),
-                cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
+                  genericMarker      = mapmarker({className: 'map-marker marker-color-gray marker-generic'})
+                , garbageMarker      = mapmarker({className: 'map-marker marker-garbage'})
+                , cleaningMarker     = mapmarker({className: 'map-marker marker-cleaning marker-color-blue'})
+                , pastCleaningMarker = mapmarker({className: 'map-marker marker-cleaning-past marker-color-blue'})
+                , dieoffMarker       = mapmarker({className: 'map-marker marker-dieoff'})
+                , sewageMarker       = mapmarker({className: 'map-marker marker-sewage'})
+                , floatingMarker     = mapmarker({className: 'map-marker marker-floating'})
+                , linkMarker         = mapmarker({className: 'map-marker marker-link'})
+                , cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
 
             return {   genericMarker      : genericMarker
                      , garbageMarker      : garbageMarker
@@ -190,10 +199,10 @@ var maps = ( function () {
         }()),
         getTrashBins = function getTrashBins () {
             // load trashbins icons on the map
-            var query = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
+            var tbq = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
 
             var osmTrashbinLayer = new L.OverPassLayer({
-                query: query
+                query: tbq
             });
 
             maps.map.addLayer(osmTrashbinLayer);
@@ -214,14 +223,14 @@ var maps = ( function () {
             // Add zoom controls on desktop
             if ( !window.isMobile ) {
                 var zoomcontrol = L.control.zoom({position: 'topleft'});
-                zoomcontrol.options.zoomInText = '<span class="fa fa-fw fa-search-plus"></span>';
-                zoomcontrol.options.zoomOutText = '<span class="fa fa-fw fa-search-minus"></span>';
-                zoomcontrol.addTo(maps.map);
+                    zoomcontrol.options.zoomInText  = '<span class="fa fa-fw fa-search-plus"></span>';
+                    zoomcontrol.options.zoomOutText = '<span class="fa fa-fw fa-search-minus"></span>';
+                    zoomcontrol.addTo(maps.map);
             }
 
             locationcontrol.addTo(maps.map);
-            scalecontrol.addTo(maps.map);
-            layerscontrol.addTo(maps.map);
+               scalecontrol.addTo(maps.map);
+              layerscontrol.addTo(maps.map);
             geocodercontrol.addTo(maps.map);
 
             // Add feature layers
@@ -234,13 +243,15 @@ var maps = ( function () {
 
             // Add a glome anonymous login button on mobile and small screens
             if ( window.isMobile ) {
+
                 if ( !maps.map.glomelogincontrol ) {
                     maps.glomelogincontrol.addTo(maps.map);
                 }
+
                 menucontrol.addTo(maps.map);
             }
 
-            if ( !maps.locationcontrol.latlnginURL() || maps.locationcontrol.latlnginURL() === null ) {
+            if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
                 console.log('starting to geolocate');
                 maps.locationcontrol.start();
             }
@@ -248,7 +259,6 @@ var maps = ( function () {
           _tiles['Mapbox Outdoors'].on('load', function () {
 
                 // Remove the loader div once the tiles have loaded
-
                 var loader = document.getElementById('loader');
 
                 if ( loader ) {

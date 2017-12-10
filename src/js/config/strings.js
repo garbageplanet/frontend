@@ -82,5 +82,5 @@ var strings = {
               "extraclass": "sidebar-link"
             }
         ],
-        version: 'x.0.00'
+        version: 'v. unstable'
     };

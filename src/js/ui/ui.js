@@ -2,8 +2,8 @@
 /* global $, L, maps */
 
 /**
-* User interfaces that don't happen directly on the map
-*/
+  * User interfaces that don't happen directly on the map
+  */
 
 var ui = ( function () {
 
@@ -13,27 +13,16 @@ var ui = ( function () {
         bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'}),
         setContent = function setContent (type, id) {
 
-            // TODO get the leaflet_id of current marker as well
             console.log("setting content of bottom panel");
 
-            // load the data from the options of the object
             var feature;
 
-            // Retrieve the data from the feature according to type and id
+            // Retrieve the data from the feature according to type and find the leaflet id from the db id
             if ( type && type !== null ) {
 
-                switch ( type ) {
-
-                  case 'garbage' : feature = maps.garbageLayerGroup.getLayer(id); break;
-                  case 'litter': feature = maps.litterLayerGroup.getLayer(id); break;
-                  case 'cleaning' : feature = maps.cleaningLayerGroup.getLayer(id); break;
-                  case 'area': feature = maps.areaLayerGroup.getLayer(id); break;
-                  default : feature = null;
-                }
+                feature = tools.getLeafletObj(type, id);
+                console.log('Feature: ', feature);
             }
-
-
-
             // if the data is passed from the server JSON response (attend, confirm, join ...)
             // the actual data are in the second parameter passed to the function (id)
             // catch the error and continue with the alternative
@@ -44,12 +33,12 @@ var ui = ( function () {
 
             } catch (e) {
 
-                console.log(e);
+                console.log('options are somewhere else', e);
 
                 try {
 
                     var featuredata = id;
-                    console.log('feature data as id from ui.setContent()',featuredata);
+                    console.log('feature data as id from ui.setContent()', featuredata);
 
                 } catch (e) {
 
@@ -80,18 +69,18 @@ var ui = ( function () {
 
                 console.log('calling reverse geocoder');
 
-                $.when( tools.reverseGeocode(featuredata.latlng) ).then( function (data) {
+                var getadress = tools.reverseGeocode(featuredata.latlng);
 
-                    console.log('data from Promise resolved:', data.results[0].formatted);
+                getadress.done( function (data) {
+
+                    // console.log('data from Promise resolved:', data.results[0].formatted);
                     featureinfo.find('.feature-info-location').html(data.results[0].formatted);
 
                 }).catch( function (err) {
 
                   console.log(err);
                 });
-            } /* else {
-                featureinfo.find('.feature-info-location').html(featuredata.address.toString())
-            } */
+            }
 
             // Create the templateData.social data dynamically before calling the template
             social.shareThisFeature(featuredata);
@@ -128,51 +117,9 @@ var ui = ( function () {
             template = '<div id="' + modalid + '" class="modal" role="dialog"></div>';
             $('body').append(template);
 
-            // If there's no data passed to the function, we're making a modal for scraping an url
-            // handle what happens for the Open Graph scraper
-            // TODO move this to the sidebar
-            if ( !arr ) {
-                if ( type.indexOf('opengraph') > -1 ) {
-
-                    document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
-
-                    $('#' + modalid).modal('show');
-                    $('#' + modalid).find('input').focus();
-                }
-                // Bind the action to launch the scraper
-                $('.btn-opengraph-fetch').click( function () {
-
-                    // Retrieve the value of the url
-                    var url = $('#opengraph-url').val();
-
-                    $('.btn-opengraph-fetch').text('...');
-                    $('.btn-opengraph-fetch').attr('disabled', 'disabled');
-
-                    // Start the scraper promise
-                    $.when( tools.openGraphScraper(url) ).then( function (data) {
-
-                        console.log('data from openGraph Promise resolved:', data);
-
-                        // Load the data into the template
-                        var ogcontent = document.getElementById('opengraph-content').innerHTML = tmpl('tmpl-modal-opengraph', data);
-                        // Remove input styles
-                        $('#opengraph-content input, #opengraph-content textarea').css('border','none').css('background','transparent').css('box-shadow', 'none');
-                        // TODO allow saving only if request return meaningful data
-                        $('.btn-save-opengraph').removeClass('hidden');
-                        // Replace button text and disable nutil request has finished
-                        $('.btn-opengraph-fetch').text('Fetch');
-                        $('.btn-opengraph-fetch').removeAttr('disabled');
-                    }).catch( function () {
-                        // If the promise returns any error reset the form field
-                        $('.btn-opengraph-fetch').text('Fetch');
-                        $('.btn-opengraph-fetch').removeAttr('disabled');
-                    });
-                });
-            }
-
             // if it's a data modal check that the array contains data else warn user
             if ( arr ) {
-                if ( arr.length < 1 && ( type != 'game' || type != 'opengraph' ) ) {
+                if ( arr.length < 1 && ( type != 'game' ) ) {
                     alerts.showAlert(29, 'warning', 2000);
                     return;
                 }

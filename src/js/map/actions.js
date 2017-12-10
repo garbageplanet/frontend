@@ -112,9 +112,12 @@ var actions = (function () {
             // We must stop the bubbling else the map catches click
             L.DomEvent.stopPropagation(obj);
 
-            // Build the route from the obj data
+            console.log(maps.garbageLayerGroup.getLayers());
+
+            // Build the route from the obj data with the db feature id and feature type
             var route = router.generate('feature.show', {
-                id: obj.layer._leaflet_id,
+                id: obj.layer.options.id,
+                // id: obj.layer._leaflet_id,
                 type: obj.layer.options.feature_type
             });
 
@@ -147,34 +150,32 @@ var actions = (function () {
             }
         },
         act = function act (t, o) {
-            // NOTE t = classname for click target, o = feature object
-            // FIXME we must check for both icon and button class because they can both catch clicks
 
             console.log('acting type: ', t);
             console.log(o);
             t = t.trim();
             // oo, options only
-            var oo = o.options;
+            var opt = o.options;
             console.log('trimmed value t: ', t);
 
             switch (t) {
 
-                case 'cleaned' : _cleanGarbage(oo);
+                case 'cleaned' : _cleanGarbage(opt);
                 break;
 
-                case 'confirm' : _confirmGarbage(oo);
+                case 'confirm' : _confirmGarbage(opt);
                 break;
 
-                case 'attend' : _attendCleaning(oo);
+                case 'attend' : _attendCleaning(opt);
                 break;
 
-                case 'join' : _joinGame(oo);
+                case 'join' : _joinGame(opt);
                 break;
                 // pass the full leaflet object to the delete method
                 case 'delete' : _deleteFeature(o);
                 break;
 
-                case 'edit' : _editFeature(oo);
+                case 'edit' : _editFeature(opt);
                 break;
 
                 default: return;
@@ -182,7 +183,7 @@ var actions = (function () {
         },
         _editFeature = function editFeature (e) {
 
-            if ( !localStorage.getItem('token' )) {
+            if ( !localStorage.getItem('token' ) ) {
 
                 alerts.showAlert(3, "info", 2000);
                 return;
@@ -191,10 +192,11 @@ var actions = (function () {
                 // TODO fill the form templates with the current marker data
                 // TODO more secure way to restrict edition, must match current session token with id in backend
                 // TODO Push the data to the form on .btn-edit click (requires to build all forms with templates)
+
                 var userid = localStorage.getItem('userid'),
                     useridmatch = e.created_by;
 
-                if (userid == useridmatch) {
+                if ( userid == useridmatch ) {
 
                     // TEMPORARY warning about edit system
                     alerts.showAlert(11, "warning", 3000);
@@ -210,7 +212,7 @@ var actions = (function () {
 
             console.log('event value object options from _confirm garbage: ', e);
 
-            if (!localStorage.getItem('token')){
+            if ( !localStorage.getItem('token') ){
                 alerts.showAlert(3, "info", 2000);
                 return;
 
@@ -218,11 +220,11 @@ var actions = (function () {
 
                 var callurl = null;
 
-                if (e.feature_type === 'garbage') {
+                if ( e.feature_type === 'garbage' ) {
                     callurl = api.confirmTrash.url(e.id);
                 }
 
-                else if (e.feature_type === 'litter') {
+                else if ( e.feature_type === 'litter' ) {
                     callurl = api.confirmLitter.url(e.id);
                 }
 
@@ -240,11 +242,11 @@ var actions = (function () {
                     }
                 });
 
-                confirmcall.done(function(response) {
+                confirmcall.done( function (response) {
 
                     var message = response.data.message;
 
-                    ui.pushDataToBottomPanel(null, response.data.data);
+                    ui.setContent(null, response.data.data);
 
                     // update litters if we confirmed litter
                     if (message.indexOf('litter') === 0) {
@@ -365,7 +367,7 @@ var actions = (function () {
         },
         _attendCleaning = function attendCleaning (e) {
              // TODO make session-dependant and allow once per user per marker
-            if (!localStorage.getItem('token')){
+            if ( !localStorage.getItem('token') ){
                 alerts.showAlert(3, "info", 2000);
                 return;
             }
@@ -373,25 +375,21 @@ var actions = (function () {
             else {
 
                 var useToken = localStorage.getItem('token') || tools.token;
-                var id = e.id;
+
                 var attendcall = $.ajax({
                     method: 'PUT',
-                    url: api.attendCleaning.url(id),
-                    headers: {"Authorization": "Bearer" + useToken},
-                    success: function (response) {
-                        console.log('success:', response);
-                    },
-                    error: function (err) {
-                        console.log('error: ', err);
-                    }
+                    url: api.attendCleaning.url(e.id),
+                    headers: {"Authorization": "Bearer" + useToken}
                 });
                 attendcall.done(function(response) {
+                    console.log('success:', response);
                     // push the new data to the bottom bar
-                    ui.pushDataToBottomPanel(null, response.data.data);
+                    ui.setContent(null, response.data.data);
                     // features.loadCleaningMarkers();
                     features.loadFeature('cleaning');
                 });
-                attendcall.fail(function() {
+                attendcall.fail(function(err) {
+                    console.log('error: ', err);
                     alerts.showAlert(10, "info", 2000);
                 });
             }
@@ -407,11 +405,11 @@ var actions = (function () {
 
                 var callurl = null;
 
-                if (e.feature_type === 'garbage') {
+                if ( e.feature_type === 'garbage' ) {
                     callurl = api.cleanTrash.url(e.id);
                 }
 
-                else if (e.feature_type === 'litter') {
+                else if ( e.feature_type === 'litter' ) {
                     callurl = api.cleanLitter.url(e.id);
                 }
 
@@ -429,12 +427,12 @@ var actions = (function () {
                     }
               });
 
-                cleancall.done(function(response) {
+                cleancall.done(function (response) {
 
                     var message = response.data.message;
-                    ui.pushDataToBottomPanel(null, response.data.data);
+                    ui.setContent(null, response.data.data);
 
-                    if (message.indexOf('litter') === 0) {
+                    if ( message.indexOf('litter') === 0 ) {
                         // features.loadLitters();
                         features.loadFeature('litter');
                     }
@@ -443,7 +441,7 @@ var actions = (function () {
                         features.loadFeature('garbage');
                     }
                 });
-                cleancall.fail(function() {
+                cleancall.fail(function () {
                     alerts.showAlert(2, "info", 2000);
                 });
             }
@@ -454,7 +452,7 @@ var actions = (function () {
         },
         _bindEvents = function _bindEvents () {
 
-            // NOTE the event listeners for most map feature actions are set in the ui/ui.js file in ui.pushDataToBottomPanel()
+            // NOTE the event listeners for most map feature actions are set in the ui/ui.js file in ui.setContent()
             // because we need to bind the feature data for each action
 
             console.log('binding basic map actions');

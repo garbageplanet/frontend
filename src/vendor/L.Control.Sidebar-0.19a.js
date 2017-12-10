@@ -7,7 +7,6 @@
  */
 L.Control.Sidebar = L.Control.extend({
 
-    // includes: L.Mixin.Events,
     includes: L.Evented.prototype,
 
     options: {
@@ -70,7 +69,13 @@ L.Control.Sidebar = L.Control.extend({
 
         // Make sure we don't drag the map when we interact with the content
         var stop = L.DomEvent.stopPropagation;
-        var fakeStop = L.DomEvent._fakeStop || stop;
+
+        var fakeStop = L.DomEvent.fakeStop || stop;
+
+        // var fakeStop = L.version === '1.1.0' || '1.2.0' ? L.DomEvent.fakeStop || stop : L.DomEvent._fakeStop || stop;
+
+        L.DomEvent.disableClickPropagation
+
         L.DomEvent
             .on(content, 'contextmenu', stop)
             .on(content, 'click', fakeStop)
@@ -99,15 +104,15 @@ L.Control.Sidebar = L.Control.extend({
 
         // Unregister events to prevent memory leak
         var stop = L.DomEvent.stopPropagation;
-        var fakeStop = L.DomEvent._fakeStop || stop;
+        var fakeStop = L.DomEvent.fakeStop || stop;
         L.DomEvent
-            .off(content, 'contextmenu', stop)
-            .off(content, 'click', fakeStop)
-            .off(content, 'mousedown', stop)
-            .off(content, 'touchstart', stop)
-            .off(content, 'dblclick', fakeStop)
-            .off(content, 'mousewheel', stop)
-            .off(content, 'MozMousePixelScroll', stop);
+          .off(content, 'contextmenu', stop)
+          .off(content, 'click', fakeStop)
+          .off(content, 'mousedown', stop)
+          .off(content, 'touchstart', stop)
+          .off(content, 'dblclick', fakeStop)
+          .off(content, 'mousewheel', stop)
+          .off(content, 'MozMousePixelScroll', stop);
 
         L.DomEvent
             .off(container, 'transitionend',

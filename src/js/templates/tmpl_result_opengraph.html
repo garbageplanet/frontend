@@ -1,5 +1,7 @@
 <script type="text/x-tmpl" id="tmpl-result-opengraph">
 
+<div class="row">
+
     <!-- open or hybrid Graph -->
     {% if (o.openGraph.site_name) { %}
         <input class="form-control" readonly name="site_name" value="{%=o.openGraph.site_name%}"/>
@@ -26,5 +28,7 @@
         <img src="{%=o.hybridGraph.image%}" width="200px">
         <input class="form-control" name="image" type="hidden" readonly value="{%=o.hybridGraph.image%}"/>
     {% } %}
+
+</div>
 
 </script>

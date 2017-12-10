@@ -60,10 +60,10 @@
 
 /* Marker color for cleaning events */
 .map-marker.marker-cleaning:before{
- content: '\61';
+ content: '\62';
 }
 .map-marker.marker-cleaning-past:before{
-  content: '\62';
+  content: '\61';
 }
 
 /* Marker colors */
@@ -160,7 +160,7 @@
 }
 
 .leaflet-marker-cluster-icon-cleaning:before {
-    content: '\61';
+    content: '\62';
     font-family: 'garbageplanet';
 }
 

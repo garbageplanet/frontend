@@ -80,6 +80,12 @@ var forms = ( function () {
                 size: 6
             });
 
+            $('selectpicker').on('click', function (e) {
+
+                console.log('selectpicker click', e);
+
+            });
+
             // Separate tags by hitting space bar or right key
            $('.feature-tags, .bootstrap-tagsinput').tagsinput({
                 maxTags: 3,
@@ -100,9 +106,42 @@ var forms = ( function () {
                 }
             });
 
+            // Retrieve the leaflet id so we can modified the marker being created
             if ( type === 'garbage' || type === 'cleaning' ) {
 
                 var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
+            }
+
+            if ( type === 'opengraph' ) {
+              // Bind the action to launch the scraper
+              $('.btn-opengraph-fetch').click( function () {
+
+                  // Retrieve the value of the url
+                  var url = $('#opengraph-url').val();
+
+                  $('.btn-opengraph-fetch').text('...');
+                  $('.btn-opengraph-fetch').attr('disabled', 'disabled');
+
+                  // Start the scraper promise
+                  $.when( tools.openGraphScraper(url) ).then( function (data) {
+
+                      console.log('data from openGraph Promise resolved:', data);
+
+                      // Load the data into the template
+                      var ogcontent = document.getElementById('opengraph-content').innerHTML = tmpl('tmpl-result-opengraph', data);
+                      // Remove input styles
+                      $('#opengraph-content input, #opengraph-content textarea').css('border','none').css('background','transparent').css('box-shadow', 'none');
+
+                      // Replace button text and disable nutil request has finished
+                      $('.btn-opengraph-fetch').text('Fetch');
+                      $('.btn-opengraph-fetch').removeAttr('disabled');
+                      
+                  }).catch( function () {
+                      // If the promise returns any error reset the form field
+                      $('.btn-opengraph-fetch').text('Fetch');
+                      $('.btn-opengraph-fetch').removeAttr('disabled');
+                  });
+              });
             }
 
             if ( type === 'garbage' ) {
@@ -130,6 +169,7 @@ var forms = ( function () {
 
                 var datetimecontainer = document.getElementById('#cleaning-main-tab');
 
+                // Setup the date widget
                 var config = {
                     enableTime: true,
                     appendTo: datetimecontainer,
@@ -161,24 +201,6 @@ var forms = ( function () {
 
             console.log('id from forms.makeForm(): ', id);
             console.log('type from forms.makeForm(): ', type);
-
-            // We exit if it's the menu form, no need for any activation
-            // if ( type === 'menu' ) {
-            //     return;
-            // }
-
-            // add a marker with data from a webpage scraped using the Opengraph scraper
-            // this form opens inside a modal
-            if ( type === 'opengraph' ) {
-
-                ui.makeModal(type, null);
-
-                console.log('opengraph form');
-                marker = maps.unsavedMarkersLayerGroup.getLayer(id);
-                latlng = marker.getLatLng();
-
-                $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
-            }
 
             // Build the garbage multipicker and init uploader
             if ( type === 'garbage' || type === 'litter' ) {
@@ -220,7 +242,7 @@ var forms = ( function () {
                   name: 'image',
                   responseType: 'json',
                   allowedExtensions: ['jpg', 'jpeg', 'png'],
-                  maxSize: 1024,
+                  // maxSize: 1024,
                   hoverClass: 'upload-state-hover',
                   focusClass: 'upload-state-focus',
                   disabledClass: 'upload-state-disabled',

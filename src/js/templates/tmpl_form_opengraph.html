@@ -1,0 +1,52 @@
+<script type="text/x-tmpl" id="tmpl-form-opengraph">
+
+{% include('tmpl-sidebar-header', {title: "Retrieve from an url", url: "#/form/menu"}); %}
+
+<form class="form-feature form-opengraph" accept-charset="UTF-8" data-toggle="validator">
+
+  <div class="tab-view">
+
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+      <li class="active"><a data-target="#opengraph-main" data-toggle="tab" class="tab-default"><span class="fa fa-fw fa-link"></span></a></li>
+      <li               ><a data-target="#opengraph-info" data-toggle="tab">                    <span class="fa fa-fw fa-question"></span></a></li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active form-group form-group-lg" id="opengraph-main" role="tabpanel">
+
+        <br>
+
+        <input type="hidden" name="latlng" class="marker-latlng opengraph-latlng">
+
+        <div class="form-group form-group-lg">
+          <div class="input-group input-group-lg">
+            <input id="opengraph-url"
+                   type="url"
+                   name="url"
+                   class="form-control"
+                   placeholder="Url to look up"
+                   required>
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-opengraph-fetch" type="button">Fetch</button>
+            </span>
+          </div>
+          <div class="help-block with-errors"></div>
+        </div>
+
+        <div id="opengraph-content"></div>
+
+      </div><!-- main link pane -->
+
+      <div class="tab-pane form-group form-group-lg" id="opengraph-info" role="tabpanel">
+      <br>
+        <p class="lead"> Scrap data from other webpages to add on the map. This form uses the Opengraph scraper <a href="https://www.opengraph.io/", target="_blank">API</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  {% include('tmpl-sidebar-save', {saveclass: "btn-save-opengraph"}); %}
+
+</form>
+
+</script>

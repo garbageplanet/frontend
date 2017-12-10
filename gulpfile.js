@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     gulpif = require('gulp-if'),
     inject = require('gulp-inject'),
     injectStr = require('gulp-inject-string'),
-    stripDebug = require('gulp-strip-debug'),
+    // stripDebug = require('gulp-strip-debug'),
     concat = require('gulp-concat'),
     purify = require('gulp-purifycss'),
     minifyCSS = require('gulp-cssnano'),
@@ -86,7 +86,7 @@ gulp.task('scripts:leaflet', ['templates'], function () {
                     './src/vendor/L.Control.Login.js',
                     './src/vendor/L.Control.Menu.js'
                   ])
-    .pipe(gulpif(production, stripDebug()))
+    .pipe(gulpif(production, replace('console.log', '//console.log')))
     .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('leaflet.min.js'))
     .pipe(gulp.dest('./temp/'));
@@ -108,7 +108,8 @@ gulp.task('scripts:jquery', ['templates'], function () {
                     './src/vendor/bootstrap-datatables-1.10.11.js',
                     './src/vendor/flatpickr.js'
   ])
-    .pipe(gulpif(production, stripDebug()))
+    // .pipe(gulpif(production, stripDebug()))
+    .pipe(gulpif(production, replace('console.log', '//console.log')))
     .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('jquery.min.js'))
     .pipe(gulp.dest('./temp/'));
@@ -117,14 +118,16 @@ gulp.task('scripts:jquery', ['templates'], function () {
 gulp.task('scripts:app', ['templates'], function () {
 
   return gulp.src([
-                    './src/js/config/config.js',
+                    './src/js/config/api.js',
+                    './src/js/ui/loader.js',
+                    // './src/js/config/events.js',
                     './src/js/config/strings.js',
                     './src/js/templates/tmpl.js',
                     './src/js/ui/tools.js',
                     './src/js/ui/alerts.js',
                     './src/js/map/map.js',
                     './src/js/ui/ui.js',
-                    './src/js/session/session.js',
+                    './src/js/session/auth.js',
                     './src/js/ui/router.js',
                     './src/js/map/features.js',
                     './src/js/map/actions.js',
@@ -135,7 +138,8 @@ gulp.task('scripts:app', ['templates'], function () {
                     './src/js/social/social.js',
                     './src/js/init.js'
                   ])
-    .pipe(gulpif(production, stripDebug()))
+    //.pipe(gulpif(production, stripDebug()))
+    .pipe(gulpif(production, replace('console.log', '//console.log')))
     .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
     .pipe(concat('app.min.js').on('error', gutil.log))
     .pipe(gulp.dest('./temp/'));
@@ -198,9 +202,9 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
 // Inject minifed files path in head and body
 gulp.task('injectFiles', ['scripts:all', 'styles'], function () {
   return gulp.src('./temp/index.html')
-  // inject styles
+    // inject styles
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
-  // Inject scripts
+    // Inject scripts
     .pipe(inject(gulp.src('./dist/app.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
     // .pipe(injectstr.before('</body', '<script src="https://garbageplanet.disqus.com/embed.js"></script>\n'))
     .pipe(gulp.dest('temp1/'));

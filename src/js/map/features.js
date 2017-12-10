@@ -2,63 +2,44 @@
 /* global L, $, tools, alerts, api, ui, maps */
 
 /**
-* Loading map features from the backend
-*/
+  * Loading map features from the backend
+  */
 
 var features =  ( function () {
 
-    // 'use strict';
-
-    // TODO way for map('ready' else we load stuff before the map shows up)
-    // FIXME server needs to return 304 if no more feature to load or no new
+    'use strict';
 
     var useToken = localStorage.getItem('token') || tools.token,
 
         loadFeature = function (type) {
 
             var alltypes = ['garbage','cleaning','litter','area','opengraph'];
-            type = type.trim();
+            var type     = type.trim();
 
             switch (type) {
 
-                case 'garbage' : _loadGarbages();
-                break;
-
-                case 'cleaning' : _loadCleanings();
-                break;
-
-                case 'litter' : _loadLitters();
-                break;
-
-                case 'area' : _loadAreas();
-                break;
-
-                case 'all' :
+                case 'garbage'  : _loadGarbages(); break;
+                case 'cleaning' : _loadCleanings(); break;
+                case 'litter'   : _loadLitters(); break;
+                case 'area'     : _loadAreas(); break;
+                case 'opengraph': _loadOpengraph(); break;
+                case 'all'      :
                     alltypes.forEach(function(item) {
                         console.log('Loading all features, item value from features.loadFeature(): ', item);
                         loadFeature(item);
                     });
                     break;
-
-                case 'opengraph' : _loadOpengraph();
-                break;
             }
         },
         _loadGarbages = function _loadGarbage () {
 
             var fetchGarbage = $.ajax({
-                type: api.readTrashWithinBounds.method,
-                url: api.readTrashWithinBounds.url(tools.getCurrentBounds()),
-                crossDomain: true,
-                headers: {
-                          "Authorization": 'Bearer ' + useToken
-                         },
-                success: function (data) {
-                    console.log('Success getting garbage marker data', data);
-                },
-                error: function (data) {
-                    console.log('Error getting garbage marker data', data);
-                }
+                type       : api.readTrashWithinBounds.method,
+                url        : api.readTrashWithinBounds.url(tools.getCurrentBounds()),
+                ifModified : true,
+                headers    : {"Authorization": 'Bearer ' + useToken},
+                success    : function (data) {console.log('Success getting garbage marker data', data);},
+                error      : function (data) {console.log('Error getting garbage marker data', data);}
             });
 
             fetchGarbage.done(function (data) {
@@ -79,32 +60,31 @@ var features =  ( function () {
                         var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
                         var marker = L.marker(L.latLng(latlng[0],latlng[1]),
                             {
-                              amount:       o.amount,
-                              cleaned:      o.cleaned,
-                              cleaned_by:   o.cleaned_by,
-                              cleaned_date: o.cleaned_date,
-                              confirms:     o.confirms,
-                              created_at:   o.created_at,
-                              created_by:   o.marked_by,
-                              embed:        o.embed,
-                              id:           o.id,
-                              image_url:    o.image_url,
-                              modified_at:  o.updated_at,
-                              latlng:       o.latlng,
-                              note:         o.note,
-                              size:         o.size,
-                              tags:         o.tag,
-                              types:        o.types.join(', '),
+                                amount:       o.amount
+                              , cleaned:      o.cleaned
+                              , cleaned_by:   o.cleaned_by
+                              , cleaned_date: o.cleaned_date
+                              , confirms:     o.confirms
+                              , created_at:   o.created_at
+                              , created_by:   o.marked_by
+                              , embed:        o.embed
+                              , id:           o.id
+                              , image_url:    o.image_url
+                              , modified_at:  o.updated_at
+                              , latlng:       o.latlng
+                              , note:         o.note
+                              , size:         o.size
+                              , tags:         o.tag
+                              , types:        o.types.join(', ')
 
-                              icon: tools.setMarkerIcon(o.cleaned, null),
-                              todo: (o.cleaned === true) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo), // FIXME this doesnt do what it should be doing
+                              , icon: tools.setMarkerIcon(o.cleaned, null)
+                              , todo: (o.cleaned === 1) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo)
 
-                              feature_type: 'garbage'
+                              , feature_type: 'garbage'
                             });
 
                         // marker.addTo(maps.garbageLayerGroup);
                         maps.garbageLayerGroup.addLayer(marker);
-
 
                         // Set the class for the marker color after the icon is loaded on the map
                         $(marker._icon).addClass(tools.setMarkerClassColor(o.amount));
@@ -115,15 +95,12 @@ var features =  ( function () {
         _loadCleanings = function _loadCleaning () {
 
             var fetchCleaning = $.ajax({
-                type: api.readCleaningWithinBounds.method,
-                url: api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
-                headers: {"Authorization": 'Bearer ' + useToken},
-                success: function (data) {
-                    console.log('Success getting cleaning event (marker) data', data);
-                },
-                error: function (data) {
-                  console.log('Error getting cleaning event (marker) data', data);
-                }
+                type       : api.readCleaningWithinBounds.method,
+                url        : api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
+                ifModified : true,
+                headers    : {"Authorization": 'Bearer ' + useToken},
+                success    : function (data) {console.log('Success getting cleaning event (marker) data', data);},
+                error      : function (data) {console.log('Error getting cleaning event (marker) data', data);}
             });
 
             fetchCleaning.done(function (data) {
@@ -137,17 +114,18 @@ var features =  ( function () {
                         var latlng = o.latlng.toString().replace(/,/g , "").split(' ');
                         var marker = L.marker(L.latLng(latlng[0], latlng[1]),
                             {
-                                attends:     o.attends,
-                                created_at:  o.created_at,
-                                created_by:  o.created_by,
-                                datetime:    o.datetime,
-                                id:          o.id,
-                                latlng:      o.latlng,
-                                modified_at: o.updated_at,
-                                recurrence:  o.recurrence,
-                                ext_link:    o.note,
-                                icon:        tools.setMarkerIcon(null, o.datetime),
-                                feature_type: 'cleaning',
+                                  attends:     o.attends
+                                , created_at:  o.created_at
+                                , created_by:  o.created_by
+                                , datetime:    o.datetime
+                                , id:          o.id
+                                , latlng:      o.latlng
+                                , modified_at: o.updated_at
+                                , recurrence:  o.recurrence
+                                , ext_link:    o.note
+                                , icon:        tools.setMarkerIcon(null, o.datetime)
+
+                                , feature_type: 'cleaning'
                             });
 
                         marker.addTo(maps.cleaningLayerGroup);
@@ -160,15 +138,12 @@ var features =  ( function () {
         _loadAreas = function _loadAreas () {
 
             var fetchArea = $.ajax({
-                type: api.readAreaWithinBounds.method,
-                url: api.readAreaWithinBounds.url(tools.getCurrentBounds()),
-                headers: {"Authorization": 'Bearer ' + useToken},
-                success: function () {
-                    console.log('Success getting area data');
-                },
-                error: function () {
-                  console.log('Error getting area data');
-                }
+                type       : api.readAreaWithinBounds.method,
+                url        : api.readAreaWithinBounds.url(tools.getCurrentBounds()),
+                ifModified : true,
+                headers    : {"Authorization": 'Bearer ' + useToken},
+                success    : function () {console.log('Success getting area data');},
+                error      : function () {console.log('Error getting area data');}
             });
 
             fetchArea.done(function (data) {
@@ -182,23 +157,23 @@ var features =  ( function () {
                     var latlngs = JSON.parse("[" + o.latlngs + "]");
                     var polygonLayer = new L.Polygon(latlngs,
                         {
-                          contact:      o.contact,
-                          created_by:   o.created_by,
-                          created_at:   o.created_at,
-                          curr_players: o.curr_players,
-                          id:           o.id,
-                          max_players:  o.max_players,
-                          note:         o.note,
-                          tags:         o.tag,
-                          title:        o.title,
-                          modified_at:  o.updated_at,
+                            contact:      o.contact
+                          , created_by:   o.created_by
+                          , created_at:   o.created_at
+                          , curr_players: o.curr_players
+                          , id:           o.id
+                          , max_players:  o.max_players
+                          , note:         o.note
+                          , tags:         o.tag
+                          , title:        o.title
+                          , modified_at:  o.updated_at
 
-                          feature_type: 'area',
-                          shape:        true,
-                          color:        '#33cccc',
-                          weight:       5,
-                          opacity:      0.5,
-                          smoothFactor: 3
+                          , feature_type: 'area'
+                          , shape:        true
+                          , color:        '#33cccc'
+                          , weight:       5
+                          , opacity:      0.5
+                          , smoothFactor: 3
                       });
 
                       maps.areaLayerGroup.addLayer(polygonLayer);
@@ -216,15 +191,12 @@ var features =  ( function () {
         },
         _loadLitters = function _loadLitters () {
             var fetchLitter = $.ajax({
-                type: api.readLitterWithinBounds.method,
-                url: api.readLitterWithinBounds.url(tools.getCurrentBounds()),
-                headers: {"Authorization": 'Bearer ' + useToken},
-                success: function (data) {
-                  console.log('Success getting litter (polyline) data', data);
-                },
-                error: function (data) {
-                  console.log('Error getting litter (polyline) data', data);
-                }
+                type       : api.readLitterWithinBounds.method,
+                url        : api.readLitterWithinBounds.url(tools.getCurrentBounds()),
+                ifModified : true,
+                headers    : {"Authorization": 'Bearer ' + useToken},
+                success    : function (data) {console.log('Success getting litter (polyline) data', data);},
+                error      : function (data) {console.log('Error getting litter (polyline) data', data);}
             });
 
             fetchLitter.done(function(data) {
@@ -238,26 +210,26 @@ var features =  ( function () {
                     var latlngs = JSON.parse("[" + o.latlngs + "]");
                     var polylineLayer = L.polyline(latlngs,
                     {
-                        amount: o.amount,
-                        cleaned: o.cleaned,
-                        cleaned_by: o.cleaned_by,
-                        confirms: o.confirms,
-                        color: tools.setPolylineColor(o.amount),
-                        created_at: o.created_at,
-                        created_by: o.marked_by,
-                        id: o.id,
-                        image_url: o.image_url,
-                        modified_at: o.updated_at,
-                        physical_length: o.physical_length,
-                        tags: o.tag,
-                        types: o.types.join(', '),
+                          amount: o.amount
+                        , cleaned: o.cleaned
+                        , cleaned_by: o.cleaned_by
+                        , confirms: o.confirms
+                        , color: tools.setPolylineColor(o.amount)
+                        , created_at: o.created_at
+                        , created_by: o.marked_by
+                        , id: o.id
+                        , image_url: o.image_url
+                        , modified_at: o.updated_at
+                        , physical_length: o.physical_length
+                        , tags: o.tag
+                        , types: o.types.join(', ')
 
-                        shape: true,
-                        feature_type: 'litter',
-                        clickable: true,
-                        weight: 15,
-                        opacity: 0.5,
-                        smoothFactor: 3,
+                        , shape: true
+                        , feature_type: 'litter'
+                        , clickable: true
+                        , weight: 15
+                        , opacity: 0.5
+                        , smoothFactor: 3
                     });
 
                     maps.litterLayerGroup.addLayer(polylineLayer);
@@ -275,6 +247,7 @@ var features =  ( function () {
             // TODO
             return;
         },
+        _loadOne = function _loadOne () {},
         _bindEvents = function _bindEvents () {
 
             console.log('Binding map self events.');
@@ -287,10 +260,11 @@ var features =  ( function () {
 
                     var eventtype = e.type.trim();
                     var newZoom = e.target.getZoom();
+                    // Not a good mechanism because zoom changes in increments of a single level
                     var zoomDiff = Math.abs(newZoom - tools.states.currentZoom);
                     var lengthDiff = e.distance;
 
-                    // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical draggin
+                    // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical dragging
                     var viewportRatio = window.innerWidth / 3;
 
                     switch ( eventtype ) {
@@ -308,7 +282,7 @@ var features =  ( function () {
                             // loaded area, if it is we can then reload more markers.
                             // the only problem remains with the clusters, because when they are exploded
                             // the single markers lose their styles
-                            if ( newZoom >= 2 && zoomDiff >= 1 ) {
+                            if ( newZoom >= 2 && zoomDiff >= 3 ) {
 
                                 features.loadFeature('cleaning');
                                 features.loadFeature('garbage');
@@ -334,7 +308,6 @@ var features =  ( function () {
                                     features.loadFeature('cleaning');
                                     features.loadFeature('garbage');
                                     features.loadFeature('opengraph');
-
 
                                     if ( newZoom >= 8 && newZoom <= 16 ) {
                                         // We don't load large features if we're too close or too far
@@ -363,7 +336,6 @@ var features =  ( function () {
             }*/
         },
         init = function () {
-            // Load this block as soon as it's read
             _bindEvents();
         };
 

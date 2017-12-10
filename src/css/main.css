@@ -1,14 +1,18 @@
 html {
-    height: 100%
+    height: 100vh;
 }
 
 body {
   overflow: hidden;
-  height: 100%;
+  height: 100vh;
 }
 
 .noscript {
     margin: 75px 25px;
+}
+
+#loader {
+  z-index: 10000;
 }
 
 #map {
@@ -23,39 +27,8 @@ body {
 @media (max-width: 768px) {
 
   #map {
-    top:0px;
+      top:0px;
   }
-
-/* Swipe area sizing and placement */
-  .swipe-area {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    background: rgba(255,255,255,0.0);
-    z-index: 1;
-  }
-
-  .swipe-area-right {
-    width: 20px;
-    right: 0;
-    height: 100%;
-    z-index: 1;
-  }
-
-  .swipe-area-left {
-    width: 30px;
-    left: 0;
-    height: 100%;
-    z-index: 5000;
-  }
-
-  .swipe-area-top {
-    width: 100%;
-    top: 0;
-    height: 30px;
-    z-index: 5000;
-  }
-
 }
 
 .alert-container .alert {
@@ -83,6 +56,10 @@ body {
     font-size: 25px;
     font-weight: 200;
     color: #000
+}
+
+.navbar-brand-icon {
+  vertical-align: top;
 }
 
 .modal-link {
@@ -387,7 +364,6 @@ group-vertical > .btn-group > .btn {
 }
 
 /* Own modifications to leaflet.css*/
-
 @media (min-width: 768px) {
     .leaflet-top {
         margin-top: 5px !important;
