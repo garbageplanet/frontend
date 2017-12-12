@@ -147,16 +147,14 @@ var tools = {
             return ( new Date(d) < new Date() ) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
         }
     },
-    /*
-     * Getting bounds in a proper format for postGIS calls
-     * toBBoxStringInverse() is a custom map method
-     */
-     /**
-       * @namespace tools
-       * @method getCurrentBounds()
-       * @param none
-       * @returns {array} [S, W, N, E] map corners in viewport
-       */
+    /**
+      * Getting bounds in a proper format for postGIS calls
+      * toBBoxStringInverse() is a custom map method
+      * @namespace tools
+      * @method getCurrentBounds()
+      * @param none
+      * @returns {array} [S, W, N, E] map corners in viewport
+      */
     getCurrentBounds: function () {
         var bounds = maps.map.getBounds().toBBoxStringInverse();
         return bounds;

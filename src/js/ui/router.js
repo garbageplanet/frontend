@@ -2,7 +2,10 @@
   * Init Navigo with the website root and default #/
   * FIXME when inbound linking to a sidebar form it seems the listeners aren't set properly
   */
+
+// var navigohash = new RegExp(/^([-+]?\d{1,2}[.]\d+)\s*\/\s*([-+]?\d{1,3}[.]\d+)$/)
 var router = new Navigo('@@root', true);
+// var router = new Navigo(navigohash, false);
 
 // Hack to reset the router
 router.on({
@@ -35,8 +38,8 @@ router.on({
 
       // First set and load the map center on the marker
       // FIXME
-      maps.map.setView([parseFloat(params.lat), parseFloat(params.lng)], 17);
-      maps.map.panToOffset([parseFloat(params.lat), parseFloat(params.lng)], tools.getVerticalOffset());
+      maps.map.setView([parseFloat(params.lat), parseFloat(params.lng)], 16);
+      // maps.map.panToOffset([parseFloat(params.lat), parseFloat(params.lng)], tools.getVerticalOffset());
 
       // TODO wait for API call else this doesn't work on first load
       // FIXME make a loadOne() call for that single feature and load the rest in background
@@ -58,7 +61,20 @@ router.on({
         // Then set the content of the feature info and show the data
         if ( maps.map.hasLayer(maplayer) ) {
 
-          ui.setContent(params.type, params.id);
+          var feature = tools.getLeafletObj(params.type, params.id);
+
+          console.log('THAT: ', feature);
+
+          // var clicktarget = {
+          //   latlng: feature.latlng,
+          //   layerPoint: maps.map.latLngToLayerPoint(feature.latlng),
+          //   containerPoint: maps.map.latLngToContainerPoint(feature.latlng)
+          // }
+
+          maps.map.fire('click', feature);
+          // feature.fire('click');
+
+          // ui.setContent(params.type, params.id);
 
         } else {
 

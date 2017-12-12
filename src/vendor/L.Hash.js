@@ -1,247 +1,177 @@
 (function(window) {
-    var HAS_HASHCHANGE = (function() {
-        var doc_mode = window.documentMode;
-        return ('onhashchange' in window) &&
-            (doc_mode === undefined || doc_mode > 7);
-    })();
+	var HAS_HASHCHANGE = (function() {
+		var doc_mode = window.documentMode;
+		return ('onhashchange' in window) &&
+			(doc_mode === undefined || doc_mode > 7);
+	})();
 
-    L.Hash = function(map) {
-        this.onHashChange = L.Util.bind(this.onHashChange, this);
+	L.Hash = function(map, options) {
+		this.onHashChange = L.Util.bind(this.onHashChange, this);
 
-        if (map) {
-            this.init(map);
-        }
-    };
+		this.options = options || {};
 
-    // Change this to parse the different options as an object.
-    L.Hash.parseHash = function(hash) {
+		if (map) {
+			this.init(map);
+		}
+	};
 
-        var params = getHashParams();
+	L.Hash.parseHash = function(hash) {
+		if (this.options && this.options.baseURI) {
+			hash = hash.replace(this.options.baseURI, "");
+		}
+		if (this.options && this.options.query) {
+			hash = hash.split('?')[0];
+		}
+		if (hash.indexOf('#') === 0) {
+			hash = hash.substr(1);
+		}
+		var args = hash.split("/");
 
-        if ( typeof params.zoom != 'undefined' || typeof params.lat != 'undefined' || typeof params.lon != 'undefined' ) {
+		if (args.length == 3) {
+			var zoom = parseInt(args[0], 10),
+			lat = parseFloat(args[1]),
+			lon = parseFloat(args[2]);
+			
+			if (isNaN(zoom) || isNaN(lat) || isNaN(lon)) {
+				return false;
+			} else {
+				return {
+					center: new L.LatLng(lat, lon),
+					zoom: zoom
+				};
+			}
+		} else {
+			return false;
+		}
+	};
 
-            var zoom = parseInt(params.zoom.values, 10),
-                lat = parseFloat(params.lat.values),
-                lon = parseFloat(params.lon.values);
+	L.Hash.formatHash = function(map) {
+		var center = map.getCenter(),
+		    zoom = map.getZoom(),
+		    precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
 
-            if ( isNaN(zoom) || isNaN(lat) || isNaN(lon) || !zoom || !lat || !lon ) {
-                return false;
+		var query = (this.options && this.options.query && location.hash.indexOf('?') > -1 ? '?' + location.hash.split('?')[1] : '');
 
-            } else {
-                return {
-                    center: {'lat': lat, 'lon': lon},
-                    zoom: zoom,
-                    params: params
-                };
-            }
+		return (this.options && this.options.baseURI ? this.options.baseURI : "") +
+		  "#" + [zoom,
+			center.lat.toFixed(precision),
+			center.lng.toFixed(precision)
+		].join("/") + query;
+	},
 
-        } else {
-            return false;
-        }
-    };
+	L.Hash.prototype = {
+		map: null,
+		lastHash: null,
 
-    L.Hash.formatHash = function(map) {
-        var center = map.getCenter(),
-            zoom = map.getZoom(),
-            precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2)),
-            returnObj = {
-                'zoom': { values: zoom, comparator: '='},
-                'lat': { values: center.lat.toFixed(precision), comparator: '=' },
-                'lon': { values: center.lng.toFixed(precision), comparator: '=' }
-            };
-            return returnObj;
-    };
+		parseHash: L.Hash.parseHash,
+		formatHash: L.Hash.formatHash,
 
-    L.Hash.prototype = {
-        map: null,
-        lastHash: null,
+		init: function(map) {
+			this.map = map;
 
-        parseHash: L.Hash.parseHash,
-        formatHash: L.Hash.formatHash,
+			// reset the hash
+			this.lastHash = null;
+			this.onHashChange();
 
-        init: function(map) {
-            this.map = map;
+			this.startListening();
+		},
 
-            // reset the hash
-            this.lastHash = null;
-            this.onHashChange();
+		removeFrom: function(map) {
+			if (this.changeTimeout) {
+				clearTimeout(this.changeTimeout);
+			}
 
-            if (!this.isListening) {
-                this.startListening();
-            }
-        },
+			this.stopListening();
 
-        removeFrom: function(map) {
-            if (this.changeTimeout) {
-                clearTimeout(this.changeTimeout);
-            }
+			this.map = null;
+		},
 
-            if (this.isListening) {
-                this.stopListening();
-            }
+		onMapMove: function() {
+			// bail if we're moving the map (updating from a hash),
+			// or if the map is not yet loaded
 
-            this.map = null;
-        },
+			if (this.movingMap || !this.map._loaded) {
+				return false;
+			}
 
-        onMapMove: function() {
-            // bail if we're moving the map (updating from a hash),
-            // or if the map is not yet loaded
-            var hash;
+			var hash = this.formatHash(this.map);
+			if (this.lastHash != hash) {
+				location.replace(hash);
+				this.lastHash = hash;
+			}
+		},
 
-            if (this.movingMap || !this.map._loaded) {
-                return false;
-            }
+		movingMap: false,
+		update: function() {
+			var hash = location.hash;
+			if (hash === this.lastHash) {
+				return;
+			}
+			var parsed = this.parseHash(hash);
+			if (parsed) {
+				this.movingMap = true;
 
-            // If getHashParams returns no zoom, etc it is created for initialization
-            if ( !this.parseHash(hash) ){
+				this.map.setView(parsed.center, parsed.zoom, { animate: false});
 
-                hash = getHashParams();
+				this.movingMap = false;
+			} else {
+				this.onMapMove(this.map);
+			}
+		},
 
-                // hash = Object.assign(hash, this.formatHash(this.map));
+		// defer hash change updates every 100ms
+		changeDefer: 100,
+		changeTimeout: null,
+		onHashChange: function() {
+			// throttle calls to update() so that they only happen every
+			// `changeDefer` ms
+			if (!this.changeTimeout) {
+				var that = this;
+				this.changeTimeout = setTimeout(function() {
+					that.update();
+					that.changeTimeout = null;
+				}, this.changeDefer);
+			}
+		},
 
-                L.Util.extend(this.formatHash(this.map), hash);
+		isListening: false,
+		hashChangeInterval: null,
+		startListening: function() {
 
-                updateUrlHash(hash);
+			if (this.isListening) { return; }
 
-            } else if ( !hash ) {
+			this.map.on("moveend", this.onMapMove, this);
 
-                hash = this.getHashParams();
+			if (HAS_HASHCHANGE) {
+				L.DomEvent.addListener(window, "hashchange", this.onHashChange);
+			} else {
+				clearInterval(this.hashChangeInterval);
+				this.hashChangeInterval = setInterval(this.onHashChange, 50);
+			}
+			this.isListening = true;
+		},
 
-                var newParams = this.formatHash(this.map);
+		stopListening: function() {
 
-                console.log("NEW PARAMS",newParams);
+			if (!this.isListening) { return; }
 
-                console.log('HASH***********', hash)
+			this.map.off("moveend", this.onMapMove, this);
 
-                Object.keys(newParams).forEach( function (val, key) {
-
-                    hash[key].values = val.values;
-                    hash[key].comparator = '=';
-                });
-
-                updateUrlHash(hash);
-            }
-
-            this.lastHash = hash;
-
-        },
-
-        movingMap: false,
-        update: function() {
-
-            var hash = getHashParams();
-
-            if ( JSON.stringify(hash) === JSON.stringify(this.lastHash) ){
-                return false;
-            }
-            var parsed = this.parseHash(hash);
-            if (parsed) {
-                this.movingMap = true;
-
-                this.map.setView(parsed.center, parsed.zoom);
-
-                this.movingMap = false;
-            } else {
-                this.onMapMove(this.map);
-            }
-        },
-
-        // defer hash change updates every 200ms
-        changeDefer: 200,
-        changeTimeout: null,
-        onHashChange: function() {
-            // throttle calls to update() so that they only happen every
-            // `changeDefer` ms
-            if (!this.changeTimeout) {
-                var that = this;
-                this.changeTimeout = setTimeout(function() {
-                    that.update();
-                    that.changeTimeout = null;
-                }, this.changeDefer);
-            }
-        },
-
-        isListening: false,
-        hashChangeInterval: null,
-        startListening: function() {
-            this.map.on("moveend", this.onMapMove, this);
-
-            if (HAS_HASHCHANGE) {
-                L.DomEvent.addListener(window, "hashchange", this.onHashChange);
-            } else {
-                clearInterval(this.hashChangeInterval);
-                this.hashChangeInterval = setInterval(this.onHashChange, 500);
-            }
-            this.isListening = true;
-        },
-
-        stopListening: function() {
-            this.map.off("moveend", this.onMapMove, this);
-
-            if (HAS_HASHCHANGE) {
-                L.DomEvent.removeListener(window, "hashchange", this.onHashChange);
-            } else {
-                clearInterval(this.hashChangeInterval);
-            }
-            this.isListening = false;
-        }
-    };
-
-    L.hash = function(map) {
-        return new L.Hash(map);
-    };
-    L.Map.prototype.addHash = function() {
-        this._hash = L.hash(this);
-    };
-    L.Map.prototype.removeHash = function() {
-        this._hash.removeFrom();
-    };
+			if (HAS_HASHCHANGE) {
+				L.DomEvent.removeListener(window, "hashchange", this.onHashChange);
+			} else {
+				clearInterval(this.hashChangeInterval);
+			}
+			this.isListening = false;
+		}
+	};
+	L.hash = function(map, options) {
+		return new L.Hash(map, options);
+	};
+	L.Map.prototype.addHash = function() {
+		this._hash = L.hash(this);
+	};
+	L.Map.prototype.removeHash = function() {
+		this._hash.removeFrom();
+	};
 })(window);
-
-// Return the hash parameters from the current URL. [source](http://goo.gl/mebsOI)
-function getHashParams(){
-    var hashParams = {};
-    var e,
-        a = /\+/g,  // Regex for replacing addition symbol with a space
-        r = /([^!&;=<>]+)(!?[=><]?)([^&;]*)/g,
-        d = function (s) { return decodeURIComponent(s.replace(a, ' ')); },
-        q = window.location.hash.substring(1).replace(/^!\/?/, '');
-
-    while (e = r.exec(q)) {
-      hashParams[d(e[1])] = {
-        values: d(e[3]),
-        comparator: d(e[2])
-      };
-    }
-    return hashParams;
-}
-
-// The `generateUrlHash` method builds and returns a URL hash from a set of object parameters
-function updateUrlHash(params) {
-    var newHash,
-    hashParams = [];
-    // Loop through params, stringify them and push them into the temp array.
-
-    // Loop through params, stringify them and push them into the temp array.
-    Object.keys(params).forEach( function (key) {
-
-        hashParams.push( key + '=' + params[key].values );
-    });
-
-    newHash = '&' + hashParams.join('&');
-    window.location.hash = newHash;
-
-}
-
-// Create a parameter from scratch (automatically builds object)
-function addParam( paramName, values ){
-    var params = getHashParams();
-    params[paramName] = {};
-    params[paramName].values = values;
-    params[paramName].comparator = '=';
-    updateUrlHash(params);
-}
-
-/*
-    END HASH PARSING FUNCTIONS
-*/

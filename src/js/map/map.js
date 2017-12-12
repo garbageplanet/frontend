@@ -11,7 +11,7 @@
   */
 L.Control.CustomLocate = L.Control.Locate.extend({
    latlnginURL: function () {
-     return window.location.href.match(/^([-+]?\d{1,2}[.]\d+)\s*\\\s*([-+]?\d{1,3}[.]\d+)$/);
+     return window.location.href.match(/^([-+]?\d{1,2}[.]\d+)\s*\/\s*([-+]?\d{1,3}[.]\d+)$/);
    },
    sharedURL: function () {
      return window.location.href.match(/shared/);
@@ -56,6 +56,15 @@ var maps = ( function () {
                     reuseTiles: true,
                     updateWhenZooming: true,
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
+                }),
+        "Stamen Toner":
+            L.tileLayer('http://{s}.tile.stamen.com/toner-hybrid/{z}/{x}/{y}.png',
+                {
+                    maxZoom: 20,
+                    minZoom: 2,
+                    reuseTiles: true,
+                    updateWhenZooming: true,
+                    attribution: 'Map design &copy; <a href="http://maps.stamen.com/toner">Stamen</a>',
                 })
         },
         map = L.map('map', { zoomControl        : false,
@@ -65,7 +74,6 @@ var maps = ( function () {
                              wheelPxPerZoomLevel: 40,
                              wheelDebounceTime  : 200
                            }),
-        // hash = L.hash(map),
         garbageLayerGroup = L.markerClusterGroup({
             spiderfyOnMaxZoom: false,
             maxClusterRadius: 50,
@@ -119,6 +127,7 @@ var maps = ( function () {
                         , litterLayerGroup
                         , linkLayerGroup
                     ]),
+        // hash = L.hash(map, {baseURI: '', query: true}),
         _overlayGroups = {
               "Garbage markers"           : garbageLayerGroup
             , "Cleaning events"           : cleaningLayerGroup

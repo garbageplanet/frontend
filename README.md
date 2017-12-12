@@ -27,7 +27,7 @@ If you want to contribute to a specific todo below, the first thing you should d
 ### FIXME
 
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
-- [ ] fix navigation inside sidebar (back links)
+- [ ] fix backlinks in auth route
 
 ### TODO
 

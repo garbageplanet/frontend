@@ -15,6 +15,10 @@ var auth = ( function () {
 
     var _switchSession = function _switchSession (o) {
 
+        var session_status = $("#session-status a");
+        var user_tools = $("#user-tools");
+        var session_link = $(".session-link");
+
         // This function only takes car of the UI element, the storage and cookies are cleared in promises after ajax calls for each auth method
         var classicSessionType = localStorage.getItem('classic');
 
@@ -27,14 +31,14 @@ var auth = ( function () {
             }
 
             // TODO make this with templates
-            $('#session-status a').text('Login').attr("href","/auth/login");
-            $('#session-status a').attr("id","");
-            $('#session-status a').attr("data-navigo","");
-            $('#session-status a').addClass('dropdown-link');
+            $(session_status).text('Login').attr("href","/auth/login");
+            $(session_status).attr("id","");
+            $(session_status).attr("data-navigo","");
+            $(session_status).addClass('dropdown-link');
             $('#user-info-link').remove();
             $('#btn-mobile-account').remove();
-            $('#user-tools').dropdown();
-            $(".session-link").removeClass('hidden');
+            $(user_tools).dropdown();
+            $(session_link).removeClass('hidden');
 
             router.updatePageLinks();
         }
@@ -42,16 +46,18 @@ var auth = ( function () {
         if ( o === "login" ) {
 
             if ( window.isMobile ) {
-                // remove the anonymous login button
+                // Call login() method on leaflet glome control button so it is removed from the map
                 maps.glomelogincontrol.login();
             }
 
-            $("#session-status a").text("Logout").attr("href","#");
-            $("#session-status a").attr("id","btn-logout");
-            $("#session-status a").removeClass('dropdown-link');
+
+
+            $(session_status).text("Logout").attr("href","#");
+            $(session_status).attr("id","btn-logout");
+            $(session_status).removeClass('dropdown-link');
 
             // Reset the event listener for the modified button
-            $("#session-status").on('click', '#btn-logout', function() {
+            $(session_status).on('click', '#btn-logout', function() {
                 // change the UI
                 _switchSession("logout");
                 // server-side logout
@@ -59,17 +65,19 @@ var auth = ( function () {
             });
 
             // Set the links to account info
-            $("#user-tools").prepend('<li id="user-info-link"><a class="dropdown-link" href="/info/account" data-navigo>Account info</a></li>');
+            $(user_tools).prepend('<li id="user-info-link"><a class="dropdown-link" href="/info/account" data-navigo>Account info</a></li>');
             $(".mobile-menu").append('<a id="btn-mobile-account" ref="/info/account" class="btn btn-default btn-lg btn-block" data-navigo><span class="fa fa-fw fa-user"></span> Account info</a>');
 
             // Must reload the dropdows in bootstrap to enable new event listeners
-            $("#user-tools").dropdown();
+            $(user_tools).dropdown();
 
             // Hide all the login elements
-            $(".session-link").addClass('hidden');
+            $(session_link).addClass('hidden');
 
             // Push user data to the account view
             if (classicSessionType === "true") {
+
+                console.log('Account data from switchSession(): ', _getAccount(true))
 
                 ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(true)) );
                 ui.sidebar.show();
@@ -108,24 +116,33 @@ var auth = ( function () {
             router.updatePageLinks();
         }
     },
-        _setAccount = function _setAccountInfo (classic, data) {
+        _setAccount = function _setAccount (classic, data) {
 
-          if ( classic ) {
+          return new Promise ((resolve, reject) => {
 
-              localStorage.setItem('classic', 'true');
-              localStorage.setItem('username', data.user.name);
-              localStorage.setItem('userid', data.user.id);
-              localStorage.setItem('useremail', data.user.email);
+            console.log('Account data from setAccount() Promise', data)
 
-          } else {
+            if ( classic ) {
 
-              localStorage.setItem('classic', 'false');
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('key', data.user.name);
-              localStorage.setItem('id', data.user.id);
-              localStorage.setItem('authuser', data.user);
-              localStorage.setItem('username', 'anon (⌐■_■)');
-           }
+                localStorage.setItem('classic', 'true');
+                localStorage.setItem('username', data.user.name);
+                localStorage.setItem('id', data.user.id);
+                localStorage.setItem('email', data.user.email);
+
+            } else {
+
+                localStorage.setItem('classic', 'false');
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('key', data.user.name);
+                localStorage.setItem('id', data.user.id);
+                localStorage.setItem('authuser', data.user);
+                localStorage.setItem('username', 'anon (⌐■_■)');
+             }
+
+             resolve();
+
+          })
+
         },
         _getAccount = function _getAccount (classic) {
 
@@ -136,6 +153,8 @@ var auth = ( function () {
                 account.username = localStorage.getItem('username');
                 account.email    = localStorage.getItem('email');
                 account.id       = localStorage.getItem('id');
+
+                console.log('Account data from getAccount()', account)
 
                 return account;
 
@@ -175,9 +194,14 @@ var auth = ( function () {
                     headers: {'Authorization': 'Bearer ' + response.token},
                     success: function (data) {
 
-                        _setAccount(true, data);
-                        _switchSession('login');
-                        alerts.showAlert(13, 'success', 1500);
+                        console.log(data)
+
+                        // Log the user in the UI
+                        _setAccount(true, data).then(() => {
+
+                          _switchSession('login');
+                          alerts.showAlert(13, 'success', 1500);
+                        });
                     }
                 });
             });
@@ -270,9 +294,12 @@ var auth = ( function () {
                         headers: {'Authorization': 'Bearer ' + response.token},
                         success: function (data) {
 
-                            _setAccount(true, data);
+                          // Log the user in the UI
+                          _setAccount(true, data).then(() => {
+
                             _switchSession('login');
-                            alerts.showAlert(13, 'success', 2000);
+                            alerts.showAlert(13, 'success', 1500);
+                          });
                         }
                     });
                 });
@@ -321,9 +348,12 @@ var auth = ( function () {
 
                             if ( typeof authUser !== 'undefined' ) {
 
-                              _setAccount(false, data);
-                              _switchSession('login');
-                              alerts.showAlert(13, 'success', 2000);
+                              // Log the user in the UI
+                              _setAccount(false, data).then(() => {
+
+                                _switchSession('login');
+                                alerts.showAlert(13, 'success', 1500);
+                              });
                             }
                         }
                     });

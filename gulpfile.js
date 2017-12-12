@@ -75,7 +75,8 @@ gulp.task('scripts:leaflet', ['templates'], function () {
   return gulp.src([
                     './src/vendor/leaflet-1.2.0.js',
                     './src/vendor/L.Markercluster-1.0.0.js',
-                    // './src/vendor/L.Hash.js',
+                    // './src/vendor/L.Hash-2.0.0.js',
+                    './src/vendor/L.Hash.js',
                     './src/vendor/L.zoomCSS.js',
                     './src/vendor/L.Control.Locate.js',
                     './src/vendor/L.Compact.Attributions.js',
