@@ -423,6 +423,15 @@ var tools = {
         // TODO
         return;
     },
+    activateTabs: function () {
+      $(".nav-tabs").on("click", "a", function (e) {
+
+        e.preventDefault();
+        $(this).tab('show');
+
+      });
+
+    },
  /**
    * @namespace tools
    * @method randomString()

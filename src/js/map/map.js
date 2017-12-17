@@ -3,8 +3,7 @@
 
 /**
   * Extend L.Control.Locate to accomodate the url regex
-  *  @namespace L.Control.Locate - regex to check if the address bar of the browser contains coordinates, needed when we
-                                   gelocate at startup so we don't override geographic locations in inbound urls
+  * @namespace L.Control.Locate - regex to check if the address bar of the browser contains coordinates, needed when we gelocate at startup so we don't override geographic locations in inbound urls
   * @see http://stackoverflow.com/a/18690202/2842348
   * @author Iain Fraser
   * @license MIT stackoverflow

@@ -22,21 +22,19 @@ GA=<google analytics token (optional)>
 
 ### Contributing
 
-If you want to contribute to a specific todo below, the first thing you should do is open an issue. If you have another contribution PRs are also welcome.
+If you want to contribute to a specific todo/fixme below, the first thing you should do is open an issue. If you have another contribution PRs are also welcome.
 
 ### FIXME
 
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
-- [ ] fix backlinks in auth route
 
 ### TODO
 
-- [ ] reduce redundancy in the form templates
+- [ ] build a minimal entry point for loading the content via cdn and serve as JAM sta
+- [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
+- [ ] - [ ] reduce redundancy in the form templates
 - [ ] upload to imgur as user
 - [ ] make edit system
-- [ ] put the build on github and serve with jsdelivr JAM Stack-style
-- [ ] build a minimal entry point for loading the content via cdn
-- [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
 
 ### Licence
 

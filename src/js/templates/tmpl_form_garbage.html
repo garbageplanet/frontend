@@ -132,18 +132,20 @@
       <div class="form-group">
         <div class="input-group input-group-lg">
           <span class="input-group-btn">
-              <button class="btn btn-default btn-image-uploader" type="button">
+              <button id="btn-image-uploader" class="btn btn-default" type="button">
               <span class="fa fa-fw fa-file-image-o"></span></button>
-              <input class="image-uploader"
-                     type="file"
-                     style="display:none;">
+              <input id="image-uploader" type="file" style="display:none;">
           </span>
 
-          <input type="text" name="image" class="form-control garbage-image-hidden-value" placeholder="Upload an image">
+          <input type="text"
+                 name="image" 
+                 id="image-uploader-url"
+                 class="form-control garbage-image-hidden-value"
+                 placeholder="Upload an image">
         </div>
 
-        <div class="progress hidden">
-          <div class="progress-bar progress-bar-success" role="progressbar" style="width:%"></div>
+        <div id="progress" class="progress hidden">
+          <div class="progress-bar progress-bar-success" role="progressbar" style="width:100%"></div>
         </div>
 
       </div>
@@ -152,7 +154,7 @@
 
       <div class="tab-pane form-group form-group-lg" id="garbage-info" role="tabpanel">
       <br>
-        <p class="lead"> Anybody can anonymously mark trash on the map. If you wish not to register use the anonymous login option Markers can only be placed between zoom level 10 and 20 (<a onclick="maps.map.setZoom(15)">zoom to level 10 now</a>). When choosing the amount of garbage on the scale of 1 to 5, think of 1 as 'some garbage pieces here and there' and 5 as a dumpster.</p>
+        <p class="lead"> Anybody can mark trash anonymously on the map. If you wish not to register use the anonymous login option Markers can only be placed between zoom level 10 and 20 (<a onclick="maps.map.setZoom(15)">zoom to level 10 now</a>). When choosing the amount of garbage on the scale of 1 to 5, think of 1 as 'some garbage pieces here and there' and 5 as a dumpster.</p>
       </div>
     </div>
   </div>

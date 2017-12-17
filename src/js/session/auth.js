@@ -2,120 +2,129 @@
 // author: villeglad 6.11.2015
 // modified by adriennn
 // modified by feri
+
 /* jslint browser: true, white: true, sloppy: true, maxerr: 1000 */
 /* global $, tools, alerts, api, ui */
 
 /**
-* Logins, logouts, account deletion and glome pairing
-*/
+  * Logins, logouts, account deletion and glome pairing
+  */
 
 var auth = ( function () {
 
     'use strict';
 
-    var _switchSession = function _switchSession (o) {
+    var
 
-        var session_status = $("#session-status a");
-        var user_tools = $("#user-tools");
-        var session_link = $(".session-link");
+        _switchSession = function _switchSession (o) {
 
-        // This function only takes car of the UI element, the storage and cookies are cleared in promises after ajax calls for each auth method
-        var classicSessionType = localStorage.getItem('classic');
+            // TODO Mobile menu
 
-        if ( o === "logout" ) {
+            // UI changes when user logs in or out
+            var classic_session = localStorage.getItem('classic');
 
-            // Change display of custom login button on mobile
-            if ( window.isMobile ) {
+            var session_status = $("#session-status a");
+            var user_tools     = $("#user-tools");
+            var session_link   = $(".session-link");
+            var mobile_menu    = $(".mobile-menu");
+
+            var account_info_link_html     = '<li id="account-info-link"><a class="dropdown-link" href="/info/account" data-navigo>Account info</a></li>';
+            var account_info_button        = '<a id="account-info-mobile" ref="/info/account" class="btn btn-default btn-lg btn-block" data-navigo><span class="fa fa-fw fa-user"></span> Account info</a>';
+            var account_info_button_mobile = $('#account-info-mobile');
+            var account_info_link          = $('#account-info-link');
+
+            if ( o === "logout" ) {
+
                 // this is the leaflet plugin for the custom glome anonymous login button
-                maps.glomelogincontrol.logout();
-            }
-
-            // TODO make this with templates
-            $(session_status).text('Login').attr("href","/auth/login");
-            $(session_status).attr("id","");
-            $(session_status).attr("data-navigo","");
-            $(session_status).addClass('dropdown-link');
-            $('#user-info-link').remove();
-            $('#btn-mobile-account').remove();
-            $(user_tools).dropdown();
-            $(session_link).removeClass('hidden');
-
-            router.updatePageLinks();
-        }
-
-        if ( o === "login" ) {
-
-            if ( window.isMobile ) {
-                // Call login() method on leaflet glome control button so it is removed from the map
-                maps.glomelogincontrol.login();
-            }
-
-
-
-            $(session_status).text("Logout").attr("href","#");
-            $(session_status).attr("id","btn-logout");
-            $(session_status).removeClass('dropdown-link');
-
-            // Reset the event listener for the modified button
-            $(session_status).on('click', '#btn-logout', function() {
-                // change the UI
-                _switchSession("logout");
-                // server-side logout
-                _logOut();
-            });
-
-            // Set the links to account info
-            $(user_tools).prepend('<li id="user-info-link"><a class="dropdown-link" href="/info/account" data-navigo>Account info</a></li>');
-            $(".mobile-menu").append('<a id="btn-mobile-account" ref="/info/account" class="btn btn-default btn-lg btn-block" data-navigo><span class="fa fa-fw fa-user"></span> Account info</a>');
-
-            // Must reload the dropdows in bootstrap to enable new event listeners
-            $(user_tools).dropdown();
-
-            // Hide all the login elements
-            $(session_link).addClass('hidden');
-
-            // Push user data to the account view
-            if (classicSessionType === "true") {
-
-                console.log('Account data from switchSession(): ', _getAccount(true))
-
-                ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(true)) );
-                ui.sidebar.show();
-
-            }
-
-            // Change html to reflect anon login
-            if  ( classicSessionType === "false" ) {
-
                 if ( window.isMobile ) {
-
-                    try {
-
-                        maps.glomelogincontrol.login();
-
-                    } catch (e) {
-
-                        console.log (e);
-
-                        try {
-                            // Add a glome anonymous login button if there's none
-                            maps.glomelogincontrol.addTo(maps.map);
-                            maps.glomelogincontrol.login();
-
-                        } catch (err) {
-
-                          console.log (err);
-                        }
-                    }
+                    maps.glomelogincontrol.logout();
                 }
 
-                ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(false)) );
-                ui.sidebar.show();
+                // TODO make this with templates
+                $(session_status).text('Login').attr("href","/auth/login");
+                $(session_status).attr("id","");
+                $(session_status).attr("data-navigo","");
+                $(session_status).addClass('dropdown-link');
+                $(account_info_link).remove();
+                $(account_info_button_mobile).remove();
+                $(user_tools).dropdown();
+                $(session_link).removeClass('hidden');
             }
 
+            if ( o === "login" ) {
+
+                if ( window.isMobile ) {
+                    // Call login() method on leaflet glome control button so it is removed from the map
+                    maps.glomelogincontrol.login();
+                    $(mobile_menu).append(account_info_button_mobile);
+                }
+
+                $(session_status).text("Logout").attr("href","#");
+                $(session_status).attr("id","btn-logout");
+                $(session_status).removeClass('dropdown-link');
+
+                // Reset the event listener for the modified button
+                $(session_status).on('click', '#btn-logout', function() {
+                    // change the UI
+                    _switchSession("logout");
+                    // server-side logout
+                    _logOut();
+                });
+
+                // Set the links to account info
+                $(user_tools).prepend(account_info_link_html);
+
+                // Must reload the dropdows in bootstrap to enable new event listeners
+                $(user_tools).dropdown();
+
+                // Manually activate tabs so we can use data-target instead of href which is incompatible with the routing
+                tools.activateTabs();
+
+                // Hide all the login elements
+                $(session_link).addClass('hidden');
+
+                // Push user data to the account view
+                if ( classic_session === "true" ) {
+
+                    ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(true)) );
+                    ui.sidebar.show();
+
+                }
+
+                // Change html to reflect anon login
+                if  ( classic_session === "false" ) {
+
+                    // FIXME non-mobile?
+                    if ( window.isMobile ) {
+
+                        try {
+
+                            maps.glomelogincontrol.login();
+
+                        } catch (e) {
+
+                            console.log (e);
+
+                            try {
+                                // Add a glome anonymous login button if there's none
+                                maps.glomelogincontrol.addTo(maps.map);
+                                maps.glomelogincontrol.login();
+
+                            } catch (err) {
+
+                              console.log (err);
+                            }
+                        }
+                    }
+
+                    ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(false)) );
+                    ui.sidebar.show();
+                }
+            }
+
+            // Scan newly create router links
             router.updatePageLinks();
-        }
-    },
+        },
         _setAccount = function _setAccount (classic, data) {
 
           return new Promise ((resolve, reject) => {
@@ -153,8 +162,6 @@ var auth = ( function () {
                 account.username = localStorage.getItem('username');
                 account.email    = localStorage.getItem('email');
                 account.id       = localStorage.getItem('id');
-
-                console.log('Account data from getAccount()', account)
 
                 return account;
 
@@ -365,8 +372,12 @@ var auth = ( function () {
                 });
 
             },
-        _glomePair = function _glomePair () {},
-        _resetPwd = function _resetPAssword () {},
+        _glomePair = function _glomePair () {
+          //
+        },
+        _resetPwd = function _resetPwd () {
+          //
+        },
         _changePwd = function _changePwd () {
             // Change password
         },
@@ -456,34 +467,43 @@ var auth = ( function () {
         },
         init = function init (i) {
 
+        /*
+         * This function is called when visiting the router url "/auth/i"
+         * @params i {String} defines what block to init ['logout','check','login']
+         * TODO make this a pure function or make it return promise from ajax api calls
+         */
+
             if ( i === 'logout' ) {
 
                 _logOut();
 
-            } else if ( i === 'check' ) {
+            } else
 
-              var token = localStorage.getItem('token');
+              if ( i === 'check' ) {
 
-              if (!token ) {
+                  var token = localStorage.getItem('token');
 
-                  return;
+                  if (!token ) {
 
-              } else {
-
-                  var checklogincall = _checkLogin(token);
-
-                  checklogincall.done(function (res) {
-                      console.log(res);
-                      _switchSession('login');
-                  });
-
-                  checklogincall.fail(function (res) {
-                      alerts.showAlert(21, 'danger', 2000);
-                      console.log(res);
-                      _switchSession('logout');
                       localStorage.clear();
-                  });
-              }
+                      return;
+
+                  } else {
+
+                      var checklogincall = _checkLogin(token);
+
+                      checklogincall.done(function (res) {
+                          // console.log(res);
+                          _switchSession('login');
+                      });
+
+                      checklogincall.fail(function (res) {
+                          alerts.showAlert(21, 'danger', 2000);
+                          // console.log(res);
+                          _switchSession('logout');
+                          localStorage.clear();
+                      });
+                  }
 
             } else {
 

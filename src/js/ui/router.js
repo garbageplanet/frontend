@@ -131,7 +131,6 @@ router.on({
 
 /**
   * Router for session
-  * TODO build the account data from localstorage and build an obj o pass to the login account view
   */
 router.on({
   '/auth/:target': { as: 'auth', uses: function (params, query) {
@@ -140,6 +139,7 @@ router.on({
 
       var tmplstring = 'tmpl-auth-' + params.target;
 
+      // Show the login view when logging out
       if ( params.target === 'logout' ) {
 
           tmplstring = 'tmpl-auth-login';
@@ -150,10 +150,10 @@ router.on({
       ui.sidebar.setContent( tmpl( tmplstring, strings) );
       ui.sidebar.show();
 
-      // We init the auth methods passing the form string to discern between auth forms
+      // Init the desired auth method
       auth.init(params.target);
 
-      // For the auth router, we need to check for the data-navigo links after each route is visited because the views contains router links
+      // Initialize the data-navigo links after each route is visited to set the links in the views
       router.updatePageLinks();
    }}
 }).resolve();

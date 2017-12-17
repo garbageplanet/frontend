@@ -7,7 +7,7 @@
  * Released under the MIT license
  */
 
-;(function( global, factory ) {
+(function( global, factory ) {
     /*globals define, module */
     if ( typeof define === 'function' && define.amd ) {
         define( function() {
@@ -1605,7 +1605,7 @@ ss.IframeUpload = {
                 headers[opts.nginxProgressHeader] = key;
             }
 
-            headers['X-Requested-With'] = 'XMLHttpRequest';
+
             headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';
 
             ss.extendObj( headers, opts.customProgressHeaders );
@@ -1620,6 +1620,10 @@ ss.IframeUpload = {
                     }
                 }
             }
+
+           // Custom code to prevent imgur API headers error
+           xhr.setRequestHeader('Cache-Control', null);
+           xhr.setRequestHeader('X-Requested-With', null);
 
            xhr.send( ( opts.sessionProgressUrl &&  params ) || null );
         }
@@ -1856,8 +1860,8 @@ ss.XhrUpload = {
             return;
         }
 
-        headers['X-Requested-With'] = 'XMLHttpRequest';
-        headers['X-File-Name'] = ss.encodeUTF8( fileObj.name );
+        // headers['X-Requested-With'] = 'XMLHttpRequest';
+        // headers['X-File-Name'] = ss.encodeUTF8( fileObj.name );
 
         if ( this._opts.responseType.toLowerCase() == 'json' ) {
             headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';

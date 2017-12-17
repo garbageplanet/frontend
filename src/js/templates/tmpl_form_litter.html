@@ -72,20 +72,20 @@
   <div class="form-group">
       <div class="input-group input-group-lg">
             <span class="input-group-btn">
-                <button class="btn btn-default btn-image-uploader"
-                        type="button">
+                <button id="btn-image-uploader" class="btn btn-default" type="button">
                 <span class="fa fa-fw fa-file-image-o"></span></button>
-                <input class="image-uploader" type="file" style="display:none;">
+                <input id="image-uploader" type="file" style="display:none;">
             </span>
 
             <input type="text"
                    class="form-control litter-image-hidden-value"
                    name="image"
+                   id="image-uploader-url"
                    placeholder="Upload an image">
       </div>
 
-      <div class="progress hidden">
-        <div class="progress-bar progress-bar-success" role="progressbar" style="width:%"></div>
+      <div id="progress" class="progress hidden">
+        <div class="progress-bar progress-bar-success" role="progressbar" style="width:100%"></div>
       </div>
 
     </div>

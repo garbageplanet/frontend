@@ -45,7 +45,8 @@ var alerts = ( function () {
         'Fill in all the required fields', // 30
         'Zoom in closer to do that',
         'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies </a>.',
-        'Layer not found on the map'
+        'Layer not found on the map',
+        'Please provide a link'
     ],
         showAlert = function (errorCode, errorType, closeDelay, errorText) {
 
