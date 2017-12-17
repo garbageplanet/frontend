@@ -11,130 +11,140 @@ var drawing = (function () {
 
     var drawControl = new L.Control.Draw({
 
-            position: 'topright',
-            draw: {
-                circle: false,
-                rectangle: false,
-                marker: false
-            },
-        }),
-        _bindEvents = function _bindEvents () {
-            var buttonDraw = $('.btn-draw'),
-                buttonCancel = $('.btn-cancel');
+        position: 'topright',
+        draw: {
+            circle: false,
+            rectangle: false,
+            marker: false
+        }
+    });
 
-            var polylineListener = new L.Draw.Polyline(maps.map, {
-                    allowIntersection: false,
-                       drawError: {
-                       color: '#cc0000',
-                       timeout: 2000
-                       },
-                    metric: true,
-                    clickable: true,
-                    shapeOptions: {
-                      color: '#A9A9A9',
-                      weight: 10,
-                      opacity: 0.5
-                    }
-            });
+    // TODO extract polygon and polyline - specific code
+    function _bindEvents (type) {
 
-            var polygonListener = new L.Draw.Polygon(maps.map, {
-                   shapeOptions:{
-                      color: '#33cccc',
-                      weight: 5,
-                      opacity: 0.5},
-                  showArea: true,
-                  metric: true,
-                  clickable: true,
-                  allowIntersection: false,
-                         drawError:{
-                         color: '#cc0000',
-                         timeout: 2000}
-            });
+        // type = 'polyline' | 'polygon'
 
-            buttonDraw.on('click', function(e) {
+        var buttonDraw   = $('.btn-draw');
+        var buttonCancel = $('.btn-cancel');
 
-                maps.map.off('click', actions.mapClick);
-
-                if ($(this).attr('name') === 'polyline') {
-                    polylineListener.enable();
+        var polylineListener = new L.Draw.Polyline(maps.map, {
+                allowIntersection: false,
+                   drawError: {
+                   color: '#cc0000',
+                   timeout: 2000
+                   },
+                metric: true,
+                clickable: true,
+                shapeOptions: {
+                  color: '#A9A9A9',
+                  weight: 10,
+                  opacity: 0.5
                 }
+        });
 
-                if ($(this).attr('name') === 'polygon') {
-                    polygonListener.enable();
-                }
-            });
+        var polygonListener = new L.Draw.Polygon(maps.map, {
+               shapeOptions:{
+                  color: '#33cccc',
+                  weight: 5,
+                  opacity: 0.5},
+              showArea: true,
+              metric: true,
+              clickable: true,
+              allowIntersection: false,
+                     drawError:{
+                     color: '#cc0000',
+                     timeout: 2000}
+        });
 
-            // Disable start drawing buttons
-            maps.map.on('draw:drawstart', function (e) {
-                buttonDraw.addClass('disabled');
-            });
+        buttonDraw.on('click', function(e) {
 
-            // Reactivate map lcik listeners once drawing is done
-            maps.map.on('draw:drawstop', function () {
+            maps.map.off('click', actions.mapClick);
 
-                maps.map.off('click', actions.mapClick);
-                maps.map.on('click', actions.mapClick);
-            });
-            // What to do once a shape is created
-            maps.map.on('draw:created', function (e) {
+            if ($(this).attr('name') === 'polyline') {
+                polylineListener.enable();
+            }
 
-                var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, ''),
-                    polylineLayer,
-                    polygonLayer;
+            if ($(this).attr('name') === 'polygon') {
+                polygonListener.enable();
+            }
+        });
 
-                // Add the latlngs to the form
-                $('.latlngs').val(latlngs);
+        // Disable start drawing buttons
+        maps.map.on('draw:drawstart', function (e) {
+            buttonDraw.addClass('disabled');
+        });
 
-                maps.map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
+        // Reactivate map lcik listeners once drawing is done
+        maps.map.on('draw:drawstop', function () {
 
-                maps.map.addLayer(e.layer);
+            maps.map.off('click', actions.mapClick);
+            maps.map.on('click', actions.mapClick);
+        });
+        // What to do once a shape is created
+        maps.map.on('draw:created', function (e) {
 
-                if ( e.layerType === 'polyline' ) {
+            var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, ''),
+                polylineLayer,
+                polygonLayer;
 
-                    polylineLayer = e.layer;
+            // Add the latlngs to the form
+            $('.latlngs').val(latlngs);
 
-                    // Range slider for amount of garbage on polyline
-                    $('input[type=radio]').on('change', function () {
+            maps.map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
 
-                        // Get the color value from the select options
-                        var selectedValue = parseInt($(this).attr('value'), 10);
-                       // Set the color of the line
-                        e.layer.setStyle({color: tools.setPolylineColor(selectedValue)});
-                    });
-                }
+            maps.map.addLayer(e.layer);
 
-                if( e.layerType === 'polygon' ) {
+            if ( e.layerType === 'polyline' ) {
 
-                    polygonLayer = e.layer;
-                }
+                polylineLayer = e.layer;
 
-                // Reactivate default marker event listener and drawing button
-                maps.map.on('click', actions.mapClick);
+                // Range slider for amount of garbage on polyline
+                $('input[type=radio]').on('change', function () {
 
-                // Delete the feature on cancel button
-                buttonCancel.on('click', function () {
-
-                    maps.map.removeLayer(e.layer);
-                    polylineListener.disable();
-                    polygonListener.disable();
+                    // Get the color value from the select options
+                    var selectedValue = parseInt($(this).attr('value'), 10);
+                   // Set the color of the line
+                    e.layer.setStyle({color: tools.setPolylineColor(selectedValue)});
                 });
+            }
 
-                ui.sidebar.on('hide', function() {
+            if ( e.layerType === 'polygon' ) {
 
-                    maps.map.removeLayer(e.layer);
-                });
+                polygonLayer = e.layer;
+            }
 
-              // return {
-              //     polylinelayer: polylineLayer,
-              //     polygonlayer: polygonLayer
-              // };
-          });
-        },
-        init = function init () {
-            // drawing apabilities are only called when the forms are loaded in /js/forms.js
-            maps.map.addControl(drawControl);
-            _bindEvents();
-        };
+            // Reactivate default marker event listener and drawing button
+            maps.map.on('click', actions.mapClick);
+
+            // Delete the feature on cancel button
+            buttonCancel.on('click', function () {
+
+                maps.map.removeLayer(e.layer);
+                polylineListener.disable();
+                polygonListener.disable();
+            });
+
+            ui.sidebar.on('hide', function() {
+
+                maps.map.removeLayer(e.layer);
+            });
+
+          // return {
+          //     polylinelayer: polylineLayer,
+          //     polygonlayer: polygonLayer
+          // };
+        });
+      }
+
+      function init (type) {
+          // drawing apabilities are only called when the forms are loaded in /js/forms.js
+          maps.map.addControl(drawControl);
+          _bindEvents(type);
+      }
+
+    function _bindPolygonEvents () {}
+
+    function _bindPolylineEvents () {}
 
     return {   init        : init
              , drawControl : drawControl

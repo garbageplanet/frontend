@@ -1,6 +1,6 @@
 <script type="text/x-tmpl" id="tmpl-auth-change">
 
-{% include('tmpl-sidebar-header', {title: "Change your password", url: "#/auth/account"}); %}
+{% include('tmpl-sidebar-header', {title: "Change your email", url: "#/auth/account"}); %}
 
   <form name="change"
         class="form-group form-auth"
@@ -10,26 +10,26 @@
     <div class="form-group form-group-lg">
 
       <div class="form-group">
-        <input type="password" class="form-control" name="currentpwd" placeholder="Current password" required>
+        <input type="password" class="form-control" name="currentemail" placeholder="Current email" required>
       </div>
 
       <div class="help-block with-errors"></div>
 
       <div class="form-group">
-        <input type="password" class="form-control" name="newpwd" placeholder="New password" required>
+        <input type="password" class="form-control" name="newemail" placeholder="New email" required>
       </div>
 
       <div class="help-block with-errors"></div>
 
       <div class="form-group">
-        <input type="password" class="form-control" name="newpwdconfirm" placeholder="Confirm new password" required>
+        <input type="password" class="form-control" name="pwd" placeholder="Enter your password" required>
       </div>
 
       <div class="help-block with-errors"></div>
 
       <div>
         <div>
-          <button type="submit" class="btn btn-info btn-lg btn-block btn-change-password">Save</button>
+          <button type="submit" class="btn btn-info btn-lg btn-block btn-change-email">Save</button>
         </div>
       </div>
 

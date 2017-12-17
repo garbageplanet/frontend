@@ -20,8 +20,8 @@ var touring = (function () {
                 orphan: true
               }
             ]
-        }),
-        _mobileTour = new Tour({
+        });
+    var _mobileTour = new Tour({
             name: "mobile-tour",
             template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
             steps: [
@@ -37,35 +37,36 @@ var touring = (function () {
                 orphan: true
               }
             ]
-        }),
-        init = function () {
+        });
 
-            _bindEvents();
+    function init () {
 
-            setTimeout(function () {
+        _bindEvents();
 
-                if (!window.isMobile) {
+        setTimeout(function () {
 
-                    if (!localStorage.getItem('token')) {
-                        _devTour.init();
-                        _devTour.start(true);
-                    }
+            if (!window.isMobile) {
+
+                if (!localStorage.getItem('token')) {
+                    _devTour.init();
+                    _devTour.start(true);
                 }
+            }
 
-                if (window.isMobile) {
-                    _mobileTour.init();
-                    _mobileTour.start(true);
-                }
-            }, 5000);
-        },
-        _bindEvents = function () {
+            if (window.isMobile) {
+                _mobileTour.init();
+                _mobileTour.start(true);
+            }
+        }, 5000);
+    }
 
-            $('.start-tour').on('click', function () {
+    function _bindEvents () {
 
-                setTimeout(touring.init, 2000);
-            });
-        };
+        $('.start-tour').on('click', function () {
 
-    return { init: init };
+            setTimeout(touring.init, 2000);
+        });
+    }
 
+    return { init: init }
 }());

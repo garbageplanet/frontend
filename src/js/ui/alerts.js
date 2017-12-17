@@ -47,28 +47,29 @@ var alerts = ( function () {
         'Garbagepla.net uses cookies. By using this website you agree to our <a href="#privacy-policy" class="alert-link sidebar-link"> use of cookies </a>.',
         'Layer not found on the map',
         'Please provide a link'
-    ],
-        showAlert = function (errorCode, errorType, closeDelay, errorText) {
+    ];
 
-            // default to alert-info
-            if ( !errorType || typeof errorType === 'undefined' ) {
-                errorType = "info";
-            }
+     function showAlert(errorCode, errorType, closeDelay, errorText) {
 
-            var errorMessage = errorText || _strings[errorCode];
-            var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">');
+        // default to alert-info
+        if ( !errorType || typeof errorType === 'undefined' ) {
+            errorType = "info";
+        }
 
-            alertMessage.append(errorMessage);
+        var errorMessage = errorText || _strings[errorCode];
+        var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">');
 
-            $(".alert-container").prepend(alertMessage);
+        alertMessage.append(errorMessage);
 
-            // if closeDelay was passed - set a timeout to close the alert
-            if ( closeDelay ) {
+        $(".alert-container").prepend(alertMessage);
 
-                window.setTimeout(function () { alertMessage.alert("close"); }, closeDelay);
-            }
+        // if closeDelay was passed - set a timeout to close the alert
+        if ( closeDelay ) {
 
-        };
+            window.setTimeout(function () { alertMessage.alert("close"); }, closeDelay);
+        }
 
-    return { showAlert : showAlert };
+    }
+
+    return { showAlert : showAlert }
 }());

@@ -2,15 +2,16 @@
 /* global L, $, tools, alerts, api, ui, maps, features, forms */
 
 /**
-* Saving forms data to the backend
-*/
+  * Saving forms data to the backend
+  * TODO DRY this
+  */
 
 // Save features on the map
- var saving = (function () {
+ var saving = ( function () {
 
     'use strict';
 
-    var _saveFeature = function _saveFeature (fo, ft) {
+    function _saveFeature (fo, ft) {
 
         // with Navigo we do:
         // _saveFeature(obj);
@@ -184,57 +185,58 @@
             ui.sidebar.hide();
             tools.resetIconStyle();
         });
-      },
-        _bindEvents = function _bindEvents (obj) {
+      }
 
-            console.log('current formobj: ', obj);
+    function _bindEvents (obj) {
 
-            var currentform = obj;
+        console.log('current formobj: ', obj);
 
-            currentform.on('keyup change keydown', function () {
-                currentform.validator('validate');
-            });
+        var currentform = obj;
 
-            // Form submission
-            currentform.validator().on('submit', function (e) {
+        currentform.on('keyup change keydown', function () {
+            currentform.validator('validate');
+        });
 
-                if ( e.isDefaultPrevented() ) {
-                    // isDefaultPrevented is the way the validator plugin tells sthg is wrong with the form
-                    alerts.showAlert(30, 'danger', 2000);
-                    // FIXME if we call return here the validator exits/bugs?
-                    return;
-                }
+        // Form submission
+        currentform.validator().on('submit', function (e) {
 
-                else {
+            if ( e.isDefaultPrevented() ) {
+                // isDefaultPrevented is the way the validator plugin tells sthg is wrong with the form
+                alerts.showAlert(30, 'danger', 2000);
+                // FIXME if we call return here the validator exits/bugs?
+                return;
+            }
 
-                    e.preventDefault();
-                    // Get the data from the form
-                    var formname = currentform[0].className,
-                        formobj = currentform.serializeObject();
+            else {
 
-                    // extract the form type from the classname and trim the string
-                    // with Navigo we can omit this because the info will be in the route obj
-                    var formtype = formname.substr(formname.lastIndexOf('-') + 1).trim();
+                e.preventDefault();
+                // Get the data from the form
+                var formname = currentform[0].className,
+                    formobj = currentform.serializeObject();
 
-                    /*console.log('------------------------------');
-                    console.log('current form array: ', formobj);
-                    console.log('current form type:', formtype);
-                    console.log('current form type: ', formtype);
-                    console.log('------------------------------');*/
+                // extract the form type from the classname and trim the string
+                // with Navigo we can omit this because the info will be in the route obj
+                var formtype = formname.substr(formname.lastIndexOf('-') + 1).trim();
 
-                    // Save the data with ajax
-                    _saveFeature(formobj, formtype);
-                }
-            });
-        },
-        init = function init () {
-            // we init this code only when a form is created in forms._bindEvents() in src/js/forms/forms.js
-            // empty the placeholder
-            this.form = null;
-            // Cache the current form, there's always only one .form-feature in the DOM
-            this.form = $('.form-feature');
-            _bindEvents(this.form);
-        };
+                /*console.log('------------------------------');
+                console.log('current form array: ', formobj);
+                console.log('current form type:', formtype);
+                console.log('current form type: ', formtype);
+                console.log('------------------------------');*/
 
-    return { init: init };
+                // Save the data with ajax
+                _saveFeature(formobj, formtype);
+            }
+        });
+    }
+
+    function init () {
+        // we init this code only when a form is created in forms._bindEvents() in src/js/forms/forms.js
+        this.form = null;
+        // Cache the current form, there's always only one .form-feature in the DOM
+        this.form = $('.form-feature');
+        _bindEvents(this.form);
+    }
+
+    return { init: init }
 }());

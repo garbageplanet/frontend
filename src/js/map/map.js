@@ -15,7 +15,6 @@ L.Control.CustomLocate = L.Control.Locate.extend({
    sharedURL: function () {
      return window.location.href.match(/shared/);
    },
-
 });
 
 /**
@@ -65,232 +64,236 @@ var maps = ( function () {
                     updateWhenZooming: true,
                     attribution: 'Map design &copy; <a href="http://maps.stamen.com/toner">Stamen</a>',
                 })
-        },
-        map = L.map('map', { zoomControl        : false,
-                             attributionControl : true,
-                             zoomSnap           : 0,
-                             zoomDelta          : 2,
-                             wheelPxPerZoomLevel: 40,
-                             wheelDebounceTime  : 200
-                           }),
-        garbageLayerGroup = L.markerClusterGroup({
-            spiderfyOnMaxZoom: false,
-            maxClusterRadius: 50,
-            disableClusteringAtZoom: 15,
-            showCoverageOnHover: false,
-            singleMarkerMode: true
-        }),
-        cleaningLayerGroup = L.markerClusterGroup({
-            spiderfyOnMaxZoom: false,
-            maxClusterRadius: 80,
-            disableClusteringAtZoom: 15,
-            showCoverageOnHover: false,
-            singleMarkerMode: true,
-            iconCreateFunction:  function (cluster) {
+    };
+    var map = L.map('map',
+      { zoomControl : false,
+        attributionControl : true,
+        zoomSnap           : 0,
+        zoomDelta          : 2,
+        wheelPxPerZoomLevel: 40,
+        wheelDebounceTime  : 200
+    });
+    var garbageLayerGroup = L.markerClusterGroup({
+        spiderfyOnMaxZoom: false,
+        maxClusterRadius: 50,
+        disableClusteringAtZoom: 15,
+        showCoverageOnHover: false,
+        singleMarkerMode: true
+    });
+    var cleaningLayerGroup = L.markerClusterGroup({
+        spiderfyOnMaxZoom: false,
+        maxClusterRadius: 80,
+        disableClusteringAtZoom: 15,
+        showCoverageOnHover: false,
+        singleMarkerMode: true,
+        iconCreateFunction:  function (cluster) {
 
-                var childCountText = cluster.getChildCount();
+            var childCountText = cluster.getChildCount();
 
-                return L.divIcon({
-                    html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-cleaning">' + childCountText +
-                            '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-cleaning"></i></div>',
-                    className: 'leaflet-marker-cluster leaflet-marker-cluster-cleaning',
-                    iconSize: [40,40]
-                });
-            }
-        }),
-        linkLayerGroup = L.markerClusterGroup({
-            spiderfyOnMaxZoom: false,
-            maxClusterRadius: 80,
-            disableClusteringAtZoom: 15,
-            showCoverageOnHover: false,
-            singleMarkerMode: true,
-            iconCreateFunction:  function (cluster) {
-
-                var childCountText = cluster.getChildCount();
-
-                return L.divIcon({
-                    html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-link">' + childCountText +
-                            '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-link"></i></div>',
-                    className: 'leaflet-marker-cluster leaflet-marker-cluster-link',
-                    iconSize: [40,40]
-                });
-            }
-        }),
-        litterLayerGroup = L.featureGroup(),
-        areaLayerGroup = L.featureGroup(),
-        unsavedMarkersLayerGroup = L.featureGroup(),
-        allLayers = L.layerGroup([
-                          garbageLayerGroup
-                        , areaLayerGroup
-                        , cleaningLayerGroup
-                        , litterLayerGroup
-                        , linkLayerGroup
-                    ]),
-        // hash = L.hash(map, {baseURI: '', query: true}),
-        _overlayGroups = {
-              "Garbage markers"           : garbageLayerGroup
-            , "Cleaning events"           : cleaningLayerGroup
-            , "Littered coasts and roads" : litterLayerGroup
-            , "Linked markers"            : linkLayerGroup
-            , "Tiles and areas"           : areaLayerGroup
-        },
-        locationcontrol = new L.Control.CustomLocate({
-            locateOptions: {
-                enableHighAccuracy: true,
-                maxZoom: 19
-            },
-            position: 'topleft',
-            icon: 'fa fa-location-arrow',
-            onLocationError: function (err, control) {
-
-                console.log('value of this from location error: ', this);
-
-                alerts.showAlert(16, "warning", 2000);
-
-                console.log('Location error: ', err.message);
-                console.log('There are coordinates in the url: ', maps.locationcontrol.latlnginURL() !== null);
-
-                // If we are currently trying to locate the user and it fails and the maps is already set, just stop the control
-                if ( maps.locationcontrol.latlnginURL() || maps.locationcontrol.sharedURL() ) {
-                    control.stop();
-                }
-                // Show the world without borders if geolocalization fails
-                else if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
-                    control.stop();
-                    maps.map.setView([0, 0], 2);
-                }
-            }
-        }),
-        scalecontrol = L.control.scale({metric: true, imperial: false}),
-        layerscontrol = L.control.layers(_tiles, _overlayGroups, {
-            // the custom icon 'linkText' is set in Leaflet 1.0.3 source code in L.Control.Layers.__initLayout()
-            position: 'topleft',
-            linkText: '<span class="fa fa-fw fa-globe"></span>'
-        }),
-        geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'}),
-        glomelogincontrol = L.control.login(),
-        menucontrol = L.control.menu(),
-        icons = ( function icons () {
-
-            var mapMarker = L.DivIcon.extend({
-                    options: {
-                        iconSize: [30, 30],
-                        className: 'map-marker',
-                        html: '<i class="fa fa-fw"></i>'
-                    }
-                }),
-
-                mapmarker = function (options) {
-                    return new mapMarker(options);
-                },
-
-                  genericMarker      = mapmarker({className: 'map-marker marker-color-gray marker-generic'})
-                , garbageMarker      = mapmarker({className: 'map-marker marker-garbage'})
-                , cleaningMarker     = mapmarker({className: 'map-marker marker-cleaning marker-color-blue'})
-                , pastCleaningMarker = mapmarker({className: 'map-marker marker-cleaning-past marker-color-blue'})
-                , dieoffMarker       = mapmarker({className: 'map-marker marker-dieoff'})
-                , sewageMarker       = mapmarker({className: 'map-marker marker-sewage'})
-                , floatingMarker     = mapmarker({className: 'map-marker marker-floating'})
-                , linkMarker         = mapmarker({className: 'map-marker marker-link'})
-                , cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
-
-            return {   genericMarker      : genericMarker
-                     , garbageMarker      : garbageMarker
-                     , cleaningMarker     : cleaningMarker
-                     , dieoffMarker       : dieoffMarker
-                     , sewageMarker       : sewageMarker
-                     , floatingMarker     : floatingMarker
-                     , linkMarker         : linkMarker
-                     , cleanedMarker      : cleanedMarker
-                     , pastCleaningMarker : pastCleaningMarker
-                    };
-        }()),
-        getTrashBins = function getTrashBins () {
-            // load trashbins icons on the map
-            var tbq = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
-
-            var osmTrashbinLayer = new L.OverPassLayer({
-                query: tbq
+            return L.divIcon({
+                html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-cleaning">' + childCountText +
+                        '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-cleaning"></i></div>',
+                className: 'leaflet-marker-cluster leaflet-marker-cluster-cleaning',
+                iconSize: [40,40]
             });
+        }
+    });
+    var linkLayerGroup = L.markerClusterGroup({
+        spiderfyOnMaxZoom: false,
+        maxClusterRadius: 80,
+        disableClusteringAtZoom: 15,
+        showCoverageOnHover: false,
+        singleMarkerMode: true,
+        iconCreateFunction:  function (cluster) {
 
-            maps.map.addLayer(osmTrashbinLayer);
+            var childCountText = cluster.getChildCount();
 
-            // Stop the function call on map move
-            // FIXME stop the call, don't remove the layer
-            /*maps.map.on('movestart', function (e) {
-                maps.map.removeLayer(osmTrashbinLayer);
-            });*/
+            return L.divIcon({
+                html:   '<div><span class="leaflet-marker-cluster-count leaflet-marker-cluster-count-link">' + childCountText +
+                        '</span><i class="leaflet-marker-cluster-icon leaflet-marker-cluster-icon-link"></i></div>',
+                className: 'leaflet-marker-cluster leaflet-marker-cluster-link',
+                iconSize: [40,40]
+            });
+        }
+    });
+    var litterLayerGroup = L.featureGroup();
+    var areaLayerGroup = L.featureGroup();
+    var unsavedMarkersLayerGroup = L.featureGroup();
+    var allLayers = L.layerGroup([
+          garbageLayerGroup
+        , areaLayerGroup
+        , cleaningLayerGroup
+        , litterLayerGroup
+        , linkLayerGroup
+    ]);
+    // var hash = L.hash(map, {baseURI: '', query: true});
+    var _overlayGroups = {
+          "Garbage markers"           : garbageLayerGroup
+        , "Cleaning events"           : cleaningLayerGroup
+        , "Littered coasts and roads" : litterLayerGroup
+        , "Linked markers"            : linkLayerGroup
+        , "Tiles and areas"           : areaLayerGroup
+    };
+    var locationcontrol = new L.Control.CustomLocate({
+        locateOptions: {
+            enableHighAccuracy: true,
+            maxZoom: 19
         },
-        init = function init () {
+        position: 'topleft',
+        icon: 'fa fa-location-arrow',
+        onLocationError: function (err, control) {
 
-            _tiles['Mapbox Outdoors'].addTo(maps.map);
+            console.log('value of this from location error: ', this);
 
-            //Disable doubleclick to zoom as it might interfer with other map functions
-            maps.map.doubleClickZoom.disable();
+            alerts.showAlert(16, "warning", 2000);
 
-            // Add zoom controls on desktop
-            if ( !window.isMobile ) {
-                var zoomcontrol = L.control.zoom({position: 'topleft'});
-                    zoomcontrol.options.zoomInText  = '<span class="fa fa-fw fa-search-plus"></span>';
-                    zoomcontrol.options.zoomOutText = '<span class="fa fa-fw fa-search-minus"></span>';
-                    zoomcontrol.addTo(maps.map);
+            console.log('Location error: ', err.message);
+            console.log('There are coordinates in the url: ', maps.locationcontrol.latlnginURL() !== null);
+
+            // If we are currently trying to locate the user and it fails and the maps is already set, just stop the control
+            if ( maps.locationcontrol.latlnginURL() || maps.locationcontrol.sharedURL() ) {
+                control.stop();
             }
+            // Show the world without borders if geolocalization fails
+            else if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
+                control.stop();
+                maps.map.setView([0, 0], 2);
+            }
+        }
+    });
+    var scalecontrol = L.control.scale({metric: true, imperial: false});
+    var layerscontrol = L.control.layers(_tiles, _overlayGroups, {
+        // the custom icon 'linkText' is set in Leaflet 1.0.3 source code in L.Control.Layers.__initLayout()
+        position: 'topleft',
+        linkText: '<span class="fa fa-fw fa-globe"></span>'
+    });
+    var geocodercontrol = L.Control.openCageSearch({key: '@@opencagetoken', limit: 5, position: 'topleft'});
+    var glomelogincontrol = L.control.login();
+    var menucontrol = L.control.menu();
+    var icons = ( function icons () {
 
-            locationcontrol.addTo(maps.map);
-               scalecontrol.addTo(maps.map);
-              layerscontrol.addTo(maps.map);
-            geocodercontrol.addTo(maps.map);
-
-            // Add feature layers
-            maps.garbageLayerGroup.addTo(maps.map);
-            maps.areaLayerGroup.addTo(maps.map);
-            maps.litterLayerGroup.addTo(maps.map);
-            maps.linkLayerGroup.addTo(maps.map);
-            maps.cleaningLayerGroup.addTo(maps.map);
-            maps.unsavedMarkersLayerGroup.addTo(maps.map);
-
-            // Add a glome anonymous login button on mobile and small screens
-            if ( window.isMobile ) {
-
-                if ( !maps.map.glomelogincontrol ) {
-                    maps.glomelogincontrol.addTo(maps.map);
+        var mapMarker = L.DivIcon.extend({
+                options: {
+                    iconSize: [30, 30],
+                    className: 'map-marker',
+                    html: '<i class="fa fa-fw"></i>'
                 }
+            }),
 
-                menucontrol.addTo(maps.map);
+            mapmarker = function (options) {
+                return new mapMarker(options);
+            },
+
+              genericMarker      = mapmarker({className: 'map-marker marker-color-gray marker-generic'})
+            , garbageMarker      = mapmarker({className: 'map-marker marker-garbage'})
+            , cleaningMarker     = mapmarker({className: 'map-marker marker-cleaning marker-color-blue'})
+            , pastCleaningMarker = mapmarker({className: 'map-marker marker-cleaning-past marker-color-blue'})
+            , dieoffMarker       = mapmarker({className: 'map-marker marker-dieoff'})
+            , sewageMarker       = mapmarker({className: 'map-marker marker-sewage'})
+            , floatingMarker     = mapmarker({className: 'map-marker marker-floating'})
+            , linkMarker         = mapmarker({className: 'map-marker marker-link'})
+            , cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
+
+        return {   genericMarker      : genericMarker
+                 , garbageMarker      : garbageMarker
+                 , cleaningMarker     : cleaningMarker
+                 , dieoffMarker       : dieoffMarker
+                 , sewageMarker       : sewageMarker
+                 , floatingMarker     : floatingMarker
+                 , linkMarker         : linkMarker
+                 , cleanedMarker      : cleanedMarker
+                 , pastCleaningMarker : pastCleaningMarker
+                };
+    }());
+
+    function getTrashBins () {
+        // load trashbins icons on the map
+        var tbq = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
+
+        var osmTrashbinLayer = new L.OverPassLayer({
+            query: tbq
+        });
+
+        maps.map.addLayer(osmTrashbinLayer);
+
+        // Stop the function call on map move
+        // FIXME stop the call, don't remove the layer
+        /*maps.map.on('movestart', function (e) {
+            maps.map.removeLayer(osmTrashbinLayer);
+        });*/
+    }
+
+    function init () {
+
+        _tiles['Mapbox Outdoors'].addTo(maps.map);
+
+        //Disable doubleclick to zoom as it might interfer with other map functions
+        maps.map.doubleClickZoom.disable();
+
+        // Add zoom controls on desktop
+        if ( !window.isMobile ) {
+            var zoomcontrol = L.control.zoom({position: 'topleft'});
+                zoomcontrol.options.zoomInText  = '<span class="fa fa-fw fa-search-plus"></span>';
+                zoomcontrol.options.zoomOutText = '<span class="fa fa-fw fa-search-minus"></span>';
+                zoomcontrol.addTo(maps.map);
+        }
+
+        locationcontrol.addTo(maps.map);
+           scalecontrol.addTo(maps.map);
+          layerscontrol.addTo(maps.map);
+        geocodercontrol.addTo(maps.map);
+
+        // Add feature layers
+        maps.garbageLayerGroup.addTo(maps.map);
+        maps.areaLayerGroup.addTo(maps.map);
+        maps.litterLayerGroup.addTo(maps.map);
+        maps.linkLayerGroup.addTo(maps.map);
+        maps.cleaningLayerGroup.addTo(maps.map);
+        maps.unsavedMarkersLayerGroup.addTo(maps.map);
+
+        // Add a glome anonymous login button on mobile and small screens
+        if ( window.isMobile ) {
+
+            if ( !maps.map.glomelogincontrol ) {
+                maps.glomelogincontrol.addTo(maps.map);
             }
 
-            if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
-                console.log('starting to geolocate');
-                maps.locationcontrol.start();
+            menucontrol.addTo(maps.map);
+        }
+
+        if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
+            console.log('starting to geolocate');
+            maps.locationcontrol.start();
+        }
+
+      _tiles['Mapbox Outdoors'].on('load', function () {
+
+            // Remove the loader div once the tiles have loaded
+            var loader = document.getElementById('loader');
+
+            if ( loader ) {
+                document.body.removeChild(loader);
+                loader = null;
             }
+         });
+    }
 
-          _tiles['Mapbox Outdoors'].on('load', function () {
-
-                // Remove the loader div once the tiles have loaded
-                var loader = document.getElementById('loader');
-
-                if ( loader ) {
-                    document.body.removeChild(loader);
-                    loader = null;
-                }
-             });
-        };
-
-    return {   init                     : init
-             , map                      : map
-             // , hash                     : hash
-             , getTrashBins             : getTrashBins
-             , locationcontrol          : locationcontrol
-             , glomelogincontrol        : glomelogincontrol
-             , layerscontrol            : layerscontrol
-             , geocodercontrol          : geocodercontrol
-             , garbageLayerGroup        : garbageLayerGroup
-             , areaLayerGroup           : areaLayerGroup
-             , litterLayerGroup         : litterLayerGroup
-             , linkLayerGroup           : linkLayerGroup
-             , cleaningLayerGroup       : cleaningLayerGroup
-             , unsavedMarkersLayerGroup : unsavedMarkersLayerGroup
-             , allLayers                : allLayers
-             , icons                    : icons
-            };
+    return {
+       init                     : init
+     , map                      : map
+     // , hash                     : hash
+     , getTrashBins             : getTrashBins
+     , locationcontrol          : locationcontrol
+     , glomelogincontrol        : glomelogincontrol
+     , layerscontrol            : layerscontrol
+     , geocodercontrol          : geocodercontrol
+     , garbageLayerGroup        : garbageLayerGroup
+     , areaLayerGroup           : areaLayerGroup
+     , litterLayerGroup         : litterLayerGroup
+     , linkLayerGroup           : linkLayerGroup
+     , cleaningLayerGroup       : cleaningLayerGroup
+     , unsavedMarkersLayerGroup : unsavedMarkersLayerGroup
+     , allLayers                : allLayers
+     , icons                    : icons
+  };
 }());

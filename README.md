@@ -26,6 +26,7 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 
 ### FIXME
 
+- [ ] rendering account info view in auth route is buggy
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
 
 ### TODO

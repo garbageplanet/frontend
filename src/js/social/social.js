@@ -58,80 +58,72 @@ var social = ( function () {
             'title': 'Share on RenRen',
             'targeturl': ''
           }
-        ],
-        shareThisFeature = function (obj) {
+        ];
 
-            var encoded_url = encodeURIComponent(window.location);
+    function shareThisFeature (obj) {
 
-            // obj.image_url ? feature_image_url = obj.image_url : feature_image_url = '';
-            var feature_image_url = obj.image_url ? obj.image_url : '';
-            var feature_image_url_encoded = encodeURIComponent(feature_image_url);
+        var encoded_url               = encodeURIComponent(window.location);
+        var feature_image_url         = obj.image_url ? obj.image_url : '';
+        var feature_image_url_encoded = encodeURIComponent(feature_image_url);
+        var feature_note              = obj.note ? obj.note : '';
+        var feature_note_encoded      = encodeURIComponent(feature_note);
+        var feature_tags              = obj.tags ? obj.tags : '';
+        var feature_tags_encoded      = encodeURIComponent(feature_tags);
 
-            // obj.note ? feature_note = obj.note : feature_note =  '';
-            var feature_note = obj.note ? obj.note : '';
+        // Create the links in the templatedata object
+        network[0].targeturl = 'https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=' + encoded_url + '&description=' + feature_note_encoded + '&link=' + encoded_url + '&picture=' + feature_image_url_encoded + '&name=Garbagepla.net&redirect_uri=https://garbagepla.net';
+        network[1].targeturl = 'https://twitter.com/intent/tweet?text=Shared%20from%20www.garbagepla.net%20' + feature_note_encoded + '%20' + feature_tags_encoded + '%20' + encoded_url;
+        network[2].targeturl = 'https://plus.google.com/share?url=' + encoded_url;
+        network[3].targeturl = 'http://reddit.com/submit?url=' + encoded_url + '&title=Shared%20from%20www.garbagepla.net';
+        network[4].targeturl = 'http://www.tumblr.com/share/link?url=' + encoded_url + '&amp;name=' + '&amp;description=' + feature_note_encoded;
+        network[5].targeturl = 'https://vk.com/share.php?url=' + encoded_url;
+        network[6].targeturl = 'whatsapp://send?text=Shared%20from%20www.garbagepla.net';
+        network[7].targeturl = 'http://share.renren.com/share/buttonshare.do?link=' + encoded_url +  '&title=Share from Garbagepla.net';
 
-            var feature_note_encoded = encodeURIComponent(feature_note);
+        // Finally load the template
+        document.getElementById("social-links").innerHTML = tmpl("tmpl-social-links", network);
 
-            // obj.tags ? feature_tags = obj.tags : feature_tags =  '';
+    }
+    /*function game () {
 
-            var feature_tags = obj.tags ? obj.tags : '';
+        var getPlayers = function(e) {
 
-            var feature_tags_encoded = encodeURIComponent(feature_tags);
+            // TODO make one get players and one getdata method for zones/tiles
+            if (!localStorage.getItem('token')){
 
-            // Create the links in the templatedata object
-            network[0].targeturl = 'https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=' + encoded_url + '&description=' + feature_note_encoded + '&link=' + encoded_url + '&picture=' + feature_image_url_encoded + '&name=Garbagepla.net&redirect_uri=https://garbagepla.net';
-            network[1].targeturl = 'https://twitter.com/intent/tweet?text=Shared%20from%20www.garbagepla.net%20' + feature_note_encoded + '%20' + feature_tags_encoded + '%20' + encoded_url;
-            network[2].targeturl = 'https://plus.google.com/share?url=' + encoded_url;
-            network[3].targeturl = 'http://reddit.com/submit?url=' + encoded_url + '&title=Shared%20from%20www.garbagepla.net';
-            network[4].targeturl = 'http://www.tumblr.com/share/link?url=' + encoded_url + '&amp;name=' + '&amp;description=' + feature_note_encoded;
-            network[5].targeturl = 'https://vk.com/share.php?url=' + encoded_url;
-            network[6].targeturl = 'whatsapp://send?text=Shared%20from%20www.garbagepla.net';
-            network[7].targeturl = 'http://share.renren.com/share/buttonshare.do?link=' + encoded_url +  '&title=Share from Garbagepla.net';
-
-            // Finally load the template
-            document.getElementById("social-links").innerHTML = tmpl("tmpl-social-links", network);
-
-        };
-        /* game = function() {
-
-            var getPlayers = function(e) {
-
-                // TODO make one get players and one getdata method for zones/tiles
-                if (!localStorage.getItem('token')){
-
-                    alerts.showAlert(3, 'info', 2000);
-                }
-
-                else {
-
-                    setTimeout(function () {
-
-                        var useToken = localStorage.getItem('token') || tools.token,
-                            title = e;
-
-                        $.ajax({
-
-                            method: 'GET',
-                            url: api.getPlayersList.url(id),
-                            headers: {'Authorization': 'Bearer' + useToken},
-                            success: function (response) {
-                                // Make call to list zone data
-                            },
-                            error: function (err) {
-                            }
-                        });
-                    }, 100);
-                }
-            },
-            printGameData = function () {console.log(this)};
-
-            return {
-                getPlayers: getPlayers,
-                printGameData: printGameData
+                alerts.showAlert(3, 'info', 2000);
             }
-        }*/
 
-    return { shareThisFeature: shareThisFeature };
+            else {
+
+                setTimeout(function () {
+
+                    var useToken = localStorage.getItem('token') || tools.token,
+                        title = e;
+
+                    $.ajax({
+
+                        method: 'GET',
+                        url: api.getPlayersList.url(id),
+                        headers: {'Authorization': 'Bearer' + useToken},
+                        success: function (response) {
+                            // Make call to list zone data
+                        },
+                        error: function (err) {
+                        }
+                    });
+                }, 100);
+            }
+        },
+        printGameData = function () {console.log(this)};
+
+        return {
+            getPlayers: getPlayers,
+            printGameData: printGameData
+        }
+    }*/
+
+    return { shareThisFeature: shareThisFeature }
 }());
 
 /**

@@ -5,11 +5,11 @@ var strings = {
                 "linkurl":"http://garbageplanet.github.io/",
                 "text":"Project"
             },
-            /*{
+            {
                 "title":"Let's Encrypt",
                 "linkurl":"https://letsencrypt.org/",
-                "text":"Secured with"
-            },*/
+                "text":"Certs with"
+            },
             {
                 "title":"Mapbox",
                 "linkurl":"https://www.mapbox.com/",
@@ -83,4 +83,4 @@ var strings = {
             }
         ],
         version: 'v. unstable'
-    };
+};

@@ -1,6 +1,7 @@
 /**
   * Init Navigo with the website root and default #/
   * FIXME when inbound linking to a sidebar form it seems the listeners aren't set properly
+  * TODO encapsulate router methods
   */
 
 // var navigohash = new RegExp(/^([-+]?\d{1,2}[.]\d+)\s*\/\s*([-+]?\d{1,3}[.]\d+)$/)
@@ -142,19 +143,21 @@ router.on({
       // Show the login view when logging out
       if ( params.target === 'logout' ) {
 
+          console.log('LOGOUT ROUTER');
+
           tmplstring = 'tmpl-auth-login';
 
       }
 
       // Fill the templates
       ui.sidebar.setContent( tmpl( tmplstring, strings) );
-      ui.sidebar.show();
 
       // Init the desired auth method
       auth.init(params.target);
 
       // Initialize the data-navigo links after each route is visited to set the links in the views
       router.updatePageLinks();
+      ui.sidebar.show();
    }}
 }).resolve();
 

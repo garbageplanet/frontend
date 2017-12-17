@@ -9,8 +9,7 @@ var forms = ( function () {
 
     'use strict';
 
-    var
-    garbagetypes = [
+    var garbagetypes = [
         {short:"plastic",long:"Plastic items"},
         {short:"bags",long:"Plastic bags"},
         {short:"foodpacks",long:"Plastic food containers"},
@@ -63,224 +62,231 @@ var forms = ( function () {
         {short:"sewage",long:"Sewage"},
         {short:"dogs",long:"Dog poop bags"},
         {short:"stormwater",long:"Polluted stormwaters"},
-    ],
-        _bindEvents = function (id, type) {
+    ];
 
-            console.log('binding form events');
+    function _bindEvents (id, type) {
 
-            // Manually activate tabs because we use data-target instead of href which is incompatible with routing
-            tools.activateTabs();
+        console.log('binding form events');
 
-            // Style and activate multiselects
-            $('.selectpicker').selectpicker({
-                style: 'btn-lg btn-default text-center',
-                size: 6
-            });
+        // Manually activate tabs because we use data-target instead of href which is incompatible with routing
+        tools.activateTabs();
 
-            // Separate tags by hitting space bar or right key
-           $('.feature-tags, .bootstrap-tagsinput').tagsinput({
-                maxTags: 3,
-                confirmKeys: [32, 39],
-                maxChars: 16,
-                trimValue: true
-            });
+        // Style and activate multiselects
+        $('.selectpicker').selectpicker({
+            style: 'btn-lg btn-default text-center',
+            size: 6
+        });
 
-            // Prevent sending the form with enter key with attr hack
-            $('form').bind('keypress', function (e) {
+        // Separate tags by hitting space bar or right key
+       $('.feature-tags, .bootstrap-tagsinput').tagsinput({
+            maxTags: 3,
+            confirmKeys: [32, 39],
+            maxChars: 16,
+            trimValue: true
+        });
 
-                if ( e.keyCode === 13 ) {
+        // Prevent sending the form with enter key with attr hack
+        $('form').bind('keypress', function (e) {
 
-                    $('.btn-save').attr('type');
-                    e.preventDefault();
-                }
-            });
+            if ( e.keyCode === 13 ) {
 
-            // load form-specific events
-            switch (type) {
-              case 'area': _bindAreaEvents(); break;
-              case 'litter': _bindLitterEvents(); break;
-              case 'cleaning': _bindCleaningEvents(id); break;
-              case 'garbage': _bindGarbageEvents(id); break;
-              case 'opengraph': _bindLinkmarkerEvents(); break;
+                $('.btn-save').attr('type');
+                e.preventDefault();
             }
-            // Re-initialize some listeners
-            actions.bindUnsavedMarkerEvents();
+        });
 
-            // Bind the event for saving the form data
-            saving.init();
-        },
-        _bindGarbageEvents = function (id) {
+        // load form-specific events
+        switch (type) {
+          case 'area': _bindAreaEvents(); break;
+          case 'litter': _bindLitterEvents(); break;
+          case 'cleaning': _bindCleaningEvents(id); break;
+          case 'garbage': _bindGarbageEvents(id); break;
+          case 'opengraph': _bindLinkmarkerEvents(); break;
+        }
+        // Re-initialize some listeners
+        actions.bindUnsavedMarkerEvents();
 
-            _initUploader();
+        // Bind the event for saving the form data
+        saving.init();
+    }
 
-            var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
-            var radio_input = $('input[type=radio]');
+    function  _bindGarbageEvents (id) {
 
-            radio_input.on('change', function () {
+        _initUploader();
 
-                // Remove the generic marker class
-                $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
+        var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
+        var radio_input = $('input[type=radio]');
 
-                // Get the color value from the select options
-                var selectedValue = parseInt($(this).attr('value'), 10);
+        radio_input.on('change', function () {
 
-                // Change the class to the corresponding value
-                $(marker._icon).removeClass(function (index, css) {
+            // Remove the generic marker class
+            $(marker._icon).removeClass('marker-generic').addClass('marker-garbage');
 
-                    return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+            // Get the color value from the select options
+            var selectedValue = parseInt($(this).attr('value'), 10);
 
-                }).addClass(tools.setMarkerClassColor(selectedValue));
-            });
-        },
-        _bindCleaningEvents = function (id) {
+            // Change the class to the corresponding value
+            $(marker._icon).removeClass(function (index, css) {
 
-            var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
+                return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
 
-            console.log('loading cleaning form');
+            }).addClass(tools.setMarkerClassColor(selectedValue));
+        });
+    }
 
-            var date_time_container = document.getElementById('#cleaning-main-tab');
+    function _bindCleaningEvents (id) {
 
-            // Setup the date widget
-            var config = {
-                enableTime: true,
-                appendTo: date_time_container,
-                altInput: true,
-                disableMobile: true,
-                onChange: function (selectedDates, dateStr, instance) {
-                    console.log(dateStr);
-                    // Change the icon of the marker if a time is set
-                    $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
-                }
-            };
+        var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
 
-            $('#event-date-time-input').flatpickr(config);
+        console.log('loading cleaning form');
 
-        },
-        _bindLitterEvents = function () {
-            _initUploader();
-            drawing.init();
-        },
-        _bindAreaEvents = function () {
-            drawing.init();
-        },
-        _bindLinkmarkerEvents = function (id) {
+        var date_time_container = document.getElementById('#cleaning-main-tab');
 
-            var btn_opengraph_fetch = $('.btn-opengraph-fetch');
-            var og_content = document.getElementById('opengraph-content')
-            var toggle_buttons = function (i) {
-
-              if ( i === 'start' ) {
-
-                btn_opengraph_fetch.text('...');
-                btn_opengraph_fetch.attr('disabled', 'disabled');
-
-              } else if ( i === 'stop' ) {
-
-                btn_opengraph_fetch.text('Fetch');
-                btn_opengraph_fetch.removeAttr('disabled');
-              }
-            };
-
-            // Bind the action to launch the scraper
-            btn_opengraph_fetch.click( function () {
-
-                // Retrieve the value of the url
-                var url = $('#opengraph-url').val();
-
-                toggle_buttons('start');
-
-                if (!url) {
-                  alerts.showAlert(34, 'danger', 2000);
-                  toggle_buttons('stop');
-                  return;
-                }
-
-                // Start the scraper promise
-                $.when( tools.openGraphScraper(url) ).then( function (data) {
-
-                    console.log('data from openGraph Promise resolved:', data);
-
-                    // Load the data into the template
-                    og_content.innerHTML = tmpl('tmpl-result-opengraph', data);
-                    // Remove input styles
-                    $('#opengraph-content input, #opengraph-content textarea').css('border','none').css('background','transparent').css('box-shadow', 'none');
-
-                    toggle_buttons('stop');
-
-                }).catch( function () {
-                    toggle_buttons('stop');
-                });
-            });
-        },
-        makeForm = function (id, type) {
-
-            console.log('id from forms.makeForm(): ', id);
-            console.log('type from forms.makeForm(): ', type);
-
-            // Build the garbage type multipicker
-            if ( type === 'garbage' || type === 'litter' ) {
-
-                document.getElementById('type-select').innerHTML = tmpl('tmpl-form-garbage-type', garbagetypes);
+        // Setup the date widget
+        var config = {
+            enableTime: true,
+            appendTo: date_time_container,
+            altInput: true,
+            disableMobile: true,
+            onChange: function (selectedDates, dateStr, instance) {
+                console.log(dateStr);
+                // Change the icon of the marker if a time is set
+                $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
             }
-
-            // Hide the close button in the sidebar when we show forms because they have a cancel button
-            $('.close-right').addClass('hidden');
-
-            // Forms for single point markers
-            var feature = maps.unsavedMarkersLayerGroup.getLayer(id);
-
-            try {
-
-                var latlng = feature.getLatLng();
-                $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
-
-            } catch (e) {
-
-                console.log ('latlngs will be set from draw.js', e);
-            }
-
-            // init event listener and set forms widget options
-            _bindEvents(id, type);
-        },
-        _initUploader = function () {
-
-
-            var image_uploader        = document.getElementById('image-uploader');
-            var image_uploader_button = document.getElementById('btn-image-uploader');
-            var image_uploader_url    = document.getElementById('image-uploader-url');
-            var progress              = document.getElementById('progress');
-
-            var uploader = new ss.SimpleUpload({
-
-                  button: image_uploader_button,
-                  url: 'https://api.imgur.com/3/upload',
-                  name: 'image',
-                  responseType: 'json',
-                  allowedExtensions: ['jpg', 'jpeg', 'png'],
-                  customHeaders: {'Authorization': 'Client-ID @@imgurtoken'},
-
-                  onSubmit: function(filename, extension) {
-                      console.log('submitted image to api');
-                      progress.classList.remove("hidden");
-                      this.setProgressBar(progress);
-                  },
-                  onComplete: function(filename, response) {
-
-                      console.log('response: ', response);
-
-                      progress.classList.add("hidden");
-
-                      if (!response) {
-                          console.log('image upload failed');
-                          progress[0].child[0].classList.remove('progress-bar-success');
-                          progress[0].child[0].classList.add('progress-bar-danger');
-                          return false;
-                      }
-
-                      image_uploader_url.val(response.data.link);
-                  }
-            });
         };
 
-        return { makeForm : makeForm };
+        $('#event-date-time-input').flatpickr(config);
+
+    }
+
+    function _bindLitterEvents () {
+        _initUploader();
+        drawing.init('polyline');
+    }
+
+    function _bindAreaEvents () {
+        drawing.init('polygon');
+    }
+
+    function _bindLinkmarkerEvents (id) {
+
+        var btn_opengraph_fetch = $('.btn-opengraph-fetch');
+        var og_content = document.getElementById('opengraph-content')
+        var toggle_buttons = function (i) {
+
+          if ( i === 'start' ) {
+
+            btn_opengraph_fetch.text('...');
+            btn_opengraph_fetch.attr('disabled', 'disabled');
+
+          } else if ( i === 'stop' ) {
+
+            btn_opengraph_fetch.text('Fetch');
+            btn_opengraph_fetch.removeAttr('disabled');
+          }
+        };
+
+        // Bind the action to launch the scraper
+        btn_opengraph_fetch.click( function () {
+
+            // Retrieve the value of the url
+            var url = $('#opengraph-url').val();
+
+            toggle_buttons('start');
+
+            if (!url) {
+              alerts.showAlert(34, 'danger', 2000);
+              toggle_buttons('stop');
+              return;
+            }
+
+            // Start the scraper promise
+            $.when( tools.openGraphScraper(url) ).then( function (data) {
+
+                console.log('data from openGraph Promise resolved:', data);
+
+                // Load the data into the template
+                og_content.innerHTML = tmpl('tmpl-result-opengraph', data);
+                // Remove input styles
+                $('#opengraph-content input, #opengraph-content textarea').css('border','none').css('background','transparent').css('box-shadow', 'none');
+
+                toggle_buttons('stop');
+
+            }).catch( function () {
+                toggle_buttons('stop');
+            });
+        });
+    }
+
+    function _initUploader () {
+
+        var image_uploader        = document.getElementById('image-uploader');
+        var image_uploader_button = document.getElementById('btn-image-uploader');
+        var image_uploader_url    = document.getElementById('image-uploader-url');
+        var progress              = document.getElementById('progress');
+
+        var uploader = new ss.SimpleUpload({
+
+              button: image_uploader_button,
+              url: 'https://api.imgur.com/3/upload',
+              name: 'image',
+              responseType: 'json',
+              allowedExtensions: ['jpg', 'jpeg', 'png'],
+              customHeaders: {'Authorization': 'Client-ID @@imgurtoken'},
+
+              onSubmit: function(filename, extension) {
+                  console.log('submitted image to api');
+                  progress.classList.remove("hidden");
+                  this.setProgressBar(progress);
+              },
+              onComplete: function(filename, response) {
+
+                  console.log('response: ', response);
+
+                  progress.classList.add("hidden");
+
+                  if (!response) {
+                      console.log('image upload failed');
+                      progress[0].child[0].classList.remove('progress-bar-success');
+                      progress[0].child[0].classList.add('progress-bar-danger');
+                      return false;
+                  }
+
+                  image_uploader_url.val(response.data.link);
+              }
+        });
+    }
+
+    function makeForm (id, type) {
+
+        console.log('id from forms.makeForm(): ', id);
+        console.log('type from forms.makeForm(): ', type);
+
+        // Build the garbage type multipicker
+        if ( type === 'garbage' || type === 'litter' ) {
+
+            document.getElementById('type-select').innerHTML = tmpl('tmpl-form-garbage-type', garbagetypes);
+        }
+
+        // Hide the close button in the sidebar when we show forms because they have a cancel button
+        $('.close-right').addClass('hidden');
+
+        // Forms for single point markers
+        var feature = maps.unsavedMarkersLayerGroup.getLayer(id);
+
+        try {
+
+            var latlng = feature.getLatLng();
+            $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
+
+        } catch (e) {
+
+            console.log ('latlngs will be set from draw.js', e);
+        }
+
+        // init event listener and set forms widget options
+        _bindEvents(id, type);
+    }
+
+    return { makeForm : makeForm }
 }());
