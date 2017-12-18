@@ -32,7 +32,7 @@ var features =  ( function () {
         }
     }
 
-    function _loadGarbage () {
+    function _loadGarbages () {
 
         var fetchGarbage = $.ajax({
             type       : api.readTrashWithinBounds.method,
@@ -94,7 +94,7 @@ var features =  ( function () {
         });
     }
 
-    function _loadCleaning () {
+    function _loadCleanings () {
 
         var fetchCleaning = $.ajax({
             type       : api.readCleaningWithinBounds.method,

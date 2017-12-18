@@ -2,17 +2,18 @@
 /* global L, $, tools, alerts, api, ui */
 
 /**
-  * The necessary configurations that are used by the UI
-  *
-  * api.create.trash
-  * api.create.cleaning
-  * api.create.litter ...
-  *
-  * api.read.['','','',''] ...
-  *
-  * TODO build api object recursively from subobjects
-  *
+  * The necessary configurations that are used by the UI  *
   */
+
+// TODO leaner api
+// feature: {
+//   type: 'feature_type',
+//   options: {
+//     latlngs: '',
+//     todo: '',
+//     ...
+//   }
+// }
 
 var api = {
     server: '@@server',
