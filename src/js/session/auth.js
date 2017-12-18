@@ -21,11 +21,10 @@ var auth = ( function () {
 
         // UI changes when user logs in or out
         var classic_session = localStorage.getItem('classic');
-
-        var session_button = $(".session-button-topbar>a");
-        var user_tools     = $("#user-tools");
-        var session_link   = $(".session-link");
-        var mobile_menu    = $(".mobile-menu");
+        var session_button  = $(".session-button-topbar>a");
+        var user_tools      = $("#user-tools");
+        var session_link    = $(".session-link");
+        var mobile_menu     = $(".mobile-menu");
 
         var account_info_link_html     = '<li id="account-info-link"><a href="#/info/account" data-navigo>Account info</a></li>';
         var account_info_button        = '<a id="account-info-mobile" ref="#/info/account" class="btn btn-default btn-lg btn-block" data-navigo><span class="fa fa-fw fa-user"></span> Account info</a>';
