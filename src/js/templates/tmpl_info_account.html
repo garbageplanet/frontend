@@ -7,22 +7,16 @@
   <div class="tab-view">
 
       <ul class="nav nav-tabs nav-justified" role="tablist">
-        <li class="active">
-          <a data-target="#user-info-main"  data-toggle="tab" class="tab-default">
-            <span class="fa fa-fw fa-user"></span>
-          </a>
-        </li>
-        <li>
-          <a data-target="#user-info-terms" data-toggle="tab">
-            <span class="fa fa-fw fa-info">
-            </span>
-          </a>
-        </li>
+
+        <li class="active"><a data-target="#user-info-main"  data-toggle="tab" class="tab-default"><span class="fa fa-fw fa-user"></span></a></li>
+
+        <li><a data-target="#user-info-terms" data-toggle="tab"><span class="fa fa-fw fa-info"></span></a></li>
+
       </ul>
 
       <div class="tab-content">
 
-        <div class="tab-pane active" role="tabpanel">
+        <div class="tab-pane active" id="user-info-main" role="tabpanel">
 
           <h3>Welcome, <span>{%=o.username%}</span></h3>
 

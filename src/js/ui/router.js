@@ -123,9 +123,15 @@ router.on({
 
       console.log('tmpl string', tmplstring);
 
-      ui.sidebar.setContent( tmpl( tmplstring, strings.credits) );
-      ui.sidebar.show();
+      // Init seesion with 'view' to check user info
+      if (params.target === 'account') {
 
+        session.init('view');
+
+      } else {
+        ui.sidebar.setContent( tmpl( tmplstring, strings.credits) );
+        ui.sidebar.show();
+      }
    }}
 }).resolve();
 
@@ -153,7 +159,7 @@ router.on({
       ui.sidebar.setContent( tmpl( tmplstring, strings) );
 
       // Init the desired auth method
-      auth.init(params.target);
+      session.init(params.target);
 
       // Initialize the data-navigo links after each route is visited to set the links in the views
       router.updatePageLinks();

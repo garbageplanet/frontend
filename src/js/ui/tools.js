@@ -490,9 +490,6 @@ var tools = {
         elem.setAttribute("href", datastr);
         elem.setAttribute("download", "data.json");
         elem.click();
-    },
-    makeAjaxCall: function (settings) {
-      return 
     }
 };
 

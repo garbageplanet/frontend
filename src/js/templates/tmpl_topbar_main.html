@@ -18,25 +18,25 @@
 
             <li class="dropdown">
               <a title="Map and data tools" class="dropdown-toggle btn" data-toggle="dropdown" href="#"><span class="fa fa-fw fa-cloud-download"></span><span class="hidden title-collapsed">Map tools</span></a>
-              <ul class="dropdown-menu" id="map-tools">
-                <li><a id="modal-list-garbage" name="garbage" class="modal-link modal-list-garbage">Get data</a></li>
-                <li><a id="modal-list-cleaning" name="cleaning" class="modal-link modal-list-cleaning">Cleaning calendar</a></li>
+              <ul class="dropdown-menu" id="dropdown-map-tools">
+                <li><a title="Download map data" id="modal-list-garbage"  href="/info/data" name="garbage" class="modal-link modal-list-garbage" data-navigo>Get data</a></li>
+                <li><a title="Cleaning calendar" id="modal-list-cleaning" href="/info/calendar" name="cleaning" class="modal-link modal-list-cleaning" data-navigo>Cleaning calendar</a></li>
                 <li class="divider"></li>
-                <li><a id="btn-trashbins" href="#">Nearby trashbins</a></li>
-                <li class="disabled"><a class="" href="#">Local forecast</a></li>
-                <li class="disabled"><a class="" href="#">Hotspots</a></li>
-                <li class="disabled"><a class="" href="#">Create route</a></li>
-                <li class="disabled"><a class="" href="#">Area feed</a></li>
+                <li><a id="btn-trashbins" href="/info/trashbins" data-navigo>Nearby trashbins</a></li>
+                <li class="disabled"><a href="/info/forecast" data-navigo>Local forecast</a></li>
+                <li class="disabled"><a href="/info/hotspots" data-navigo>Hotspots</a></li>
               </ul>
             </li>
 
             <li class="dropdown">
               <a title="User menu and platform infos" class="dropdown-toggle btn" data-toggle="dropdown" href="#"><span class="fa fa-fw fa-user"></span><span class="hidden title-collapsed">User tools</span></a>
-              <ul class="dropdown-menu" id="user-tools">
-                <li id="session-button-topbar"><a href="/auth/login" data-navigo>Login</a></li>
+              <ul class="dropdown-menu" id="dropdown-user-tools">
+
+                <li><a id="user-tools-auth"href="/auth/login" data-navigo>Login</a></li>
                 <li class="divider"></li>
                 <li><a href="/info/credits" data-navigo>About</a></li>
-                <li class="disabled"><a id="btn-tour">Tour</a></li>
+                <li class="disabled"><a href="/info/tour" id="btn-tour" data-navigo>Tour </a></li>
+
               </ul>
             </li>
 

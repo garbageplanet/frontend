@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   ui.init();
 
-  auth.init('check');
+  session.init('check');
 
   if ( showtour )  {
       touring.init();

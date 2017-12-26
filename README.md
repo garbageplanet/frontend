@@ -26,12 +26,11 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 
 ### FIXME
 
-- [ ] rendering account info view in auth route is buggy
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
 
 ### TODO
 
-- [ ] build a minimal entry point for loading the content via cdn and serve as JAM sta
+- [ ] build a minimal entry point for loading the content via cdn
 - [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
 - [ ] reduce redundancy in the form templates
 - [ ] upload to imgur as user

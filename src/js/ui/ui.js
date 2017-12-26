@@ -253,9 +253,9 @@ var ui = ( function () {
 
     function _bindTopbarEvents () {
 
-        var usertools = $('#topbar').find('#user-tools'),
-            trashbinbutton = $('#topbar').find('#btn-trashbins'),
-            modallink = $('#topbar').find('.modal-link');
+        // var usertools = $('#topbar').find('#dropdown-user-tools');
+        var trashbinbutton = $('#topbar').find('#btn-trashbins');
+        var modallink = $('#topbar').find('.modal-link');
 
         // Activate dropdown menu links in topbar
         // usertools.on('click', 'a', function (e) {
@@ -269,6 +269,7 @@ var ui = ( function () {
         // });
 
         // Show nearby trashbins
+        // TODO move these to router
         trashbinbutton.on('click', function () {
 
             if( maps.map.getZoom() < 15 ) {
@@ -282,6 +283,7 @@ var ui = ( function () {
         });
 
         // Set the event listeners for modals in the topbar or elsewhere
+        // TODO move these to router
         modallink.on('click', function (e) {
 
             e.preventDefault();

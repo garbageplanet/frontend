@@ -96,6 +96,7 @@
                           'latlngs': so.latlngs
                         , 'amount': so.amount
                         , 'types': so.type
+                        , 'note': so.note
                         , 'image_url': so.image
                         , 'tag': so.tags
                         , 'physical_length': so.lengthm

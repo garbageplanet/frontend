@@ -5,7 +5,7 @@
 * All code related to drawing shapes
 */
 
-var drawing = (function () {
+var drawing = ( function () {
 
     'use strict';
 
@@ -73,12 +73,6 @@ var drawing = (function () {
         });
     }
 
-    function init (type) {
-          // drawing apabilities are only called when the forms are loaded in /js/forms.js
-          maps.map.addControl(draw_control);
-          _bindEvents(type);
-      }
-
     function _bindPolygonEvents () {
 
       var polygon_listener = new L.Draw.Polygon(maps.map, {
@@ -140,7 +134,11 @@ var drawing = (function () {
         });
     }
 
-    return {   init        : init
-             , drawControl : draw_control
-            };
+    function init (type) {
+          // drawing apabilities are only called when the forms are loaded in /js/forms.js
+          maps.map.addControl(draw_control);
+          _bindEvents(type);
+      }
+
+    return { init : init }
 }());
