@@ -9,7 +9,6 @@ var drawing = ( function () {
 
     'use strict';
 
-    var cancel_button = $('.btn-cancel');
     var draw_control = new L.Control.Draw({
         position: 'topright',
         draw: {
@@ -23,17 +22,13 @@ var drawing = ( function () {
 
         var draw_button = $('.btn-draw');
 
+        // Disable regular map click and load drawing listeners
         draw_button.on('click', function(e) {
 
             maps.map.off('click', actions.mapClick);
 
-            if (type === 'polyline') {
-                _bindPolylineEvents();
-            }
+            type === 'polyline'? _bindPolylineEvents() : _bindPolygonEvents();
 
-            else if (type === 'polygon') {
-                _bindPolygonEvents();
-            }
         });
 
         // Disable start drawing buttons
@@ -53,7 +48,8 @@ var drawing = ( function () {
             var latlngs = e.layer.getLatLngs().toString().replace(/\(/g, '[').replace(/\)/g, ']').replace(/LatLng/g, '');
 
             // Add the latlngs to the form
-            $('.latlngs').val(latlngs);
+            document.querySelector('.latlngs').value = latlngs;
+            // $('.latlngs').val(latlngs);
 
             maps.map.fitBounds(e.layer.getBounds(), {paddingBottomRight: [300,0]});
 
@@ -63,7 +59,7 @@ var drawing = ( function () {
             maps.map.on('click', actions.mapClick);
 
             // Delete the feature on cancel button
-            cancel_button.on('click', function () {
+            document.querySelector('.btn-cancel').addEventListener('click', function () {
                 maps.map.removeLayer(e.layer);
             });
 
@@ -91,7 +87,7 @@ var drawing = ( function () {
 
       polygon_listener.enable();
 
-      cancel_button.on('click', function () {
+      document.querySelector('.btn-cancel').addEventListener('click', function () {
 
           polygon_listener.disable();
       });
@@ -128,7 +124,7 @@ var drawing = ( function () {
           });
         });
 
-        cancel_button.on('click', function () {
+        document.querySelector('.btn-cancel').addEventListener('click', function () {
 
             polyline_listener.disable();
         });

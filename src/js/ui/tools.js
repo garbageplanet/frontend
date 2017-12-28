@@ -4,8 +4,7 @@
 /**
   * @namespace jQuery.fn.serializeObject
   * @method serializeObject()
-  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes
-                      become keys and value attributes become values. Need to collect form data and send it to the backend
+  * @returns {object} aggregated object - when called on a selection of inputs in a form, returns an object. Name attributes become keys and value attributes become values. Need to collect form data and send it to the backend
   * @see https://gist.github.com/dshaw/449041
   * @requires jQuery
   */
@@ -31,8 +30,7 @@ $.fn.serializeObject = function () {
 /**
   * @namespace Leaflet.LatLngBounds.prototype.toBBoxStringInverse
   * @method toBBoxStringInverse()
-  * @returns {object} string object - the bounding box coordinates returned by default by Leaflet
-                      are not in the order expected for making postgres bounding box requests in the backend.
+  * @returns {object} string object - the bounding box coordinates returned by default by Leaflet are not in the order expected for making postgres bounding box requests in the backend.
   * @requires Leaflet
   */
 L.LatLngBounds.prototype.toBBoxStringInverse = function () {
@@ -66,43 +64,28 @@ L.Map.prototype.panToOffset = function (latlng, offset, zoom, options) {
 };
 /**
   * Tools an utilities.
-  * @namespace tools
-  * @name tools
-  * @type {Object}
   */
 var tools = {
-/**
-  * @namespace tools
-  * @method makeEllipsis()
-  * @param {obj} object - the string to shorten.
-  * @param {n} integer - the length of the final shortened string.
-  * @returns {string} shortened string - returns an inputed string with ellipsis (...)
-  * @see http://stackoverflow.com/questions/1199352/smart-way-to-shorten-long-strings-with-javascript/1199420#1199420
-  */
     makeEllipsis: function (obj, n) {
         return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
     },
- /**
-   * @namespace tools
-   * @method insertString()
-   * @param {obj} object - the string to modify.
-   * @param {index} integer - the position in the string where a character is to be inserted.
-   * @param {string} string - the string to be added to the original string.
-   * @returns {string} modified string - returns the inputed string with added string.
-   */
-    insertString: function( obj, index, string) {
+    insertString: function (obj, index, string) {
+
         if (index > 0) {
+
             return obj.substring(0, index) + string + obj.substring(index, obj.length);
+
         } else {
+
             return string + obj;
         }
     },
     reverseGeocode: function (o) {
 
-      var latlng = o.replace(', ', '+');
-      // console.log(latlng);
+        var latlng = o.replace(', ', '+');
+        // console.log(latlng);
 
-      var token = '@@opencagetoken';
+        var token = '@@opencagetoken';
 
         if ( latlng ) {
 
@@ -147,25 +130,54 @@ var tools = {
             return ( new Date(d) < new Date() ) ? maps.icons.pastCleaningMarker: maps.icons.cleaningMarker;
         }
     },
-    /**
-      * Getting bounds in a proper format for postGIS calls
-      * toBBoxStringInverse() is a custom map method
-      * @namespace tools
-      * @method getCurrentBounds()
-      * @param none
-      * @returns {array} [S, W, N, E] map corners in viewport
-      */
-    getCurrentBounds: function () {
-        var bounds = maps.map.getBounds().toBBoxStringInverse();
+    getInvertedBounds: function (map) {
+        var bounds = map.getBounds().toBBoxStringInverse();
         return bounds;
     },
-    /**
-      * @namespace tools
-      * @method getLeafletIdfromDatabaseId()
-      * @param {type} string - the type of feature
-      * @param {id} integer - the database id of the feature
-      * @returns {obj} the leaflet object that matches the db id
-      */
+    getRoundedBounds: function (o) {
+
+         // We artibtrarily set outer bounds to one degree more NE and one less SW
+         o._northEast.lat = Math.ceil(o._northEast.lat) + 1;
+         o._northEast.lng = Math.ceil(o._northEast.lng) + 1;
+         o._southWest.lat = Math.floor(o._southWest.lat) - 1;
+         o._southWest.lng = Math.floor(o._southWest.lng) - 1;
+         return o;
+    },
+    checkIfInsideRoundedBounds: function (bounds) {
+
+        if ( tools.states.roundedBounds && tools.states.roundedBounds.contains(bounds) ) {
+
+            return true;
+
+        } else {
+
+            var new_bounds = maps.map.getBounds();
+            rounded_bounds = tools.getRoundedBounds(new_bounds);
+
+            tools.states.roundedBounds = rounded_bounds;
+
+            return false;
+        }
+    },
+    getTrashBins: function (map) {
+
+        if ( map.getZoom() < 15 ) {
+
+            alerts.showAlert(31, 'info', 2000);
+            return;
+        }
+
+        // load trashbins icons on the map
+        var query = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
+
+        var osmTrashbinLayer = new L.OverPassLayer({
+            query: query
+        });
+
+        console.log('loading bins');
+
+        map.addLayer(osmTrashbinLayer);
+    },
     getLeafletObj: function (type, id) {
 
         var layername = type + 'LayerGroup';
@@ -181,74 +193,6 @@ var tools = {
 
         return layer;
     },
-    /*roundBounds: function(b) {
-    // TODO
-        var _NE_lat = o._northEast.lat,
-            _SW_lat = o._southWest.lat,
-            _NE_lng = o._northEast.lng,
-            _SW_lng = o._southWest.lng;
-    },*/
-    /*cloneLayer: function(layer) {
-
-        var options = layer.options;
-
-        // Marker layers
-        if (layer instanceof L.Marker) {
-            return L.marker(layer.getLatLng(), options);
-        }
-
-        // Vector layers
-        if (layer instanceof L.Polygon) {
-            return L.polygon(layer.getLatLngs(), options);
-        }
-        if (layer instanceof L.Polyline) {
-            return L.polyline(layer.getLatLngs(), options);
-        }
-
-        // layer/feature groups
-        if (layer instanceof L.LayerGroup || layer instanceof L.FeatureGroup) {
-            var layergroup = L.layerGroup();
-            layer.eachLayer(function (inner) {
-                layergroup.addLayer(tools.cloneLayer(inner));
-            });
-            return layergroup;
-        }
-
-        throw 'Unknown layer, cannot clone this layer';
-    },*/
-    /*checkLayerContents: function(oldl, newl) {
-
-        // FIXME this doesn't work because markers lose their event listerners and icons
-        // If the non-temp layer is empty get the fetched data into it
-        if (oldl.getLayers().length < 1){
-
-            oldl.clearLayers();
-            map.removeLayer(oldl);
-            oldl = tools.cloneLayer(newl);
-            newl.clearLayers();
-            map.removeLayer(newl);
-            oldl.addTo(map);
-            return;
-        }
-
-        // If the non-temp layer isn't empty, compare contents
-        if (oldl.getLayers().length > 0) {
-
-            if (JSON.stringify(newl.getLayers()) !== JSON.stringify(oldl.getLayers())) {
-
-                map.removeLayer(oldl);
-                oldl.clearLayers();
-                oldl = this.cloneLayer(newl);
-                oldl.addTo(map);
-                map.removeLayer(newl);
-                newl.clearLayers();
-                return;
-
-            } else {
-                return;
-            }
-        }
-    },*/
     getVerticalOffset: function () {
 
         return !window.isMobile ? [0, - $(window).height() / 4 + 20] : [0, - $(window).height() / 4]
@@ -287,20 +231,6 @@ var tools = {
 
         } else { return; }
     },
-    /* App states for keeping track of things TODO make these immutable */
-    states: {
-        currentZoom: null
-      , initialBbox: []
-      , roundedBounds: null
-      , currentFeatureId: null
-      , login: null
-    },
- /**
-   * @namespace tools - a helper function to check the UI for what's currently going on so that one map
-                                           widget closes or stops when another one is called
-   * @method checkOpenUiElement()
-   * @param {object} map object - the main map object, only needed to be able to identify clicks on cluser markers
-   */
     checkOpenUiElement: function (map){
 
         // TODO can we make the same function with a switch statement?
@@ -372,18 +302,6 @@ var tools = {
 
         return true;
     },
- /**
-   * @namespace tools - the app token to talk to the backend.
-   */
-    token: '@@windowtoken',
- /**
-   * @namespace tools - opengraph data scraper
-   * @method randomString()
-   * @param {string} url - URL of the website form which the open graph data needs to be retrieved using the opengraph.io API,
-                           used in the 'link' marker creation to enable users to add map marker with content tretived from
-                           external webpages.
-   * @return - Returns a Promise obj with scrapped data
-   */
     openGraphScraper: function ( url ) {
 
         var token = '@@opengraphiotoken';
@@ -432,14 +350,6 @@ var tools = {
       });
 
     },
- /**
-   * @namespace tools
-   * @method randomString()
-   * @returns {string} radnom string - Returns a random alphanumeric string [a-z][A-Z][0-9] of determined length, used when
-                       creating a game tile and the user didn't give a title to the tile.
-   * @param {string} len - Length of the string to be returned
-   * @requires Leaflet
-   */
     randomString: function (len) {
         var a = '',
             b = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -448,12 +358,6 @@ var tools = {
         }
         return a;
     },
- /**
-   * @namespace tools
-   * @method mobileCheck()
-   * @returns {boolean} true - Returns true if the device on which the site is loaded passes the L.Browser leaflet mobile check.
-   * @requires Leaflet
-   */
     listMarkersInView: function (type) {
 
         var tempMarkers = [];
@@ -490,8 +394,22 @@ var tools = {
         elem.setAttribute("href", datastr);
         elem.setAttribute("download", "data.json");
         elem.click();
-    }
+    },
+    states: {
+      /**
+        * App shared states
+        * TODO set writeability / Object.freeze()
+        */
+        currentZoom: null
+      , roundedBounds: null
+      , currentFeatureId: null
+      , loggedin: null
+    },
+    token: '@@windowtoken'
 };
+
+// Seal tools object so we can only change current props
+// Object.seal(tools);
 
 // Check if mobile device on load
 window.isMobile = L.Browser.mobile;

@@ -9,41 +9,49 @@ var features =  ( function () {
 
     'use strict';
 
-    var useToken = localStorage.getItem('token') || tools.token;
+    var token = localStorage.getItem('token') || tools.token;
 
     function loadFeature (type) {
 
-        var alltypes = ['garbage','cleaning','litter','area','opengraph'];
-        var type     = type.trim();
+        // only run this function if we're outisde originally loaded bounds
+        if ( tools.checkIfInsideRoundedBounds(bounds) ) {
+            return;
+        }
+
+        var inverted_bounds = tools.getInvertedBounds(maps.map);
+        var alltypes                = ['garbage','cleaning','litter','area','opengraph'];
+        var type                    = type.trim();
 
         switch (type) {
 
-            case 'garbage'  : _loadGarbages(); break;
-            case 'cleaning' : _loadCleanings(); break;
-            case 'litter'   : _loadLitters(); break;
-            case 'area'     : _loadAreas(); break;
-            case 'opengraph': _loadOpengraph(); break;
+            case 'garbage'  : _loadGarbages(inverted_bounds); break;
+            case 'cleaning' : _loadCleanings(inverted_bounds); break;
+            case 'litter'   : _loadLitters(inverted_bounds); break;
+            case 'area'     : _loadAreas(inverted_bounds); break;
+            case 'opengraph': _loadOpengraph(inverted_bounds); break;
             case 'all'      :
-                alltypes.forEach(function(item) {
-                    console.log('Loading all features, item value from features.loadFeature(): ', item);
-                    loadFeature(item);
-                });
+
+                  alltypes.forEach( function (item) {
+                      console.log('Loading all features, item value from features.loadFeature(): ', item);
+                      loadFeature(item);
+                  });
+
                 break;
         }
     }
 
-    function _loadGarbages () {
+    function _loadGarbages (b) {
 
-        var fetchGarbage = $.ajax({
+        var fetch_garbage = $.ajax({
             type       : api.readTrashWithinBounds.method,
-            url        : api.readTrashWithinBounds.url(tools.getCurrentBounds()),
+            url        : api.readTrashWithinBounds.url(b),
             ifModified : true,
-            headers    : {"Authorization": 'Bearer ' + useToken},
+            headers    : {"Authorization": 'Bearer ' + token},
             success    : function (data) {console.log('Success getting garbage marker data', data);},
             error      : function (data) {console.log('Error getting garbage marker data', data);}
         });
 
-        fetchGarbage.done(function (data) {
+        fetch_garbage.done( function (data) {
 
             if (!data || data.length < 1) {
 
@@ -77,10 +85,8 @@ var features =  ( function () {
                           , size:         o.size
                           , tags:         o.tag
                           , types:        o.types.join(', ')
-
                           , icon: tools.setMarkerIcon(o.cleaned, null)
                           , todo: (o.cleaned === 1) ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo)
-
                           , feature_type: 'garbage'
                         });
 
@@ -94,18 +100,18 @@ var features =  ( function () {
         });
     }
 
-    function _loadCleanings () {
+    function _loadCleanings (b) {
 
-        var fetchCleaning = $.ajax({
+        var fetch_cleaning = $.ajax({
             type       : api.readCleaningWithinBounds.method,
-            url        : api.readCleaningWithinBounds.url(tools.getCurrentBounds()),
+            url        : api.readCleaningWithinBounds.url(b),
             ifModified : true,
-            headers    : {"Authorization": 'Bearer ' + useToken},
+            headers    : {"Authorization": 'Bearer ' + token},
             success    : function (data) {console.log('Success getting cleaning event (marker) data', data);},
             error      : function (data) {console.log('Error getting cleaning event (marker) data', data);}
         });
 
-        fetchCleaning.done(function (data) {
+        fetch_cleaning.done(function (data) {
 
             if (!data || data.length < 1) { return; }
 
@@ -126,30 +132,29 @@ var features =  ( function () {
                             , recurrence:  o.recurrence
                             , ext_link:    o.note
                             , icon:        tools.setMarkerIcon(null, o.datetime)
-
                             , feature_type: 'cleaning'
                         });
 
                     marker.addTo(maps.cleaningLayerGroup);
                 });
         });
-        /* fetchCleaning.fail(function(data){
+        fetch_cleaning.fail(function(data){
             alerts.showAlert(10, 'warning', 1500);
-        });*/
+        });
     }
 
-    function _loadAreas () {
+    function _loadAreas (b) {
 
-        var fetchArea = $.ajax({
+        var fetch_area = $.ajax({
             type       : api.readAreaWithinBounds.method,
-            url        : api.readAreaWithinBounds.url(tools.getCurrentBounds()),
+            url        : api.readAreaWithinBounds.url(b),
             ifModified : true,
-            headers    : {"Authorization": 'Bearer ' + useToken},
+            headers    : {"Authorization": 'Bearer ' + token},
             success    : function () {console.log('Success getting area data');},
             error      : function () {console.log('Error getting area data');}
         });
 
-        fetchArea.done(function (data) {
+        fetch_area.done(function (data) {
 
             if (!data || data.length < 1) { return; }
 
@@ -170,7 +175,6 @@ var features =  ( function () {
                       , tags:         o.tag
                       , title:        o.title
                       , modified_at:  o.updated_at
-
                       , feature_type: 'area'
                       , shape:        true
                       , color:        '#33cccc'
@@ -180,31 +184,26 @@ var features =  ( function () {
                   });
 
                   maps.areaLayerGroup.addLayer(polygonLayer);
-                  // map.addLayer(areaLayerGroup);
-                  /*polygonLayer.on('click', function(e) {
-                      // Bind click listener
-                      actions.featureClick(e, polygonLayer);
-                  });*/
                 }
             );
         });
-        fetchArea.fail(function () {
+        fetch_area.fail( function () {
             alerts.showAlert(10, 'warning', 1500);
         });
     }
 
-    function _loadLitters () {
+    function _loadLitters (b) {
 
-        var fetchLitter = $.ajax({
+        var fetch_litter = $.ajax({
             type       : api.readLitterWithinBounds.method,
-            url        : api.readLitterWithinBounds.url(tools.getCurrentBounds()),
+            url        : api.readLitterWithinBounds.url(b),
             ifModified : true,
-            headers    : {"Authorization": 'Bearer ' + useToken},
+            headers    : {"Authorization": 'Bearer ' + token},
             success    : function (data) {console.log('Success getting litter (polyline) data', data);},
             error      : function (data) {console.log('Error getting litter (polyline) data', data);}
         });
 
-        fetchLitter.done(function(data) {
+        fetch_litter.done(function(data) {
 
             if (!data || data.length < 1) { return; }
 
@@ -228,7 +227,6 @@ var features =  ( function () {
                     , physical_length: o.physical_length
                     , tags: o.tag
                     , types: o.types.join(', ')
-
                     , shape: true
                     , feature_type: 'litter'
                     , clickable: true
@@ -238,18 +236,14 @@ var features =  ( function () {
                 });
 
                 maps.litterLayerGroup.addLayer(polylineLayer);
-                // map.addLayer(litterLayerGroup);
-                /*polylineLayer.on('click', function(e) {
-                    // Bind click listener
-                    actions.featureClick(e, polylineLayer);
-                });*/
             });
         });
-        /* fetchLitter.fail(function() {}); */
-
+        fetch_litter.fail(function() {
+          alerts.showAlert(10, 'warning', 1500);
+        });
     }
 
-    function _loadOpengraph () {
+    function _loadOpengraph (b) {
         // TODO
         return;
     }
@@ -257,93 +251,78 @@ var features =  ( function () {
     function _bindEvents () {
 
         console.log('Binding map self events.');
-        // Load features conditionally if the wider bbox is set
-        // if (tools.states.initialBbox.length !== 0) {
-            // if the map was already loaded we listen to specific events before fetching features
-            maps.map.on('zoomstart dragend zoomend', function ( e ) {
 
-                console.log("map move event: ", e);
+        maps.map.on('zoomstart dragend zoomend', function (e) {
 
-                var eventtype = e.type.trim();
-                var newZoom = e.target.getZoom();
-                // Not a good mechanism because zoom changes in increments of a single level
-                var zoomDiff = Math.abs(newZoom - tools.states.currentZoom);
-                var lengthDiff = e.distance;
+            var bounds = maps.map.getBounds()
 
-                // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical dragging
-                var viewportRatio = window.innerWidth / 3;
+            console.log("map move event: ", e);
 
-                switch ( eventtype ) {
+            var eventtype = e.type.trim();
+            var newZoom = e.target.getZoom();
+            var zoomDiff = Math.abs(newZoom - tools.states.currentZoom);
+            var lengthDiff = e.distance;
 
-                    case 'zoomend':
+            // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical dragging
+            // TODO remove all the conditions blocks once we load a larger area
+            var viewportRatio = window.innerWidth / 3;
 
-                        console.log('zoomend event');
-                        console.log("fist zoom: ", tools.states.currentZoom);
-                        console.log("new zoom: ", newZoom);
-                        console.log("zoom difference: ", zoomDiff);
+            switch ( eventtype ) {
 
-                        // TODO we need a better way to load marker from the API
-                        // for example we can pre-load from a larger area than current viewport bbox
-                        // and only check with the backend if the viewport moves out of the bound of the currently
-                        // loaded area, if it is we can then reload more markers.
-                        // the only problem remains with the clusters, because when they are exploded
-                        // the single markers lose their styles
-                        if ( newZoom >= 2 && zoomDiff >= 3 ) {
+                case 'zoomend':
+
+                    console.log('zoomend event');
+                    console.log("fist zoom: ", tools.states.currentZoom);
+                    console.log("new zoom: ", newZoom);
+                    console.log("zoom difference: ", zoomDiff);
+
+                    if ( newZoom >= 2 && zoomDiff >= 3 ) {
+
+                        features.loadFeature('cleaning');
+                        features.loadFeature('garbage');
+                        features.loadFeature('opengraph');
+
+                       if ( newZoom <= 16 ) {
+
+                            features.loadFeature('litter');
+                            features.loadFeature('area');
+                        }
+
+                    } else if ( !zoomDiff ) {
+                        // if there's no prior zoom value it means we're loading for the first time
+
+                        features.loadFeature('all');
+                    }
+
+                break;
+                case 'dragend':
+                    if ( lengthDiff >= viewportRatio ) {
+
+                        if ( newZoom >= 2 ) {
 
                             features.loadFeature('cleaning');
                             features.loadFeature('garbage');
                             features.loadFeature('opengraph');
 
-                           if ( newZoom <= 16 ) {
-
+                            if ( newZoom >= 8 && newZoom <= 16 ) {
+                                // We don't load large features if we're too close or too far
                                 features.loadFeature('litter');
                                 features.loadFeature('area');
                             }
-
-                        } else if ( !zoomDiff ) {
-                            // if there's no prior zoom value it means we're loading for the first time
-                            features.loadFeature('all');
                         }
-
-                    break;
-                    case 'dragend':
-                        if ( lengthDiff >= viewportRatio ) {
-
-                            if ( newZoom >= 2 ) {
-
-                                features.loadFeature('cleaning');
-                                features.loadFeature('garbage');
-                                features.loadFeature('opengraph');
-
-                                if ( newZoom >= 8 && newZoom <= 16 ) {
-                                    // We don't load large features if we're too close or too far
-                                    features.loadFeature('litter');
-                                    features.loadFeature('area');
-                                }
-                            }
-                        }
-                    break;
-                    case 'zoomstart':
-                        tools.states.currentZoom = e.target.getZoom();
-                    break;
-                }
-            });
-        /*} else {
-            // else we load an area beyond the viewport to cache the features
-            var outerBbox = tools.getCurrentBounds();
-            console.log('value of outerBbox from features._bindEvents()', outerBbox);
-            tools.states.initialBbox = outerBbox;
-            maps.map.once('zoomend', function() {
-                // var currentbounds = tools.roundBounds(maps.map.getBounds());
-                tools.states.roundedBounds = null;
-                console.log('bbox string: ', maps.map.getBounds());
-                _loadAllFeatures();
-            });
-        }*/
+                    }
+                break;
+                case 'zoomstart':
+                    tools.states.currentZoom = e.target.getZoom();
+                break;
+            }
+        });
     }
 
     function init () {
-        _bindEvents();
+
+      maps.map.once('ready', _bindEvents);
+
     }
 
     return {

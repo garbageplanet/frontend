@@ -122,7 +122,7 @@ gulp.task('scripts:app', ['templates'], function () {
                     './src/js/config/api.js',
                     './src/js/ui/loader.js',
                     // './src/js/config/events.js',
-                    './src/js/config/strings.js',
+                    // './src/js/config/strings.js',
                     './src/js/templates/tmpl.js',
                     './src/js/ui/tools.js',
                     './src/js/ui/alerts.js',

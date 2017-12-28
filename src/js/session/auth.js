@@ -16,8 +16,6 @@ var session = ( function () {
 
     function _switchSession (o) {
 
-        // TODO Mobile menu
-        // UI changes when user logs in or out
         var classic_session = localStorage.getItem('classic');
         var user_tools      = $("#dropdown-user-tools");
         var session_button  = $("#user-tools-auth");
@@ -25,19 +23,22 @@ var session = ( function () {
 
         if ( o === "logout" ) {
 
-            var account_info_link = $('#account-info-link');
+            tools.states.loggedin = false;
+
+            var account_info_link = document.getElementById('account-info-link');
 
             if ( window.isMobile ) {
                 // Logout the anon login leaflet control so it is dusplayed again on the map
                 maps.glomelogincontrol.logout();
-                var account_info_button_mobile = $('#account-info-mobile');
-                $(account_info_button_mobile).remove();
+                // var account_info_button_mobile = $('#account-info-mobile');
+                document.querySelector('#account-info-mobile').remove();
+                // $(account_info_button_mobile).remove();
             }
 
             // TODO make this with templates
             $(session_button).text('Login').attr("href","/auth/login");
             $(session_button).attr("id","");
-            $(session_button).attr("data-navigo","");
+            // $(session_button).attr("data-navigo","");
             account_info_link.remove();
             $(user_tools).dropdown();
             $(session_link).removeClass('hidden');
@@ -54,6 +55,8 @@ var session = ( function () {
 
         if ( o === "login" ) {
 
+            tools.states.loggedin = true;
+
             if ( window.isMobile ) {
 
                 var account_info_button_mobile_html = '<a id="account-info-mobile" ref="/info/account" class="btn btn-default btn-lg btn-block" data-navigo><span class="fa fa-fw fa-user"></span> Account info</a>';
@@ -67,8 +70,7 @@ var session = ( function () {
             var account_info_link_html = '<li id="account-info-link"><a href="/info/account" data-navigo>Account info</a></li>';
 
             $(session_button).text("Logout").attr("href","/auth/logout");
-            // $(session_button).removeClass('dropdown-link');
-            $(session_button).attr("data-navigo","");
+            // $(session_button).attr("data-navigo","");
 
             // Set the links to account info
             $(user_tools).prepend(account_info_link_html);
@@ -133,6 +135,10 @@ var session = ( function () {
             console.log(account_data);
 
             ui.sidebar.setContent( tmpl('tmpl-info-account', account_data) );
+
+            // Scan newly create router links
+            router.updatePageLinks();
+
             ui.sidebar.show()
         }
     }
@@ -190,7 +196,7 @@ var session = ( function () {
 
     function _logIn (o) {
 
-        var logincall = $.ajax({
+        var login_call = $.ajax({
 
             type: api.createLogin.method,
             url : api.createLogin.url() + '/login',
@@ -200,7 +206,7 @@ var session = ( function () {
             }
         });
 
-        logincall.done(function (response) {
+        login_call.done(function (response) {
 
             console.log(response);
             console.log(response.token);
@@ -219,7 +225,6 @@ var session = ( function () {
 
                     // Log the user in the UI
                     _setAccount(true, data).then(() => {
-
                       _switchSession('login');
                       alerts.showAlert(13, 'success', 1500);
                     });
@@ -227,10 +232,11 @@ var session = ( function () {
             });
         });
 
-        logincall.fail(function (err) {
+        login_call.fail(function (err) {
             console.log(err);
             alerts.showAlert(10, 'danger', 3000);
             localStorage.clear();
+            tools.states.loggedin = false;
         });
     }
 
@@ -246,22 +252,23 @@ var session = ( function () {
     }
 
     function _logOut () {
-        // FIXME serverside logout backend replies 401
+
         if ( !localStorage.token ) {
 
             alerts.showAlert(23, 'info', 2000);
             localStorage.clear();
+            tools.states.loggedin = false;
         }
 
         else {
 
-            var useToken = localStorage.getItem('token') || tools.token;
+            var use_token = localStorage.getItem('token') || tools.token;
 
-            var logoutcall = $.ajax({
+            var logout_call = $.ajax({
 
                 method : api.logoutUser.method,
                 url    : api.logoutUser.url(),
-                headers: {'Authorization': 'Bearer ' + useToken},
+                headers: {'Authorization': 'Bearer ' + use_token},
                 success: function (response) {
                     // console.log(response);
                 },
@@ -271,17 +278,19 @@ var session = ( function () {
                 }
             });
 
-            logoutcall.done(function (data) {
+            logout_call.done(function (data) {
 
                 // console.log('logout response: ', data);
 
                 _switchSession('logout');
                 alerts.showAlert(22, 'info', 2000);
                 localStorage.clear();
+                tools.states.loggedin = false;
             });
 
-            logoutcall.fail(function(){
+            logout_call.fail(function(){
                 alerts.showAlert(10, 'danger', 2000);
+                tools.states.loggedin = false;
             });
         }
     }
@@ -290,7 +299,7 @@ var session = ( function () {
 
             console.log('reigtser obj:', o);
 
-            var registercall = $.ajax({
+            var register_call = $.ajax({
 
                 type: api.createUser.method,
                 url : api.createUser.url(),
@@ -307,7 +316,7 @@ var session = ( function () {
                 }
             });
 
-            registercall.done(function(response) {
+            register_call.done(function (response) {
 
                 localStorage.setItem('token', response.token);
 
@@ -328,9 +337,10 @@ var session = ( function () {
                 });
             });
 
-            registercall.fail( function () {
+            register_call.fail( function () {
                 alerts.showAlert(1, 'danger', 3500);
                 localStorage.clear();
+                tools.states.loggedin = false;
             });
 
         }
@@ -339,7 +349,7 @@ var session = ( function () {
 
             console.log('glomego clicked');
 
-            var glomecall = $.ajax({
+            var glome_call = $.ajax({
 
                 type    : api.createSoftAccount.method,
                 url     : api.createSoftAccount.url(),
@@ -352,18 +362,19 @@ var session = ( function () {
                 }
             });
 
-            glomecall.done( function (data) {
+            glome_call.done( function (response) {
 
                 if ( !glomeid || typeof glomeid === 'undefined' ) {
 
                     alerts.showAlert(12, 'warning', 3000);
+                    tools.states.loggedin = false;
                     return;
                 }
 
                 $.ajax({
                     method  : api.readSoftAccount.method,
-                    url     : api.readSoftAccount.url(glomeid),
-                    headers : {'Authorization': 'Bearer ' + token},
+                    url     : api.readSoftAccount.url(response.glomeid),
+                    headers : {'Authorization': 'Bearer ' + response.token},
                     dataType: 'json',
                     success : function (data) {
 
@@ -379,20 +390,44 @@ var session = ( function () {
                             _switchSession('login');
                             alerts.showAlert(13, 'success', 1500);
                           });
+
+                          tools.states.loggedin = true;
                         }
                     }
                 });
             });
 
-            glomecall.fail( function () {
+            glome_call.fail( function () {
                 alerts.showAlert(12, 'warning', 3000);
                 localStorage.clear();
+                tools.states.loggedin = false;
             });
 
         }
 
     function _glomePair () {
       //
+    }
+
+    function _sessionSuccessEvents (t) {
+
+      return function (t) {
+
+        if (t) {
+
+          alerts.showAlert(12, 'warning', 3000);
+          switchSession('login');
+          tools.states.loggedin = true;
+
+        } else {
+
+          alerts.showAlert(12, 'warning', 3000);
+          switchSession('logout');
+          localStorage.clear();
+          tools.states.loggedin = false;
+        }
+
+      }
     }
 
     function _resetPwd () {
@@ -405,19 +440,19 @@ var session = ( function () {
 
     function _deleteAccount (o) {
 
-        var classicSessionType = localStorage.getItem('classic');
+        var classic_session_type = localStorage.getItem('classic');
 
-        if ( classicSessionType === 'true' ) {
+        if ( classic_session_type === 'true' ) {
 
             console.log('Deleting account');
 
-            var useToken = localStorage.getItem('token');
+            var use_token = localStorage.getItem('token');
 
-            var deleteaccountcall = $.ajax({
+            var delete_account_call = $.ajax({
 
                 method : api.removeUser.method,
                 url    : api.removeUser.url(),
-                headers: {'Authorization': 'Bearer ' + useToken},
+                headers: {'Authorization': 'Bearer ' + use_token},
                 data   : {
                     'email': o.email,
                     'password': o.password
@@ -430,13 +465,13 @@ var session = ( function () {
                 }
             });
 
-            deleteaccountcall.done(function() {
+            delete_account_call.done( function () {
                 _switchSession('logout');
                 alerts.showAlert(17, 'success', 2000);
                 localStorage.clear();
             });
 
-            deleteaccountcall.fail(function() {
+            delete_account_call.fail( function () {
                 ui.sidebar.hide();
                 alerts.showAlert(10, 'danger', 2000);
             });
@@ -497,6 +532,7 @@ var session = ( function () {
          */
 
          switch (i) {
+
            case 'logout': _logOut(); break;
 
            case 'check':
@@ -509,14 +545,14 @@ var session = ( function () {
 
                } else {
 
-                   var checklogincall = _checkLogin(token);
+                   var check_login_call = _checkLogin(token);
 
-                   checklogincall.done(function (res) {
+                   check_login_call.done(function (res) {
                        // console.log(res);
                        _switchSession('login');
                    });
 
-                   checklogincall.fail(function (res) {
+                   check_login_call.fail(function (res) {
                        alerts.showAlert(21, 'danger', 2000);
                        // console.log(res);
                        _switchSession('logout');
@@ -527,6 +563,7 @@ var session = ( function () {
                break;
 
            case 'view': _switchSession('view'); break;
+
            default:
               this.form = $('.form-auth');
               _bindEvents(this.form, i);

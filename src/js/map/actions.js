@@ -28,19 +28,19 @@ var actions = ( function () {
             maps.unsavedMarkersLayerGroup.addLayer(marker);
 
             // Fetch the internal leaflet id
-            var markerid = maps.unsavedMarkersLayerGroup.getLayerId(marker);
+            var marker_id = maps.unsavedMarkersLayerGroup.getLayerId(marker);
 
-            console.log('markerid after setting it: ', markerid);
+            console.log('markerid after setting it: ', marker_id);
 
             // Send the marker id to the forms so we can retrieve the object without sending it around
-            tools.states.currentFeatureId = markerid;
+            tools.states.currentFeatureId = marker_id;
 
             // Set listeners in the case the marker isn't saved
-            actions.bindUnsavedMarkerEvents(markerid);
+            actions.bindUnsavedMarkerEvents(marker_id);
 
             // Build the route
             var route = router.generate('form', {
-                id: markerid,
+                id: marker_id,
                 type: 'menu'
             });
 
@@ -138,12 +138,13 @@ var actions = ( function () {
 
                 // if not a shape clicked it's a marker, bring it to the map center with panToOffset()
                 // Rise the marker to the top of others
-                var currentZindex = obj.layer._zIndex;
+                var current_z_index = obj.layer._zIndex;
 
-                obj.layer.setZIndexOffset(currentZindex + 10000);
+                obj.layer.setZIndexOffset(current_z_index + 10000);
                 maps.map.panToOffset(obj.layer.getLatLng(), tools.getVerticalOffset());
             }
         } else {
+
           // return error to user
           console.log('no options in the object');
           alerts.showAlert(5, 'danger', 1000);
@@ -196,10 +197,10 @@ var actions = ( function () {
             // TODO more secure way to restrict edition, must match current session token with id in backend
             // TODO Push the data to the form on .btn-edit click (requires to build all forms with templates)
 
-            var userid = localStorage.getItem('userid'),
-                useridmatch = e.created_by;
+            var user_id = localStorage.getItem('userid'),
+                user_id_match = e.created_by;
 
-            if ( userid == useridmatch ) {
+            if ( user_id == user_id_match ) {
 
                 // TEMPORARY warning about edit system
                 alerts.showAlert(11, "warning", 3000);
@@ -222,22 +223,22 @@ var actions = ( function () {
 
         } else {
 
-            var callurl = null;
+            var call_url = null;
 
             if ( e.feature_type === 'garbage' ) {
-                callurl = api.confirmTrash.url(e.id);
+                call_url = api.confirmTrash.url(e.id);
             }
 
             else if ( e.feature_type === 'litter' ) {
-                callurl = api.confirmLitter.url(e.id);
+                call_url = api.confirmLitter.url(e.id);
             }
 
-            var useToken = localStorage.getItem('token') || tools.token;
+            var token = localStorage.getItem('token') || tools.token;
 
-            var confirmcall = $.ajax({
+            var confirm_call = $.ajax({
                 method: 'PUT',
-                url: callurl,
-                headers: {"Authorization": "Bearer" + useToken},
+                url: call_url,
+                headers: {"Authorization": "Bearer" + token},
                 success: function (response) {
                     console.log(response);
                 },
@@ -246,7 +247,7 @@ var actions = ( function () {
                 }
             });
 
-            confirmcall.done( function (response) {
+            confirm_call.done( function (response) {
 
                 var message = response.data.message;
 
@@ -254,16 +255,16 @@ var actions = ( function () {
 
                 // update litters if we confirmed litter
                 if (message.indexOf('litter') === 0) {
-                    // features.loadLitters();
+                    // features.loadOne('litter', response.data.data.id );
                     features.loadFeature('litter');
                 }
                 // else update trash markers to reflect new data
                 else {
-                    // features.loadGarbageMarkers();
+                    // features.loadOne('garbage', response.data.data.id );
                     features.loadFeature('garbage');
                 }
             });
-            confirmcall.fail(function() {
+            confirm_call.fail(function() {
                 alerts.showAlert(2, "info", 2000);
             });
         }
@@ -271,7 +272,7 @@ var actions = ( function () {
 
     function _deleteFeature (o) {
 
-        var deletemethod, deleteurl;
+        var delete_method, delete_url;
 
         console.log("object passed to function: ", o);
         // debugger;
@@ -283,44 +284,44 @@ var actions = ( function () {
             switch (cf.feature_type) {
 
                 case 'cleaning':
-                  deletemethod = api.deleteCleaning.method;
-                  deleteurl = api.deleteCleaning.url(cf.id);
+                  delete_method = api.deleteCleaning.method;
+                  delete_url = api.deleteCleaning.url(cf.id);
                   break;
 
                 case 'litter':
-                  deletemethod = api.deleteLitter.method;
-                  deleteurl = api.deleteLitter.url(cf.id);
+                  delete_method = api.deleteLitter.method;
+                  delete_url = api.deleteLitter.url(cf.id);
                   break;
 
                 case 'area':
-                  deletemethod = api.deleteArea.method;
-                  deleteurl = api.deleteArea.url(cf.id);
+                  delete_method = api.deleteArea.method;
+                  delete_url = api.deleteArea.url(cf.id);
                   break;
 
                 case 'garbage':
-                  deletemethod = api.deleteTrash.method;
-                  deleteurl = api.deleteTrash.url(cf.id);
+                  delete_method = api.deleteTrash.method;
+                  delete_url = api.deleteTrash.url(cf.id);
                   break;
 
                 case 'marker':
-                  deletemethod = api.deleteLink.method;
-                  deleteurl = api.deleteLink.url(cf.id);
+                  delete_method = api.deleteLink.method;
+                  delete_url = api.deleteLink.url(cf.id);
                   break;
 
                 default: console.log('error deleting item');
             }
 
-            var useToken = localStorage.getItem('token') || tools.token;
+            var token = localStorage.getItem('token') || tools.token;
 
             if ((cf.marked_by || cf.created_by)  == localStorage.getItem('userid')) {
 
-                var deletecall = $.ajax({
-                    type: deletemethod,
-                    url: deleteurl,
-                    headers: {"Authorization": "Bearer " + useToken}
+                var delete_call = $.ajax({
+                    type: delete_method,
+                    url: delete_url,
+                    headers: {"Authorization": "Bearer " + token}
                 });
 
-                deletecall.done(function() {
+                delete_call.done(function() {
                     // itd item to delete
                     // var itd = null;
                     maps.map.removeLayer(o);
@@ -354,7 +355,7 @@ var actions = ( function () {
 
                 });
 
-                deletecall.fail(function() {
+                delete_call.fail(function() {
                     alerts.showAlert(6, "warning", 2000);
                 });
             }
@@ -372,6 +373,7 @@ var actions = ( function () {
     }
 
     function _attendCleaning (e) {
+
          // TODO make session-dependant and allow once per user per marker
         if ( !localStorage.getItem('token') ){
             alerts.showAlert(3, "info", 2000);
@@ -380,21 +382,23 @@ var actions = ( function () {
 
         else {
 
-            var useToken = localStorage.getItem('token') || tools.token;
+            var token = localStorage.getItem('token') || tools.token;
 
-            var attendcall = $.ajax({
+            var attend_call = $.ajax({
                 method: 'PUT',
                 url: api.attendCleaning.url(e.id),
-                headers: {"Authorization": "Bearer" + useToken}
+                headers: {"Authorization": "Bearer" + token}
             });
-            attendcall.done(function(response) {
+
+            attend_call.done(function(response) {
                 console.log('success:', response);
                 // push the new data to the bottom bar
                 ui.setContent(null, response.data.data);
                 // features.loadCleaningMarkers();
                 features.loadFeature('cleaning');
             });
-            attendcall.fail(function(err) {
+
+            attend_call.fail(function(err) {
                 console.log('error: ', err);
                 alerts.showAlert(10, "info", 2000);
             });
@@ -403,52 +407,44 @@ var actions = ( function () {
 
     function _cleanGarbage (e) {
 
-        if (!localStorage.getItem('token')){
+        if ( !localStorage.getItem('token' )) {
+
             alerts.showAlert(3, "info", 2000);
             return;
         }
 
         else {
 
-            var callurl = null;
-
-            if ( e.feature_type === 'garbage' ) {
-                callurl = api.cleanTrash.url(e.id);
-            }
-
-            else if ( e.feature_type === 'litter' ) {
-                callurl = api.cleanLitter.url(e.id);
-            }
-
-            var useToken = localStorage.getItem('token') || tools.token;
-            var cleancall = $.ajax({
+            var call_url = e.feature_type === 'garbage' ? api.cleanTrash.url(e.id) : api.cleanLitter.url(e.id);
+            var token = localStorage.getItem('token') || tools.token;
+            var clean_call = $.ajax({
 
                 method: 'PUT',
-                url: callurl,
-                headers: {"Authorization": "Bearer" + useToken},
+                url: call_url,
+                headers: {"Authorization": "Bearer" + token},
                 success: function(response) {
                     console.log('success data', response);
                 },
                 error: function(err) {
                     console.log('err', err);
                 }
-          });
+            });
 
-            cleancall.done(function (response) {
+            clean_call.done( function (response) {
 
                 var message = response.data.message;
                 ui.setContent(null, response.data.data);
 
                 if ( message.indexOf('litter') === 0 ) {
-                    // features.loadLitters();
+
                     features.loadFeature('litter');
-                }
-                else {
-                    // features.loadGarbageMarkers();
+
+                } else {
                     features.loadFeature('garbage');
                 }
             });
-            cleancall.fail(function () {
+
+            clean_call.fail( function () {
                 alerts.showAlert(2, "info", 2000);
             });
         }
@@ -477,38 +473,28 @@ var actions = ( function () {
 
         // bind click to unsavedmarkers
         maps.unsavedMarkersLayerGroup.on('click', _unsavedMarkerClick);
-
-        // Bind the click on the feature creation selector
-        $('.create-dialog').on('click', function (e) {
-
-            e.preventDefault();
-            var ct = $(this).attr('href').toString();
-
-            console.log(ct);
-            console.log("id from create-dialog click binding: ", tools.states.currentFeatureId);
-
-            forms.formDispatcher(tools.states.currentFeatureId, ct);
-        });
     }
 
     function bindUnsavedMarkerEvents (id) {
 
         var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
-        var cancelbutton = $('.btn-cancel');
+        var cancel_button = $('.btn-cancel');
 
         ui.sidebar.on ('hide', function () {
             tools.resetIconStyle(id);
         });
 
         // Close sidebar if cancel button clicked and delete unsaved markers
-        cancelbutton.on('click', function (e) {
+        cancel_button.on('click', function (e) {
 
             e.preventDefault();
             ui.sidebar.hide();
 
             if ( id ) {
+
                 tools.resetIconStyle(id);
                 maps.map.removeLayer(marker);
+
             } else {
               maps.unsavedMarkersLayerGroup.clearLayers();
             }
@@ -519,9 +505,11 @@ var actions = ( function () {
 
         // Check the map obj is available
         if ( maps.map !== undefined ) {
+
             _bindEvents();
 
         } else {
+          
             setTimeout( function () {
                 maps.map.once('ready', _bindEvents);
             }, 1000);

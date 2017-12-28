@@ -4,16 +4,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Init these blocks in order
 
-  // Maps
-
+  // Load maps and plugins
   maps.init();
 
-  features.init();
-
+  // Load map events
   actions.init();
 
-  // Ui
-
+  // Load ui amd session
   ui.init();
 
   session.init('check');
@@ -21,5 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
   if ( showtour )  {
       touring.init();
   }
+
+  // Load map features
+  features.init()
 
 });

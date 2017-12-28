@@ -7,24 +7,23 @@
   */
 
 // Save features on the map
- var saving = ( function () {
+var saving = ( function () {
 
     'use strict';
 
     function _saveFeature (fo, ft) {
 
-        // with Navigo we do:
+        // TODO with Navigo we can do
         // _saveFeature(obj);
-        // var type = o.type
+        // var type = obj.type
 
         // ft = formtype, fo = formobj
-        ft = ft.trim();
-
-        var useToken = localStorage.getItem('token') || tools.token;
-        var auth = 'Bearer ' + useToken;
+        var type = ft.trim();
+        var use_token = localStorage.getItem('token') || tools.token;
+        var auth = 'Bearer ' + use_token;
 
         // Reset any previous request
-        var postrequest = null;
+        var post_request = null;
 
         // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
         var so = {};
@@ -41,14 +40,14 @@
         }
 
         console.log('prepared submission obj: ', so);
-        console.log('form type: ', ft);
+        console.log('form type: ', type);
         console.log("form object: ", fo);
 
-        switch (ft) {
+        switch (type) {
 
             case 'garbage' :
 
-                postrequest = $.ajax({
+                post_request = $.ajax({
                     method: api.createTrash.method,
                     url: api.createTrash.url(),
                     headers: {'Authorization': auth},
@@ -69,7 +68,7 @@
 
             case 'cleaning' :
 
-                postrequest = $.ajax({
+                post_request = $.ajax({
                     method: api.createCleaning.method,
                     url: api.createCleaning.url(),
                     headers: {'Authorization': auth},
@@ -86,7 +85,7 @@
 
             case 'litter' :
 
-                postrequest = $.ajax({
+                post_request = $.ajax({
 
                     method: api.createLitter.method,
                     url: api.createLitter.url(),
@@ -107,13 +106,14 @@
 
             case 'area' :
 
-                if (!so.title) {
+                if ( !so.title ) {
+
                     so.title = tools.randomString(12);
                     console.log('randomly generated area title', so.title);
                     console.log(so);
                 }
 
-                postrequest = $.ajax({
+                post_request = $.ajax({
                     method: api.createArea.method,
                     url: api.createArea.url(),
                     headers: {'Authorization': auth },
@@ -133,7 +133,7 @@
 
             case 'opengraph' :
 
-                postrequest = $.ajax({
+                post_request = $.ajax({
 
                     method: api.createOg.method,
                     url: api.createOg.url(),
@@ -151,16 +151,16 @@
                 break;
         }
 
-        postrequest.done(function (data) {
+        post_request.done( function (data) {
 
             console.log(data);
 
-            if (ft === 'garbage' || ft === 'cleaning') {
+            if (type === 'garbage' || type === 'cleaning') {
 
                 // Remove any unsaved marker
-                for (var i in maps.unsavedMarkersLayerGroup._layers) {
+                for ( var i in maps.unsavedMarkersLayerGroup._layers ) {
 
-                    if (maps.unsavedMarkersLayerGroup._layers.hasOwnProperty(i)) {
+                    if ( maps.unsavedMarkersLayerGroup._layers.hasOwnProperty(i) ) {
                         tools.resetIconStyle(i);
                         maps.map.removeLayer(maps.unsavedMarkersLayerGroup.getLayer(i));
                     }
@@ -171,13 +171,14 @@
             // TODO need to change this logic for loading newly created features
             // call the route to retrieve data for a single feature after saved
             // and only render this particular feature
+            // features.loadOne();
             features.loadFeature(ft);
 
             alerts.showAlert(25, 'success', 1500);
             ui.sidebar.hide();
         });
 
-        postrequest.fail(function (data) {
+        post_request.fail(function (data) {
 
             console.log(data);
 

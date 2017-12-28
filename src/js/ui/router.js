@@ -19,8 +19,8 @@ router.on({
   */
 router.on({
   '/feature/:type/:id/show'   : { as: 'feature.show'  , uses: function (params, query) { ui.setContent(params.type, params.id); }},
-  '/feature/:type/:id/edit'   : { as: 'feature.edit'  , uses: function (params, query) {}, before: function (done, params) { if( !tools.states.login ) { done( false ) } else { done()}} },
-  '/feature/:type/:id/:action': { as: 'feature.action', uses: function (params, query) {}, before: null }
+  '/feature/:type/:id/edit'   : { as: 'feature.edit'  , uses: function (params, query) {}, before: function (done, params) { if( !tools.states.loggedin ) { done( false ) } else { done()}} },
+  '/feature/:type/:id/:action': { as: 'feature.action', uses: function (params, query) {}, before: function (done, params) { if( !tools.states.loggedin ) { done( false ) } else { done()}} }
 }).resolve();
 
 /**
@@ -98,11 +98,16 @@ router.on({
       id['id'] = parseInt(params.id, 10);
 
       // Build the template string (menu, garbage, litter...)
-      var tmplstring = 'tmpl-form-' + params.type;
-      console.log(tmplstring);
+      var tmpl_string = 'tmpl-form-' + params.type;
+      console.log(tmpl_string);
 
       // Fill the form template and activate the widgets
-      ui.sidebar.setContent( tmpl(tmplstring, id) );
+      ui.sidebar.setContent( tmpl(tmpl_string, id) );
+      // If routing the menu, we must read the router links again because we create hrefs dynamically
+      if ( params.type === 'menu' ) {
+        router.updatePageLinks();
+      }
+
       ui.sidebar.show();
 
       if ( params.type !== 'menu' ) {
@@ -117,20 +122,18 @@ router.on({
 router.on({
   '/info/:target': { as: 'info', uses: function (params, query) {
 
-      console.log('info router', params);
+      console.log('Info router', params);
 
-      var tmplstring = 'tmpl-info-' + params.target;
+      switch ( params.target ) {
 
-      console.log('tmpl string', tmplstring);
-
-      // Init seesion with 'view' to check user info
-      if (params.target === 'account') {
-
-        session.init('view');
-
-      } else {
-        ui.sidebar.setContent( tmpl( tmplstring, strings.credits) );
-        ui.sidebar.show();
+        case 'account'   : session.init('view'); break;
+        case 'trashbins' : tools.getTrashBins(maps.map); break;
+        case 'data'      : ui.makeModal('garbage', tools.listMarkersInView('garbage')); break;
+        case 'calendar'  : ui.makeModal('cleaning', tools.listMarkersInView('cleaning')); break;
+        default:
+          ui.sidebar.setContent( tmpl( 'tmpl-info-' + params.target, ui.strings.credits) );
+          ui.sidebar.show();
+          break;
       }
    }}
 }).resolve();
@@ -144,19 +147,19 @@ router.on({
 
       console.log('auth router', params);
 
-      var tmplstring = 'tmpl-auth-' + params.target;
+      var tmpl_string = 'tmpl-auth-' + params.target;
 
       // Show the login view when logging out
       if ( params.target === 'logout' ) {
 
           console.log('LOGOUT ROUTER');
 
-          tmplstring = 'tmpl-auth-login';
+          tmpl_string = 'tmpl-auth-login';
 
       }
 
       // Fill the templates
-      ui.sidebar.setContent( tmpl( tmplstring, strings) );
+      ui.sidebar.setContent( tmpl( tmpl_string, strings) );
 
       // Init the desired auth method
       session.init(params.target);

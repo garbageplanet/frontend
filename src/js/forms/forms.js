@@ -110,7 +110,7 @@ var forms = ( function () {
         saving.init();
     }
 
-    function  _bindGarbageEvents (id) {
+    function _bindGarbageEvents (id) {
 
         _initUploader();
 
@@ -269,15 +269,16 @@ var forms = ( function () {
         }
 
         // Hide the close button in the sidebar when we show forms because they have a cancel button
-        $('.close-right').addClass('hidden');
+        document.querySelector('.close-right').classList.add('hidden');
 
-        // Forms for single point markers
+        // Get the leaflet feature for single point markers
         var feature = maps.unsavedMarkersLayerGroup.getLayer(id);
 
         try {
 
             var latlng = feature.getLatLng();
-            $('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
+            document.querySelector('.marker-latlng').value = latlng.lat + ", " + latlng.lng;
+            //$('.marker-latlng').val(latlng.lat + ", " + latlng.lng);
 
         } catch (e) {
 

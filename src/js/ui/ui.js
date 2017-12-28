@@ -9,6 +9,91 @@ var ui = ( function () {
 
     'use strict';
 
+    var strings = {
+      version: 'v. unstable',
+      credits : [
+          {
+              "title":"homepage",
+              "linkurl":"http://garbageplanet.github.io/",
+              "text":"Project"
+          },
+          {
+              "title":"Let's Encrypt",
+              "linkurl":"https://letsencrypt.org/",
+              "text":"Certs with"
+          },
+          {
+              "title":"Mapbox",
+              "linkurl":"https://www.mapbox.com/",
+              "text":"Basemaps imagery ©"
+          },
+          {
+              "title":"Openstreetmap and contributors",
+              "linkurl":"http://www.openstreetmap.org/",
+              "text":"Maps and underlying data ©"
+          },
+          {
+              "title":"Overpass API",
+              "linkurl":"http://www.overpass-api.de/",
+              "text":"POIs retrieved using the"
+          },
+          {
+              "title":"OpenCage Geocoder",
+              "linkurl":"https://geocoder.opencagedata.com/",
+              "text":"Address search and geocoding using"
+          },
+          {
+              "title":"Leaflet",
+              "linkurl":"https://leafletjs.com/",
+              "text":"Mapping done with "
+          },
+          {
+              "title":"FontAwesome",
+              "linkurl":"http://fontawesome.io/",
+              "text":"Icons by"
+          },
+          {
+              "title":"Bootstrap",
+              "linkurl":"http://getbootstrap.com/",
+              "text":"Built with"
+          },
+          {
+              "title":"JQuery",
+              "linkurl":"https://jquery.com/",
+              "text":"Runs on"
+          },
+          {
+              "title":"Laravel",
+              "linkurl":"https://laravel.com/",
+              "text":"Backed by"
+          },
+          {
+              "title":"JavaScript-Templates",
+              "linkurl":"https://github.com/blueimp/JavaScript-Templates",
+              "text":"Templating with"
+          },
+          {
+              "title":"Navigo",
+              "linkurl":"https://github.com/krasimir/navigo",
+              "text":"Frontend routing with"
+          },
+          {
+              "title":"Imgur",
+              "linkurl":"https://imgur.com",
+              "text":"Image storage courtesy of"
+          },
+          {
+              "title":"Github",
+              "linkurl":"https://github.com/garbageplanet",
+              "text":"Source code available on"
+          },
+          {
+            "title": "privacy policy",
+            "linkurl": "/info/privacy",
+            "text": "Read our",
+          }
+      ]
+    };
     var sidebar = L.control.sidebar('sidebar', {position: 'right', closebutton: 'true'});
     var bottombar = L.control.sidebar('bottombar', {position: 'bottom', closebutton: 'true'});
 
@@ -95,57 +180,62 @@ var ui = ( function () {
     function makeModal (type, arr) {
         // TODO extract function to make the datatable
         // TODO extract event listeners
+        
         console.log('type of modal: ', type);
         console.log('data for table: ', arr);
 
         var template,
-            typeobj,
-            modaltmplname,
-            modaltableid,
-            modaltablebodyid,
-            modalid,
-            modalbodyid;
+            type_obj,
+            modal_tmpl_name,
+            modal_table_id,
+            modal_table_body_id,
+            modal_id,
+            modal_body_id;
 
-        var modalid          = 'modal-'      + type,
-            modaltmplname    = 'tmpl-modal-' + type,
-            modaltableid     = '#modal-'     + type + '-table',
-            modaltablebodyid = 'modal-'      + type + '-table-body';
+            modal_id            = 'modal-'      + type,
+            modal_tmpl_name     = 'tmpl-modal-' + type,
+            modal_table_id      = '#modal-'     + type + '-table',
+            modal_tabl_ebody_id = 'modal-'      + type + '-table-body';
 
         // Build an object to pass to the templating engine
-        var typeobj = {};
-        typeobj[type] = type;
+        var type_obj = {};
+        type_obj[type] = type;
 
         // Make the modal skeleton inside of which we'll load the templates
-        template = '<div id="' + modalid + '" class="modal" role="dialog"></div>';
+        template = '<div id="' + modal_id + '" class="modal" role="dialog"></div>';
         $('body').append(template);
 
         // if it's a data modal check that the array contains data else warn user
         if ( arr ) {
+
             if ( arr.length < 1 && ( type != 'game' ) ) {
+
                 alerts.showAlert(29, 'warning', 2000);
                 return;
-            }
-            else {
 
-               var datatableoptions = {  lengthMenu:     [[5, 10, 20, -1], [5, 10, 20, "All"]],
-                                         scrollY:        '50vh',
-                                         scrollCollapse: true,
-                                         paging:         false,
-                                         retrieve:       true,
-                                         bFilter:        false };
+            } else {
+
+                var data_table_options = {
+                    lengthMenu     : [[5, 10, 20, -1], [5, 10, 20, "All"]],
+                    scrollY        : '50vh',
+                    scrollCollapse : true,
+                    paging         : false,
+                    retrieve       : true,
+                    bFilter        : false
+                };
 
                 // Fill the template skeleton and the data
-                document.getElementById(modalid).innerHTML = tmpl('tmpl-modal', typeobj);
-                document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, arr);
+                document.getElementById(modal_id).innerHTML = tmpl('tmpl-modal', type_obj);
+                document.getElementById(modal_table_body_id).innerHTML = tmpl(modal_tmpl_name, arr);
 
                 // Activate the datatables in the modal
-                $(modaltableid).DataTable(datatableoptions);
+                $(modal_table_id).DataTable(data_table_options);
 
                 // Show the modal
-                $('#' + modalid).modal('show');
+                $('#' + modal_id).modal('show');
 
                 // Force sort the columns to fix thead width bug
-                $(modaltableid).DataTable().order([0, 'desc']).draw();
+                $(modal_table_id).DataTable().order([0, 'desc']).draw();
 
                 // Attach events for buttons
                 $('#modal-data-load-more').on('click', function () {
@@ -154,10 +244,10 @@ var ui = ( function () {
 
                     $('.modal-data-row').empty();
 
-                    var newmarkers = tools.listMarkersInView(type);
+                    var features = tools.listMarkersInView(type);
 
-                    document.getElementById(modaltablebodyid).innerHTML = tmpl(modaltmplname, newmarkers);
-                    $(modaltableid).DataTable(datatableoptions);
+                    document.getElementById(modal_table_body_id).innerHTML = tmpl(modal_tmpl_name, features);
+                    $(modal_table_id).DataTable(data_table_options);
                 });
 
                 $('#data-download-garbage, #data-download-cleaning').on('click', function (e) {
@@ -175,37 +265,21 @@ var ui = ( function () {
 
         console.log('binding sidebar events');
 
-        // Navigation for sidebar links
-        $('.sidebar-link').on('click', function (e) {
-
-            e.preventDefault();
-
-            if( !ui.sidebar.isVisible() ) {
-                ui.sidebar.show();
-            }
-
-            $(this.hash).fadeIn().siblings().hide();
-            $('#sidebar').scrollTop = 0;
-        });
-
-        // Empty the sidebar on hide, reset accordion and reset scroll
+        // Empty the sidebar on hide
         ui.sidebar.on('hide', function () {
 
             // Reset the router
             router.navigate('/');
 
-            // FIXME this removes the placeholder as well ?
-            // $('.bootstrap-tagsinput').tagsinput('removeAll');
+            // Set empty content
+            ui.sidebar.setContent('');
 
-            // Remove any unsaved marker on mobile
-            if ( window.isMobile ) {
-                // Reset sidebar close button visibility
-                if ( $('.close-right').hasClass('hidden') ) {
+            // Reset sidebar close button visibility
+            var close_right = document.querySelector('.close-right');
 
-                  $('.close-right').removeClass('hidden');
-                }
+            if ( close_right.classList.contains('hidden') ) {
 
-                maps.unsavedMarkersLayerGroup.clearLayers();
+              close_right.classList.remove('hidden');
             }
         });
 
@@ -229,6 +303,9 @@ var ui = ( function () {
 
               // Reset the router
               router.navigate('/');
+
+              // Set empty content
+              ui.bottombar.setContent('')
           });
 
           // Events to execute when the bottombat is shown
@@ -249,53 +326,6 @@ var ui = ( function () {
           $('.modal').on('hidden.bs.modal', function () {
               $(body).find('.modal').remove();
           });
-    }
-
-    function _bindTopbarEvents () {
-
-        // var usertools = $('#topbar').find('#dropdown-user-tools');
-        var trashbinbutton = $('#topbar').find('#btn-trashbins');
-        var modallink = $('#topbar').find('.modal-link');
-
-        // Activate dropdown menu links in topbar
-        // usertools.on('click', 'a', function (e) {
-        //
-        //     if ( $(this).hasClass('dropdown-link') ) {
-        //         e.preventDefault();
-        //         ui.bottombar.hide();
-        //         ui.sidebar.show();
-        //         $(this.hash).fadeIn().siblings().hide();
-        //     }
-        // });
-
-        // Show nearby trashbins
-        // TODO move these to router
-        trashbinbutton.on('click', function () {
-
-            if( maps.map.getZoom() < 15 ) {
-
-                alerts.showAlert(31, 'info', 2000);
-                return;
-
-            } else {
-                maps.getTrashBins();
-            }
-        });
-
-        // Set the event listeners for modals in the topbar or elsewhere
-        // TODO move these to router
-        modallink.on('click', function (e) {
-
-            e.preventDefault();
-
-            var type = $(this).attr('name');
-            var currentmarkers = tools.listMarkersInView(type);
-
-            makeModal(type, currentmarkers);
-        });
-
-        // Register the navigo links in the topbar
-        router.updatePageLinks();
     }
 
     function _bindBottombarFeatureEvents (obj) {
@@ -336,10 +366,12 @@ var ui = ( function () {
         sidebar.addTo(maps.map);
         bottombar.addTo(maps.map);
 
-        // Fill the main topbar and set non-mobile listeners
+        // Fill the main topbar template on desktop
         if ( !window.isMobile ) {
+
             document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', strings);
-            _bindTopbarEvents();
+            // Register the navigo links in the topbar
+            router.updatePageLinks();
         }
 
         // Set the rest of the listeners
@@ -355,5 +387,6 @@ var ui = ( function () {
              , makeModal  : makeModal
              , setContent : setContent
              , sidebar    : sidebar
+             , strings    : strings
     }
 }());

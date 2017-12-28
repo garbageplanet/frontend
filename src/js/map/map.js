@@ -206,23 +206,6 @@ var maps = ( function () {
                 };
     }());
 
-    function getTrashBins () {
-        // load trashbins icons on the map
-        var tbq = '(node["amenity"="waste_basket"]({{bbox}});node["amenity"="recycling"]({{bbox}});node["amenity"="waste_disposal"]({{bbox}}););out;';
-
-        var osmTrashbinLayer = new L.OverPassLayer({
-            query: tbq
-        });
-
-        maps.map.addLayer(osmTrashbinLayer);
-
-        // Stop the function call on map move
-        // FIXME stop the call, don't remove the layer
-        /*maps.map.on('movestart', function (e) {
-            maps.map.removeLayer(osmTrashbinLayer);
-        });*/
-    }
-
     function init () {
 
         _tiles['Mapbox Outdoors'].addTo(maps.map);
@@ -262,6 +245,7 @@ var maps = ( function () {
         }
 
         if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
+
             console.log('starting to geolocate');
             maps.locationcontrol.start();
         }
@@ -282,7 +266,6 @@ var maps = ( function () {
        init                     : init
      , map                      : map
      // , hash                     : hash
-     , getTrashBins             : getTrashBins
      , locationcontrol          : locationcontrol
      , glomelogincontrol        : glomelogincontrol
      , layerscontrol            : layerscontrol
