@@ -13,14 +13,18 @@ var features =  ( function () {
 
     function loadFeature (type) {
 
-        // only run this function if we're outisde originally loaded bounds
+        // TODO allow type to be an array of types so we don't need 'all'
+
+        // Only run this function if we're outside originally loaded map bounds
+        var bounds = maps.map.getBounds();
+
         if ( tools.checkIfInsideRoundedBounds(bounds) ) {
             return;
         }
 
         var inverted_bounds = tools.getInvertedBounds(maps.map);
-        var alltypes                = ['garbage','cleaning','litter','area','opengraph'];
-        var type                    = type.trim();
+        var alltypes        = ['garbage','cleaning','litter','area','opengraph'];
+        var type            = type.trim();
 
         switch (type) {
 
@@ -28,7 +32,7 @@ var features =  ( function () {
             case 'cleaning' : _loadCleanings(inverted_bounds); break;
             case 'litter'   : _loadLitters(inverted_bounds); break;
             case 'area'     : _loadAreas(inverted_bounds); break;
-            case 'opengraph': _loadOpengraph(inverted_bounds); break;
+            case 'link'     : _loadLinks(inverted_bounds); break;
             case 'all'      :
 
                   alltypes.forEach( function (item) {
@@ -243,12 +247,14 @@ var features =  ( function () {
         });
     }
 
-    function _loadOpengraph (b) {
+    function _loadLinks(b) {
         // TODO
         return;
     }
 
     function _bindEvents () {
+
+        // TODO remove all the conditions blocks once we load a larger area
 
         console.log('Binding map self events.');
 
@@ -258,70 +264,74 @@ var features =  ( function () {
 
             console.log("map move event: ", e);
 
-            var eventtype = e.type.trim();
-            var newZoom = e.target.getZoom();
-            var zoomDiff = Math.abs(newZoom - tools.states.currentZoom);
-            var lengthDiff = e.distance;
+            var event_type = e.type.trim();
+            var new_zoom = e.target.getZoom();
+            var zoom_diff = Math.abs(new_zoom - tools.states.currentZoom);
+            var length_diff = e.distance;
 
             // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical dragging
-            // TODO remove all the conditions blocks once we load a larger area
-            var viewportRatio = window.innerWidth / 3;
+            var viewport_ratio = window.innerWidth / 3;
 
-            switch ( eventtype ) {
+            switch ( event_type ) {
+
+                case 'zoomstart':
+
+                    tools.states.currentZoom = e.target.getZoom();
+                    break;
 
                 case 'zoomend':
 
                     console.log('zoomend event');
                     console.log("fist zoom: ", tools.states.currentZoom);
-                    console.log("new zoom: ", newZoom);
-                    console.log("zoom difference: ", zoomDiff);
+                    console.log("new zoom: ", new_zoom);
+                    console.log("zoom difference: ", zoom_diff);
 
-                    if ( newZoom >= 2 && zoomDiff >= 3 ) {
+                    if ( new_zoom >= 2 && zoom_diff >= 3 ) {
+
+                        // features.loadFeature(['link','cleaning','garbage']);
 
                         features.loadFeature('cleaning');
                         features.loadFeature('garbage');
-                        features.loadFeature('opengraph');
+                        features.loadFeature('link');
 
-                       if ( newZoom <= 16 ) {
+                       if ( new_zoom <= 16 ) {
 
                             features.loadFeature('litter');
                             features.loadFeature('area');
                         }
 
-                    } else if ( !zoomDiff ) {
+                    } else if ( !zoom_diff ) {
                         // if there's no prior zoom value it means we're loading for the first time
-
                         features.loadFeature('all');
                     }
 
-                break;
-                case 'dragend':
-                    if ( lengthDiff >= viewportRatio ) {
+                    break;
 
-                        if ( newZoom >= 2 ) {
+                case 'dragend':
+
+                    if ( length_diff >= viewport_ratio ) {
+
+                        if ( new_zoom >= 2 ) {
 
                             features.loadFeature('cleaning');
                             features.loadFeature('garbage');
-                            features.loadFeature('opengraph');
+                            features.loadFeature('link');
 
-                            if ( newZoom >= 8 && newZoom <= 16 ) {
+                            if ( new_zoom >= 8 && new_zoom <= 16 ) {
                                 // We don't load large features if we're too close or too far
                                 features.loadFeature('litter');
                                 features.loadFeature('area');
                             }
                         }
                     }
-                break;
-                case 'zoomstart':
-                    tools.states.currentZoom = e.target.getZoom();
-                break;
+                    break;
             }
         });
     }
 
     function init () {
 
-      maps.map.once('ready', _bindEvents);
+      maps.map.once('ready', _bindEvents());
 
     }
 

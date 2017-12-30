@@ -146,11 +146,11 @@ var tools = {
     checkIfInsideRoundedBounds: function (bounds) {
 
         if ( tools.states.roundedBounds && tools.states.roundedBounds.contains(bounds) ) {
-
+            // New view inside original bounds
             return true;
 
         } else {
-
+            // New view outside original bounds
             var new_bounds = maps.map.getBounds();
             rounded_bounds = tools.getRoundedBounds(new_bounds);
 
