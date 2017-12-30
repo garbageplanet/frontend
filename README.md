@@ -32,9 +32,7 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 
 - [ ] build a minimal entry point for loading the content via cdn
 - [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
-- [ ] reduce redundancy in the form templates
-- [ ] upload to imgur as user
-- [ ] make edit system
+- [ ] rebuild with sveltejs
 
 ### Licence
 
