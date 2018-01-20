@@ -47,8 +47,6 @@ router.on({
       // FIXME For now we use a timeout dirty, dirty hack
       setTimeout(function () {
 
-        console.log('Number of active ajax calls', $.active);
-
         var maplayer;
         // Check that the map already has the layer containing the feature
         switch (params.type) {

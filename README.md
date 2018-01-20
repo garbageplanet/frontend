@@ -32,6 +32,8 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 - [ ] rewrite features creation methods with factories / function composition so we can add newmethods easily (see src/factories.js)
 - [ ] Remove redundancy in template using include()
 - [x] Remove redundancy in _saveFeature()
+- [ ] Remove redundancy in session()
+- [ ] Remove redundancy in _loadFeature()
 - [ ] build a minimal entry point for loading the content via cdn
 - [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
 - [ ] rebuild with sveltejs
