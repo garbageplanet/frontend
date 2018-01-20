@@ -129,26 +129,7 @@
           <div class="help-block with-errors"></div>
         </div>
 
-      <div class="form-group">
-        <div class="input-group input-group-lg">
-          <span class="input-group-btn">
-              <button id="btn-image-uploader" class="btn btn-default" type="button">
-              <span class="fa fa-fw fa-file-image-o"></span></button>
-              <input id="image-uploader" type="file" style="display:none;">
-          </span>
-
-          <input type="text"
-                 name="image" 
-                 id="image-uploader-url"
-                 class="form-control garbage-image-hidden-value"
-                 placeholder="Upload an image">
-        </div>
-
-        <div id="progress" class="progress hidden">
-          <div class="progress-bar progress-bar-success" role="progressbar" style="width:100%"></div>
-        </div>
-
-      </div>
+      {% include('tmpl-form-image-upload', {uploadclass: "garbage"}); %}
 
       </div>
 
@@ -159,7 +140,7 @@
     </div>
   </div>
 
-  {% include('tmpl-sidebar-save', {saveclass: "btn-save-garbage"}); %}
+  {% include('tmpl-form-save', {saveclass: "btn-save-garbage"}); %}
 
 </form>
 

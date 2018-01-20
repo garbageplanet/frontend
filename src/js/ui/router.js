@@ -38,13 +38,13 @@ router.on({
       console.log('Sharing router', params);
 
       // First set and load the map center on the marker
-      // FIXME
       maps.map.setView([parseFloat(params.lat), parseFloat(params.lng)], 16);
       // maps.map.panToOffset([parseFloat(params.lat), parseFloat(params.lng)], tools.getVerticalOffset());
 
-      // TODO wait for API call else this doesn't work on first load
+      // TODO decouple this so we can dynamically load the feature into the map layer without hardcoing in switch statement
+      // FIXME wait for feature load api call to finish else this doesn't work on first load
       // FIXME make a loadOne() call for that single feature and load the rest in background
-      // Dirty, dirty hack
+      // FIXME For now we use a timeout dirty, dirty hack
       setTimeout(function () {
 
         console.log('Number of active ajax calls', $.active);
@@ -159,7 +159,7 @@ router.on({
       }
 
       // Fill the templates
-      ui.sidebar.setContent( tmpl( tmpl_string, strings) );
+      ui.sidebar.setContent( tmpl( tmpl_string, ui.strings) );
 
       // Init the desired auth method
       session.init(params.target);

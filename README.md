@@ -24,12 +24,13 @@ GA=<google analytics token (optional)>
 
 If you want to contribute to a specific todo/fixme below, the first thing you should do is open an issue. If you have another contribution PRs are also welcome.
 
-### FIXME
+### Improvements
 
+- [ ] store unsaved markers in app state for offline use and implement PWA / wweborker
+- [ ] use fetch api instead of ajax and image uploader so we can move to jquery slim
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
-
-### TODO
-
+- [ ] rewrite features creation methods with factories / function composition so we can add newmethods easily (see src/factories.js)
+- [ ] Remove redundancy in template using include()
 - [ ] build a minimal entry point for loading the content via cdn
 - [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
 - [ ] rebuild with sveltejs

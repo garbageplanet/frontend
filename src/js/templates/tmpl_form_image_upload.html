@@ -1,0 +1,28 @@
+<script type="text/x-tmpl" id="tmpl-form-image-upload">
+
+  <div class="form-group">
+    <div class="input-group input-group-lg">
+      <span class="input-group-btn">
+          <button id="btn-image-uploader" class="btn btn-default" type="button">
+            <label for="image-uploader">Browse</label>
+            <!-- <span class="fa fa-fw fa-file-image-o"></span> -->
+            <input id="image-uploader" accept="image/*" type="file" style="display:none" onchange="tools.fileUploadHandler(this.files)">
+
+          </button>
+
+      </span>
+
+      <input type="text"
+             name="image"
+             id="image-uploader-url"
+             class="form-control image-hidden-value"
+             placeholder="Upload an image">
+    </div>
+
+    <div id="progress" class="progress hidden">
+      <div class="progress-bar progress-bar-success" role="progressbar" style="width:100%"></div>
+    </div>
+
+  </div>
+
+</script>

@@ -180,7 +180,7 @@ var ui = ( function () {
     function makeModal (type, arr) {
         // TODO extract function to make the datatable
         // TODO extract event listeners
-        
+
         console.log('type of modal: ', type);
         console.log('data for table: ', arr);
 
@@ -195,7 +195,7 @@ var ui = ( function () {
             modal_id            = 'modal-'      + type,
             modal_tmpl_name     = 'tmpl-modal-' + type,
             modal_table_id      = '#modal-'     + type + '-table',
-            modal_tabl_ebody_id = 'modal-'      + type + '-table-body';
+            modal_table_body_id = 'modal-'      + type + '-table-body';
 
         // Build an object to pass to the templating engine
         var type_obj = {};
@@ -366,9 +366,9 @@ var ui = ( function () {
         sidebar.addTo(maps.map);
         bottombar.addTo(maps.map);
 
-        // Fill the main topbar template on desktop
-        if ( !window.isMobile ) {
 
+        if ( !window.isMobile ) {
+            // Fill the main topbar template on desktop
             document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', strings);
             // Register the navigo links in the topbar
             router.updatePageLinks();

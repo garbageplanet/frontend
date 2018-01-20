@@ -69,26 +69,7 @@
 
   <div class="tab-pane form-group form-group-lg" id="litter-quantitative" role="tabpanel">
 
-  <div class="form-group">
-      <div class="input-group input-group-lg">
-            <span class="input-group-btn">
-                <button id="btn-image-uploader" class="btn btn-default" type="button">
-                <span class="fa fa-fw fa-file-image-o"></span></button>
-                <input id="image-uploader" type="file" style="display:none;">
-            </span>
-
-            <input type="text"
-                   class="form-control litter-image-hidden-value"
-                   name="image"
-                   id="image-uploader-url"
-                   placeholder="Upload an image">
-      </div>
-
-      <div id="progress" class="progress hidden">
-        <div class="progress-bar progress-bar-success" role="progressbar" style="width:100%"></div>
-      </div>
-
-    </div>
+    {% include('tmpl-form-image-upload', {uploadclass: "litter"}); %}
 
     <div class="form-group form-group-lg" style="width:100%">
         <input class="form-control litter-amount-quantitative"
@@ -127,7 +108,7 @@
 
 </div>
 
-{% include('tmpl-sidebar-save', {saveclass: "btn-save-litter"}); %}
+{% include('tmpl-form-save', {saveclass: "btn-save-litter"}); %}
 
 </form>
 

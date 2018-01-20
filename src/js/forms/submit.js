@@ -47,6 +47,8 @@ var saving = ( function () {
 
             case 'garbage' :
 
+                post_request = tools.makeApiCall().then(res => {}).catch(err => {});
+
                 post_request = $.ajax({
                     method: api.createTrash.method,
                     url: api.createTrash.url(),

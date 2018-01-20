@@ -82,7 +82,7 @@ gulp.task('scripts:leaflet', ['templates'], function () {
                     './src/vendor/L.Compact.Attributions.js',
                     './src/vendor/L.Control.Sidebar-0.19a.js',
                     './src/vendor/L.Overpass.Layer.js',
-                    './src/vendor/L.Draw-0.4.10.js',
+                    //'./src/vendor/L.Draw-0.4.10.js',
                     './src/vendor/L.Geocoder.Opencage-1.1.2.js',
                     './src/vendor/L.Control.Login.js',
                     './src/vendor/L.Control.Menu.js'
@@ -99,13 +99,14 @@ gulp.task('scripts:jquery', ['templates'], function () {
   return gulp.src([
                     './src/vendor/navigo.js',
                     './src/vendor/jquery-3.2.0.js',
+                    // './src/vendor/jquery-3.2.1-slim.js',
                     './src/vendor/bootstrap-tagsinput-0.4.3.js',
                     './src/vendor/bootstrap-3.3.7.js',
                     './src/vendor/bootstrap-select-1.9.4.js',
                     // './src/vendor/bootstrap-select-1.12.4.js',
                     './src/vendor/bootstrap-validator-0.9.0.js',
                     './src/vendor/bootstrap-tour-0.10.1.js',
-                    './src/vendor/simple-ajax-uploader-2.6.2.js',
+                    // './src/vendor/simple-ajax-uploader-2.6.2.js',
                     './src/vendor/bootstrap-datatables-1.10.11.js',
                     './src/vendor/flatpickr.js'
   ])

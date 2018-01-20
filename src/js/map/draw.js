@@ -2,21 +2,14 @@
 /* global L, $, tools, alerts, api, ui, maps */
 
 /**
-* All code related to drawing shapes
-*/
+  * All code related to drawing shapes
+  */
 
 var drawing = ( function () {
 
     'use strict';
 
-    var draw_control = new L.Control.Draw({
-        position: 'topright',
-        draw: {
-            circle: false,
-            rectangle: false,
-            marker: false
-        }
-    });
+    var draw_control;
 
     function _bindEvents (type) {
 
@@ -131,9 +124,33 @@ var drawing = ( function () {
     }
 
     function init (type) {
+
           // drawing apabilities are only called when the forms are loaded in /js/forms.js
-          maps.map.addControl(draw_control);
-          _bindEvents(type);
+          tools.getScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.js')
+
+              .then(() => {
+
+                console.log('Got draw.js');
+
+                draw_control = new L.Control.Draw({
+                    position: 'topright',
+                    draw: {
+                        circle: false,
+                        rectangle: false,
+                        marker: false
+                    }
+                });
+
+                maps.map.addControl(draw_control);
+                _bindEvents(type);
+              })
+
+              .catch( err => {
+
+                console.log(err);
+                return false;
+
+              });
       }
 
     return { init : init }

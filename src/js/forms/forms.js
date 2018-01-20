@@ -112,7 +112,7 @@ var forms = ( function () {
 
     function _bindGarbageEvents (id) {
 
-        _initUploader();
+        // _initUploader();
 
         var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
         var radio_input = $('input[type=radio]');
@@ -160,7 +160,7 @@ var forms = ( function () {
     }
 
     function _bindLitterEvents () {
-        _initUploader();
+        // _initUploader();
         drawing.init('polyline');
     }
 
@@ -219,6 +219,8 @@ var forms = ( function () {
     }
 
     function _initUploader () {
+
+        // TODO can we do this withthe fetch() api?
 
         var image_uploader        = document.getElementById('image-uploader');
         var image_uploader_button = document.getElementById('btn-image-uploader');

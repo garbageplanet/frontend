@@ -221,17 +221,17 @@ var maps = ( function () {
                 zoomcontrol.addTo(maps.map);
         }
 
-        locationcontrol.addTo(maps.map);
-           scalecontrol.addTo(maps.map);
-          layerscontrol.addTo(maps.map);
-        geocodercontrol.addTo(maps.map);
-
+        // Add controls
+                      locationcontrol.addTo(maps.map);
+                         scalecontrol.addTo(maps.map);
+                        layerscontrol.addTo(maps.map);
+                      geocodercontrol.addTo(maps.map);
         // Add feature layers
-        maps.garbageLayerGroup.addTo(maps.map);
-        maps.areaLayerGroup.addTo(maps.map);
-        maps.litterLayerGroup.addTo(maps.map);
-        maps.linkLayerGroup.addTo(maps.map);
-        maps.cleaningLayerGroup.addTo(maps.map);
+               maps.garbageLayerGroup.addTo(maps.map);
+                  maps.areaLayerGroup.addTo(maps.map);
+                maps.litterLayerGroup.addTo(maps.map);
+                  maps.linkLayerGroup.addTo(maps.map);
+              maps.cleaningLayerGroup.addTo(maps.map);
         maps.unsavedMarkersLayerGroup.addTo(maps.map);
 
         // Add a glome anonymous login button on mobile and small screens

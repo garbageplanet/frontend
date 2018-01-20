@@ -233,24 +233,22 @@ var tools = {
     },
     checkOpenUiElement: function (map){
 
-        // TODO can we make the same function with a switch statement?
-        // that would require to set states in the UI
         var compactattributions = $('.leaflet-compact-attribution-toggle'),
             ocdsearch = $('.leaflet-control-ocd-search'),
             dropdown = $('.dropdown'),
             layerscontrolbutton = $('.leaflet-control-layers');
 
-        if (ui.sidebar.isVisible()) {
+        if ( ui.sidebar.isVisible() ) {
             ui.sidebar.hide();
             return;
         }
 
-        if (ui.bottombar.isVisible()) {
+        if ( ui.bottombar.isVisible() ) {
             // TODO check if we are drawing if unfinished, ask user if he wants to cancel
             ui.bottombar.hide();
             return;
         }
-        if (dropdown.hasClass('open')) {
+        if ( dropdown.hasClass('open') ) {
             dropdown.removeClass('open');
             return;
         }
@@ -262,7 +260,7 @@ var tools = {
         }
         // Somehow checking the collapsed property of the control doesn't work?
         // if (!maps.geocodercontrol.options.collapsed) {
-        if (ocdsearch.hasClass('leaflet-control-ocd-search-expanded')) {
+        if ( ocdsearch.hasClass('leaflet-control-ocd-search-expanded') ) {
             maps.geocodercontrol._collapse();
             L.DomEvent.stopPropagation(map);
             // Force closing softkeyboard
@@ -302,11 +300,12 @@ var tools = {
 
         return true;
     },
-    openGraphScraper: function ( url ) {
-
+    openGraphScraper: function (url) {
+        // TODO use tools.processRequestStatus() to send UI feedback if the below fails
         var token = '@@opengraphiotoken';
 
-        if ( url ) {
+        if (url) {
+
             var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);
             var request = $.ajax({
                 method: 'GET',
@@ -342,9 +341,11 @@ var tools = {
         return;
     },
     activateTabs: function () {
+      // document.queryselectorAll('.nav-tabs' ...)
       $(".nav-tabs").on("click", "a", function (e) {
 
         e.preventDefault();
+        // this.
         $(this).tab('show');
 
       });
@@ -395,6 +396,72 @@ var tools = {
         elem.setAttribute("download", "data.json");
         elem.click();
     },
+    getScript: function (src) {
+
+        return new Promise((resolve, reject) => {
+
+            var script = document.createElement('script');
+            document.body.appendChild(script);
+            script.onload = resolve;
+            script.onerror = reject;
+            script.async = true;
+            script.src = src;
+        })
+    },
+    uploadToImgur: function (file) {
+
+        // based on a pen by James Skinner - License MIT - https://codepen.io/spiralx/pen/mJxWJE
+        var formData = new FormData()
+            formData.append('type', 'file')
+            formData.append('image', file)
+
+        return fetch('https://api.imgur.com/3/upload', {
+
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: 'Client-ID @@imgurtoken'
+          },
+          body: formData
+        })
+
+        .then((response) => {
+          response.json()
+
+          if ( response.status === 200 || response.status === 0 ) {
+
+            var image_uploader_url = document.getElementById('image-uploader-url');
+                image_uploader_url.value = response.data.link;
+
+          }
+          else {
+            alerts.showAlert(5, "danger", 2000);
+            return false;
+          }
+
+
+        })
+    },
+    fileUploadHandler: function (file) {
+    // base on a pen by James Skinner - License MIT - https://codepen.io/spiralx/pen/mJxWJE
+
+      console.log('UUUUUUUUUUUUUUUUUUUUUUUUu', file);
+
+      // TODO send to uploader
+
+
+    },
+    makeApiCall: function (url, method, auth, data) {
+      
+        return fetch(url, {
+            method: method,
+            headers: {
+              Accept: 'application/json',
+              Authorization: auth
+            },
+            body: data
+        })
+    }
     states: {
       /**
         * App shared states

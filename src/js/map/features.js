@@ -14,10 +14,14 @@ var features =  ( function () {
     function loadFeature (type) {
 
         // TODO allow type to be an array of types so we don't need 'all'
+        // type.forEach( function (item) {
+        //     _load(item);
+        // });
 
         // Only run this function if we're outside originally loaded map bounds
         var bounds = maps.map.getBounds();
 
+        // FIXME
         if ( tools.checkIfInsideRoundedBounds(bounds) ) {
             return;
         }
@@ -44,11 +48,11 @@ var features =  ( function () {
         }
     }
 
-    function _loadGarbages (b) {
+    function _loadGarbages (bounds) {
 
         var fetch_garbage = $.ajax({
             type       : api.readTrashWithinBounds.method,
-            url        : api.readTrashWithinBounds.url(b),
+            url        : api.readTrashWithinBounds.url(bounds),
             ifModified : true,
             headers    : {"Authorization": 'Bearer ' + token},
             success    : function (data) {console.log('Success getting garbage marker data', data);},
@@ -104,11 +108,11 @@ var features =  ( function () {
         });
     }
 
-    function _loadCleanings (b) {
+    function _loadCleanings (bounds) {
 
         var fetch_cleaning = $.ajax({
             type       : api.readCleaningWithinBounds.method,
-            url        : api.readCleaningWithinBounds.url(b),
+            url        : api.readCleaningWithinBounds.url(bounds),
             ifModified : true,
             headers    : {"Authorization": 'Bearer ' + token},
             success    : function (data) {console.log('Success getting cleaning event (marker) data', data);},
@@ -147,11 +151,11 @@ var features =  ( function () {
         });
     }
 
-    function _loadAreas (b) {
+    function _loadAreas (bounds) {
 
         var fetch_area = $.ajax({
             type       : api.readAreaWithinBounds.method,
-            url        : api.readAreaWithinBounds.url(b),
+            url        : api.readAreaWithinBounds.url(bounds),
             ifModified : true,
             headers    : {"Authorization": 'Bearer ' + token},
             success    : function () {console.log('Success getting area data');},
@@ -196,11 +200,11 @@ var features =  ( function () {
         });
     }
 
-    function _loadLitters (b) {
+    function _loadLitters (bounds) {
 
         var fetch_litter = $.ajax({
             type       : api.readLitterWithinBounds.method,
-            url        : api.readLitterWithinBounds.url(b),
+            url        : api.readLitterWithinBounds.url(bounds),
             ifModified : true,
             headers    : {"Authorization": 'Bearer ' + token},
             success    : function (data) {console.log('Success getting litter (polyline) data', data);},
@@ -247,7 +251,7 @@ var features =  ( function () {
         });
     }
 
-    function _loadLinks(b) {
+    function _loadLinks(bounds) {
         // TODO
         return;
     }
@@ -255,12 +259,13 @@ var features =  ( function () {
     function _bindEvents () {
 
         // TODO remove all the conditions blocks once we load a larger area
+        // TODO don't load everything if geolocation fails
 
         console.log('Binding map self events.');
 
         maps.map.on('zoomstart dragend zoomend', function (e) {
 
-            var bounds = maps.map.getBounds()
+            //var bounds = maps.map.getBounds()
 
             console.log("map move event: ", e);
 
