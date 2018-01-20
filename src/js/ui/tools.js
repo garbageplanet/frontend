@@ -451,17 +451,60 @@ var tools = {
 
 
     },
-    makeApiCall: function (url, method, auth, data) {
-      
-        return fetch(url, {
-            method: method,
-            headers: {
-              Accept: 'application/json',
-              Authorization: auth
-            },
-            body: data
-        })
-    }
+    deleteEmptyKeys: function (obj) {
+
+      var new_obj = obj
+
+      Object.keys(obj).forEach(key => {
+
+        if ( !obj[key] || typeof obj[key] === 'undefined' || obj[key].length === 0 ) {
+          delete obj[key];
+        }
+      });
+
+      return obj;
+    },
+    makeApiCall: function (obj) {
+
+        console.log('makeapicall obj', obj);
+
+        var options =  {
+              method: obj.method
+            , headers: new Headers({
+                  'Accept': 'application/json'
+                , 'Content-type':'application/json'
+                , 'Authorization': obj.auth.toString()
+              })
+            , body: obj.data
+        };
+
+        console.log('makeapicall options', options);
+
+        return fetch(obj.url, options);
+    },
+    joinObjectProperties: function (obj) {
+
+      var new_obj = {};
+
+      for ( var k in obj ) {
+
+          var o = obj[k];
+          // if the key is an object gather the values in a string
+          if ( o.join ) {
+            new_obj[k] = o.join();
+          }
+          else {
+              new_obj[k] = obj[k];
+          }
+      }
+
+      return new_obj;
+
+    },
+    capitalizeFirstLetter: function (string) {
+        // License MIT, Steve Harrison @SO https://stackoverflow.com/a/1026087/2842348
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    },
     states: {
       /**
         * App shared states

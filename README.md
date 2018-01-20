@@ -31,6 +31,7 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
 - [ ] rewrite features creation methods with factories / function composition so we can add newmethods easily (see src/factories.js)
 - [ ] Remove redundancy in template using include()
+- [x] Remove redundancy in _saveFeature()
 - [ ] build a minimal entry point for loading the content via cdn
 - [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
 - [ ] rebuild with sveltejs

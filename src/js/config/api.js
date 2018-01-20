@@ -59,44 +59,44 @@ var api = {
             return api.server + '/glome/show/' + id;
         }
     },
-    createTrash: {
+    createGarbage: {
         method: 'POST',
         url: function() {
-            return api.readTrash.url();
+            return api.readGarbage.url();
         }
-    },/* Trash */
-    readTrash: {
+    },/* Garbage */
+    readGarbage: {
         method: 'GET',
         url: function() {
             return api.server + '/trashes';
         }
     },
-    showTrash: {
+    showGarbage: {
         method: 'GET',
         url: function(id) {
-            return api.readTrash.url() + '/' + id;
+            return api.readGarbage.url() + '/' + id;
         }
     },
-    deleteTrash: {
+    deleteGarbage: {
         method: 'DELETE',
         url: function(id) {
-            return api.readTrash.url() + '/' + id;
+            return api.readGarbage.url() + '/' + id;
         }
     },
-    confirmTrash: {
+    confirmGarbage: {
         url: function(id) {
-            return api.readTrash.url()+'/confirm/' + id;
+            return api.readGarbage.url()+'/confirm/' + id;
         }
     },
-    cleanTrash: {
+    cleanGarbage: {
         url: function(id) {
-            return api.readTrash.url()+'/clean/' + id;
+            return api.readGarbage.url()+'/clean/' + id;
         }
     },
-    readTrashWithinBounds: {
+    readGarbageWithinBounds: {
         method: 'GET',
         url: function(bounds) {
-            return api.readTrash.url() + '/withinbounds?bounds=' + bounds;
+            return api.readGarbage.url() + '/withinbounds?bounds=' + bounds;
         }
     },
     createCleaning: {

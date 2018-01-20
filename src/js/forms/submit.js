@@ -3,7 +3,6 @@
 
 /**
   * Saving forms data to the backend
-  * TODO DRY this
   */
 
 // Save features on the map
@@ -11,153 +10,41 @@ var saving = ( function () {
 
     'use strict';
 
-    function _saveFeature (fo, ft) {
+    function _saveFeature (formobj, formtype) {
 
-        // TODO with Navigo we can do
-        // _saveFeature(obj);
-        // var type = obj.type
-
-        // ft = formtype, fo = formobj
-        var type = ft.trim();
-        var use_token = localStorage.getItem('token') || tools.token;
-        var auth = 'Bearer ' + use_token;
-
-        // Reset any previous request
-        var post_request = null;
+        var form_type = tools.capitalizeFirstLetter(formtype);
+        var token = localStorage.getItem('token') || tools.token;
+        var auth = 'Bearer ' + token;
 
         // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
-        var so = {};
+        var submission_obj = tools.joinObjectProperties(formobj);
 
-        for ( var k in fo ) {
-            var o = fo[k];
-            // if the key is an object gather the values in a string
-            if ( o.join ) {
-              so[k] = o.join();
-            }
-            else {
-                so[k] = fo[k];
-            }
-        }
+        var post_obj = {
+          url: api['create' + form_type].url(),
+          method: api['create' + form_type].method,
+          auth: auth,
+          data: submission_obj
+        };
 
-        console.log('prepared submission obj: ', so);
-        console.log('form type: ', type);
-        console.log("form object: ", fo);
+        var post_request = tools.makeApiCall(post_obj);
 
-        switch (type) {
+        // post_request.done( function (data) {
+        post_request
 
-            case 'garbage' :
+            .then(res => res.json())
+            .catch(error => {
 
-                post_request = tools.makeApiCall().then(res => {}).catch(err => {});
+                  // TODO pass error.message to showAlert()
 
-                post_request = $.ajax({
-                    method: api.createTrash.method,
-                    url: api.createTrash.url(),
-                    headers: {'Authorization': auth},
-                    dataType: 'json',
-                    data: {
-                          'latlng': so.latlng
-                        , 'amount': so.amount
-                        , 'types': so.type
-                        , 'todo': so.todo
-                        , 'image_url': so.image
-                        , 'tag': so.tags
-                        , 'sizes': so.size
-                        , 'embed': so.environ
-                        , 'note': so.note
-                      }
-                });
-                break;
+                  console.log(error);
 
-            case 'cleaning' :
+                  alerts.showAlert(10, 'danger', 1500);
+                  ui.sidebar.hide();
+                  tools.resetIconStyle();
+            })
+            .then((response) => {
 
-                post_request = $.ajax({
-                    method: api.createCleaning.method,
-                    url: api.createCleaning.url(),
-                    headers: {'Authorization': auth},
-                    dataType: 'json',
-                    data: {
-                          'latlng': so.latlng
-                        , 'datetime': so.datetime
-                        , 'note': so.note
-                        , 'recurrence': so.recurrence
-                        , 'tag': so.tags
-                    }
-                });
-                break;
-
-            case 'litter' :
-
-                post_request = $.ajax({
-
-                    method: api.createLitter.method,
-                    url: api.createLitter.url(),
-                    headers: {'Authorization': auth},
-                    dataType: 'json',
-                    data: {
-                          'latlngs': so.latlngs
-                        , 'amount': so.amount
-                        , 'types': so.type
-                        , 'note': so.note
-                        , 'image_url': so.image
-                        , 'tag': so.tags
-                        , 'physical_length': so.lengthm
-                        , 'amount_quantitative': so.quantitative
-                    }
-                });
-                break;
-
-            case 'area' :
-
-                if ( !so.title ) {
-
-                    so.title = tools.randomString(12);
-                    console.log('randomly generated area title', so.title);
-                    console.log(so);
-                }
-
-                post_request = $.ajax({
-                    method: api.createArea.method,
-                    url: api.createArea.url(),
-                    headers: {'Authorization': auth },
-                    dataType: 'json',
-                    data: {
-                          'latlngs': so.latlngs
-                        , 'note': so.note
-                        , 'contact': so.contact
-                        , 'secret': so.secret
-                        , 'title': so.title
-                        , 'tag': so.tags
-                        , 'game' : so.game
-                        , 'max_players': !so.players ? 0 : so.players
-                    }
-                });
-                break;
-
-            case 'opengraph' :
-
-                post_request = $.ajax({
-
-                    method: api.createOg.method,
-                    url: api.createOg.url(),
-                    headers: {'Authorization': auth},
-                    dataType: 'json',
-                    data: {
-                          'latlng'      : so.latlng
-                        , 'url'         : so.url
-                        , 'site_name'   : so.site_name
-                        , 'title'       : so.title
-                        , 'description' : so.description
-                        , 'image'       : so.image
-                    }
-                });
-                break;
-        }
-
-        post_request.done( function (data) {
-
-            console.log(data);
-
-            if (type === 'garbage' || type === 'cleaning') {
+                console.log(response);
 
                 // Remove any unsaved marker
                 for ( var i in maps.unsavedMarkersLayerGroup._layers ) {
@@ -167,69 +54,53 @@ var saving = ( function () {
                         maps.map.removeLayer(maps.unsavedMarkersLayerGroup.getLayer(i));
                     }
                 }
-            }
 
-            // Reload map features after an item is saved
-            // TODO need to change this logic for loading newly created features
-            // call the route to retrieve data for a single feature after saved
-            // and only render this particular feature
-            // features.loadOne();
-            features.loadFeature(ft);
+                // Reload map features after an item is saved
+                // TODO need to change this logic for loading newly created features
+                // call the route to retrieve data for a single feature after saved
+                // and only render this particular feature
+                // features.loadOne();
+                features.loadFeature(formtype);
+                alerts.showAlert(25, 'success', 1500);
+                ui.sidebar.hide();
 
-            alerts.showAlert(25, 'success', 1500);
-            ui.sidebar.hide();
-        });
+            });
 
-        post_request.fail(function (data) {
-
-            console.log(data);
-
-            alerts.showAlert(10, 'danger', 1500);
-
-            ui.sidebar.hide();
-            tools.resetIconStyle();
-        });
       }
 
     function _bindEvents (obj) {
 
         console.log('current formobj: ', obj);
 
-        var currentform = obj;
+        var current_form = obj;
 
-        currentform.on('keyup change keydown', function () {
-            currentform.validator('validate');
+        current_form.on('keyup change keydown', function () {
+            current_form.validator('validate');
         });
 
         // Form submission
-        currentform.validator().on('submit', function (e) {
+        current_form.validator().on('submit', function (e) {
 
             if ( e.isDefaultPrevented() ) {
                 // isDefaultPrevented is the way the validator plugin tells sthg is wrong with the form
                 alerts.showAlert(30, 'danger', 2000);
-                // FIXME if we call return here the validator exits/bugs?
-                return;
-            }
 
-            else {
+            }  else {
 
                 e.preventDefault();
                 // Get the data from the form
-                var formname = currentform[0].className,
-                    formobj = currentform.serializeObject();
+                var form_name = current_form[0].className;
+                var form_obj  = current_form.serializeObject();
+                // console.log('Form obj:', form_obj);
+                var clean_form_obj = tools.deleteEmptyKeys(form_obj);
+                // console.log('Clean form obj:', clean_form_obj);
 
                 // extract the form type from the classname and trim the string
                 // with Navigo we can omit this because the info will be in the route obj
-                var formtype = formname.substr(formname.lastIndexOf('-') + 1).trim();
-
-                /*console.log('------------------------------');
-                console.log('current form array: ', formobj);
-                console.log('current form type:', formtype);
-                console.log('current form type: ', formtype);
-                console.log('------------------------------');*/
+                var form_type = form_name.substr(form_name.lastIndexOf('-') + 1).trim();
 
                 // Save the data with ajax
-                _saveFeature(formobj, formtype);
+                _saveFeature(clean_form_obj, form_type);
             }
         });
     }
