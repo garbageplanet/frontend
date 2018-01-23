@@ -22,57 +22,123 @@ var features =  ( function () {
 
                     var latlng = data[key].latlng.split(',');
                     var marker = L.marker(L.latLng(latlng[0],latlng[1]),
-                        {
-                            amount:       data[key].amount
-                          , cleaned:      data[key].cleaned
-                          , cleaned_by:   data[key].cleaned_by
-                          , cleaned_date: data[key].cleaned_date
-                          , confirms:     data[key].confirms
-                          , created_at:   data[key].created_at
-                          , created_by:   data[key].marked_by
-                          , embed:        data[key].embed
-                          , id:           data[key].id
-                          , image_url:    data[key].image_url
-                          , modified_at:  data[key].updated_at
-                          , latlng:       data[key].latlng
-                          , note:         data[key].note
-                          , size:         data[key].size
-                          , tags:         data[key].tag
-                          , types:        data[key].types.join(', ')
-                          , icon: tools.setMarkerIcon(data[key].cleaned, null)
-                          , todo: data[key].cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(data[key].todo)
-                          , feature_type: 'garbage'
-                        });
-
+                    {
+                        amount:       data[key].amount
+                      , cleaned:      data[key].cleaned
+                      , cleaned_by:   data[key].cleaned_by
+                      , cleaned_date: data[key].cleaned_date
+                      , confirms:     data[key].confirms
+                      , created_at:   data[key].created_at
+                      , created_by:   data[key].marked_by
+                      , embed:        data[key].embed
+                      , id:           data[key].id
+                      , image_url:    data[key].image_url
+                      , modified_at:  data[key].updated_at
+                      , latlng:       data[key].latlng
+                      , note:         data[key].note
+                      , size:         data[key].size
+                      , tags:         data[key].tag
+                      , types:        data[key].types.join(', ')
+                      , icon: tools.setMarkerIcon(data[key].cleaned, null)
+                      , todo: data[key].cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(data[key].todo)
+                      , feature_type: 'garbage'
+                    });
                     // marker.addTo(maps.garbageLayerGroup);
                     maps.garbageLayerGroup.addLayer(marker);
-
                     // Set the class for the marker color after the icon is loaded on the map
                     $(marker._icon).addClass(tools.setMarkerClassColor(data[key].amount));
+                });
+                break;
 
+            case 'cleaning' :
+                Object.keys(data).each(function (key) {
+
+                    var latlng = o.latlng.split(',');
+                    var marker = L.marker(L.latLng(latlng[0], latlng[1]),
+                    {
+                          attends:     data[key].attends
+                        , created_at:  data[key].created_at
+                        , created_by:  data[key].created_by
+                        , datetime:    data[key].datetime
+                        , id:          data[key].id
+                        , latlng:      data[key].latlng
+                        , modified_at: data[key].updated_at
+                        , recurrence:  data[key].recurrence
+                        , ext_link:    data[key].note
+                        , icon:        tools.setMarkerIcon(null, data[key].datetime)
+                        , feature_type: 'cleaning'
+                    });
+                    marker.addTo(maps.cleaningLayerGroup);
+                });
+                break;
+
+            case 'litter' :
+                Object.keys(data).each(function(key) {
+
+                    var latlngs = JSON.parse("[" + odata[key].latlngs + "]");
+                    var polylineLayer = L.polyline(latlngs,
+                    {
+                         amount          : data[key].amount
+                       , cleaned         : data[key].cleaned
+                       , cleaned_by      : data[key].cleaned_by
+                       , confirms        : data[key].confirms
+                       , color           : tools.setPolylineColor(o.amount)
+                       , created_at      : data[key].created_at
+                       , created_by      : data[key].marked_by
+                       , id              : data[key].id
+                       , image_url       : data[key].image_url
+                       , modified_at     : data[key].updated_at
+                       , physical_length : data[key].physical_length
+                       , tags            : data[key].tag
+                       , types           : data[key].types.join(', ')
+                       , shape           : true
+                       , feature_type    : 'litter'
+                       , clickable       : true
+                       , weight          : 15
+                       , opacity         : 0.5
+                       , smoothFactor    : 3
+                    });
+
+                    maps.litterLayerGroup.addLayer(polylineLayer);
                 });
 
-
                 break;
-            case 'cleaning' :
-                return null;
 
-                break;
-            case 'litter'   :
-                return  null;
+            case 'area' :
+                Object.keys(data).each(function (key) {
 
-                break;
-            case 'area'     :
-                return  null;
+                    var latlngs = JSON.parse("[" + data[key].latlngs + "]");
+                    var polygonLayer = new L.Polygon(latlngs,
+                    {
+                         contact:      data[key].contact
+                       , created_by:   data[key].created_by
+                       , created_at:   data[key].created_at
+                       , curr_players: data[key].curr_players
+                       , id:           data[key].id
+                       , max_players:  data[key].max_players
+                       , note:         data[key].note
+                       , tags:         data[key].tag
+                       , title:        data[key].title
+                       , modified_at:  data[key].updated_at
+                       , feature_type: 'area'
+                       , shape:        true
+                       , color:        '#33cccc'
+                       , weight:       5
+                       , opacity:      0.5
+                       , smoothFactor: 3
+                     });
 
+                     maps.areaLayerGroup.addLayer(polygonLayer);
+                });
                 break;
-            case 'link'     :
-                return  null;
-
-                break;
+            // TODO
+            // case 'link'     :
+            //     return  null;
+            //
+            //     break;
+            // default: ;
 
         }
-
     }
 
     function loadFeature (type) {
@@ -81,7 +147,6 @@ var features =  ( function () {
       // if ( tools.checkIfInsideRoundedBounds(bounds) ) {
       //     return;
       // }
-
       // Only run this function if we're outside originally loaded map bounds
       var bounds = maps.map.getBounds();
       var inverted_bounds = tools.getInvertedBounds(maps.map);
@@ -109,232 +174,7 @@ var features =  ( function () {
               _createFeatures(item, response);
           });
       });
-
     }
-
-    // function _loadGarbages (bounds) {
-    //
-    //   var token = localStorage.getItem('token') || tools.token;
-    //
-    //   var post_obj = {
-    //     url: api['read' + type + 'WithinBounds'].url(),
-    //     method: api['read' + type + 'WithinBounds'].method,
-    //     auth: 'Bearer ' + token,
-    //   };
-    //
-    //   tools.makeApiCall(post_obj, window.fetch)
-    //       .catch(error => {})
-    //       .then(response)=> {
-    //
-    //         if (!response || response.length < 1) {
-    //             console.log('Empty feature set');
-    //             return false;
-    //         } esle {
-    //             _CreateFeature(response);
-    //         }
-    //       });
-    //
-    //
-    //     var fetch_garbage = $.ajax({
-    //         type       : api.readGarbageWithinBounds.method,
-    //         url        : api.readGarbageWithinBounds.url(bounds),
-    //         ifModified : true,
-    //         headers    : {"Authorization": 'Bearer ' + token},
-    //     });
-    //
-    //     fetch_garbage.done( function (data) {
-    //
-    //         if (!data || data.length < 1) {
-    //
-    //             return;
-    //
-    //         } else {
-    //
-    //             maps.garbageLayerGroup.clearLayers();
-    //
-    //             $(data).each(function (i, o) {
-    //
-    //                 var latlng = o.latlng.split(',');
-    //                 var marker = L.marker(L.latLng(latlng[0],latlng[1]),
-    //                     {
-    //                         amount:       o.amount
-    //                       , cleaned:      o.cleaned
-    //                       , cleaned_by:   o.cleaned_by
-    //                       , cleaned_date: o.cleaned_date
-    //                       , confirms:     o.confirms
-    //                       , created_at:   o.created_at
-    //                       , created_by:   o.marked_by
-    //                       , embed:        o.embed
-    //                       , id:           o.id
-    //                       , image_url:    o.image_url
-    //                       , modified_at:  o.updated_at
-    //                       , latlng:       o.latlng
-    //                       , note:         o.note
-    //                       , size:         o.size
-    //                       , tags:         o.tag
-    //                       , types:        o.types.join(', ')
-    //                       , icon: tools.setMarkerIcon(o.cleaned, null)
-    //                       , todo: o.cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(o.todo)
-    //                       , feature_type: 'garbage'
-    //                     });
-    //
-    //                 // marker.addTo(maps.garbageLayerGroup);
-    //                 maps.garbageLayerGroup.addLayer(marker);
-    //
-    //                 // Set the class for the marker color after the icon is loaded on the map
-    //                 $(marker._icon).addClass(tools.setMarkerClassColor(o.amount));
-    //             });
-    //         }
-    //     });
-    // }
-    //
-    // function _loadCleanings (bounds) {
-    //
-    //     var fetch_cleaning = $.ajax({
-    //         type       : api.readCleaningWithinBounds.method,
-    //         url        : api.readCleaningWithinBounds.url(bounds),
-    //         ifModified : true,
-    //         headers    : {"Authorization": 'Bearer ' + token},
-    //         success    : function (data) {console.log('Success getting cleaning event (marker) data', data);},
-    //         error      : function (data) {console.log('Error getting cleaning event (marker) data', data);}
-    //     });
-    //
-    //     fetch_cleaning.done(function (data) {
-    //
-    //         if (!data || data.length < 1) { return; }
-    //
-    //         maps.cleaningLayerGroup.clearLayers();
-    //
-    //             $(data).each(function (i, o) {
-    //
-    //                 var latlng = o.latlng.split(',');
-    //                 var marker = L.marker(L.latLng(latlng[0], latlng[1]),
-    //                     {
-    //                           attends:     o.attends
-    //                         , created_at:  o.created_at
-    //                         , created_by:  o.created_by
-    //                         , datetime:    o.datetime
-    //                         , id:          o.id
-    //                         , latlng:      o.latlng
-    //                         , modified_at: o.updated_at
-    //                         , recurrence:  o.recurrence
-    //                         , ext_link:    o.note
-    //                         , icon:        tools.setMarkerIcon(null, o.datetime)
-    //                         , feature_type: 'cleaning'
-    //                     });
-    //
-    //                 marker.addTo(maps.cleaningLayerGroup);
-    //             });
-    //     });
-    //     fetch_cleaning.fail(function(data){
-    //         alerts.showAlert(10, 'warning', 1500);
-    //     });
-    // }
-    //
-    // function _loadAreas (bounds) {
-    //
-    //     var fetch_area = $.ajax({
-    //         type       : api.readAreaWithinBounds.method,
-    //         url        : api.readAreaWithinBounds.url(bounds),
-    //         ifModified : true,
-    //         headers    : {"Authorization": 'Bearer ' + token},
-    //         success    : function () {console.log('Success getting area data');},
-    //         error      : function () {console.log('Error getting area data');}
-    //     });
-    //
-    //     fetch_area.done(function (data) {
-    //
-    //         if (!data || data.length < 1) { return; }
-    //
-    //         maps.areaLayerGroup.clearLayers();
-    //
-    //         $(data).each(function (i, o) {
-    //
-    //             var latlngs = JSON.parse("[" + o.latlngs + "]");
-    //             var polygonLayer = new L.Polygon(latlngs,
-    //                 {
-    //                     contact:      o.contact
-    //                   , created_by:   o.created_by
-    //                   , created_at:   o.created_at
-    //                   , curr_players: o.curr_players
-    //                   , id:           o.id
-    //                   , max_players:  o.max_players
-    //                   , note:         o.note
-    //                   , tags:         o.tag
-    //                   , title:        o.title
-    //                   , modified_at:  o.updated_at
-    //                   , feature_type: 'area'
-    //                   , shape:        true
-    //                   , color:        '#33cccc'
-    //                   , weight:       5
-    //                   , opacity:      0.5
-    //                   , smoothFactor: 3
-    //               });
-    //
-    //               maps.areaLayerGroup.addLayer(polygonLayer);
-    //             }
-    //         );
-    //     });
-    //     fetch_area.fail( function () {
-    //         alerts.showAlert(10, 'warning', 1500);
-    //     });
-    // }
-    //
-    // function _loadLitters (bounds) {
-    //
-    //     var fetch_litter = $.ajax({
-    //         type       : api.readLitterWithinBounds.method,
-    //         url        : api.readLitterWithinBounds.url(bounds),
-    //         ifModified : true,
-    //         headers    : {"Authorization": 'Bearer ' + token},
-    //         success    : function (data) {console.log('Success getting litter (polyline) data', data);},
-    //         error      : function (data) {console.log('Error getting litter (polyline) data', data);}
-    //     });
-    //
-    //     fetch_litter.done(function(data) {
-    //
-    //         if (!data || data.length < 1) { return; }
-    //
-    //         maps.litterLayerGroup.clearLayers();
-    //
-    //         $(data).each(function(i, o) {
-    //
-    //             var latlngs = JSON.parse("[" + o.latlngs + "]");
-    //             var polylineLayer = L.polyline(latlngs,
-    //             {
-    //                   amount: o.amount
-    //                 , cleaned: o.cleaned
-    //                 , cleaned_by: o.cleaned_by
-    //                 , confirms: o.confirms
-    //                 , color: tools.setPolylineColor(o.amount)
-    //                 , created_at: o.created_at
-    //                 , created_by: o.marked_by
-    //                 , id: o.id
-    //                 , image_url: o.image_url
-    //                 , modified_at: o.updated_at
-    //                 , physical_length: o.physical_length
-    //                 , tags: o.tag
-    //                 , types: o.types.join(', ')
-    //                 , shape: true
-    //                 , feature_type: 'litter'
-    //                 , clickable: true
-    //                 , weight: 15
-    //                 , opacity: 0.5
-    //                 , smoothFactor: 3
-    //             });
-    //
-    //             maps.litterLayerGroup.addLayer(polylineLayer);
-    //         });
-    //     });
-    //     fetch_litter.fail(function() {
-    //       alerts.showAlert(10, 'warning', 1500);
-    //     });
-    // }
-    //
-    // function _loadLinks(bounds) {
-    //     // TODO
-    //     return;
-    // }
 
     function _bindEvents () {
 
