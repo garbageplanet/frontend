@@ -464,8 +464,8 @@ var tools = {
 
       return obj;
     },
-    makeApiCall: function (obj) {
-
+    makeApiCall: function (obj, fetch) {
+        // We inject fetch() as a dependancy so that we can require it if the user's browser doens't have window.fetch
         console.log('makeapicall obj', obj);
 
         var options =  {
@@ -480,7 +480,25 @@ var tools = {
 
         console.log('makeapicall options', options);
 
-        return fetch(obj.url, options);
+        // Return the processed response
+        return fetch(obj.url, options)
+            .then(tools.processFetchStatus)
+            .catch(error => { alerts.showAlert(1, "info", 2000, error.message)})
+            .then(tools.parseFetchJsonResponse);
+    },
+    processFetchStatus: function (response) {
+        // Resolve the promise if success
+        if ( response.status === 200 || response.status === 0 ) {
+
+          return Promise.resolve(response)
+          // Else reject it
+        } else {
+
+            return Promise.reject(response)
+        }
+    },
+    parseFetchJsonResponse: function (response) {
+        return response.json()
     },
     joinObjectProperties: function (obj) {
 
@@ -505,10 +523,38 @@ var tools = {
         // License MIT, Steve Harrison @SO https://stackoverflow.com/a/1026087/2842348
         return string.charAt(0).toUpperCase() + string.slice(1);
     },
+    centerFeatureOnMap: function (map, obj) {
+
+      if ( obj.options ) {
+
+          // Check if the feature is a shape
+          if ( obj.options.shape ) {
+
+              map.panToOffset(obj.getCenter(), tools.getVerticalOffset());
+
+              return;
+
+          } else {
+
+              // if not a shape clicked it's a marker, bring it to the map center with panToOffset(), rise the marker to the top of others
+              obj.setZIndexOffset(obj._zIndex + 10000);
+              map.panToOffset(obj.getLatLng(), tools.getVerticalOffset());
+
+              return;
+          }
+
+      } else {
+
+        console.log('No options in the object');
+        alerts.showAlert(5, 'danger', 1000);
+        return;
+      }
+    },
     states: {
       /**
         * App shared states
         * TODO set writeability / Object.freeze()
+        * use get funA(), set funB() getters / setters
         */
         currentZoom: null
       , roundedBounds: null

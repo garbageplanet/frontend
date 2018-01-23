@@ -16,7 +16,7 @@ var saving = ( function () {
         var token = localStorage.getItem('token') || tools.token;
         var auth = 'Bearer ' + token;
 
-        // Prepare a submission object (so) to send to backend by checking if the form has any arrayed keys
+        // Prepare a submission object by checking if the form has any arrayed keys and join them in a string
         var submission_obj = tools.joinObjectProperties(formobj);
 
         var post_obj = {
@@ -26,30 +26,26 @@ var saving = ( function () {
           data: submission_obj
         };
 
-        var post_request = tools.makeApiCall(post_obj);
-
-        // post_request.done( function (data) {
-        post_request
-
-            .then(res => res.json())
+        tools.makeApiCall(post_obj, window.fetch)
             .catch(error => {
 
                   // TODO pass error.message to showAlert()
 
                   console.log(error);
 
-                  alerts.showAlert(10, 'danger', 1500);
+                  alerts.showAlert(1, 'danger', 1500, error.message);
                   ui.sidebar.hide();
                   tools.resetIconStyle();
             })
             .then((response) => {
 
-                console.log(response);
+                console.log('post request', response);
 
                 // Remove any unsaved marker
                 for ( var i in maps.unsavedMarkersLayerGroup._layers ) {
 
                     if ( maps.unsavedMarkersLayerGroup._layers.hasOwnProperty(i) ) {
+
                         tools.resetIconStyle(i);
                         maps.map.removeLayer(maps.unsavedMarkersLayerGroup.getLayer(i));
                     }
@@ -100,6 +96,7 @@ var saving = ( function () {
                 var form_type = form_name.substr(form_name.lastIndexOf('-') + 1).trim();
 
                 // Save the data with ajax
+                // _saveFeature.bin({formObj: clean_form_obj, formType: form_type})
                 _saveFeature(clean_form_obj, form_type);
             }
         });

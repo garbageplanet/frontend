@@ -331,6 +331,7 @@ var ui = ( function () {
     function _bindBottombarFeatureEvents (obj) {
 
         var btnfeature = $('#bottombar').find('.btn-feature');
+
         var options = {
             trigger: 'focus',
             html : true,
@@ -350,11 +351,22 @@ var ui = ( function () {
         // Event listener for actions buttons (edit, cleaned join, confirm, play)
         btnfeature.on('click', function (e) {
 
-            var ct = $(this).attr('name');
-            console.log(ct);
+          // Warn the user if not logged in
+          if ( !localStorage.getItem('token') ){
 
-            // Send the full leaflet object to actions dispatch function
-            actions.act(ct, obj);
+              alerts.showAlert(3, "info", 2000);
+              return false;
+
+          } else {
+
+              var action_type = $(this).attr('name');
+              console.log(action_type);
+
+              // Send the full leaflet object to actions dispatch function
+              // use bind
+              actions.act(action_type, obj);
+          }
+
         });
     }
 

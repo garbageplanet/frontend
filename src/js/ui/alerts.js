@@ -7,6 +7,8 @@
   * License MIT
   */
 
+// TODO remove jquery
+
 var alerts = ( function () {
 
     'use strict';

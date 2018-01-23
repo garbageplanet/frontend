@@ -38,7 +38,7 @@ var session = ( function () {
             // TODO make this with templates
             $(session_button).text('Login').attr("href","/auth/login");
             $(session_button).attr("id","");
-            // $(session_button).attr("data-navigo","");
+            $(session_button).attr("data-navigo","");
             account_info_link.remove();
             $(user_tools).dropdown();
             $(session_link).removeClass('hidden');
@@ -145,6 +145,8 @@ var session = ( function () {
 
     function _setAccount (classic, data) {
 
+      // TODO Object.freeze() or use set setAccount(...) to create a setter function
+
       return new Promise ((resolve, reject) => {
 
         console.log('Account data from setAccount() Promise', data)
@@ -173,7 +175,7 @@ var session = ( function () {
     }
 
     function _getAccount (classic) {
-
+    // do this with get getAccount(){}
         var account = {};
 
         if ( classic ) {

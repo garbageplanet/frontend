@@ -22,9 +22,9 @@ var features =  ( function () {
         var bounds = maps.map.getBounds();
 
         // FIXME
-        if ( tools.checkIfInsideRoundedBounds(bounds) ) {
-            return;
-        }
+        // if ( tools.checkIfInsideRoundedBounds(bounds) ) {
+        //     return;
+        // }
 
         var inverted_bounds = tools.getInvertedBounds(maps.map);
         var alltypes        = ['garbage','cleaning','litter','area','opengraph'];
@@ -51,8 +51,8 @@ var features =  ( function () {
     function _loadGarbages (bounds) {
 
         var fetch_garbage = $.ajax({
-            type       : api.readTrashWithinBounds.method,
-            url        : api.readTrashWithinBounds.url(bounds),
+            type       : api.readGarbageWithinBounds.method,
+            url        : api.readGarbageWithinBounds.url(bounds),
             ifModified : true,
             headers    : {"Authorization": 'Bearer ' + token},
             success    : function (data) {console.log('Success getting garbage marker data', data);},

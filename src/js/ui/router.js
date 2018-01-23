@@ -20,7 +20,18 @@ router.on({
 router.on({
   '/feature/:type/:id/show'   : { as: 'feature.show'  , uses: function (params, query) { ui.setContent(params.type, params.id); }},
   '/feature/:type/:id/edit'   : { as: 'feature.edit'  , uses: function (params, query) {}, before: function (done, params) { if( !tools.states.loggedin ) { done( false ) } else { done()}} },
-  '/feature/:type/:id/:action': { as: 'feature.action', uses: function (params, query) {}, before: function (done, params) { if( !tools.states.loggedin ) { done( false ) } else { done()}} }
+  '/feature/:type/:id/:action': { as: 'feature.action', uses: function (params, query) {
+      // NOTE We need to fetch the leaflet obj if we pass by the router
+      actions.act(params.type, params.id, params.action);
+  }, before: function (done, params) {
+
+      // Warn user here
+      if( !tools.states.loggedin ) {
+
+          alerts.showAlert(3, "info", 2000);
+          done(false)
+
+     } else { done() }} }
 }).resolve();
 
 /**
