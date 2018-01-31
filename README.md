@@ -26,14 +26,17 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 
 ### Improvements
 
+Also look at [TODO.md](https://github.com/garbageplanet/frontend/blob/navigo/TODO.md)
+
+- [x] make shareable link router mechanism 
 - [ ] store unsaved markers in app state for offline use and implement PWA / wweborker
 - [ ] use fetch api instead of ajax and image uploader so we can move to jquery slim
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
-- [ ] rewrite features creation methods with factories / function composition so we can add newmethods easily (see src/factories.js)
+- [ ] rewrite features creation methods with factories / function composition so we can add new methods easily (see src/factories.js)
 - [ ] Remove redundancy in template using include()
 - [x] Remove redundancy in _saveFeature()
 - [ ] Remove redundancy in session()
-- [ ] Remove redundancy in _loadFeature()
+- [x] Remove redundancy in _loadFeature()
 - [ ] build a minimal entry point for loading the content via cdn
 - [ ] navigate visible markers in the bottom panel view with https://github.com/stefanocudini/leaflet-list-markers
 - [ ] rebuild with sveltejs

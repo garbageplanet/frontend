@@ -31,7 +31,7 @@ var actions = ( function () {
             var marker_id = maps.unsavedMarkersLayerGroup.getLayerId(marker);
 
             // Send the marker id to the forms so we can retrieve the object without sending it around
-            // TODO use setter
+            // TODO use setter function for states?
             tools.states.currentFeatureId = marker_id;
 
             // Set listeners in the case the marker isn't saved
@@ -76,8 +76,7 @@ var actions = ( function () {
             }
         }
 
-        // TODO use setter
-        // TODO do we need sates at all?
+        // TODO do we need this sate at all?
         tools.states.currentFeatureId = maps.unsavedMarkersLayerGroup.getLayerId(obj.layer);
 
         maps.map.panToOffset(obj.layer.getLatLng(), tools.getHorizontalOffset());
@@ -100,11 +99,13 @@ var actions = ( function () {
         // We must stop the bubbling else the map catches clicks
         L.DomEvent.stopPropagation(obj);
 
+        var id   = obj.layer.options.id;
+        var type = obj.layer.options.feature_type;
+
         // Build the route from the obj data with the db feature id and feature type
         var route = router.generate('feature.show', {
-            id: obj.layer.options.id,
-            // id: obj.layer._leaflet_id,
-            type: obj.layer.options.feature_type
+            id   : id,
+            type : type
         });
 
         console.log('route:', route);
@@ -119,7 +120,7 @@ var actions = ( function () {
     function act (type, object/*, action*/) {
 
         // TODO pass by router?
-        // TODO set links in template
+        // TODO set navigo links in template
         // TODO get type from object
         // TODO merge attendCleaning, confirmGarbage and cleanGarbage as they all have the similar mechanism
 
@@ -183,13 +184,14 @@ var actions = ( function () {
 
         var token = localStorage.getItem('token') || tools.token;
         var feature_type = tools.capitalizeFirstLetter(o.feature_type);
-        var post_obj = {
+
+        var params = {
           url: api['confirm' + feature_type].url(o.id),
           method: 'PUT',
-          auth: "Bearer" + token,
+          auth: "Bearer" + token
         };
 
-        tools.makeApiCall(post_obj, window.fetch)
+        tools.makeApiCall(params, window.fetch)
             .catch(error => {
                 console.log(error);
             }).then(response => {
@@ -207,18 +209,18 @@ var actions = ( function () {
         var token = localStorage.getItem('token') || tools.token;
 
         // Check user rights
-        // TODO delete warning
+        // TODO warn user before deletion
         if ( (o.options.marked_by || o.options.created_by) === parseInt(localStorage.getItem('id'),10) ) {
 
             var type = tools.capitalizeFirstLetter(o.options.feature_type);
 
-            var post_obj = {
+            var params = {
               url: api['delete' + type].url(o.options.id),
               method: api['delete' + type].method,
               auth: "Bearer " + token
             };
 
-            tools.makeApiCall(post_obj, window.fetch)
+            tools.makeApiCall(params, window.fetch)
 
                 .then(response => {
 
@@ -248,13 +250,14 @@ var actions = ( function () {
         // TODO merge with confirmGarbage() and change backend route for /attend/
 
         var token = localStorage.getItem('token') || tools.token;
-        var post_obj = {
+
+        var params = {
           url: api.attendCleaning.url(o.id),
           method: 'PUT',
-          auth: "Bearer" + token,
+          auth: "Bearer" + token
         };
 
-        tools.makeApiCall(post_obj, window.fetch)
+        tools.makeApiCall(params, window.fetch)
             .catch(error => {
                 console.log(error);
             }).then(response => {
@@ -269,13 +272,14 @@ var actions = ( function () {
 
         var token = localStorage.getItem('token') || tools.token;
         var feature_type = tools.capitalizeFirstLetter(o.feature_type);
-        var post_obj = {
+
+        var params = {
           url: api['clean' + feature_type].url(o.id),
           method: 'PUT',
-          auth: "Bearer" + token,
+          auth: "Bearer" + token
         };
 
-        tools.makeApiCall(post_obj, window.fetch)
+        tools.makeApiCall(params, window.fetch)
             .catch(error => {
                 console.log(error);
             }).then(response => {
@@ -318,6 +322,7 @@ var actions = ( function () {
 
         var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
         var cancel_button = $('.btn-cancel');
+        // var cancel_button = document.querySelectorAll('.btn-cancel');
 
         ui.sidebar.on ('hide', function () {
             tools.resetIconStyle(id);
@@ -325,6 +330,7 @@ var actions = ( function () {
 
         // Close sidebar if cancel button clicked and delete unsaved markers
         cancel_button.on('click', function (e) {
+        // cancel_button.addEventListener('click', function (e) {
 
             e.preventDefault();
             ui.sidebar.hide();
@@ -359,5 +365,6 @@ var actions = ( function () {
              , act                     : act
              , bindUnsavedMarkerEvents : bindUnsavedMarkerEvents
              , init                    : init
+             , featureClick            : _featureClick
     }
 }());

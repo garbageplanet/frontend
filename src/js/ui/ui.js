@@ -178,8 +178,6 @@ var ui = ( function () {
     }
 
     function makeModal (type, arr) {
-        // TODO extract function to make the datatable
-        // TODO extract event listeners
 
         console.log('type of modal: ', type);
         console.log('data for table: ', arr);
@@ -309,7 +307,7 @@ var ui = ( function () {
           });
 
           // Events to execute when the bottombat is shown
-          // FIXME, need to use tools.checkOpenUiElement()
+          // TODO this, need to use tools.checkOpenUiElement()
           ui.bottombar.on('show', function () {
 
               // hide the sidebar if it's visible

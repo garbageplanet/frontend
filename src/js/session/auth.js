@@ -25,7 +25,7 @@ var session = ( function () {
 
             tools.states.loggedin = false;
 
-            var account_info_link = document.getElementById('account-info-link');
+            var account_info_link = document.querySelector('#account-info-link');
 
             if ( window.isMobile ) {
                 // Logout the anon login leaflet control so it is dusplayed again on the map
@@ -35,11 +35,14 @@ var session = ( function () {
                 // $(account_info_button_mobile).remove();
             }
 
+            if ( account_info_link ) {
+              account_info_link.remove();
+            }
+
             // TODO make this with templates
             $(session_button).text('Login').attr("href","/auth/login");
             $(session_button).attr("id","");
             $(session_button).attr("data-navigo","");
-            account_info_link.remove();
             $(user_tools).dropdown();
             $(session_link).removeClass('hidden');
 
@@ -175,7 +178,7 @@ var session = ( function () {
     }
 
     function _getAccount (classic) {
-    // do this with get getAccount(){}
+
         var account = {};
 
         if ( classic ) {
@@ -197,6 +200,25 @@ var session = ( function () {
     }
 
     function _logIn (o) {
+
+      // var params = {
+      //   url: api.createLogin.url() + '/login',
+      //   method: api.createLogin.method,
+      //   data: {
+      //         'email'   : o.email
+      //       , 'password': o.password
+      //   }
+      // };
+      //
+      // tools.makeApiCall(params, window.fetch)
+      //     .catch(error => {
+      //         console.log(error);
+      //     }).then(response => {
+      //
+      //         // TODO finish this
+      //
+      //     });
+
 
         var login_call = $.ajax({
 
@@ -299,53 +321,53 @@ var session = ( function () {
 
     function _registerAccount (o) {
 
-            console.log('reigtser obj:', o);
+        console.log('reigtser obj:', o);
 
-            var register_call = $.ajax({
+        var register_call = $.ajax({
 
-                type: api.createUser.method,
-                url : api.createUser.url(),
-                data: {
-                    'email': o.email,
-                    'password': o.password,
-                    'name': o.username
-                },
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function (response) {
-                    console.log(response);
+            type: api.createUser.method,
+            url : api.createUser.url(),
+            data: {
+                'email': o.email,
+                'password': o.password,
+                'name': o.username
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+
+        register_call.done(function (response) {
+
+            localStorage.setItem('token', response.token);
+
+            $.ajax({
+
+                method : api.readUser.method,
+                url    : api.readUser.url(),
+                headers: {'Authorization': 'Bearer ' + response.token},
+                success: function (data) {
+
+                  // Log the user in the UI
+                  _setAccount(true, data).then(() => {
+
+                    _switchSession('login');
+                    alerts.showAlert(13, 'success', 1500);
+                  });
                 }
             });
+        });
 
-            register_call.done(function (response) {
+        register_call.fail( function () {
+            alerts.showAlert(1, 'danger', 3500);
+            localStorage.clear();
+            tools.states.loggedin = false;
+        });
 
-                localStorage.setItem('token', response.token);
-
-                $.ajax({
-
-                    method : api.readUser.method,
-                    url    : api.readUser.url(),
-                    headers: {'Authorization': 'Bearer ' + response.token},
-                    success: function (data) {
-
-                      // Log the user in the UI
-                      _setAccount(true, data).then(() => {
-
-                        _switchSession('login');
-                        alerts.showAlert(13, 'success', 1500);
-                      });
-                    }
-                });
-            });
-
-            register_call.fail( function () {
-                alerts.showAlert(1, 'danger', 3500);
-                localStorage.clear();
-                tools.states.loggedin = false;
-            });
-
-        }
+    }
 
     function _glomeGo () {
 
@@ -530,7 +552,8 @@ var session = ( function () {
 
         /*
          * This function is called when visiting the router url "/auth/i"
-         * @params i {String} defines what block to init ['logout','check','login']
+         * @params i {String} defines what block to init ['logout','check','view']
+         * by default the switch statement handleauth forms
          */
 
          switch (i) {

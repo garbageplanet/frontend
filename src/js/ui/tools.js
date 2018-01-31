@@ -71,6 +71,12 @@ var tools = {
     },
     insertString: function (obj, index, string) {
 
+        if ( string.charAt(4) === 's' ) {
+
+            return string;
+
+        }
+
         if (index > 0) {
 
             return obj.substring(0, index) + string + obj.substring(index, obj.length);
@@ -301,7 +307,7 @@ var tools = {
         return true;
     },
     openGraphScraper: function (url) {
-        // TODO use tools.processRequestStatus() to send UI feedback if the below fails
+        // TODO use fetch
         var token = '@@opengraphiotoken';
 
         if (url) {
@@ -337,7 +343,7 @@ var tools = {
         }
     },
     scrapeGeolocationFromText: function () {
-        // TODO
+        // TODO geographical information scraper from text resources (standalone library)
         return;
     },
     activateTabs: function () {
@@ -411,9 +417,14 @@ var tools = {
     uploadToImgur: function (file) {
 
         // based on a pen by James Skinner - License MIT - https://codepen.io/spiralx/pen/mJxWJE
-        var formData = new FormData()
-            formData.append('type', 'file')
-            formData.append('image', file)
+        var formData = new FormData();
+            formData.append('type', 'file');
+            formData.append('image', file);
+
+        var params = {}
+
+        // tools.makeApiCall().catch().then();
+
 
         return fetch('https://api.imgur.com/3/upload', {
 

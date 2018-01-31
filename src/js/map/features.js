@@ -3,7 +3,7 @@
 
 /**
   * Loading map features from the backend
-  * TODO caching
+  * TODO cache mechanism and backend 304 if data in the response is the same
   */
 
 var features =  ( function () {
@@ -23,25 +23,25 @@ var features =  ( function () {
                     var latlng = data[key].latlng.split(',');
                     var marker = L.marker(L.latLng(latlng[0],latlng[1]),
                     {
-                        amount:       data[key].amount
-                      , cleaned:      data[key].cleaned
-                      , cleaned_by:   data[key].cleaned_by
-                      , cleaned_date: data[key].cleaned_date
-                      , confirms:     data[key].confirms
-                      , created_at:   data[key].created_at
-                      , created_by:   data[key].marked_by
-                      , embed:        data[key].embed
-                      , id:           data[key].id
-                      , image_url:    data[key].image_url
-                      , modified_at:  data[key].updated_at
-                      , latlng:       data[key].latlng
-                      , note:         data[key].note
-                      , size:         data[key].size
-                      , tags:         data[key].tag
-                      , types:        data[key].types.join(', ')
-                      , icon: tools.setMarkerIcon(data[key].cleaned, null)
-                      , todo: data[key].cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(data[key].todo)
-                      , feature_type: 'garbage'
+                        amount       : data[key].amount
+                      , cleaned      : data[key].cleaned
+                      , cleaned_by   : data[key].cleaned_by
+                      , cleaned_date : data[key].cleaned_date
+                      , confirms     : data[key].confirms
+                      , created_at   : data[key].created_at
+                      , created_by   : data[key].marked_by
+                      , embed        : data[key].embed
+                      , id           : data[key].id
+                      , image_url    : data[key].image_url
+                      , modified_at  : data[key].updated_at
+                      , latlng       : data[key].latlng
+                      , note         : data[key].note
+                      , size         : data[key].size
+                      , tags         : data[key].tag
+                      , types        : data[key].types.join(', ')
+                      , icon         : tools.setMarkerIcon(data[key].cleaned, null)
+                      , todo         : data[key].cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(data[key].todo)
+                      , feature_type : 'garbage'
                     });
                     // marker.addTo(maps.garbageLayerGroup);
                     maps.garbageLayerGroup.addLayer(marker);
@@ -51,38 +51,38 @@ var features =  ( function () {
                 break;
 
             case 'cleaning' :
-                Object.keys(data).each(function (key) {
+                Object.keys(data).forEach(function (key) {
 
-                    var latlng = o.latlng.split(',');
+                    var latlng = data[key].latlng.split(',');
                     var marker = L.marker(L.latLng(latlng[0], latlng[1]),
                     {
-                          attends:     data[key].attends
-                        , created_at:  data[key].created_at
-                        , created_by:  data[key].created_by
-                        , datetime:    data[key].datetime
-                        , id:          data[key].id
-                        , latlng:      data[key].latlng
-                        , modified_at: data[key].updated_at
-                        , recurrence:  data[key].recurrence
-                        , ext_link:    data[key].note
-                        , icon:        tools.setMarkerIcon(null, data[key].datetime)
-                        , feature_type: 'cleaning'
+                          attends      : data[key].attends
+                        , created_at   : data[key].created_at
+                        , created_by   : data[key].created_by
+                        , datetime     : data[key].datetime
+                        , id           : data[key].id
+                        , latlng       : data[key].latlng
+                        , modified_at  : data[key].updated_at
+                        , recurrence   : data[key].recurrence
+                        , ext_link     : data[key].note
+                        , icon         : tools.setMarkerIcon(null, data[key].datetime)
+                        , feature_type : 'cleaning'
                     });
                     marker.addTo(maps.cleaningLayerGroup);
                 });
                 break;
 
             case 'litter' :
-                Object.keys(data).each(function(key) {
+                Object.keys(data).forEach(function(key) {
 
-                    var latlngs = JSON.parse("[" + odata[key].latlngs + "]");
+                    var latlngs = JSON.parse("[" + data[key].latlngs + "]");
                     var polylineLayer = L.polyline(latlngs,
                     {
                          amount          : data[key].amount
                        , cleaned         : data[key].cleaned
                        , cleaned_by      : data[key].cleaned_by
                        , confirms        : data[key].confirms
-                       , color           : tools.setPolylineColor(o.amount)
+                       , color           : tools.setPolylineColor(data[key].amount)
                        , created_at      : data[key].created_at
                        , created_by      : data[key].marked_by
                        , id              : data[key].id
@@ -105,33 +105,33 @@ var features =  ( function () {
                 break;
 
             case 'area' :
-                Object.keys(data).each(function (key) {
+                Object.keys(data).forEach(function (key) {
 
                     var latlngs = JSON.parse("[" + data[key].latlngs + "]");
                     var polygonLayer = new L.Polygon(latlngs,
                     {
-                         contact:      data[key].contact
-                       , created_by:   data[key].created_by
-                       , created_at:   data[key].created_at
-                       , curr_players: data[key].curr_players
-                       , id:           data[key].id
-                       , max_players:  data[key].max_players
-                       , note:         data[key].note
-                       , tags:         data[key].tag
-                       , title:        data[key].title
-                       , modified_at:  data[key].updated_at
-                       , feature_type: 'area'
-                       , shape:        true
-                       , color:        '#33cccc'
-                       , weight:       5
-                       , opacity:      0.5
-                       , smoothFactor: 3
+                         contact      : data[key].contact
+                       , created_by   : data[key].created_by
+                       , created_at   : data[key].created_at
+                       , curr_players : data[key].curr_players
+                       , id           : data[key].id
+                       , max_players  : data[key].max_players
+                       , note         : data[key].note
+                       , tags         : data[key].tag
+                       , title        : data[key].title
+                       , modified_at  : data[key].updated_at
+                       , feature_type : 'area'
+                       , shape        : true
+                       , color        : '#33cccc'
+                       , weight       : 5
+                       , opacity      : 0.5
+                       , smoothFactor : 3
                      });
 
                      maps.areaLayerGroup.addLayer(polygonLayer);
                 });
                 break;
-            // TODO
+            // TODO Link markers in backend
             // case 'link'     :
             //     return  null;
             //
@@ -143,21 +143,22 @@ var features =  ( function () {
 
     function loadFeature (type) {
 
-      // FIXME
+      // Coherce type into array because external function pass one type of feature at a time as string
+      var type = Array.isArray(type) ? type : [type];
+
+      // TODO make this return a Promise.all so we can wait for items to load up on the map if we need to act on them
+      // FIXME only run this function if we're outside originally loaded map bounds
       // if ( tools.checkIfInsideRoundedBounds(bounds) ) {
       //     return;
       // }
-      // Only run this function if we're outside originally loaded map bounds
+
       var bounds = maps.map.getBounds();
       var inverted_bounds = tools.getInvertedBounds(maps.map);
       var token = localStorage.getItem('token') || tools.token;
 
-      // TODO allow type to be an array of types so we don't need 'all'
       type.forEach( function (item) {
 
           var feature_type = tools.capitalizeFirstLetter(item);
-
-          console.log('feature type: ', feature_type);
 
           var params = {
             url: api['read' + feature_type + 'WithinBounds'].url(inverted_bounds),
@@ -170,7 +171,8 @@ var features =  ( function () {
           .catch(error => { console.log('Error getting features', error) })
 
           .then(response => {
-              console.log('API data', response);
+
+              console.log(`API data for ${item}`, response);
               _createFeatures(item, response);
           });
       });
@@ -191,8 +193,6 @@ var features =  ( function () {
             var new_zoom = e.target.getZoom();
             var zoom_diff = Math.abs(new_zoom - tools.states.currentZoom);
             var length_diff = e.distance;
-
-            // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical dragging
             var viewport_ratio = window.innerWidth / 3;
 
             switch ( event_type ) {
@@ -229,6 +229,7 @@ var features =  ( function () {
 
                 case 'dragend':
 
+                    // fetching features if the map is panned by width / 3 is a good compromise for horizontal and vertical dragging
                     if ( length_diff >= viewport_ratio ) {
 
                         if ( new_zoom >= 2 ) {

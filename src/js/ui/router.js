@@ -44,51 +44,33 @@ router.on({
 router.on({
   '/shared/:type/:id/:lat/:lng': { as: 'shared', uses: function (params, query) {
 
-      // TODO same using query params instead of route
-
       console.log('Sharing router', params);
 
       // First set and load the map center on the marker
       maps.map.setView([parseFloat(params.lat), parseFloat(params.lng)], 16);
       // maps.map.panToOffset([parseFloat(params.lat), parseFloat(params.lng)], tools.getVerticalOffset());
 
-      // TODO decouple this so we can dynamically load the feature into the map layer without hardcoing in switch statement
       // FIXME wait for feature load api call to finish else this doesn't work on first load
       // FIXME make a loadOne() call for that single feature and load the rest in background
-      // FIXME For now we use a timeout dirty, dirty hack
+      // HACK For now we use a timeout after the loadFeature is called, use Promise once loadFeature() is Promisified
+
+      features.loadFeature(params.type);
+
       setTimeout(function () {
 
-        var maplayer;
-        // Check that the map already has the layer containing the feature
-        switch (params.type) {
-            case 'garbage'  : maplayer = maps.garbageLayerGroup;  break;
-            case 'litter'   : maplayer = maps.litterLayerGroup;   break;
-            case 'area'     : maplayer = maps.areaLayerGroup;     break;
-            case 'cleaning' : maplayer = maps.cleaningLayerGroup; break;
-            default         : maplayer = null;
-        }
+        var maplayer = maps[params.type + 'LayerGroup'];
 
-        // Then set the content of the feature info and show the data
-        if ( maps.map.hasLayer(maplayer) ) {
+        try {
 
           var feature = tools.getLeafletObj(params.type, params.id);
+          // featureClick() is expecting a leaflet layer object
+          actions.featureClick.call(null, {'layer': feature});
 
-          console.log('THAT: ', feature);
+        } catch (error) {
 
-          // var clicktarget = {
-          //   latlng: feature.latlng,
-          //   layerPoint: maps.map.latLngToLayerPoint(feature.latlng),
-          //   containerPoint: maps.map.latLngToContainerPoint(feature.latlng)
-          // }
-
-          maps.map.fire('click', feature);
-          // feature.fire('click');
-
-          // ui.setContent(params.type, params.id);
-
-        } else {
-
+          console.log('Error in share router: ', error)
           alerts.showAlert(33, "danger", 2500);
+
         }
 
       }, 3000);
@@ -137,8 +119,14 @@ router.on({
 
         case 'account'   : session.init('view'); break;
         case 'trashbins' : tools.getTrashBins(maps.map); break;
-        case 'data'      : ui.makeModal('garbage', tools.listMarkersInView('garbage')); break;
-        case 'calendar'  : ui.makeModal('cleaning', tools.listMarkersInView('cleaning')); break;
+        // Modal for getting garbage data and cleaning calendar
+        case 'garbage'   :
+        case 'cleaning'  :
+        // Only get the dataTable code if the user wants to views the data
+        tools.getScript('https://cdn.datatables.net/v/dt/dt-1.10.16/fh-3.1.3/r-2.2.1/datatables.min.js')
+            .catch(err => { console.log('Error fetching Datatables script');})
+            .then(() => { ui.makeModal(params.target, tools.listMarkersInView(params.target)); });
+            break;
         default:
           ui.sidebar.setContent( tmpl( 'tmpl-info-' + params.target, ui.strings.credits) );
           ui.sidebar.show();
@@ -184,7 +172,7 @@ router.on({
   */
 router.notFound(function (query) {
     console.log(query);
-    console.log('error router');
+    console.log('Hit error router');
     ui.sidebar.setContent('<h2>Something went wrong</h2></br><p>Close the sidebar and try again.</p>');
     ui.sidebar.show();
 });
