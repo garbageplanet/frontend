@@ -9,11 +9,11 @@
   * @license MIT stackoverflow
   */
 L.Control.CustomLocate = L.Control.Locate.extend({
-   latlnginURL: function () {
-     return window.location.href.match(/^([-+]?\d{1,2}[.]\d+)\s*\/\s*([-+]?\d{1,3}[.]\d+)$/);
+   latlnginURL: function (url) {
+     return url.match(/([-+]?\d{1,2}[.]\d+)\s*\/\s*([-+]?\d{1,3}[.]\d+)$/);
    },
-   sharedURL: function () {
-     return window.location.href.match(/shared/);
+   sharedURL: function (url) {
+     return url.match(/shared/g);
    },
 });
 
@@ -126,7 +126,7 @@ var maps = ( function () {
         , litterLayerGroup
         , linkLayerGroup
     ]);
-    // var hash = L.hash(map, {baseURI: '', query: true});
+    var hash = L.hash(map, {baseURI: '#/'});
     var _overlayGroups = {
           "Garbage markers"           : garbageLayerGroup
         , "Cleaning events"           : cleaningLayerGroup
@@ -143,19 +143,23 @@ var maps = ( function () {
         icon: 'fa fa-location-arrow',
         onLocationError: function (err, control) {
 
-            console.log('value of this from location error: ', this);
+            var url = window.location.href;
+
+            // console.log('value of this from location error: ', this);
+            console.log('HREF:', url);
 
             alerts.showAlert(16, "warning", 2000);
 
             console.log('Location error: ', err.message);
-            console.log('There are coordinates in the url: ', maps.locationcontrol.latlnginURL() !== null);
+            console.log('There are coordinates in the url: ', maps.locationcontrol.latlnginURL(url));
+            console.log('This is a shared url: ', maps.locationcontrol.sharedURL(url));
 
             // If we are currently trying to locate the user and it fails and the maps is already set, just stop the control
-            if ( maps.locationcontrol.latlnginURL() || maps.locationcontrol.sharedURL() ) {
+            if ( maps.locationcontrol.latlnginURL(url) || maps.locationcontrol.sharedURL(url) ) {
                 control.stop();
             }
             // Show the world without borders if geolocalization fails
-            else if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
+            else if ( !maps.locationcontrol.latlnginURL(url) || !maps.locationcontrol.sharedURL(url)  ) {
                 control.stop();
                 maps.map.setView([0, 0], 2);
             }
@@ -244,7 +248,7 @@ var maps = ( function () {
             menucontrol.addTo(maps.map);
         }
 
-        if ( !maps.locationcontrol.latlnginURL() || !maps.locationcontrol.sharedURL()  ) {
+        if ( !maps.locationcontrol.latlnginURL(window.location.href) || !maps.locationcontrol.sharedURL(window.location.href) ) {
 
             console.log('starting to geolocate');
             maps.locationcontrol.start();
@@ -265,7 +269,7 @@ var maps = ( function () {
     return {
        init                     : init
      , map                      : map
-     // , hash                     : hash
+    ,  hash                     : hash
      , locationcontrol          : locationcontrol
      , glomelogincontrol        : glomelogincontrol
      , layerscontrol            : layerscontrol

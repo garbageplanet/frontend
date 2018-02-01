@@ -28,7 +28,8 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 
 Also look at [TODO.md](https://github.com/garbageplanet/frontend/blob/navigo/TODO.md)
 
-- [x] make shareable link router mechanism 
+- [x] make shareable link router mechanism
+- [x] L.hash navigo integration
 - [ ] store unsaved markers in app state for offline use and implement PWA / wweborker
 - [ ] use fetch api instead of ajax and image uploader so we can move to jquery slim
 - [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.

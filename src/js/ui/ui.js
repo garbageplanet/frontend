@@ -269,6 +269,9 @@ var ui = ( function () {
             // Reset the router
             router.navigate('/');
 
+            // Restart leaflet hash
+            maps.hash.startListening();
+
             // Set empty content
             ui.sidebar.setContent('');
 
@@ -301,6 +304,9 @@ var ui = ( function () {
 
               // Reset the router
               router.navigate('/');
+
+              // Restart leaflet hash
+              maps.hash.startListening();
 
               // Set empty content
               ui.bottombar.setContent('')

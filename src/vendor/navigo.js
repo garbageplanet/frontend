@@ -1,300 +1,533 @@
-! function(e, t) {
-  "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define("Navigo", [], t) : "object" == typeof exports ? exports.Navigo = t() : e.Navigo = t()
-}(this, function() {
-  return function(e) {
-    function t(o) {
-      if (n[o]) return n[o].exports;
-      var i = n[o] = {
-        exports: {},
-        id: o,
-        loaded: !1
-      };
-      return e[o].call(i.exports, i, i.exports, t), i.loaded = !0, i.exports
-    }
-    var n = {};
-    return t.m = e, t.c = n, t.p = "", t(0)
-  }([function(e, t) {
-    "use strict";
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define("Navigo", [], factory);
+	else if(typeof exports === 'object')
+		exports["Navigo"] = factory();
+	else
+		root["Navigo"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports) {
 
-    function n(e) {
-      if (Array.isArray(e)) {
-        for (var t = 0, n = Array(e.length); t < e.length; t++) n[t] = e[t];
-        return n
-      }
-      return Array.from(e)
-    }
+	'use strict';
 
-    function o() {
-      return !("undefined" == typeof window || !window.history || !window.history.pushState)
-    }
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-    function i(e, t, n) {
-      this.root = null, this._routes = [], this._useHash = t, this._hash = "undefined" == typeof n ? "#" : n, this._paused = !1, this._destroyed = !1, this._lastRouteResolved = null, this._notFoundHandler = null, this._defaultHandler = null, this._usePushState = !t && o(), this._onLocationChange = this._onLocationChange.bind(this), this._genericHooks = null, this._historyAPIUpdateMethod = "pushState", e ? this.root = t ? e.replace(/\/$/, "/" + this._hash) : e.replace(/\/$/, "") : t && (this.root = this._cLoc().split(this._hash)[0].replace(/\/$/, "/" + this._hash)), this._listen(), this.updatePageLinks()
-    }
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-    function s(e) {
-      return e instanceof RegExp ? e : e.replace(/\/+$/, "").replace(/^\/+/, "^/")
-    }
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-    function r(e, t) {
-      return 0 === t.length ? null : e ? e.slice(1, e.length).reduce(function(e, n, o) {
-        return null === e && (e = {}), e[t[o]] = decodeURIComponent(n), e
-      }, null) : null
-    }
+	function isPushStateAvailable() {
+	  return !!(typeof window !== 'undefined' && window.history && window.history.pushState);
+	}
 
-    function a(e) {
-      var t, n = [];
-      return t = e instanceof RegExp ? e : new RegExp(e.replace(i.PARAMETER_REGEXP, function(e, t, o) {
-        return n.push(o), i.REPLACE_VARIABLE_REGEXP
-      }).replace(i.WILDCARD_REGEXP, i.REPLACE_WILDCARD) + i.FOLLOWED_BY_SLASH_REGEXP, i.MATCH_REGEXP_FLAGS), {
-        regexp: t,
-        paramNames: n
-      }
-    }
+	function Navigo(r, useHash, hash) {
+	  this.root = null;
+	  this._routes = [];
+	  this._useHash = useHash;
+	  this._hash = typeof hash === 'undefined' ? '#' : hash;
+	  this._paused = false;
+	  this._destroyed = false;
+	  this._lastRouteResolved = null;
+	  this._notFoundHandler = null;
+	  this._defaultHandler = null;
+	  this._usePushState = !useHash && isPushStateAvailable();
+	  this._onLocationChange = this._onLocationChange.bind(this);
+	  this._genericHooks = null;
+	  this._historyAPIUpdateMethod = 'pushState';
 
-    function u(e) {
-      return e.replace(/\/$/, "").split("/").length
-    }
+	  if (r) {
+	    this.root = useHash ? r.replace(/\/$/, '/' + this._hash) : r.replace(/\/$/, '');
+	  } else if (useHash) {
+	    this.root = this._cLoc().split(this._hash)[0].replace(/\/$/, '/' + this._hash);
+	  }
 
-    function h(e, t) {
-      return u(t) - u(e)
-    }
+	  this._listen();
+	  this.updatePageLinks();
+	}
 
-    function l(e) {
-      var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [];
-      return t.map(function(t) {
-        var n = a(s(t.route)),
-          o = n.regexp,
-          i = n.paramNames,
-          u = e.replace(/^\/+/, "/").match(o),
-          h = r(u, i);
-        return !!u && {
-          match: u,
-          route: t,
-          params: h
-        }
-      }).filter(function(e) {
-        return e
-      })
-    }
+	function clean(s) {
+	  if (s instanceof RegExp) return s;
+	  return s.replace(/\/+$/, '').replace(/^\/+/, '^/');
+	}
 
-    function d(e, t) {
-      return l(e, t)[0] || !1
-    }
+	function regExpResultToParams(match, names) {
+	  if (names.length === 0) return null;
+	  if (!match) return null;
+	  return match.slice(1, match.length).reduce(function (params, value, index) {
+	    if (params === null) params = {};
+	    params[names[index]] = decodeURIComponent(value);
+	    return params;
+	  }, null);
+	}
 
-    function c(e, t) {
-      var n = t.map(function(t) {
-          return "" === t.route || "*" === t.route ? e : e.split(new RegExp(t.route + "($|/)"))[0]
-        }),
-        o = s(e);
-      return n.length > 1 ? n.reduce(function(e, t) {
-        return e.length > t.length && (e = t), e
-      }, n[0]) : 1 === n.length ? n[0] : o
-    }
+	function replaceDynamicURLParts(route) {
+	  var paramNames = [],
+	      regexp;
 
-    function f() {
-      return !!("undefined" != typeof window && "onhashchange" in window)
-    }
+	  if (route instanceof RegExp) {
+	    regexp = route;
+	  } else {
+	    regexp = new RegExp(route.replace(Navigo.PARAMETER_REGEXP, function (full, dots, name) {
+	      paramNames.push(name);
+	      return Navigo.REPLACE_VARIABLE_REGEXP;
+	    }).replace(Navigo.WILDCARD_REGEXP, Navigo.REPLACE_WILDCARD) + Navigo.FOLLOWED_BY_SLASH_REGEXP, Navigo.MATCH_REGEXP_FLAGS);
+	  }
+	  return { regexp: regexp, paramNames: paramNames };
+	}
 
-    function _(e) {
-      return e.split(/\?(.*)?$/).slice(1).join("")
-    }
+	function getUrlDepth(url) {
+	  return url.replace(/\/$/, '').split('/').length;
+	}
 
-    function p(e, t, n) {
-      var i, s = e.split(/\?(.*)?$/)[0];
-      return "undefined" == typeof n && (n = "#"), o() && !t ? s = s.split(n)[0] : (i = s.split(n), s = i.length > 1 ? s.split(n)[1] : i[0]), s
-    }
+	function compareUrlDepth(urlA, urlB) {
+	  return getUrlDepth(urlB) - getUrlDepth(urlA);
+	}
 
-    function v(e, t, n) {
-      return t && "object" === ("undefined" == typeof t ? "undefined" : g(t)) ? void(t.before ? t.before(function() {
-        var o = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
-        o && (e(), t.after && t.after(n))
-      }, n) : t.after && (e(), t.after && t.after(n))) : void e()
-    }
+	function findMatchedRoutes(url) {
+	  var routes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-    function R(e, t, n) {
-      if (o() && !t) return !1;
-      if (!e.match(n)) return !1;
-      var i = e.split(n);
-      return i.length < 2 || "" === i[1]
-    }
-    Object.defineProperty(t, "__esModule", {
-      value: !0
-    });
-    var g = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
-      return typeof e
-    } : function(e) {
-      return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
-    };
-    i.prototype = {
-      helpers: {
-        match: d,
-        root: c,
-        clean: s
-      },
-      navigate: function(e, t) {
-        var n;
-        return e = e || "", this._usePushState ? (n = (t ? "" : this._getRoot() + "/") + e.replace(/^\/+/, "/"), n = n.replace(/([^:])(\/{2,})/g, "$1/"), history[this._historyAPIUpdateMethod]({}, "", n), this.resolve()) : "undefined" != typeof window && (e = e.replace(new RegExp("^" + this._hash), ""), window.location.href = window.location.href.replace(/#$/, "").replace(new RegExp(this._hash + ".*$"), "") + this._hash + e), this
-      },
-      on: function() {
-        for (var e = this, t = arguments.length, n = Array(t), o = 0; o < t; o++) n[o] = arguments[o];
-        if ("function" == typeof n[0]) this._defaultHandler = {
-          handler: n[0],
-          hooks: n[1]
-        };
-        else if (n.length >= 2)
-          if ("/" === n[0]) {
-            var i = n[1];
-            "object" === g(n[1]) && (i = n[1].uses), this._defaultHandler = {
-              handler: i,
-              hooks: n[2]
-            }
-          } else this._add(n[0], n[1], n[2]);
-        else if ("object" === g(n[0])) {
-          var s = Object.keys(n[0]).sort(h);
-          s.forEach(function(t) {
-            e.on(t, n[0][t])
-          })
-        }
-        return this
-      },
-      off: function(e) {
-        return null !== this._defaultHandler && e === this._defaultHandler.handler ? this._defaultHandler = null : null !== this._notFoundHandler && e === this._notFoundHandler.handler && (this._notFoundHandler = null), this._routes = this._routes.reduce(function(t, n) {
-          return n.handler !== e && t.push(n), t
-        }, []), this
-      },
-      notFound: function(e, t) {
-        return this._notFoundHandler = {
-          handler: e,
-          hooks: t
-        }, this
-      },
-      resolve: function(e) {
-        var t, o, i = this,
-          s = (e || this._cLoc()).replace(this._getRoot(), "");
-        this._useHash && (s = s.replace(new RegExp("^/" + this._hash), "/"));
-        var r = _(e || this._cLoc()),
-          a = p(s, this._useHash, this._hash);
-        return !this._paused && (this._lastRouteResolved && a === this._lastRouteResolved.url && r === this._lastRouteResolved.query ? (this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.already && this._lastRouteResolved.hooks.already(this._lastRouteResolved.params), !1) : (o = d(a, this._routes)) ? (this._callLeave(), this._lastRouteResolved = {
-          url: a,
-          query: r,
-          hooks: o.route.hooks,
-          params: o.params,
-          name: o.route.name
-        }, t = o.route.handler, v(function() {
-          v(function() {
-            o.route.route instanceof RegExp ? t.apply(void 0, n(o.match.slice(1, o.match.length))) : t(o.params, r)
-          }, o.route.hooks, o.params, i._genericHooks)
-        }, this._genericHooks, o.params), o) : this._defaultHandler && ("" === a || "/" === a || a === this._hash || R(a, this._useHash, this._hash)) ? (v(function() {
-          v(function() {
-            i._callLeave(), i._lastRouteResolved = {
-              url: a,
-              query: r,
-              hooks: i._defaultHandler.hooks
-            }, i._defaultHandler.handler(r)
-          }, i._defaultHandler.hooks)
-        }, this._genericHooks), !0) : (this._notFoundHandler && v(function() {
-          v(function() {
-            i._callLeave(), i._lastRouteResolved = {
-              url: a,
-              query: r,
-              hooks: i._notFoundHandler.hooks
-            }, i._notFoundHandler.handler(r)
-          }, i._notFoundHandler.hooks)
-        }, this._genericHooks), !1))
-      },
-      destroy: function() {
-        this._routes = [], this._destroyed = !0, clearTimeout(this._listeningInterval), "undefined" != typeof window && (window.removeEventListener("popstate", this._onLocationChange), window.removeEventListener("hashchange", this._onLocationChange))
-      },
-      updatePageLinks: function() {
-        var e = this;
-        "undefined" != typeof document && this._findLinks().forEach(function(t) {
-          t.hasListenerAttached || (t.addEventListener("click", function(n) {
-            var o = e.getLinkPath(t);
-            e._destroyed || (n.preventDefault(), e.navigate(o.replace(/\/+$/, "").replace(/^\/+/, "/")))
-          }), t.hasListenerAttached = !0)
-        })
-      },
-      generate: function(e) {
-        var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
-          n = this._routes.reduce(function(n, o) {
-            var i;
-            if (o.name === e) {
-              n = o.route;
-              for (i in t) n = n.toString().replace(":" + i, t[i])
-            }
-            return n
-          }, "");
-        return this._useHash ? this._hash + n : n
-      },
-      link: function(e) {
-        return this._getRoot() + e
-      },
-      pause: function() {
-        var e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
-        this._paused = e, e ? this._historyAPIUpdateMethod = "replaceState" : this._historyAPIUpdateMethod = "pushState"
-      },
-      resume: function() {
-        this.pause(!1)
-      },
-      historyAPIUpdateMethod: function(e) {
-        return "undefined" == typeof e ? this._historyAPIUpdateMethod : (this._historyAPIUpdateMethod = e, e)
-      },
-      disableIfAPINotAvailable: function() {
-        o() || this.destroy()
-      },
-      lastRouteResolved: function() {
-        return this._lastRouteResolved
-      },
-      getLinkPath: function(e) {
-        return e.pathname || e.getAttribute("href")
-      },
-      hooks: function(e) {
-        this._genericHooks = e
-      },
-      _add: function(e) {
-        var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null,
-          n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
-        return "string" == typeof e && (e = encodeURI(e)), "object" === ("undefined" == typeof t ? "undefined" : g(t)) ? this._routes.push({
-          route: e,
-          handler: t.uses,
-          name: t.as,
-          hooks: n || t.hooks
-        }) : this._routes.push({
-          route: e,
-          handler: t,
-          hooks: n
-        }), this._add
-      },
-      _getRoot: function() {
-        return null !== this.root ? this.root : (this.root = c(this._cLoc().split("?")[0], this._routes), this.root)
-      },
-      _listen: function() {
-        var e = this;
-        if (this._usePushState) window.addEventListener("popstate", this._onLocationChange);
-        else if (f()) window.addEventListener("hashchange", this._onLocationChange);
-        else {
-          var t = this._cLoc(),
-            n = void 0,
-            o = void 0;
-          o = function() {
-            n = e._cLoc(), t !== n && (t = n, e.resolve()), e._listeningInterval = setTimeout(o, 200)
-          }, o()
-        }
-      },
-      _cLoc: function() {
-        return "undefined" != typeof window ? "undefined" != typeof window.__NAVIGO_WINDOW_LOCATION_MOCK__ ? window.__NAVIGO_WINDOW_LOCATION_MOCK__ : s(window.location.href) : ""
-      },
-      _findLinks: function() {
-        return [].slice.call(document.querySelectorAll("[data-navigo]"))
-      },
-      _onLocationChange: function() {
-        this.resolve()
-      },
-      _callLeave: function() {
-        this._lastRouteResolved && this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.leave && this._lastRouteResolved.hooks.leave()
-      }
-    }, i.PARAMETER_REGEXP = /([:*])(\w+)/g, i.WILDCARD_REGEXP = /\*/g, i.REPLACE_VARIABLE_REGEXP = "([^/]+)", i.REPLACE_WILDCARD = "(?:.*)", i.FOLLOWED_BY_SLASH_REGEXP = "(?:/$|$)", i.MATCH_REGEXP_FLAGS = "", t["default"] = i, e.exports = t["default"]
-  }])
+	  return routes.map(function (route) {
+	    var _replaceDynamicURLPar = replaceDynamicURLParts(clean(route.route)),
+	        regexp = _replaceDynamicURLPar.regexp,
+	        paramNames = _replaceDynamicURLPar.paramNames;
+
+	    var match = url.replace(/^\/+/, '/').match(regexp);
+	    var params = regExpResultToParams(match, paramNames);
+
+	    return match ? { match: match, route: route, params: params } : false;
+	  }).filter(function (m) {
+	    return m;
+	  });
+	}
+
+	function match(url, routes) {
+	  return findMatchedRoutes(url, routes)[0] || false;
+	}
+
+	function root(url, routes) {
+	  var matched = routes.map(function (route) {
+	    return route.route === '' || route.route === '*' ? url : url.split(new RegExp(route.route + '($|\/)'))[0];
+	  });
+	  var fallbackURL = clean(url);
+
+	  if (matched.length > 1) {
+	    return matched.reduce(function (result, url) {
+	      if (result.length > url.length) result = url;
+	      return result;
+	    }, matched[0]);
+	  } else if (matched.length === 1) {
+	    return matched[0];
+	  }
+	  return fallbackURL;
+	}
+
+	function isHashChangeAPIAvailable() {
+	  return !!(typeof window !== 'undefined' && 'onhashchange' in window);
+	}
+
+	function extractGETParameters(url) {
+	  return url.split(/\?(.*)?$/).slice(1).join('');
+	}
+
+	function getOnlyURL(url, useHash, hash) {
+	  var onlyURL = url,
+	      split;
+	  var cleanGETParam = function cleanGETParam(str) {
+	    return str.split(/\?(.*)?$/)[0];
+	  };
+
+	  if (typeof hash === 'undefined') {
+	    // To preserve BC
+	    hash = '#';
+	  }
+
+	  if (isPushStateAvailable() && !useHash) {
+	    onlyURL = cleanGETParam(url).split(hash)[0];
+	  } else {
+	    split = url.split(hash);
+	    onlyURL = split.length > 1 ? cleanGETParam(split[1]) : cleanGETParam(split[0]);
+	  }
+
+	  return onlyURL;
+	}
+
+	function manageHooks(handler, hooks, params) {
+	  if (hooks && (typeof hooks === 'undefined' ? 'undefined' : _typeof(hooks)) === 'object') {
+	    if (hooks.before) {
+	      hooks.before(function () {
+	        var shouldRoute = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	        if (!shouldRoute) return;
+	        handler();
+	        hooks.after && hooks.after(params);
+	      }, params);
+	      return;
+	    } else if (hooks.after) {
+	      handler();
+	      hooks.after && hooks.after(params);
+	      return;
+	    }
+	  }
+	  handler();
+	};
+
+	function isHashedRoot(url, useHash, hash) {
+	  if (isPushStateAvailable() && !useHash) {
+	    return false;
+	  }
+
+	  if (!url.match(hash)) {
+	    return false;
+	  }
+
+	  var split = url.split(hash);
+
+	  if (split.length < 2 || split[1] === '') {
+	    return true;
+	  }
+
+	  return false;
+	};
+
+	Navigo.prototype = {
+	  helpers: {
+	    match: match,
+	    root: root,
+	    clean: clean,
+	    getOnlyURL: getOnlyURL
+	  },
+	  navigate: function navigate(path, absolute) {
+	    var to;
+
+	    path = path || '';
+	    if (this._usePushState) {
+	      to = (!absolute ? this._getRoot() + '/' : '') + path.replace(/^\/+/, '/');
+	      to = to.replace(/([^:])(\/{2,})/g, '$1/');
+	      history[this._historyAPIUpdateMethod]({}, '', to);
+	      this.resolve();
+	    } else if (typeof window !== 'undefined') {
+	      path = path.replace(new RegExp('^' + this._hash), '');
+	      window.location.href = window.location.href.replace(/#$/, '').replace(new RegExp(this._hash + '.*$'), '') + this._hash + path;
+	    }
+	    return this;
+	  },
+	  on: function on() {
+	    var _this = this;
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    if (typeof args[0] === 'function') {
+	      this._defaultHandler = { handler: args[0], hooks: args[1] };
+	    } else if (args.length >= 2) {
+	      if (args[0] === '/') {
+	        var func = args[1];
+
+	        if (_typeof(args[1]) === 'object') {
+	          func = args[1].uses;
+	        }
+
+	        this._defaultHandler = { handler: func, hooks: args[2] };
+	      } else {
+	        this._add(args[0], args[1], args[2]);
+	      }
+	    } else if (_typeof(args[0]) === 'object') {
+	      var orderedRoutes = Object.keys(args[0]).sort(compareUrlDepth);
+
+	      orderedRoutes.forEach(function (route) {
+	        _this.on(route, args[0][route]);
+	      });
+	    }
+	    return this;
+	  },
+	  off: function off(handler) {
+	    if (this._defaultHandler !== null && handler === this._defaultHandler.handler) {
+	      this._defaultHandler = null;
+	    } else if (this._notFoundHandler !== null && handler === this._notFoundHandler.handler) {
+	      this._notFoundHandler = null;
+	    }
+	    this._routes = this._routes.reduce(function (result, r) {
+	      if (r.handler !== handler) result.push(r);
+	      return result;
+	    }, []);
+	    return this;
+	  },
+	  notFound: function notFound(handler, hooks) {
+	    this._notFoundHandler = { handler: handler, hooks: hooks };
+	    return this;
+	  },
+	  resolve: function resolve(current) {
+	    var _this2 = this;
+
+	    var handler, m;
+	    var url = (current || this._cLoc()).replace(this._getRoot(), '');
+
+	    if (this._useHash) {
+	      url = url.replace(new RegExp('^\/' + this._hash), '/');
+	    }
+
+	    var GETParameters = extractGETParameters(current || this._cLoc());
+	    var onlyURL = getOnlyURL(url, this._useHash, this._hash);
+
+	    if (this._paused) return false;
+
+	    if (this._lastRouteResolved && onlyURL === this._lastRouteResolved.url && GETParameters === this._lastRouteResolved.query) {
+	      if (this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.already) {
+	        this._lastRouteResolved.hooks.already(this._lastRouteResolved.params);
+	      }
+	      return false;
+	    }
+
+	    m = match(onlyURL, this._routes);
+
+	    if (m) {
+	      this._callLeave();
+	      this._lastRouteResolved = {
+	        url: onlyURL,
+	        query: GETParameters,
+	        hooks: m.route.hooks,
+	        params: m.params,
+	        name: m.route.name
+	      };
+	      handler = m.route.handler;
+	      manageHooks(function () {
+	        manageHooks(function () {
+	          m.route.route instanceof RegExp ? handler.apply(undefined, _toConsumableArray(m.match.slice(1, m.match.length))) : handler(m.params, GETParameters);
+	        }, m.route.hooks, m.params, _this2._genericHooks);
+	      }, this._genericHooks, m.params);
+	      return m;
+	    } else if (this._defaultHandler && (onlyURL === '' || onlyURL === '/' || onlyURL === this._hash || isHashedRoot(onlyURL, this._useHash, this._hash))) {
+	      manageHooks(function () {
+	        manageHooks(function () {
+	          _this2._callLeave();
+	          _this2._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: _this2._defaultHandler.hooks };
+	          _this2._defaultHandler.handler(GETParameters);
+	        }, _this2._defaultHandler.hooks);
+	      }, this._genericHooks);
+	      return true;
+	    } else if (this._notFoundHandler) {
+	      manageHooks(function () {
+	        manageHooks(function () {
+	          _this2._callLeave();
+	          _this2._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: _this2._notFoundHandler.hooks };
+	          _this2._notFoundHandler.handler(GETParameters);
+	        }, _this2._notFoundHandler.hooks);
+	      }, this._genericHooks);
+	    }
+	    return false;
+	  },
+	  destroy: function destroy() {
+	    this._routes = [];
+	    this._destroyed = true;
+	    this._lastRouteResolved = null;
+	    this._genericHooks = null;
+	    clearTimeout(this._listeningInterval);
+	    if (typeof window !== 'undefined') {
+	      window.removeEventListener('popstate', this._onLocationChange);
+	      window.removeEventListener('hashchange', this._onLocationChange);
+	    }
+	  },
+	  updatePageLinks: function updatePageLinks() {
+	    var self = this;
+
+	    if (typeof document === 'undefined') return;
+
+	    this._findLinks().forEach(function (link) {
+	      if (!link.hasListenerAttached) {
+	        link.addEventListener('click', function (e) {
+	          var location = self.getLinkPath(link);
+
+	          if (!self._destroyed) {
+	            e.preventDefault();
+	            self.navigate(location.replace(/\/+$/, '').replace(/^\/+/, '/'));
+	          }
+	        });
+	        link.hasListenerAttached = true;
+	      }
+	    });
+	  },
+	  generate: function generate(name) {
+	    var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	    var result = this._routes.reduce(function (result, route) {
+	      var key;
+
+	      if (route.name === name) {
+	        result = route.route;
+	        for (key in data) {
+	          result = result.toString().replace(':' + key, data[key]);
+	        }
+	      }
+	      return result;
+	    }, '');
+
+	    return this._useHash ? this._hash + result : result;
+	  },
+	  link: function link(path) {
+	    return this._getRoot() + path;
+	  },
+	  pause: function pause() {
+	    var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	    this._paused = status;
+	    if (status) {
+	      this._historyAPIUpdateMethod = 'replaceState';
+	    } else {
+	      this._historyAPIUpdateMethod = 'pushState';
+	    }
+	  },
+	  resume: function resume() {
+	    this.pause(false);
+	  },
+	  historyAPIUpdateMethod: function historyAPIUpdateMethod(value) {
+	    if (typeof value === 'undefined') return this._historyAPIUpdateMethod;
+	    this._historyAPIUpdateMethod = value;
+	    return value;
+	  },
+	  disableIfAPINotAvailable: function disableIfAPINotAvailable() {
+	    if (!isPushStateAvailable()) {
+	      this.destroy();
+	    }
+	  },
+	  lastRouteResolved: function lastRouteResolved() {
+	    return this._lastRouteResolved;
+	  },
+	  getLinkPath: function getLinkPath(link) {
+	    return link.getAttribute('href');
+	  },
+	  hooks: function hooks(_hooks) {
+	    this._genericHooks = _hooks;
+	  },
+
+	  _add: function _add(route) {
+	    var handler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	    var hooks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+	    if (typeof route === 'string') {
+	      route = encodeURI(route);
+	    }
+	    if ((typeof handler === 'undefined' ? 'undefined' : _typeof(handler)) === 'object') {
+	      this._routes.push({
+	        route: route,
+	        handler: handler.uses,
+	        name: handler.as,
+	        hooks: hooks || handler.hooks
+	      });
+	    } else {
+	      this._routes.push({ route: route, handler: handler, hooks: hooks });
+	    }
+	    return this._add;
+	  },
+	  _getRoot: function _getRoot() {
+	    if (this.root !== null) return this.root;
+	    this.root = root(this._cLoc().split('?')[0], this._routes);
+	    return this.root;
+	  },
+	  _listen: function _listen() {
+	    var _this3 = this;
+
+	    if (this._usePushState) {
+	      window.addEventListener('popstate', this._onLocationChange);
+	    } else if (isHashChangeAPIAvailable()) {
+	      window.addEventListener('hashchange', this._onLocationChange);
+	    } else {
+	      var cached = this._cLoc(),
+	          current = void 0,
+	          _check = void 0;
+
+	      _check = function check() {
+	        current = _this3._cLoc();
+	        if (cached !== current) {
+	          cached = current;
+	          _this3.resolve();
+	        }
+	        _this3._listeningInterval = setTimeout(_check, 200);
+	      };
+	      _check();
+	    }
+	  },
+	  _cLoc: function _cLoc() {
+	    if (typeof window !== 'undefined') {
+	      if (typeof window.__NAVIGO_WINDOW_LOCATION_MOCK__ !== 'undefined') {
+	        return window.__NAVIGO_WINDOW_LOCATION_MOCK__;
+	      }
+	      return clean(window.location.href);
+	    }
+	    return '';
+	  },
+	  _findLinks: function _findLinks() {
+	    return [].slice.call(document.querySelectorAll('[data-navigo]'));
+	  },
+	  _onLocationChange: function _onLocationChange() {
+	    this.resolve();
+	  },
+	  _callLeave: function _callLeave() {
+	    if (this._lastRouteResolved && this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.leave) {
+	      this._lastRouteResolved.hooks.leave(this._lastRouteResolved.params);
+	    }
+	  }
+	};
+
+	Navigo.PARAMETER_REGEXP = /([:*])(\w+)/g;
+	Navigo.WILDCARD_REGEXP = /\*/g;
+	Navigo.REPLACE_VARIABLE_REGEXP = '([^\/]+)';
+	Navigo.REPLACE_WILDCARD = '(?:.*)';
+	Navigo.FOLLOWED_BY_SLASH_REGEXP = '(?:\/$|$)';
+	Navigo.MATCH_REGEXP_FLAGS = '';
+
+	exports.default = Navigo;
+	module.exports = exports['default'];
+
+/***/ }
+/******/ ])
 });
-//# sourceMappingURL=navigo.min.js.map
+;

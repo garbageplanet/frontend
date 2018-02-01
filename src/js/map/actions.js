@@ -14,6 +14,9 @@ var actions = ( function () {
         // this function needs to be public because we should be able to pause the listener (map.off('click')) from elsewhere
         console.log('caught a click to map from actions.mapClick()');
 
+        // Stop leaflet hash else it overrides the url for the router
+        maps.hash.stopListening();
+
         // Check that there's not already something else going on in the UI and if yes then we don't do anything with the click
         if ( !tools.checkOpenUiElement(map) ) {
             return;
@@ -69,6 +72,9 @@ var actions = ( function () {
         // another marker not cleared nor saved. This can only happen on desktop.
         console.log('unsavedMarkersLayerGroup data: ', maps.unsavedMarkersLayerGroup);
 
+        // Stop leaflet hash else it overrides the url for the router
+        maps.hash.stopListening();
+
         for ( var i in maps.unsavedMarkersLayerGroup._layers ) {
 
             if ( maps.unsavedMarkersLayerGroup._layers.hasOwnProperty(i) ) {
@@ -95,6 +101,9 @@ var actions = ( function () {
     function _featureClick (obj) {
 
         console.log("map feature clicked obj: ", obj);
+
+        // Stop leaflet hash else it overrides the url for the router
+        maps.hash.stopListening();
 
         // We must stop the bubbling else the map catches clicks
         L.DomEvent.stopPropagation(obj);

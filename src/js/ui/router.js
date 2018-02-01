@@ -109,6 +109,7 @@ router.on({
 
 /**
   * Router for info views (account, feature, project)
+  * TODO remove much of hardcoding here
   */
 router.on({
   '/info/:target': { as: 'info', uses: function (params, query) {
@@ -152,7 +153,6 @@ router.on({
           console.log('LOGOUT ROUTER');
 
           tmpl_string = 'tmpl-auth-login';
-
       }
 
       // Fill the templates
@@ -166,6 +166,12 @@ router.on({
       ui.sidebar.show();
    }}
 }).resolve();
+
+// Catching the leaflet hash but ignoring it.
+// FIXME L.Hash overrides router hash because of map move event that triggers L.Hash after features actions
+router.on(/^\/[0-9]{1,2}(.)*/, function () {
+      console.log('Lealfet hash.');
+});
 
 /**
   * 404 - not found

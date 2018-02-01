@@ -16,6 +16,7 @@
 	};
 
 	L.Hash.parseHash = function(hash) {
+
 		if (this.options && this.options.baseURI) {
 			hash = hash.replace(this.options.baseURI, "");
 		}
@@ -28,10 +29,10 @@
 		var args = hash.split("/");
 
 		if (args.length == 3) {
-			var zoom = parseInt(args[0], 10),
-			lat = parseFloat(args[1]),
-			lon = parseFloat(args[2]);
-			
+			var zoom = parseFloat(args[0]),
+			     lat = parseFloat(args[1]),
+			     lon = parseFloat(args[2]);
+
 			if (isNaN(zoom) || isNaN(lat) || isNaN(lon)) {
 				return false;
 			} else {
@@ -53,7 +54,7 @@
 		var query = (this.options && this.options.query && location.hash.indexOf('?') > -1 ? '?' + location.hash.split('?')[1] : '');
 
 		return (this.options && this.options.baseURI ? this.options.baseURI : "") +
-		  "#" + [zoom,
+		  [zoom,
 			center.lat.toFixed(precision),
 			center.lng.toFixed(precision)
 		].join("/") + query;
@@ -89,12 +90,21 @@
 		onMapMove: function() {
 			// bail if we're moving the map (updating from a hash),
 			// or if the map is not yet loaded
-
 			if (this.movingMap || !this.map._loaded) {
 				return false;
 			}
 
 			var hash = this.formatHash(this.map);
+
+			// Custom code - do not replace the hash if it does not start with a float or intger after the /#
+			// var hash_3rd_char = hash.charAt(2);
+			// console.log('Hash from L.Hash.onMapMove(): ', hash);
+			// console.log('Hash 3rd char from L.Hash.onMapMove(): ', hash_3rd_char);
+			//
+			// if ( !parseInt(hash_3rd_char, 10) || !parseFloat(hash_3rd_char)) {
+			// 	return false;
+			// }
+
 			if (this.lastHash != hash) {
 				location.replace(hash);
 				this.lastHash = hash;
@@ -104,10 +114,21 @@
 		movingMap: false,
 		update: function() {
 			var hash = location.hash;
+
+			// var hash_3rd_char = hash.charAt(2);
+			// console.log('Hash from L.Hash.update(): ', hash);
+			// console.log('Hash 3rd char from L.Hash.update(): ', hash_3rd_char);
+			//
+			// if ( !parseInt(hash_3rd_char, 10) || !parseFloat(hash_3rd_char)) {
+			// 	return false;
+			// }
+
 			if (hash === this.lastHash) {
 				return;
 			}
+
 			var parsed = this.parseHash(hash);
+
 			if (parsed) {
 				this.movingMap = true;
 
@@ -120,7 +141,7 @@
 		},
 
 		// defer hash change updates every 100ms
-		changeDefer: 100,
+		changeDefer: 1000,
 		changeTimeout: null,
 		onHashChange: function() {
 			// throttle calls to update() so that they only happen every
