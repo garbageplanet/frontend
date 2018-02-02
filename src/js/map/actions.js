@@ -3,6 +3,7 @@
 
 /**
 * User actions on the map and on features that are already present
+* FIXME event not triggered
 */
 
 var actions = ( function () {
@@ -122,7 +123,7 @@ var actions = ( function () {
         router.navigate(route);
 
         // Center the feature on the map
-        tools.centerFeatureOnMap(maps.map, obj.layer)
+        tools.centerFeatureOnMap(maps.map, obj.layer);
 
     }
 

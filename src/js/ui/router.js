@@ -42,7 +42,7 @@ router.on({
   * @params lng  {float}  - Decimal longitude value
   */
 router.on({
-  '/shared/:type/:id/:lat/:lng': { as: 'shared', uses: function (params, query) {
+  '/s/:type/:id/:lat/:lng': { as: 'shared', uses: function (params, query) {
 
       console.log('Sharing router', params);
 

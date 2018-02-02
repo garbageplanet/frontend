@@ -62,7 +62,7 @@ var social = ( function () {
 
     function shareThisFeature (obj) {
 
-        var encoded_url               = encodeURIComponent(window.location);
+        var encoded_url = encodeURIComponent('@@root' + '/s/' + obj.feature_type + '/' + obj.id + '/' + obj.latlng.split(',')[0]+ '/' + obj.latlng.split(',')[1])
         var feature_image_url         = obj.image_url ? obj.image_url : '';
         var feature_image_url_encoded = encodeURIComponent(feature_image_url);
         var feature_note              = obj.note ? obj.note : '';

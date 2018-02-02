@@ -209,7 +209,7 @@ var features =  ( function () {
                     // console.log("new zoom: ", new_zoom);
                     // console.log("zoom difference: ", zoom_diff);
 
-                    if ( new_zoom >= 2 && zoom_diff >= 3 ) {
+                    if ( new_zoom >= 2 && zoom_diff >= 2 ) {
 
                         // features.loadFeature(['link','cleaning','garbage']);
 
