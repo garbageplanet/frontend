@@ -484,7 +484,7 @@ var tools = {
                 , 'Content-type':'application/json'
                 , 'Authorization': obj.auth
               })
-            , body: obj.data
+            , body: JSON.stringify(obj.data)
         };
 
         console.log('makeApiCall() options', options);
