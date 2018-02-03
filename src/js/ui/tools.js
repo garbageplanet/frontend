@@ -425,7 +425,6 @@ var tools = {
 
         // tools.makeApiCall().catch().then();
 
-
         return fetch('https://api.imgur.com/3/upload', {
 
           method: 'POST',
@@ -444,12 +443,11 @@ var tools = {
             var image_uploader_url = document.getElementById('image-uploader-url');
                 image_uploader_url.value = response.data.link;
 
-          }
-          else {
+          } else {
+
             alerts.showAlert(5, "danger", 2000);
             return false;
           }
-
 
         })
     },
@@ -484,32 +482,41 @@ var tools = {
             , headers: new Headers({
                   'Accept': 'application/json'
                 , 'Content-type':'application/json'
-                , 'Authorization': obj.auth.toString()
+                , 'Authorization': obj.auth
               })
             , body: obj.data
         };
 
-        console.log('makeapicall options', options);
+        console.log('makeApiCall() options', options);
 
         // Return the processed response
         return fetch(obj.url, options)
             .then(tools.processFetchStatus)
-            .catch(error => { alerts.showAlert(1, "info", 2000, error.message)})
+            .catch(error => { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
             .then(tools.parseFetchJsonResponse);
     },
     processFetchStatus: function (response) {
+
+        console.log('Response in processFetchStatus()', response);
         // Resolve the promise if success
         if ( response.status === 200 || response.status === 0 ) {
 
-          return Promise.resolve(response)
+          return Promise.resolve(response);
           // Else reject it
         } else {
 
-            return Promise.reject(response)
+            return Promise.reject(response);
         }
     },
     parseFetchJsonResponse: function (response) {
-        return response.json()
+
+        try {
+            return response.json()
+
+        } catch (err) {
+
+          console.log(err);
+        }
     },
     joinObjectProperties: function (obj) {
 

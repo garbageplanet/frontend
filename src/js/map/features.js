@@ -163,7 +163,7 @@ var features =  ( function () {
           var params = {
             url: api['read' + feature_type + 'WithinBounds'].url(inverted_bounds),
             method: api['read' + feature_type + 'WithinBounds'].method,
-            auth: 'Bearer ' + token,
+            auth: 'Bearer ' + token
           };
 
           tools.makeApiCall(params, window.fetch)

@@ -14,32 +14,29 @@ var saving = ( function () {
 
         var form_type = tools.capitalizeFirstLetter(formtype);
         var token = localStorage.getItem('token') || tools.token;
-        var auth = 'Bearer ' + token;
 
         // Prepare a submission object by checking if the form has any arrayed keys and join them in a string
         var submission_obj = tools.joinObjectProperties(formobj);
 
-        var post_obj = {
+        var params = {
           url: api['create' + form_type].url(),
           method: api['create' + form_type].method,
-          auth: auth,
+          auth: 'Bearer ' + token,
           data: submission_obj
         };
 
-        tools.makeApiCall(post_obj, window.fetch)
-            .catch(error => {
-
-                  // TODO pass error.message to showAlert()
+        tools.makeApiCall(params, window.fetch)
+            .catch((error) => {
 
                   console.log(error);
 
-                  alerts.showAlert(1, 'danger', 1500, error.message);
+                  // alerts.showAlert(1, 'danger', 1500, error.message);
                   ui.sidebar.hide();
                   tools.resetIconStyle();
             })
             .then((response) => {
 
-                console.log('post request', response);
+                console.log('post request:', response);
 
                 // Remove any unsaved marker
                 for ( var i in maps.unsavedMarkersLayerGroup._layers ) {
