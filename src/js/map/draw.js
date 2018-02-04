@@ -115,6 +115,9 @@ var drawing = ( function () {
              // Set the color of the line
               e.layer.setStyle({color: tools.setPolylineColor(selected_value)});
           });
+
+          document.getElementById('litter-physical-length').value = polyline_listener._getMeasurementString();
+
         });
 
         document.querySelector('.btn-cancel').addEventListener('click', function () {
@@ -137,7 +140,8 @@ var drawing = ( function () {
                     draw: {
                         circle: false,
                         rectangle: false,
-                        marker: false
+                        marker: false,
+                        circlemarker: false
                     }
                 });
 

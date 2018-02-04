@@ -62,15 +62,20 @@ var social = ( function () {
 
     function shareThisFeature (obj) {
 
-        var encoded_url = encodeURIComponent('@@root' + '/s/' + obj.feature_type + '/' + obj.id + '/' + obj.latlng.split(',')[0]+ '/' + obj.latlng.split(',')[1])
-        var feature_image_url         = obj.image_url ? obj.image_url : '';
+        // If only latlng cast to array else if latlngs extract first value which is a [lat, lng]
+        var coords = obj.latlng ? obj.latlng.split(', ') : (JSON.parse(obj.latlngs))[0];
+
+        var feature_image_url = obj.image_url ? obj.image_url : '';
+        var feature_note      = obj.note ? obj.note : '';
+        var feature_tags      = obj.tags ? obj.tags : '';
+
         var feature_image_url_encoded = encodeURIComponent(feature_image_url);
-        var feature_note              = obj.note ? obj.note : '';
         var feature_note_encoded      = encodeURIComponent(feature_note);
-        var feature_tags              = obj.tags ? obj.tags : '';
         var feature_tags_encoded      = encodeURIComponent(feature_tags);
+        var encoded_url               = encodeURIComponent('@@root' + 's/' + obj.feature_type + '/' + obj.id + '/' + coords[0]+ '/' + coords[1]);
 
         // Create the links in the templatedata object
+        // TODO use ${value} inline templates instead of string concat
         network[0].targeturl = 'https://www.facebook.com/dialog/feed?app_id=109950712685962&display=page&href=' + encoded_url + '&description=' + feature_note_encoded + '&link=' + encoded_url + '&picture=' + feature_image_url_encoded + '&name=Garbagepla.net&redirect_uri=https://garbagepla.net';
         network[1].targeturl = 'https://twitter.com/intent/tweet?text=Shared%20from%20www.garbagepla.net%20' + feature_note_encoded + '%20' + feature_tags_encoded + '%20' + encoded_url;
         network[2].targeturl = 'https://plus.google.com/share?url=' + encoded_url;

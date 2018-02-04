@@ -87,6 +87,7 @@ var features =  ( function () {
                        , created_by      : data[key].marked_by
                        , id              : data[key].id
                        , image_url       : data[key].image_url
+                       , latlngs         : JSON.stringify(latlngs)
                        , modified_at     : data[key].updated_at
                        , physical_length : data[key].physical_length
                        , tags            : data[key].tag
@@ -117,6 +118,7 @@ var features =  ( function () {
                        , id           : data[key].id
                        , max_players  : data[key].max_players
                        , note         : data[key].note
+                       , latlngs      : JSON.stringify(latlngs)
                        , tags         : data[key].tag
                        , title        : data[key].title
                        , modified_at  : data[key].updated_at
@@ -148,13 +150,14 @@ var features =  ( function () {
 
       // TODO make this return a Promise.all so we can wait for items to load up on the map if we need to act on them
       // FIXME only run this function if we're outside originally loaded map bounds
-      // if ( tools.checkIfInsideRoundedBounds(bounds) ) {
-      //     return;
-      // }
 
       var bounds = maps.map.getBounds();
       var inverted_bounds = tools.getInvertedBounds(maps.map);
       var token = localStorage.getItem('token') || tools.token;
+
+      if ( tools.checkIfInsideRoundedBounds(bounds) ) {
+          return;
+      }
 
       type.forEach( function (item) {
 

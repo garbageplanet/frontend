@@ -153,6 +153,7 @@ var tools = {
 
         if ( tools.states.roundedBounds && tools.states.roundedBounds.contains(bounds) ) {
             // New view inside original bounds
+            console.log('INSIDE BOUNDS');
             return true;
 
         } else {
@@ -162,6 +163,7 @@ var tools = {
 
             tools.states.roundedBounds = rounded_bounds;
 
+            console.log('OUTSIDE BOUNDS');
             return false;
         }
     },
@@ -185,6 +187,11 @@ var tools = {
         map.addLayer(osmTrashbinLayer);
     },
     getLeafletObj: function (type, id) {
+
+        if ( !parseInt(id, 10) ) {
+
+          return false;
+        }
 
         var layername = type + 'LayerGroup';
 
@@ -452,9 +459,10 @@ var tools = {
         })
     },
     fileUploadHandler: function (file) {
-    // base on a pen by James Skinner - License MIT - https://codepen.io/spiralx/pen/mJxWJE
 
-      console.log('UUUUUUUUUUUUUUUUUUUUUUUUu', file);
+      // base on a pen by James Skinner - License MIT - https://codepen.io/spiralx/pen/mJxWJE
+
+      console.log('File to be uploaded: ', file);
 
       // TODO send to uploader
 
@@ -474,7 +482,8 @@ var tools = {
       return obj;
     },
     makeApiCall: function (obj, fetch) {
-        // We inject fetch() as a dependancy so that we can require it if the user's browser doens't have window.fetch
+        // We inject fetch() as a dependancy so that we can require it if the user's browser doesn't have window.fetch
+        // TODO mechanism to accomodate auth calls that don't need a body param
         console.log('makeapicall obj', obj);
 
         var options =  {
@@ -487,7 +496,7 @@ var tools = {
             , body: JSON.stringify(obj.data)
         };
 
-        console.log('makeApiCall() options', options);
+        // console.log('makeApiCall() options', options);
 
         // Return the processed response
         return fetch(obj.url, options)

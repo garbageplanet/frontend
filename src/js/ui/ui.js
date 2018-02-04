@@ -107,7 +107,6 @@ var ui = ( function () {
         if ( type && type !== null ) {
 
             feature = tools.getLeafletObj(type, id);
-            console.log('Feature: ', feature);
         }
         // if the data is passed from the server JSON response (attend, confirm, join ...)
         // the actual data are in the second parameter passed to the function (id)

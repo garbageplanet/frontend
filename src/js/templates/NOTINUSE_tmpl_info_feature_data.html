@@ -1,0 +1,18 @@
+<script type="text/x-tmpl" id="tmpl-info-feature-data">
+
+{% for (var i=0; i<o.length; i++) { %}
+
+    <li>{%=o.features[i]%}</li>
+
+    {% if (o[i]) { %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <span class="pull-left">{%=i%} : </span>
+        <span class="feature-info pull-left">{%=o[i]%}</span>
+      </div>
+    </div>
+    {% } %}
+
+{% } %}
+
+</script>
