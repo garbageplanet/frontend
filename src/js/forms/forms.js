@@ -218,47 +218,6 @@ var forms = ( function () {
         });
     }
 
-    // function _initUploader () {
-    //
-    //     // TODO can we do this withthe fetch() api?
-    //
-    //     var image_uploader        = document.getElementById('image-uploader');
-    //     var image_uploader_button = document.getElementById('btn-image-uploader');
-    //     var image_uploader_url    = document.getElementById('image-uploader-url');
-    //     var progress              = document.getElementById('progress');
-    //
-    //     var uploader = new ss.SimpleUpload({
-    //
-    //           button: image_uploader_button,
-    //           url: 'https://api.imgur.com/3/upload',
-    //           name: 'image',
-    //           responseType: 'json',
-    //           allowedExtensions: ['jpg', 'jpeg', 'png'],
-    //           customHeaders: {'Authorization': 'Client-ID @@imgurtoken'},
-    //
-    //           onSubmit: function(filename, extension) {
-    //               console.log('submitted image to api');
-    //               progress.classList.remove("hidden");
-    //               this.setProgressBar(progress);
-    //           },
-    //           onComplete: function(filename, response) {
-    //
-    //               console.log('response: ', response);
-    //
-    //               progress.classList.add("hidden");
-    //
-    //               if (!response) {
-    //                   console.log('image upload failed');
-    //                   progress[0].child[0].classList.remove('progress-bar-success');
-    //                   progress[0].child[0].classList.add('progress-bar-danger');
-    //                   return false;
-    //               }
-    //
-    //               image_uploader_url.val(response.data.link);
-    //           }
-    //     });
-    // }
-
     function makeForm (id, type) {
 
         console.log('id from forms.makeForm(): ', id);

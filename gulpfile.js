@@ -104,7 +104,6 @@ gulp.task('scripts:jquery', ['templates'], function () {
                     './src/vendor/bootstrap-select-1.9.4.js',
                     './src/vendor/bootstrap-validator-0.9.0.js',
                     './src/vendor/bootstrap-tour-0.10.1.js',
-                    // './src/vendor/simple-ajax-uploader-2.6.2.js',
                     './src/vendor/flatpickr.js'
   ])
     // .pipe(gulpif(production, stripDebug()))
