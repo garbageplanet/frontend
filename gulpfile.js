@@ -213,7 +213,7 @@ gulp.task('minifyHTML', ['injectFiles'], function () {
 });
 gulp.task('clean:start', function () {
     return del([
-        'dist/',
+        // 'dist/',
         'temp',
         'temp1'
     ]);
