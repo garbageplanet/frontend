@@ -135,7 +135,9 @@ gulp.task('scripts:app', ['templates'], function () {
                     './src/js/social/social.js',
                     './src/js/init.js'
                   ])
-    .pipe(babel({presets: ['es2015']}))
+    .pipe(babel({
+      presets: ["babel-preset-es2015"].map(require.resolve)
+    }))
     //.pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, replace('console.log', '//console.log')))
     .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
