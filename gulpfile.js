@@ -12,7 +12,7 @@ var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     del = require('del'),
     replace = require('gulp-replace-task'),
-    gutil = require('gulp-util'),
+    log = require('fancy-log'),
     injectstr = require('gulp-inject-string'),
     uuid = require('uuid-lib'),
     exec = require('child_process').exec;
@@ -87,7 +87,7 @@ gulp.task('scripts:leaflet', ['templates'], function () {
                     './src/vendor/L.Control.Menu.js'
                   ])
     .pipe(gulpif(production, replace('console.log', '//console.log')))
-    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
+    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
     .pipe(concat('leaflet.min.js'))
     .pipe(gulp.dest('./temp/'));
 });
@@ -108,7 +108,7 @@ gulp.task('scripts:jquery', ['templates'], function () {
   ])
     // .pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, replace('console.log', '//console.log')))
-    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
+    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
     .pipe(concat('jquery.min.js'))
     .pipe(gulp.dest('./temp/'));
 });
@@ -136,8 +136,8 @@ gulp.task('scripts:app', ['templates'], function () {
                   ])
     //.pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, replace('console.log', '//console.log')))
-    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', gutil.log)))
-    .pipe(concat('app.min.js').on('error', gutil.log))
+    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
+    .pipe(concat('app.min.js').on('error', log.warn))
     .pipe(gulp.dest('./temp/'));
 });
 // Replace strings and concat minifed scripts in order
@@ -192,7 +192,7 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
         }
       ]
     }))
-    .pipe(concat('app.js').on('error', gutil.log))
+    .pipe(concat('app.js').on('error', log.warn))
     .pipe(gulp.dest('dist/'));
 });
 // Inject minifed files path in head and body
