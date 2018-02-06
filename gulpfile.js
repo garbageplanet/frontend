@@ -135,12 +135,12 @@ gulp.task('scripts:app', ['templates'], function () {
                     './src/js/social/social.js',
                     './src/js/init.js'
                   ])
-    .pipe(babel({
-      presets: ["babel-preset-es2015"].map(require.resolve)
-    }))
+    // .pipe(babel({
+    //   presets: ["babel-preset-es2015"].map(require.resolve)
+    // }))
     //.pipe(gulpif(production, stripDebug()))
     .pipe(gulpif(production, replace('console.log', '//console.log')))
-    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
+    //.pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
     .pipe(concat('app.min.js').on('error', log.warn))
     .pipe(gulp.dest('./temp/'));
 });
@@ -174,10 +174,6 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
           match: 'windowtoken',
           replacement: process.env.WINDOW_TOKEN
         },
-        /*{
-          match: 'facebooktoken',
-          replacement: process.env.FB_token
-        },*/
         {
           match: 'opencagetoken',
           replacement: process.env.OC_TOKEN
@@ -189,10 +185,6 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
         {
           match: 'production',
           replacement: process.env.PRODUCTION
-        },
-        {
-          match: 'ga',
-          replacement: process.env.GA
         }
       ]
     }))
