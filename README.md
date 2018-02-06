@@ -29,12 +29,13 @@ If you want to contribute to a specific todo/fixme below, the first thing you sh
 Also look at [TODO.md](https://github.com/garbageplanet/frontend/blob/navigo/TODO.md)
 
 - [x] make shareable link router mechanism
+- [ ] do not load templates when using back button in navigation else templates throw error
 - [x] L.hash navigo integration
 - [ ] store unsaved markers in app state for offline use and implement PWA / wweborker
 - [ ] use fetch api instead of ajax and image uploader so we can move to jquery slim
-- [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features.
+- [ ] ajax calls stack up really fast when map is moved. Change mechanism for loading up map features, fix tools.checkIfInsideRoundedBounds().
 - [ ] rewrite features creation methods with factories / function composition so we can add new methods easily (see src/factories.js)
-- [ ] Remove redundancy in template using include()
+- [ ] Remove redundancy in form and data templates using include(), make form widget (note, etc) with include()
 - [x] Remove redundancy in _saveFeature()
 - [ ] Remove redundancy in session()
 - [x] Remove redundancy in _loadFeature()

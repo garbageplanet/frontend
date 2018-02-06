@@ -151,6 +151,8 @@ var tools = {
     },
     checkIfInsideRoundedBounds: function (bounds) {
 
+        // FIXME, this doesn't work as expected
+
         if ( tools.states.roundedBounds && tools.states.roundedBounds.contains(bounds) ) {
             // New view inside original bounds
             console.log('INSIDE BOUNDS');
@@ -421,29 +423,36 @@ var tools = {
             script.src = src;
         })
     },
-    uploadToImgur: function (file) {
+    uploadToImgur: function () {
+
+        console.log('This value', this);
 
         // based on a pen by James Skinner - License MIT - https://codepen.io/spiralx/pen/mJxWJE
         var formData = new FormData();
             formData.append('type', 'file');
-            formData.append('image', file);
+            formData.append('image', this);
 
-        var params = {}
-
-        // tools.makeApiCall().catch().then();
-
-        return fetch('https://api.imgur.com/3/upload', {
+        return fetch('https://api.imgur.com/3/upload.json', {
 
           method: 'POST',
           headers: {
-            Accept: 'application/json',
-            Authorization: 'Client-ID @@imgurtoken'
+              'Accept'       : 'application/json'
+            , 'Authorization': 'Client-ID @@imgurtoken'
           },
           body: formData
         })
+        .then(tools.processFetchStatus)
+        .catch(error => { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
+        .then(tools.parseFetchJsonResponse);
+
+    },
+    fileUploadHandler: function (files) {
+
+        tools.uploadToImgur.call(files[0])
 
         .then((response) => {
-          response.json()
+
+          console.log('Imgure API response:', response);
 
           if ( response.status === 200 || response.status === 0 ) {
 
@@ -456,16 +465,7 @@ var tools = {
             return false;
           }
 
-        })
-    },
-    fileUploadHandler: function (file) {
-
-      // base on a pen by James Skinner - License MIT - https://codepen.io/spiralx/pen/mJxWJE
-
-      console.log('File to be uploaded: ', file);
-
-      // TODO send to uploader
-
+        });
 
     },
     deleteEmptyKeys: function (obj) {

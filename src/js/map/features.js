@@ -145,19 +145,26 @@ var features =  ( function () {
 
     function loadFeature (type) {
 
+      if ( !type ) {
+
+        return;
+
+      }
       // Coherce type into array because external function pass one type of feature at a time as string
       var type = Array.isArray(type) ? type : [type];
 
       // TODO make this return a Promise.all so we can wait for items to load up on the map if we need to act on them
-      // FIXME only run this function if we're outside originally loaded map bounds
+      // FIXME redraw markers if inside the same bounds and they are exploded from markerGroup else styles aren't applied
+      // TODO this needs refactoring of markers
+      // FIXME return null if
 
       var bounds = maps.map.getBounds();
       var inverted_bounds = tools.getInvertedBounds(maps.map);
       var token = localStorage.getItem('token') || tools.token;
 
-      if ( tools.checkIfInsideRoundedBounds(bounds) ) {
-          return;
-      }
+      // if ( tools.checkIfInsideRoundedBounds(bounds) ) {
+      //     return;
+      // }
 
       type.forEach( function (item) {
 
