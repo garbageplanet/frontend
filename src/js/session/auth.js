@@ -150,7 +150,7 @@ var session = ( function () {
 
       // TODO Object.freeze() or use set setAccount(...) to create a setter function
 
-      return new Promise ((resolve, reject) => {
+      return new Promise (function(resolve, reject) {
 
         console.log('Account data from setAccount() Promise', data)
 
@@ -248,7 +248,7 @@ var session = ( function () {
                     console.log(data)
 
                     // Log the user in the UI
-                    _setAccount(true, data).then(() => {
+                    _setAccount(true, data).then(function() {
                       _switchSession('login');
                       alerts.showAlert(13, 'success', 1500);
                     });
@@ -264,16 +264,22 @@ var session = ( function () {
         });
     }
 
-    function _checkLogin (d) {
-
-        console.log('checking login');
-
-        return $.ajax({
-              method : api.readUser.method
-            , url    : api.readUser.url()
-            , headers: {'Authorization': 'Bearer ' + d}
-        });
-    }
+    // function _checkLogin (d) {
+    //
+    //     console.log('checking login');
+    //
+    //     return $.ajax({
+    //           method : api.readUser.method
+    //         , url    : api.readUser.url()
+    //         , headers: {'Authorization': 'Bearer ' + d}
+    //     });
+    //
+    //     var params = {
+    //       // TODO finish this
+    //     };
+    //
+    //     return tools.makeApiCall(params);
+    // }
 
     function _logOut () {
 
@@ -352,7 +358,7 @@ var session = ( function () {
                 success: function (data) {
 
                   // Log the user in the UI
-                  _setAccount(true, data).then(() => {
+                  _setAccount(true, data).then(function(){
 
                     _switchSession('login');
                     alerts.showAlert(13, 'success', 1500);
@@ -409,7 +415,7 @@ var session = ( function () {
                         if ( typeof authUser !== 'undefined' ) {
 
                           // Log the user in the UI
-                          _setAccount(false, data).then(() => {
+                          _setAccount(false, data).then(function() {
 
                             _switchSession('login');
                             alerts.showAlert(13, 'success', 1500);

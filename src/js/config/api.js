@@ -2,18 +2,24 @@
 /* global L, $, tools, alerts, api, ui */
 
 /**
-  * The necessary configurations that are used by the UI  *
+  * The url  *
   */
 
-// TODO leaner api
-// feature: {
-//   type: 'feature_type',
-//   options: {
-//     latlngs: '',
-//     todo: '',
-//     ...
+// var api = {
+//     server: '@@server',
+//     auth: {
+//       create: '',
+//       read:'',
+//       delete:'',
+//       readsoft: '',
+//       createsoft: ''
+//     },
+//     create: {},
+//     read: {},
+//     delete: {},
+//
 //   }
-// }
+
 
 var api = {
     server: '@@server',

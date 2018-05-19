@@ -26,7 +26,7 @@ var saving = ( function () {
         };
 
         tools.makeApiCall(params, window.fetch)
-            .catch((error) => {
+            .catch(function(error) {
 
                   console.log(error);
 
@@ -34,7 +34,7 @@ var saving = ( function () {
                   ui.sidebar.hide();
                   tools.resetIconStyle();
             })
-            .then((response) => {
+            .then(function(response) {
 
                 console.log('post request:', response);
 

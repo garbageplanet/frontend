@@ -34,7 +34,6 @@
     "gulp-replace-task": "^0.11.0",
     "gulp-rev-append": "^0.1.8",
     "gulp-string-replace": "^0.4.0",
-    "gulp-strip-debug": "^1.1.0",
     "gulp-uglify": "^1.5.3",
     "uuid-lib": "0.0.6"
   }

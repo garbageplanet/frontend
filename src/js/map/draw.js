@@ -131,7 +131,7 @@ var drawing = ( function () {
           // drawing apabilities are only called when the forms are loaded in /js/forms.js
           tools.getScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.js')
 
-              .then(() => {
+              .then(function() {
 
                 console.log('Got draw.js');
 
@@ -149,7 +149,7 @@ var drawing = ( function () {
                 _bindEvents(type);
               })
 
-              .catch( err => {
+              .catch( function(err) {
 
                 console.log(err);
                 return false;

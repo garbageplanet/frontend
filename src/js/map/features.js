@@ -178,11 +178,27 @@ var features =  ( function () {
 
           tools.makeApiCall(params, window.fetch)
 
-          .catch(error => { console.log('Error getting features', error) })
+          // FIXME parse error and check for 200
 
-          .then(response => {
+          .catch(function(error) {
 
-              console.log(`API data for ${item}`, response);
+
+            // if ( !data or data.length === 0 || typeof data === 'undefined' ) {
+            //
+            //     let error = new Error ("Received empty data from the server.");
+            //
+            //     return alerts.showAlert(0,"danger", 3000, error);
+            //
+            // }
+
+            console.log('Error getting features', error)
+
+          })
+
+          .then(function(response) {
+
+              //console.log(`API data for ${item}`, response);
+              console.log('API data: ', response);
               _createFeatures(item, response);
           });
       });

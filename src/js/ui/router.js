@@ -16,6 +16,7 @@ router.on({
 /**
   * In-app router for showing map feature infos
   * FIXME when jumping from a form to a saved feature on the map the url gets stripped from location because the reset route get hits after the feature route has been resolved
+  * TODO dont use verbs in REST API?
   */
 router.on({
   '/feature/:type/:id/show'   : { as: 'feature.show'  , uses: function (params, query) { ui.setContent(params.type, params.id); }},
@@ -125,8 +126,8 @@ router.on({
         case 'cleaning'  :
         // Only get the dataTable code if the user wants to views the data
         tools.getScript('https://cdn.datatables.net/v/dt/dt-1.10.16/fh-3.1.3/r-2.2.1/datatables.min.js')
-            .catch(err => { console.log('Error fetching Datatables script');})
-            .then(() => { ui.makeModal(params.target, tools.listMarkersInView(params.target)); });
+            .catch(function(err) { /*console.log('Error fetching Datatables script');*/})
+            .then(function(){ ui.makeModal(params.target, tools.listMarkersInView(params.target)); });
             break;
         default:
           ui.sidebar.setContent( tmpl( 'tmpl-info-' + params.target, ui.strings.credits) );

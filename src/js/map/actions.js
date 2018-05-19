@@ -202,9 +202,9 @@ var actions = ( function () {
         };
 
         tools.makeApiCall(params, window.fetch)
-            .catch(error => {
+            .catch(function(error) {
                 console.log(error);
-            }).then(response => {
+            }).then(function(response) {
 
                 ui.setContent(null, response.data.data);
 
@@ -232,7 +232,7 @@ var actions = ( function () {
 
             tools.makeApiCall(params, window.fetch)
 
-                .then(response => {
+                .then(function(response) {
 
                   maps.map.removeLayer(o);
                   alerts.showAlert(7, "success", 1500);
@@ -240,7 +240,7 @@ var actions = ( function () {
 
                 })
 
-                .catch(err => {
+                .catch(function(err) {
 
                   console.log(err);
                   alerts.showAlert(6, "warning", 2000);
@@ -268,9 +268,9 @@ var actions = ( function () {
         };
 
         tools.makeApiCall(params, window.fetch)
-            .catch(error => {
+            .catch(function(error) {
                 console.log(error);
-            }).then(response => {
+            }).then(function(response) {
 
                 ui.setContent(null, response.data.data);
 
@@ -290,9 +290,9 @@ var actions = ( function () {
         };
 
         tools.makeApiCall(params, window.fetch)
-            .catch(error => {
+            .catch(function(error) {
                 console.log(error);
-            }).then(response => {
+            }).then(function(response) {
 
                 ui.setContent(null, response.data.data);
 

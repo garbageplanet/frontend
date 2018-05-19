@@ -5,7 +5,6 @@ var gulp = require('gulp'),
     gulpif = require('gulp-if'),
     inject = require('gulp-inject'),
     injectStr = require('gulp-inject-string'),
-    // stripDebug = require('gulp-strip-debug'),
     concat = require('gulp-concat'),
     purify = require('gulp-purifycss'),
     minifyCSS = require('gulp-cssnano'),
@@ -19,6 +18,8 @@ var gulp = require('gulp'),
     exec = require('child_process').exec;
 
 var production = process.env.PRODUCTION === 'true' ? true : false;
+
+console.log("Prod: ", production);
 
 var reservedvars = ['$','jQuery','L','tmpl','flatpickr','Tour','tagsinput','Navigo'];
 
@@ -87,7 +88,6 @@ gulp.task('scripts:leaflet', ['templates'], function () {
                     './src/vendor/L.Control.Login.js',
                     './src/vendor/L.Control.Menu.js'
                   ])
-    .pipe(gulpif(production, replace('console.log', '//console.log')))
     .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
     .pipe(concat('leaflet.min.js'))
     .pipe(gulp.dest('./temp/'));
@@ -107,8 +107,6 @@ gulp.task('scripts:jquery', ['templates'], function () {
                     './src/vendor/bootstrap-tour-0.10.1.js',
                     './src/vendor/flatpickr.js'
   ])
-    // .pipe(gulpif(production, stripDebug()))
-    .pipe(gulpif(production, replace('console.log', '//console.log')))
     .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
     .pipe(concat('jquery.min.js'))
     .pipe(gulp.dest('./temp/'));
@@ -135,23 +133,17 @@ gulp.task('scripts:app', ['templates'], function () {
                     './src/js/social/social.js',
                     './src/js/init.js'
                   ])
-    // .pipe(babel({
-    //   presets: ["babel-preset-es2015"].map(require.resolve)
-    // }))
-    //.pipe(gulpif(production, stripDebug()))
-    .pipe(gulpif(production, replace('console.log', '//console.log')))
-    //.pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
-    .pipe(concat('app.min.js').on('error', log.warn))
-    .pipe(gulp.dest('./temp/'));
-});
-// Replace strings and concat minifed scripts in order
-gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function () {
-
-    return gulp.src([
-        './temp/jquery.min.js',
-        './temp/leaflet.min.js',
-        './temp/app.min.js',
-    ])
+    .pipe(gulpif(production, replace(
+      {
+        patterns: [
+          {
+            match: /console/g,
+            replacement: function () {
+              return '//console';
+            }
+          }
+        ]
+      })))
     .pipe(replace({
       patterns: [
         {
@@ -188,6 +180,18 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
         }
       ]
     }))
+    .pipe(gulpif(production, uglify({mangle: { reserved: reservedvars }, compress: false/*, preserveComments: 'license'*/}).on('error', log.warn)))
+    .pipe(concat('app.min.js').on('error', log.warn))
+    .pipe(gulp.dest('./temp/'));
+});
+// Replace strings and concat minifed scripts in order
+gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], function () {
+
+    return gulp.src([
+        './temp/jquery.min.js',
+        './temp/leaflet.min.js',
+        './temp/app.min.js',
+    ])
     .pipe(concat('app.js').on('error', log.warn))
     .pipe(gulp.dest('dist/'));
 });

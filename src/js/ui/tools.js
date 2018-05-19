@@ -88,6 +88,8 @@ var tools = {
     },
     reverseGeocode: function (o) {
 
+        // TODO use fetch
+
         var latlng = o.replace(', ', '+');
         // console.log(latlng);
 
@@ -210,11 +212,11 @@ var tools = {
     },
     getVerticalOffset: function () {
 
-        return !window.isMobile ? [0, - $(window).height() / 4 + 20] : [0, - $(window).height() / 4]
+        return !window.isMobile ? [ 0, - $(window).height() / 4 + 20 ] : [ 0, - $(window).height() / 4 ]
     },
     getHorizontalOffset: function () {
 
-        return [- $(window).width() / 6, 0];
+        return [ - $(window).width() / 6, 0 ];
     },
     resetIconStyle: function (id) {
 
@@ -413,7 +415,7 @@ var tools = {
     },
     getScript: function (src) {
 
-        return new Promise((resolve, reject) => {
+        return new Promise(function (resolve, reject) {
 
             var script = document.createElement('script');
             document.body.appendChild(script);
@@ -442,7 +444,8 @@ var tools = {
           body: formData
         })
         .then(tools.processFetchStatus)
-        .catch(error => { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
+        //.catch(function(error) { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
+        .catch(function(error) { alerts.showAlert(1, "danger", 2000, error.statusText)})
         .then(tools.parseFetchJsonResponse);
 
     },
@@ -450,7 +453,7 @@ var tools = {
 
         tools.uploadToImgur.call(files[0])
 
-        .then((response) => {
+        .then(function(response){
 
           console.log('Imgure API response:', response);
 
@@ -472,7 +475,7 @@ var tools = {
 
       var new_obj = obj
 
-      Object.keys(obj).forEach(key => {
+      Object.keys(obj).forEach(function(key){
 
         if ( !obj[key] || typeof obj[key] === 'undefined' || obj[key].length === 0 ) {
           delete obj[key];
@@ -501,7 +504,8 @@ var tools = {
         // Return the processed response
         return fetch(obj.url, options)
             .then(tools.processFetchStatus)
-            .catch(error => { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
+            //.catch(function(error) { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
+            .catch(function(error) { alerts.showAlert(1, "danger", 2000, error.statusText)})
             .then(tools.parseFetchJsonResponse);
     },
     processFetchStatus: function (response) {
