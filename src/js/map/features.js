@@ -14,6 +14,8 @@ var features =  ( function () {
 
         maps[type + 'LayerGroup'].clearLayers();
 
+        if (!response || typeof response === 'undefined') return false;
+
         switch (type) {
 
             case 'garbage'  :
@@ -199,6 +201,9 @@ var features =  ( function () {
 
               //console.log(`API data for ${item}`, response);
               console.log('API data: ', response);
+
+              if (!response || typeof response === 'undefined') return false;
+
               _createFeatures(item, response);
           });
       });
