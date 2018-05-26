@@ -177,10 +177,6 @@ gulp.task('scripts:app', ['templates'], function () {
         {
           match: 'production',
           replacement: process.env.PRODUCTION
-        },
-        {
-          match: 'gtag',
-          replacement: process.env.GTAG
         }
       ]
     }))
@@ -206,13 +202,20 @@ gulp.task('injectFiles', ['scripts:all', 'styles'], function () {
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
     // Inject scripts
     .pipe(inject(gulp.src('./dist/app.js', {read: false}), {starttag: '<!-- inject:body:app -->', ignorePath: 'dist', addRootSlash: false}))
-    // .pipe(injectstr.before('</body', '<script src="https://garbageplanet.disqus.com/embed.js"></script>\n'))
     .pipe(gulp.dest('temp1/'));
 });
 // Minify the html, clean comments and spaces
 gulp.task('minifyHTML', ['injectFiles'], function () {
   return gulp.src('./temp1/index.html')
     .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
+    .pipe(replace({
+      patterns: [
+        {
+          match: 'gtag',
+          replacement: process.env.GTAG
+        }
+      ]
+    }))
     .pipe(gulp.dest('dist/'));
 });
 gulp.task('clean:start', function () {
