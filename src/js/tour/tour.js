@@ -21,6 +21,7 @@ var touring = (function () {
               }
             ]
         });
+        
     var _mobileTour = new Tour({
             name: "mobile-tour",
             template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div><div class='popover-navigation'><a class='close btn-tour' data-role='end'>x&nbsp</a></div></div>",
