@@ -89,7 +89,7 @@ var ui = ( function () {
           },
           {
             "title": "privacy policy",
-            "linkurl": "/info/privacy",
+            "linkurl": "#/info/privacy",
             "text": "Read our",
           }
       ]
