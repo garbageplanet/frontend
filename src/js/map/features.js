@@ -14,7 +14,7 @@ var features =  ( function () {
 
         maps[type + 'LayerGroup'].clearLayers();
 
-        if (!response || typeof response === 'undefined') return false;
+        if (!data || typeof response === 'undefined') return false;
 
         switch (type) {
 
@@ -43,7 +43,7 @@ var features =  ( function () {
                       , types        : data[key].types.join(', ')
                       , icon         : tools.setMarkerIcon(data[key].cleaned, null)
                       , todo         : data[key].cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(data[key].todo)
-                      , feature_type : 'garbage'
+                      , feature_type : type
                     });
                     // marker.addTo(maps.garbageLayerGroup);
                     maps.garbageLayerGroup.addLayer(marker);
@@ -68,7 +68,7 @@ var features =  ( function () {
                         , recurrence   : data[key].recurrence
                         , ext_link     : data[key].note
                         , icon         : tools.setMarkerIcon(null, data[key].datetime)
-                        , feature_type : 'cleaning'
+                        , feature_type : type
                     });
                     marker.addTo(maps.cleaningLayerGroup);
                 });
@@ -95,7 +95,7 @@ var features =  ( function () {
                        , tags            : data[key].tag
                        , types           : data[key].types.join(', ')
                        , shape           : true
-                       , feature_type    : 'litter'
+                       , feature_type    : type
                        , clickable       : true
                        , weight          : 15
                        , opacity         : 0.5
@@ -124,7 +124,7 @@ var features =  ( function () {
                        , tags         : data[key].tag
                        , title        : data[key].title
                        , modified_at  : data[key].updated_at
-                       , feature_type : 'area'
+                       , feature_type : type
                        , shape        : true
                        , color        : '#33cccc'
                        , weight       : 5

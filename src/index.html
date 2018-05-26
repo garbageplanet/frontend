@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <title>Garbagepla.net - Earth, spotless.</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://fonts.gstatic.com; connect-src http://garbageplanet.dist http://garbageplanet.api https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://opengraph.io https://api.imgur.com/3/upload; script-src 'self' 'unsafe-inline' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/* https://cdn.datatables.net/* 'self'; style-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net 'unsafe-inline' https://fonts.gstatic.com https://fonts.googleapis.com; img-src * data:; object-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://opengraph.io">
+
+    <meta http-equiv="Content-Security-Policy" content="default-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://fonts.gstatic.com; connect-src https://www.googletagmanager.com http://garbageplanet.dist http://garbageplanet.api https://garbagepla.net https://garbagepla.net:* https://*.garbagepla.net https://*.garbagepla.net:* https://opengraph.io https://api.imgur.com/3/upload; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://api.opencagedata.com https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/* https://cdn.datatables.net/* 'self'; style-src http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net 'unsafe-inline' https://fonts.gstatic.com https://fonts.googleapis.com; img-src * data:; object-src 'self' http://garbageplanet.dist https://garbagepla.net https://*.garbagepla.net https://opengraph.io">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
     <meta http-equiv="X-UA-Compatible", content="IE=Edge">
@@ -126,14 +127,15 @@
     <!-- inject:head:css:styles -->
     <!-- endinject -->
 
-    <!-- <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', '@@ga', 'auto');
-      ga('send', 'pageview');
-    </script> -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@@gtag"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '@@gtag');
+    </script>
+
 
 
 </head>

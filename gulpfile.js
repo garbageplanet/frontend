@@ -177,6 +177,10 @@ gulp.task('scripts:app', ['templates'], function () {
         {
           match: 'production',
           replacement: process.env.PRODUCTION
+        },
+        {
+          match: 'gtag',
+          replacement: process.env.GTAG
         }
       ]
     }))
