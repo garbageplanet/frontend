@@ -7,8 +7,6 @@
   * License MIT
   */
 
-// TODO remove jquery
-
 var alerts = ( function () {
 
     'use strict';
@@ -51,27 +49,21 @@ var alerts = ( function () {
         'Please provide a link'
     ];
 
-     function showAlert(errorCode, errorType, closeDelay, errorText) {
+     function showAlert(code, type, delay, text) {
+       // default to alert-info
+        var type = type || 'info';
+        var message = text || _strings[code];
+        var alert = $(`<div class="alert alert-${type} fade in">`);
 
-        // default to alert-info
-        if ( !errorType || typeof errorType === 'undefined' ) {
-            errorType = "info";
+        alert.append(`<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>`);
+        alert.append(message);
+
+        $(".alert-container").prepend(alert);
+
+        if ( delay ) {
+            window.setTimeout(function () { alert.alert("close"); }, delay);
         }
-
-        var errorMessage = errorText || _strings[errorCode];
-        var alertMessage = $('<div class="alert alert-' + errorType + ' fade in">');
-
-        alertMessage.append(errorMessage);
-
-        $(".alert-container").prepend(alertMessage);
-
-        // if closeDelay was passed - set a timeout to close the alert
-        if ( closeDelay ) {
-
-            window.setTimeout(function () { alertMessage.alert("close"); }, closeDelay);
-        }
-
     }
 
-    return { showAlert : showAlert }
+    return Object.freeze({ showAlert : showAlert });
 }());

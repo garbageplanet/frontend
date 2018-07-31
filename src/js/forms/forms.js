@@ -96,6 +96,7 @@ var forms = ( function () {
         });
 
         // load form-specific events
+        // TODO make this without a switch by e.g. calling _bind[type]
         switch (type) {
           case 'area': _bindAreaEvents(); break;
           case 'litter': _bindLitterEvents(); break;

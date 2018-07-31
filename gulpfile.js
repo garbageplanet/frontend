@@ -198,6 +198,8 @@ gulp.task('scripts:all', ['scripts:leaflet', 'scripts:jquery', 'scripts:app'], f
 // Inject minifed files path in head and body
 gulp.task('injectFiles', ['scripts:all', 'styles'], function () {
   return gulp.src('./temp/index.html')
+  // inject CSP
+    .pipe(gulpif(production, inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:csp -->', ignorePath: 'dist', addRootSlash: false})))
     // inject styles
     .pipe(inject(gulp.src('./dist/styles.min.css', {read: false}), {starttag: '<!-- inject:head:css:styles -->', ignorePath: 'dist', addRootSlash: false}))
     // Inject scripts

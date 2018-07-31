@@ -24,6 +24,7 @@ var session = ( function () {
         if ( o === "logout" ) {
 
             tools.states.loggedin = false;
+            localStorage.clear();
 
             var account_info_link = document.querySelector('#account-info-link');
 
@@ -48,7 +49,7 @@ var session = ( function () {
 
             document.addEventListener("DOMContentLoaded", function() {
 
-              console.log('RESETTING SESSION  LINKS')
+              console.log('RESETTING SESSION LINKS')
               // manually activate tabs
               tools.activateTabs();
               // Scan newly create router links
@@ -95,6 +96,7 @@ var session = ( function () {
             }
 
             // Change html to reflect anon login
+            // Glome is not available anymore...
             if  ( classic_session === "false" ) {
 
                 // FIXME non-mobile?
@@ -152,8 +154,6 @@ var session = ( function () {
 
       return new Promise (function(resolve, reject) {
 
-        console.log('Account data from setAccount() Promise', data)
-
         if ( classic ) {
 
             localStorage.setItem('classic', 'true');
@@ -172,31 +172,17 @@ var session = ( function () {
          }
 
          resolve();
-
-      })
-
+      });
     }
 
     function _getAccount (classic) {
 
-        var account = {};
-
-        if ( classic ) {
-
-            account.username = localStorage.getItem('username');
-            account.email    = localStorage.getItem('email');
-            account.id       = localStorage.getItem('id');
-
-            return account;
-
-        } else {
-
-            account.username = localStorage.getItem('username');
-            account.key      = localStorage.getItem('key');
-            account.id       = localStorage.getItem('id');
-
-            return account;
-        }
+      return Object.freeze({
+          username : localStorage.getItem('username')
+        , email    : localStorage.getItem('email') || ''
+        , id       : localStorage.getItem('id')
+        , key      : localStorage.getItem('key') || ''
+      });
     }
 
     function _logIn (o) {
@@ -259,35 +245,30 @@ var session = ( function () {
         login_call.fail(function (err) {
             console.log(err);
             alerts.showAlert(10, 'danger', 3000);
-            localStorage.clear();
+            _switchSession('logout');
             tools.states.loggedin = false;
         });
     }
 
-    // function _checkLogin (d) {
-    //
-    //     console.log('checking login');
-    //
-    //     return $.ajax({
-    //           method : api.readUser.method
-    //         , url    : api.readUser.url()
-    //         , headers: {'Authorization': 'Bearer ' + d}
-    //     });
-    //
-    //     var params = {
-    //       // TODO finish this
-    //     };
-    //
-    //     return tools.makeApiCall(params);
-    // }
+    function _checkLogin (d) {
+
+        console.log('checking login');
+
+        var params = {
+              method : api.readUser.method
+            , url    : api.readUser.url()
+            , auth: {'Authorization': 'Bearer ' + d}
+        };
+
+        return tools.makeApiCall(params, window.fetch);
+    }
 
     function _logOut () {
 
         if ( !localStorage.token ) {
 
             alerts.showAlert(23, 'info', 2000);
-            localStorage.clear();
-            tools.states.loggedin = false;
+            _switchSession('logout');
         }
 
         else {
@@ -314,20 +295,16 @@ var session = ( function () {
 
                 _switchSession('logout');
                 alerts.showAlert(22, 'info', 2000);
-                localStorage.clear();
-                tools.states.loggedin = false;
             });
 
             logout_call.fail(function(){
                 alerts.showAlert(10, 'danger', 2000);
-                tools.states.loggedin = false;
+                _switchSession('logout');
             });
         }
     }
 
     function _registerAccount (o) {
-
-        console.log('reigtser obj:', o);
 
         var register_call = $.ajax({
 
@@ -369,8 +346,7 @@ var session = ( function () {
 
         register_call.fail( function () {
             alerts.showAlert(1, 'danger', 3500);
-            localStorage.clear();
-            tools.states.loggedin = false;
+            _switchSession('logout');
         });
 
     }
@@ -429,8 +405,7 @@ var session = ( function () {
 
             glome_call.fail( function () {
                 alerts.showAlert(12, 'warning', 3000);
-                localStorage.clear();
-                tools.states.loggedin = false;
+                _switchSession('logout');
             });
 
         }
@@ -447,14 +422,11 @@ var session = ( function () {
 
           alerts.showAlert(12, 'warning', 3000);
           switchSession('login');
-          tools.states.loggedin = true;
 
         } else {
 
           alerts.showAlert(12, 'warning', 3000);
           switchSession('logout');
-          localStorage.clear();
-          tools.states.loggedin = false;
         }
 
       }
@@ -503,6 +475,7 @@ var session = ( function () {
 
             delete_account_call.fail( function () {
                 ui.sidebar.hide();
+                _switchSession('logout');
                 alerts.showAlert(10, 'danger', 2000);
             });
 
@@ -571,26 +544,26 @@ var session = ( function () {
 
                if (!token ) {
 
-                   localStorage.clear();
-                   return;
+                   _switchSession('logout');
+                   return false;
 
                } else {
 
                    var check_login_call = _checkLogin(token);
 
-                   check_login_call.done(function (res) {
-                       // console.log(res);
-                       _switchSession('login');
-                   });
+                   check_login_call.then(function (res) {
 
-                   check_login_call.fail(function (res) {
-                       alerts.showAlert(21, 'danger', 2000);
-                       // console.log(res);
-                       _switchSession('logout');
-                       localStorage.clear();
+                     console.log("checlLogin_response: ", res);
+
+                      if ( res.status === 200 ) {
+
+                        _switchSession('login');
+                      } else {
+
+                        _switchSession('logout');
+                      }
                    });
                }
-
                break;
 
            case 'view': _switchSession('view'); break;

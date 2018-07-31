@@ -265,7 +265,7 @@ var maps = ( function () {
             }
          });
     }
-
+    // TODO use return Object.freeze({}) everywhere
     return {
        init                     : init
      , map                      : map

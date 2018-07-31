@@ -492,9 +492,9 @@ var tools = {
         var options =  {
               method: obj.method
             , headers: new Headers({
-                  'Accept': 'application/json'
-                , 'Content-type':'application/json'
-                , 'Authorization': obj.auth
+                  'Accept'        : 'application/json'
+                , 'Content-type'  : 'application/json'
+                , 'Authorization' :  obj.auth
               })
             , body: JSON.stringify(obj.data)
         };
@@ -505,7 +505,7 @@ var tools = {
         return fetch(obj.url, options)
             .then(tools.processFetchStatus)
             //.catch(function(error) { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
-            .catch(function(error) { alerts.showAlert(1, "danger", 2000, error.statusText)})
+            .catch(function(error) { alerts.showAlert(1, "danger", 2000, `Error ${error.status} : ${error.statusText}`)})
             .then(tools.parseFetchJsonResponse);
     },
     processFetchStatus: function (response) {
