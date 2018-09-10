@@ -141,22 +141,21 @@ var forms = ( function () {
 
         console.log('loading cleaning form');
 
-        var date_time_container = document.getElementById('#cleaning-main-tab');
-
         // Setup the date widget
         var config = {
             enableTime: true,
-            appendTo: date_time_container,
             altInput: true,
             disableMobile: true,
             onChange: function (selectedDates, dateStr, instance) {
-                console.log(dateStr);
+                console.log("cleaning event date: ", dateStr);
                 // Change the icon of the marker if a time is set
-                $(marker._icon).removeClass('marker-color-gray marker-generic').addClass('marker-cleaning marker-color-blue');
+                $(marker._icon).removeClass(function (index, css) {
+                    return (css.match(/(^|\s)marker-color-\S+/g) || []).join(' ');
+                }).removeClass(' marker-generic').addClass('marker-cleaning marker-color-blue');
             }
         };
 
-        $('#event-date-time-input').flatpickr(config);
+        document.querySelector('#event-date-time-input').flatpickr(config);
 
     }
 
@@ -172,20 +171,17 @@ var forms = ( function () {
     function _bindLinkmarkerEvents (id) {
 
         var btn_opengraph_fetch = $('.btn-opengraph-fetch');
-        var og_content = document.getElementById('opengraph-content')
-        var toggle_buttons = function (i) {
+        var og_content = document.getElementById('opengraph-content');
 
-          if ( i === 'start' ) {
-
-            btn_opengraph_fetch.text('...');
-            btn_opengraph_fetch.attr('disabled', 'disabled');
-
-          } else if ( i === 'stop' ) {
-
-            btn_opengraph_fetch.text('Fetch');
-            btn_opengraph_fetch.removeAttr('disabled');
-          }
-        };
+        // function toggleButtons (i) {
+        //   if ( i === 'start' ) {
+        //     btn_opengraph_fetch.text('...');
+        //     btn_opengraph_fetch.attr('disabled', 'disabled');
+        //   } else if ( i === 'stop' ) {
+        //     btn_opengraph_fetch.text('Fetch');
+        //     btn_opengraph_fetch.removeAttr('disabled');
+        //   }
+        // }
 
         // Bind the action to launch the scraper
         btn_opengraph_fetch.click( function () {
@@ -193,16 +189,18 @@ var forms = ( function () {
             // Retrieve the value of the url
             var url = $('#opengraph-url').val();
 
-            toggle_buttons('start');
+            toggleButtons('start',btn_opengraph_fetch);
 
             if (!url) {
               alerts.showAlert(34, 'danger', 2000);
-              toggle_buttons('stop');
+              toggleButtons('stop',btn_opengraph_fetch);
               return;
             }
 
             // Start the scraper promise
-            $.when( tools.openGraphScraper(url) ).then( function (data) {
+            // $.when( tools.openGraphScraper(url) ).then( function (data) {
+
+              tools.openGraphScraper(url).then(function (data) {
 
                 console.log('data from openGraph Promise resolved:', data);
 
@@ -213,7 +211,8 @@ var forms = ( function () {
 
                 toggle_buttons('stop');
 
-            }).catch( function () {
+            }).catch( function (err) {
+                alerts.showAlert(null, 'info', 2000, JSON.stringify(err));
                 toggle_buttons('stop');
             });
         });
@@ -251,5 +250,5 @@ var forms = ( function () {
         _bindEvents(id, type);
     }
 
-    return { makeForm : makeForm }
+    return Object.freeze({ makeForm : makeForm });
 }());

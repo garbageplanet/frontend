@@ -284,8 +284,8 @@ var features =  ( function () {
 
     }
 
-    return {
+    return Object.freeze({
         loadFeature : loadFeature
       , init        : init
-    }
+    });
 }());

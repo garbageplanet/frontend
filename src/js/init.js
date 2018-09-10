@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load ui amd session
   ui.init();
 
+  // Do a session check to see if the user has cached data
   session.init('check');
 
   if ( showtour )  {
       touring.init();
   }
-
   // Load map features
   features.init()
 

@@ -10,7 +10,7 @@ var ui = ( function () {
     'use strict';
 
     var strings = {
-      version: 'v. unstable',
+      version: '0.0.1',
       credits : [
           {
               "title":"homepage",
@@ -380,15 +380,13 @@ var ui = ( function () {
         // Add the Leaflet ui controls to the map
         sidebar.addTo(maps.map);
         bottombar.addTo(maps.map);
-
-
+        
         if ( !window.isMobile ) {
             // Fill the main topbar template on desktop
             document.getElementById('topbar').innerHTML = tmpl('tmpl-topbar-main', strings);
             // Register the navigo links in the topbar
             router.updatePageLinks();
         }
-
         // Set the rest of the listeners
         _bindSidebarEvents();
         _bindBottombarEvents();
@@ -397,11 +395,11 @@ var ui = ( function () {
         // alerts.showAlert(32, 'warning', 5000);
     }
 
-    return {   bottombar  : bottombar
+    return Object.freeze({   bottombar  : bottombar
              , init       : init
              , makeModal  : makeModal
              , setContent : setContent
              , sidebar    : sidebar
              , strings    : strings
-    }
+    });
 }());

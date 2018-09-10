@@ -65,7 +65,7 @@ L.Map.prototype.panToOffset = function (latlng, offset, zoom, options) {
 /**
   * Tools an utilities.
   */
-var tools = {
+var tools = Object.freeze({
     makeEllipsis: function (obj, n) {
         return obj.substr(0,n-1)+(obj.length>n?'&hellip;':'');
     },
@@ -318,44 +318,48 @@ var tools = {
         return true;
     },
     openGraphScraper: function (url) {
-        // TODO use fetch
-        var token = '@@opengraphiotoken';
 
         if (url) {
 
-            var callurl = 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url);
-            var request = $.ajax({
-                method: 'GET',
-                url: callurl,
-                data: jQuery.param({'app_id': token}),
-                success: function (data) {
-                    console.log('ajax call pass', data);
-                    if (data.error) {
-                        alerts.showAlert(5, "danger", 2000);
-                        return;
-                    }
-                    if (data.openGraph.error == 'null' || !data.openGraph.error) {
-                        console.log('Successfully retrieved OG data');
-                    }
-                },
-                error: function () {
-                    console.log('Error fetching og data');
-                    alerts.showAlert(5, "danger", 2000);
-                    return;
-                }
-            });
+            var params = {
+                url: 'https://opengraph.io/api/1.0/site/' + encodeURIComponent(url)
+              , method : 'GET'
+              , data : {'app_id': '@@opengraphiotoken'}
+            };
 
-            return request;
+            return tools.makeApiCall(params);
+
+            // var request = $.ajax({
+            //     method: 'GET',
+            //     url: callurl,
+            //     data: jQuery.param({'app_id': token}),
+            //     success: function (data) {
+            //         console.log('ajax call pass', data);
+            //         if (data.error) {
+            //             alerts.showAlert(5, "danger", 2000);
+            //             return;
+            //         }
+            //         if (data.openGraph.error == 'null' || !data.openGraph.error) {
+            //             console.log('Successfully retrieved OG data');
+            //         }
+            //     },
+            //     error: function () {
+            //         console.log('Error fetching og data');
+            //         alerts.showAlert(5, "danger", 2000);
+            //         return;
+            //     }
+            // });
+
         }
 
         else {
             alerts.showAlert(5, "warning", 2000);
-            return;
+            return Promise.reject('Provide a valid url.');
         }
     },
     scrapeGeolocationFromText: function () {
         // TODO geographical information scraper from text resources (standalone library)
-        return;
+        return false;
     },
     activateTabs: function () {
       // document.queryselectorAll('.nav-tabs' ...)
@@ -376,7 +380,7 @@ var tools = {
         }
         return a;
     },
-    listMarkersInView: function (type) {
+    listMarkersInView: function (map, type) {
 
         var tempMarkers = [];
 
@@ -484,9 +488,17 @@ var tools = {
 
       return obj;
     },
+    toggleButtons: function  (event, element) {
+      if ( event === 'start' ) {
+        element.text('...');
+        element.attr('disabled', 'disabled');
+      } else if ( event === 'stop' ) {
+        element.text('Fetch');
+        element.removeAttr('disabled');
+      }
+    },
     makeApiCall: function (obj, fetch) {
         // We inject fetch() as a dependancy so that we can require it if the user's browser doesn't have window.fetch
-        // TODO mechanism to accomodate auth calls that don't need a body param
         console.log('makeapicall obj', obj);
 
         var options =  {
@@ -496,28 +508,24 @@ var tools = {
                 , 'Content-type'  : 'application/json'
                 , 'Authorization' :  obj.auth
               })
-            , body: JSON.stringify(obj.data)
+            , body: null
         };
 
-        // console.log('makeApiCall() options', options);
+        obj.data ? options.body = JSON.stringify(obj.data) : delete options.body;
+
+        console.log('makeApiCall() options', options);
 
         // Return the processed response
         return fetch(obj.url, options)
             .then(tools.processFetchStatus)
-            //.catch(function(error) { alerts.showAlert(1, "danger", 2000, `Error status ${error.status} - ${error.statusText}`)})
             .catch(function(error) { alerts.showAlert(1, "danger", 2000, `Error ${error.status} : ${error.statusText}`)})
             .then(tools.parseFetchJsonResponse);
     },
     processFetchStatus: function (response) {
-
         console.log('Response in processFetchStatus()', response);
-        // Resolve the promise if success
         if ( response.status === 200 || response.status === 0 ) {
-
           return Promise.resolve(response);
-          // Else reject it
         } else {
-
             return Promise.reject(response);
         }
     },
@@ -528,7 +536,15 @@ var tools = {
 
         } catch (err) {
 
-          console.log(err);
+
+          // if (response.status === 401) {
+          //   alerts.showAlert(null, 'danger', 3000, err.responseJSON.error);
+          // }
+          //
+          // if ( response.status === )
+
+          console.log("error in parseFetchJsonResponse",err);
+          return false;
         }
     },
     joinObjectProperties: function (obj) {
@@ -538,7 +554,7 @@ var tools = {
       for ( var k in obj ) {
 
           var o = obj[k];
-          // if the key is an object gather the values in a string
+          // if the key is an object concat the values into a string
           if ( o.join ) {
             new_obj[k] = o.join();
           }
@@ -546,7 +562,6 @@ var tools = {
               new_obj[k] = obj[k];
           }
       }
-
       return new_obj;
 
     },
@@ -555,30 +570,21 @@ var tools = {
         return string.charAt(0).toUpperCase() + string.slice(1);
     },
     centerFeatureOnMap: function (map, obj) {
-
       if ( obj.options ) {
-
           // Check if the feature is a shape
           if ( obj.options.shape ) {
-
               map.panToOffset(obj.getCenter(), tools.getVerticalOffset());
-
-              return;
-
+              return true;
           } else {
-
               // if not a shape clicked it's a marker, bring it to the map center with panToOffset(), rise the marker to the top of others
               obj.setZIndexOffset(obj._zIndex + 10000);
               map.panToOffset(obj.getLatLng(), tools.getVerticalOffset());
-
-              return;
+              return true;
           }
-
       } else {
-
         console.log('No options in the object');
         alerts.showAlert(5, 'danger', 1000);
-        return;
+        return false;
       }
     },
     states: {
@@ -593,7 +599,7 @@ var tools = {
       , loggedin: null
     },
     token: '@@windowtoken'
-};
+});
 
 // Seal tools object so we can only change current props
 // Object.seal(tools);

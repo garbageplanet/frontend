@@ -48,7 +48,6 @@ var session = ( function () {
             $(session_link).removeClass('hidden');
 
             document.addEventListener("DOMContentLoaded", function() {
-
               console.log('RESETTING SESSION LINKS')
               // manually activate tabs
               tools.activateTabs();
@@ -103,11 +102,9 @@ var session = ( function () {
                 if ( window.isMobile ) {
 
                     try {
-
                         maps.glomelogincontrol.login();
 
                     } catch (e) {
-
                         console.log (e);
 
                         try {
@@ -116,12 +113,10 @@ var session = ( function () {
                             maps.glomelogincontrol.login();
 
                         } catch (err) {
-
                           console.log (err);
                         }
                     }
                 }
-
                 ui.sidebar.setContent( tmpl('tmpl-info-account', _getAccount(false)) );
                 ui.sidebar.show();
             }
@@ -132,15 +127,10 @@ var session = ( function () {
 
         // If we only want to see the account info
         if ( o === 'view' ) {
-
             console.log('its a classic session:', classic_session);
-
             var account_data = classic_session ? _getAccount(true) : _getAccount(false);
-
             console.log(account_data);
-
             ui.sidebar.setContent( tmpl('tmpl-info-account', account_data) );
-
             // Scan newly create router links
             router.updatePageLinks();
 
@@ -149,8 +139,6 @@ var session = ( function () {
     }
 
     function _setAccount (classic, data) {
-
-      // TODO Object.freeze() or use set setAccount(...) to create a setter function
 
       return new Promise (function(resolve, reject) {
 
@@ -187,70 +175,33 @@ var session = ( function () {
 
     function _logIn (o) {
 
-      // var params = {
-      //   url: api.createLogin.url() + '/login',
-      //   method: api.createLogin.method,
-      //   data: {
-      //         'email'   : o.email
-      //       , 'password': o.password
-      //   }
-      // };
-      //
-      // tools.makeApiCall(params, window.fetch)
-      //     .catch(error => {
-      //         console.log(error);
-      //     }).then(response => {
-      //
-      //         // TODO finish this
-      //
-      //     });
+      var params = {
+        url: api.createLogin.url() + '/login',
+        method: api.createLogin.method,
+        data: {
+              'email'   : o.email
+            , 'password': o.password
+        }
+      };
 
-
-        var login_call = $.ajax({
-
-            type: api.createLogin.method,
-            url : api.createLogin.url() + '/login',
-            data: {
-                  'email'   : o.email
-                , 'password': o.password
-            }
-        });
-
-        login_call.done(function (response) {
-
-            console.log(response);
-            console.log(response.token);
-
-            localStorage.setItem('token', response.token);
-
-            // Get the user data after Authorization
-            $.ajax({
-
-                method : api.readUser.method,
-                url    : api.readUser.url(),
-                headers: {'Authorization': 'Bearer ' + response.token},
-                success: function (data) {
-
-                    console.log(data)
-
-                    // Log the user in the UI
-                    _setAccount(true, data).then(function() {
-                      _switchSession('login');
-                      alerts.showAlert(13, 'success', 1500);
-                    });
-                }
+      tools.makeApiCall(params, window.fetch)
+      .then(function (res) {
+          console.log(response);
+          if (res) {
+            localStorage.setItem('token', res.token);
+            _setAccount(true, data).then(function() {
+              _switchSession('login');
             });
-        });
-
-        login_call.fail(function (err) {
-            console.log(err);
-            alerts.showAlert(10, 'danger', 3000);
+          }
+        })
+        .catch(function (err) {
+            console.log("login error:", err);
+            // alerts.showAlert(10, 'danger', 3000);
             _switchSession('logout');
-            tools.states.loggedin = false;
         });
     }
 
-    function _checkLogin (d) {
+    function _readAccount (d) {
 
         console.log('checking login');
 
@@ -266,8 +217,7 @@ var session = ( function () {
     function _logOut () {
 
         if ( !localStorage.token ) {
-
-            alerts.showAlert(23, 'info', 2000);
+            //alerts.showAlert(23, 'info', 2000);
             _switchSession('logout');
         }
 
@@ -275,30 +225,20 @@ var session = ( function () {
 
             var use_token = localStorage.getItem('token') || tools.token;
 
-            var logout_call = $.ajax({
-
-                method : api.logoutUser.method,
-                url    : api.logoutUser.url(),
-                headers: {'Authorization': 'Bearer ' + use_token},
-                success: function (response) {
-                    // console.log(response);
-                },
-
-                error: function (response) {
-                    // console.log(response);
-                }
-            });
-
-            logout_call.done(function (data) {
-
-                // console.log('logout response: ', data);
-
+            var params = {
+                  method : api.logoutUser.method
+                , url    : api.logoutUser.url()
+                , auth: {'Authorization': 'Bearer ' + use_token}
+            };
+            tools.makeApiCall(params, window.fetch)
+            .then(function (res) {
+                console.log('logout response: ', res);
                 _switchSession('logout');
-                alerts.showAlert(22, 'info', 2000);
-            });
-
-            logout_call.fail(function(){
-                alerts.showAlert(10, 'danger', 2000);
+                //alerts.showAlert(22, 'info', 2000);
+            })
+            .catch(function(err){
+                console.log("logout error: ", err);
+                //alerts.showAlert(10, 'danger', 2000);
                 _switchSession('logout');
             });
         }
@@ -306,129 +246,113 @@ var session = ( function () {
 
     function _registerAccount (o) {
 
-        var register_call = $.ajax({
+        var params = {
+          url: api.createUser.url(),
+          method: api.createUser.method,
+          data: {
+                'email'   : o.email
+              , 'password': o.password
+              , 'name'    : o.username
+          }
+        };
 
-            type: api.createUser.method,
-            url : api.createUser.url(),
-            data: {
-                'email': o.email,
-                'password': o.password,
-                'name': o.username
-            },
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
-
-        register_call.done(function (response) {
-
+        tools.makeApiCall(params, window.fetch)
+        .then(function (response) {
             localStorage.setItem('token', response.token);
-
-            $.ajax({
-
+            tools.makeApiCall({
                 method : api.readUser.method,
                 url    : api.readUser.url(),
-                headers: {'Authorization': 'Bearer ' + response.token},
-                success: function (data) {
-
-                  // Log the user in the UI
-                  _setAccount(true, data).then(function(){
-
-                    _switchSession('login');
-                    alerts.showAlert(13, 'success', 1500);
-                  });
-                }
+                auth: {'Authorization': 'Bearer ' + response.token}
+              }
+            , window.fetch).then(function (data) {
+              // Log the user in the UI
+              if (data ) {
+                _setAccount(true, data).then(function(){
+                  _switchSession('login');
+              });
+              }
+            }).catch(function (err) {
+              console.log("Error getting user after register: ", err);
             });
-        });
-
-        register_call.fail( function () {
-            alerts.showAlert(1, 'danger', 3500);
+        })
+        .catch( function (err) {
+          console.log("regsiter error: ", err);
             _switchSession('logout');
         });
-
     }
 
-    function _glomeGo () {
-
-            console.log('glomego clicked');
-
-            var glome_call = $.ajax({
-
-                type    : api.createSoftAccount.method,
-                url     : api.createSoftAccount.url(),
-                dataType: 'json',
-                success : function (response) {
-                    console.log(response);
-                },
-                error   : function (response) {
-                    console.log(response);
-                }
-            });
-
-            glome_call.done( function (response) {
-
-                if ( !glomeid || typeof glomeid === 'undefined' ) {
-
-                    alerts.showAlert(12, 'warning', 3000);
-                    tools.states.loggedin = false;
-                    return;
-                }
-
-                $.ajax({
-                    method  : api.readSoftAccount.method,
-                    url     : api.readSoftAccount.url(response.glomeid),
-                    headers : {'Authorization': 'Bearer ' + response.token},
-                    dataType: 'json',
-                    success : function (data) {
-
-                        if ( !data || typeof data === 'undefined' ) {
-                            return;
-                        }
-
-                        if ( typeof authUser !== 'undefined' ) {
-
-                          // Log the user in the UI
-                          _setAccount(false, data).then(function() {
-
-                            _switchSession('login');
-                            alerts.showAlert(13, 'success', 1500);
-                          });
-
-                          tools.states.loggedin = true;
-                        }
-                    }
-                });
-            });
-
-            glome_call.fail( function () {
-                alerts.showAlert(12, 'warning', 3000);
-                _switchSession('logout');
-            });
-
-        }
+    // function _glomeGo () {
+    //
+    //         console.log('glomego clicked');
+    //
+    //         var glome_call = $.ajax({
+    //
+    //             type    : api.createSoftAccount.method,
+    //             url     : api.createSoftAccount.url(),
+    //             dataType: 'json',
+    //             success : function (response) {
+    //                 console.log(response);
+    //             },
+    //             error   : function (response) {
+    //                 console.log(response);
+    //             }
+    //         });
+    //
+    //         glome_call.done( function (response) {
+    //
+    //             if ( !glomeid || typeof glomeid === 'undefined' ) {
+    //
+    //                 alerts.showAlert(12, 'warning', 3000);
+    //                 tools.states.loggedin = false;
+    //                 return;
+    //             }
+    //
+    //             $.ajax({
+    //                 method  : api.readSoftAccount.method,
+    //                 url     : api.readSoftAccount.url(response.glomeid),
+    //                 headers : {'Authorization': 'Bearer ' + response.token},
+    //                 dataType: 'json',
+    //                 success : function (data) {
+    //
+    //                     if ( !data || typeof data === 'undefined' ) {
+    //                         return;
+    //                     }
+    //
+    //                     if ( typeof authUser !== 'undefined' ) {
+    //
+    //                       // Log the user in the UI
+    //                       _setAccount(false, data).then(function() {
+    //
+    //                         _switchSession('login');
+    //                         alerts.showAlert(13, 'success', 1500);
+    //                       });
+    //
+    //                       tools.states.loggedin = true;
+    //                     }
+    //                 }
+    //             });
+    //         });
+    //
+    //         glome_call.fail( function () {
+    //             alerts.showAlert(12, 'warning', 3000);
+    //             _switchSession('logout');
+    //         });
+    //
+    //     }
 
     function _glomePair () {
       //
     }
 
     function _sessionSuccessEvents (t) {
-
       return function (t) {
-
         if (t) {
-
           alerts.showAlert(12, 'warning', 3000);
           switchSession('login');
-
         } else {
-
           alerts.showAlert(12, 'warning', 3000);
           switchSession('logout');
         }
-
       }
     }
 
@@ -443,46 +367,31 @@ var session = ( function () {
     function _deleteAccount (o) {
 
         var classic_session_type = localStorage.getItem('classic');
-
         if ( classic_session_type === 'true' ) {
-
             console.log('Deleting account');
-
             var use_token = localStorage.getItem('token');
+            var params = {
+                url: api.removeUser.url()
+              , method: api.removeUser.method
+              , auth: {'Authorization': 'Bearer ' + response.token}
+              , data: {
+                    'email'   : o.email
+                  , 'password': o.password
+              }
+            };
 
-            var delete_account_call = $.ajax({
-
-                method : api.removeUser.method,
-                url    : api.removeUser.url(),
-                headers: {'Authorization': 'Bearer ' + use_token},
-                data   : {
-                    'email': o.email,
-                    'password': o.password
-                },
-                success: function (response) {
-                    console.log(response);
-                },
-                error  : function (response) {
-                    console.log(response);
-                }
+            tools.makeApiCall(params, window.fetch)
+            .then(function (response) {
+              _switchSession('logout');
+              localStorage.clear();
+            })
+            .catch(function ( error) {
+              ui.sidebar.hide();
+              _switchSession('logout');
             });
-
-            delete_account_call.done( function () {
-                _switchSession('logout');
-                alerts.showAlert(17, 'success', 2000);
-                localStorage.clear();
-            });
-
-            delete_account_call.fail( function () {
-                ui.sidebar.hide();
-                _switchSession('logout');
-                alerts.showAlert(10, 'danger', 2000);
-            });
-
         } else {
             alerts.showAlert(18, 'warning', 2000);
         }
-
     }
 
     function _bindEvents (o, n) {
@@ -498,16 +407,13 @@ var session = ( function () {
             }
 
             else {
-
                 e.preventDefault();
-
                 // Get the data from the form
                 var obj = o.serializeObject();
 
                 console.log('current form array: ', obj);
 
                 switch ( n ) {
-
                     case 'login'    : _logIn(obj);
                     break;
                     case 'reset'    : _resetPwd(obj);
@@ -527,13 +433,13 @@ var session = ( function () {
         });
     }
 
+    /**
+     * This function is called when visiting the router url "/auth/i"
+     * @param {String} i - Defines what block to init ['logout','check','view']
+     * @returns {Boolean} false if token check fails
+     * @todo refactor this logic
+     */
     function init (i) {
-
-        /*
-         * This function is called when visiting the router url "/auth/i"
-         * @params i {String} defines what block to init ['logout','check','view']
-         * by default the switch statement handleauth forms
-         */
 
          switch (i) {
 
@@ -543,23 +449,15 @@ var session = ( function () {
                var token = localStorage.getItem('token');
 
                if (!token ) {
-
                    _switchSession('logout');
                    return false;
-
                } else {
-
-                   var check_login_call = _checkLogin(token);
-
-                   check_login_call.then(function (res) {
-
-                     console.log("checlLogin_response: ", res);
-
+                   _readAccount(token)
+                   .then(function (res) {
+                     console.log("readAccount() response: ", res);
                       if ( res.status === 200 ) {
-
                         _switchSession('login');
                       } else {
-
                         _switchSession('logout');
                       }
                    });
@@ -567,12 +465,13 @@ var session = ( function () {
                break;
 
            case 'view': _switchSession('view'); break;
-
+           // Te default behavior for the auth namsepace is to init a formz
            default:
               this.form = $('.form-auth');
               _bindEvents(this.form, i);
          }
       }
 
-    return { init : init }
+    //return Object.freeze({ init : init });
+    return { init : init };
 }());

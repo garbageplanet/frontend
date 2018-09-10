@@ -182,21 +182,21 @@ var maps = ( function () {
                     className: 'map-marker',
                     html: '<i class="fa fa-fw"></i>'
                 }
-            }),
+            });
 
-            mapmarker = function (options) {
+            var mapmarker = function (options) {
                 return new mapMarker(options);
-            },
+            };
 
-              genericMarker      = mapmarker({className: 'map-marker marker-color-gray marker-generic'})
-            , garbageMarker      = mapmarker({className: 'map-marker marker-garbage'})
-            , cleaningMarker     = mapmarker({className: 'map-marker marker-cleaning marker-color-blue'})
-            , pastCleaningMarker = mapmarker({className: 'map-marker marker-cleaning-past marker-color-blue'})
-            , dieoffMarker       = mapmarker({className: 'map-marker marker-dieoff'})
-            , sewageMarker       = mapmarker({className: 'map-marker marker-sewage'})
-            , floatingMarker     = mapmarker({className: 'map-marker marker-floating'})
-            , linkMarker         = mapmarker({className: 'map-marker marker-link'})
-            , cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
+            var  genericMarker      = mapmarker({className: 'map-marker marker-color-gray marker-generic'})
+               , garbageMarker      = mapmarker({className: 'map-marker marker-garbage'})
+               , cleaningMarker     = mapmarker({className: 'map-marker marker-cleaning marker-color-blue'})
+               , pastCleaningMarker = mapmarker({className: 'map-marker marker-cleaning-past marker-color-blue'})
+               , dieoffMarker       = mapmarker({className: 'map-marker marker-dieoff'})
+               , sewageMarker       = mapmarker({className: 'map-marker marker-sewage'})
+               , floatingMarker     = mapmarker({className: 'map-marker marker-floating'})
+               , linkMarker         = mapmarker({className: 'map-marker marker-link'})
+               , cleanedMarker      = mapmarker({className: 'map-marker marker-cleaned'});
 
         return {   genericMarker      : genericMarker
                  , garbageMarker      : garbageMarker
@@ -255,9 +255,8 @@ var maps = ( function () {
         }
 
       _tiles['Mapbox Outdoors'].on('load', function () {
-
             // Remove the loader div once the tiles have loaded
-            var loader = document.getElementById('loader');
+            var loader = document.querySelector('#loader');
 
             if ( loader ) {
                 document.body.removeChild(loader);
@@ -265,11 +264,10 @@ var maps = ( function () {
             }
          });
     }
-    // TODO use return Object.freeze({}) everywhere
-    return {
+    return Object.freeze({
        init                     : init
      , map                      : map
-    ,  hash                     : hash
+     , hash                     : hash
      , locationcontrol          : locationcontrol
      , glomelogincontrol        : glomelogincontrol
      , layerscontrol            : layerscontrol
@@ -282,5 +280,5 @@ var maps = ( function () {
      , unsavedMarkersLayerGroup : unsavedMarkersLayerGroup
      , allLayers                : allLayers
      , icons                    : icons
-  };
+  });
 }());
