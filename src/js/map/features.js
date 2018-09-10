@@ -20,54 +20,54 @@ var features =  ( function () {
 
             case 'garbage'  :
 
-                data.forEach(function(key) {
+                data.forEach(function(f) {
 
-                    var latlng = data[key].latlng.split(',');
+                    var latlng = f.latlng.split(',');
                     var marker = L.marker(L.latLng(latlng[0],latlng[1]),
                     {
-                        amount       : data[key].amount
-                      , cleaned      : data[key].cleaned
-                      , cleaned_by   : data[key].cleaned_by
-                      , cleaned_date : data[key].cleaned_date
-                      , confirms     : data[key].confirms
-                      , created_at   : data[key].created_at
-                      , created_by   : data[key].marked_by
-                      , embed        : data[key].embed
-                      , id           : data[key].id
-                      , image_url    : data[key].image_url
-                      , modified_at  : data[key].updated_at
-                      , latlng       : data[key].latlng
-                      , note         : data[key].note
-                      , size         : data[key].size
-                      , tags         : data[key].tag
-                      , types        : data[key].types.join(', ')
-                      , icon         : tools.setMarkerIcon(data[key].cleaned, null)
-                      , todo         : data[key].cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(data[key].todo)
+                        amount       : f.amount
+                      , cleaned      : f.cleaned
+                      , cleaned_by   : f.cleaned_by
+                      , cleaned_date : f.cleaned_date
+                      , confirms     : f.confirms
+                      , created_at   : f.created_at
+                      , created_by   : f.marked_by
+                      , embed        : f.embed
+                      , id           : f.id
+                      , image_url    : f.image_url
+                      , modified_at  : f.updated_at
+                      , latlng       : f.latlng
+                      , note         : f.note
+                      , size         : f.size
+                      , tags         : f.tag
+                      , types        : f.types.join(', ')
+                      , icon         : tools.setMarkerIcon(f.cleaned, null)
+                      , todo         : f.cleaned === 1 ? tools.setTodoFullText("1") : tools.setTodoFullText(f.todo)
                       , feature_type : type
                     });
                     // marker.addTo(maps.garbageLayerGroup);
                     maps.garbageLayerGroup.addLayer(marker);
                     // Set the class for the marker color after the icon is loaded on the map
-                    $(marker._icon).addClass(tools.setMarkerClassColor(data[key].amount));
+                    $(marker._icon).addClass(tools.setMarkerClassColor(f.amount));
                 });
                 break;
 
             case 'cleaning' :
-                data.forEach(function (key) {
+                data.forEach(function (f) {
 
-                    var latlng = data[key].latlng.split(',');
+                    var latlng = f.latlng.split(',');
                     var marker = L.marker(L.latLng(latlng[0], latlng[1]),
                     {
-                          attends      : data[key].attends
-                        , created_at   : data[key].created_at
-                        , created_by   : data[key].created_by
-                        , datetime     : data[key].datetime
-                        , id           : data[key].id
-                        , latlng       : data[key].latlng
-                        , modified_at  : data[key].updated_at
-                        , recurrence   : data[key].recurrence
-                        , ext_link     : data[key].note
-                        , icon         : tools.setMarkerIcon(null, data[key].datetime)
+                          attends      : f.attends
+                        , created_at   : f.created_at
+                        , created_by   : f.created_by
+                        , datetime     : f.datetime
+                        , id           : f.id
+                        , latlng       : f.latlng
+                        , modified_at  : f.updated_at
+                        , recurrence   : f.recurrence
+                        , ext_link     : f.note
+                        , icon         : tools.setMarkerIcon(null, f.datetime)
                         , feature_type : type
                     });
                     marker.addTo(maps.cleaningLayerGroup);
@@ -75,25 +75,25 @@ var features =  ( function () {
                 break;
 
             case 'litter' :
-                data.forEach(function(key) {
+                data.forEach(function(f) {
 
-                    var latlngs = JSON.parse("[" + data[key].latlngs + "]");
+                    var latlngs = JSON.parse("[" + f.latlngs + "]");
                     var polylineLayer = L.polyline(latlngs,
                     {
-                         amount          : data[key].amount
-                       , cleaned         : data[key].cleaned
-                       , cleaned_by      : data[key].cleaned_by
-                       , confirms        : data[key].confirms
-                       , color           : tools.setPolylineColor(data[key].amount)
-                       , created_at      : data[key].created_at
-                       , created_by      : data[key].marked_by
-                       , id              : data[key].id
-                       , image_url       : data[key].image_url
+                         amount          : f.amount
+                       , cleaned         : f.cleaned
+                       , cleaned_by      : f.cleaned_by
+                       , confirms        : f.confirms
+                       , color           : tools.setPolylineColor(f.amount)
+                       , created_at      : f.created_at
+                       , created_by      : f.marked_by
+                       , id              : f.id
+                       , image_url       : f.image_url
                        , latlngs         : JSON.stringify(latlngs)
-                       , modified_at     : data[key].updated_at
-                       , physical_length : data[key].physical_length
-                       , tags            : data[key].tag
-                       , types           : data[key].types.join(', ')
+                       , modified_at     : f.updated_at
+                       , physical_length : f.physical_length
+                       , tags            : f.tag
+                       , types           : f.types.join(', ')
                        , shape           : true
                        , feature_type    : type
                        , clickable       : true
@@ -108,22 +108,22 @@ var features =  ( function () {
                 break;
 
             case 'area' :
-                data.forEach(function (key) {
+                data.forEach(function (f) {
 
-                    var latlngs = JSON.parse("[" + data[key].latlngs + "]");
+                    var latlngs = JSON.parse("[" + f.latlngs + "]");
                     var polygonLayer = new L.Polygon(latlngs,
                     {
-                         contact      : data[key].contact
-                       , created_by   : data[key].created_by
-                       , created_at   : data[key].created_at
-                       , curr_players : data[key].curr_players
-                       , id           : data[key].id
-                       , max_players  : data[key].max_players
-                       , note         : data[key].note
+                         contact      : f.contact
+                       , created_by   : f.created_by
+                       , created_at   : f.created_at
+                       , curr_players : f.curr_players
+                       , id           : f.id
+                       , max_players  : f.max_players
+                       , note         : f.note
                        , latlngs      : JSON.stringify(latlngs)
-                       , tags         : data[key].tag
-                       , title        : data[key].title
-                       , modified_at  : data[key].updated_at
+                       , tags         : f.tag
+                       , title        : f.title
+                       , modified_at  : f.updated_at
                        , feature_type : type
                        , shape        : true
                        , color        : '#33cccc'
