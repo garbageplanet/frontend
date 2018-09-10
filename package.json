@@ -1,6 +1,6 @@
 {
   "name": "garbageplanet-frontend",
-  "version": "unstable",
+  "version": "0.0.1",
   "description": "Dependancies for building the garbagepla.net frontend.",
   "main": "dist/app.min.js",
   "jsdelivr": "dist/app.min.js",

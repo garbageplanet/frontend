@@ -21,7 +21,7 @@ var production = process.env.PRODUCTION === 'true' ? true : false;
 
 console.log("Prod: ", production);
 
-var reservedvars = ['$','jQuery','L','tmpl','flatpickr','Tour','tagsinput','Navigo'];
+var reservedvars = ['$','jQuery','L','tmpl','flatpickr','Tour','tagsinput','Navigo', 'fetch'];
 
 // Compile the templates
 gulp.task('templates', function (cb) {
