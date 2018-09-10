@@ -518,7 +518,7 @@ var tools = Object.freeze({
         // Return the processed response
         return fetch(obj.url, options)
             .then(tools.processFetchStatus)
-            .catch(function(error) { alerts.showAlert(1, "danger", 2000, `Error ${error.status} : ${error.statusText}`)})
+            .catch(function(error) { alerts.showAlert(1, "danger", 2000, 'Error' + error.status + ':' + error.statusText )})
             .then(tools.parseFetchJsonResponse);
     },
     processFetchStatus: function (response) {
@@ -535,8 +535,6 @@ var tools = Object.freeze({
             return response.json()
 
         } catch (err) {
-
-
           // if (response.status === 401) {
           //   alerts.showAlert(null, 'danger', 3000, err.responseJSON.error);
           // }
