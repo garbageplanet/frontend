@@ -55,7 +55,7 @@ var alerts = ( function () {
         var message = text || _strings[code];
         var alert = $('<div class="alert alert-' + type + 'fade in">');
         // Add a close button
-        alert.append(`<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>`);
+        alert.append('<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>');
         alert.append(message);
 
         $(".alert-container").prepend(alert);

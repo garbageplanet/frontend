@@ -1,6 +1,5 @@
 /*jslint browser: true, white: true, sloppy: true, maxerr: 1000*/
 var gulp = require('gulp'),
-    babel = require('gulp-babel'),
     env = require('dotenv').config(),
     gulpif = require('gulp-if'),
     inject = require('gulp-inject'),
