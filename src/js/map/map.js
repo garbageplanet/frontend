@@ -264,7 +264,7 @@ var maps = ( function () {
             }
          });
     }
-    return Object.freeze({
+    return {
        init                     : init
      , map                      : map
      , hash                     : hash
@@ -280,5 +280,5 @@ var maps = ( function () {
      , unsavedMarkersLayerGroup : unsavedMarkersLayerGroup
      , allLayers                : allLayers
      , icons                    : icons
-  });
+  };
 }());

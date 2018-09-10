@@ -18,7 +18,7 @@ var features =  ( function () {
 
         switch (type) {
 
-            case 'garbage'  :
+            case 'garbage' :
 
                 data.forEach(function(f) {
 
@@ -148,9 +148,7 @@ var features =  ( function () {
     function loadFeature (type) {
 
       if ( !type ) {
-
-        return;
-
+        return false;
       }
       // Coherce type into array because external function pass one type of feature at a time as string
       var type = Array.isArray(type) ? type : [type];
@@ -173,38 +171,22 @@ var features =  ( function () {
           var feature_type = tools.capitalizeFirstLetter(item);
 
           var params = {
-            url: api['read' + feature_type + 'WithinBounds'].url(inverted_bounds),
-            method: api['read' + feature_type + 'WithinBounds'].method,
-            auth: 'Bearer ' + token
+            url    : api['read' + feature_type + 'WithinBounds'].url(inverted_bounds),
+            method : api['read' + feature_type + 'WithinBounds'].method,
+            auth   : 'Bearer ' + token
           };
 
           tools.makeApiCall(params, window.fetch)
-
-          // FIXME parse error and check for 200
-
-          .catch(function(error) {
-
-
-            // if ( !data or data.length === 0 || typeof data === 'undefined' ) {
-            //
-            //     let error = new Error ("Received empty data from the server.");
-            //
-            //     return alerts.showAlert(0,"danger", 3000, error);
-            //
-            // }
-
-            console.log('Error getting features', error)
-
-          })
-
           .then(function(response) {
-
               //console.log(`API data for ${item}`, response);
               console.log('API data: ', response);
 
               if (!response || typeof response === 'undefined') { return false; }
 
               _createFeatures(item, response);
+          })
+          .catch(function(error) {
+            console.log('Error getting features', error)
           });
       });
     }

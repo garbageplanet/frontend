@@ -323,7 +323,6 @@ var actions = ( function () {
 
         // bind click to unsavedmarkers on larger screens
         if ( !window.isMobile ) {
-
           maps.unsavedMarkersLayerGroup.on('click', _unsavedMarkerClick);
         }
     }
@@ -333,7 +332,6 @@ var actions = ( function () {
         var marker = maps.unsavedMarkersLayerGroup.getLayer(id);
         var cancel_button = $('.btn-cancel');
         // var cancel_button = document.querySelectorAll('.btn-cancel');
-
         ui.sidebar.on ('hide', function () {
             tools.resetIconStyle(id);
         });
@@ -341,7 +339,6 @@ var actions = ( function () {
         // Close sidebar if cancel button clicked and delete unsaved markers
         cancel_button.on('click', function (e) {
         // cancel_button.addEventListener('click', function (e) {
-
             e.preventDefault();
             ui.sidebar.hide();
 
