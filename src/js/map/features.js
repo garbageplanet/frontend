@@ -14,13 +14,13 @@ var features =  ( function () {
 
         maps[type + 'LayerGroup'].clearLayers();
 
-        if (!data || typeof response === 'undefined') return false;
+        if (!data || typeof response === 'undefined') { return false; }
 
         switch (type) {
 
             case 'garbage'  :
 
-                Object.keys(data).forEach(function(key) {
+                data.forEach(function(key) {
 
                     var latlng = data[key].latlng.split(',');
                     var marker = L.marker(L.latLng(latlng[0],latlng[1]),
@@ -53,7 +53,7 @@ var features =  ( function () {
                 break;
 
             case 'cleaning' :
-                Object.keys(data).forEach(function (key) {
+                data.forEach(function (key) {
 
                     var latlng = data[key].latlng.split(',');
                     var marker = L.marker(L.latLng(latlng[0], latlng[1]),
@@ -75,7 +75,7 @@ var features =  ( function () {
                 break;
 
             case 'litter' :
-                Object.keys(data).forEach(function(key) {
+                data.forEach(function(key) {
 
                     var latlngs = JSON.parse("[" + data[key].latlngs + "]");
                     var polylineLayer = L.polyline(latlngs,
@@ -108,7 +108,7 @@ var features =  ( function () {
                 break;
 
             case 'area' :
-                Object.keys(data).forEach(function (key) {
+                data.forEach(function (key) {
 
                     var latlngs = JSON.parse("[" + data[key].latlngs + "]");
                     var polygonLayer = new L.Polygon(latlngs,
@@ -202,7 +202,7 @@ var features =  ( function () {
               //console.log(`API data for ${item}`, response);
               console.log('API data: ', response);
 
-              if (!response || typeof response === 'undefined') return false;
+              if (!response || typeof response === 'undefined') { return false; }
 
               _createFeatures(item, response);
           });
